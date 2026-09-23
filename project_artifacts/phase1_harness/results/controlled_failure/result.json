@@ -1,0 +1,18 @@
+{
+  "artifacts": [],
+  "case_id": "controlled_failure",
+  "duration_seconds": 0.047073,
+  "ended_at": "2026-09-23T02:52:16.023697+00:00",
+  "failure": {
+    "attempts": 1,
+    "message": "controlled failure",
+    "retryable": false
+  },
+  "git_commit": "8e8377cce2f87ac76c6fa1a96e8a3dab261e29ca",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "run_id": "run-260ed93c619b",
+  "started_at": "2026-09-23T02:52:15.976838+00:00",
+  "state": "FAILED",
+  "workdir": "C:\\Users\\sy\\Desktop\\workagent-rsi"
+}

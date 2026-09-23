@@ -1,0 +1,10 @@
+{
+  "artifacts": [],
+  "failure": {
+    "attempts": 1,
+    "message": "controlled failure",
+    "retryable": false
+  },
+  "run_id": "run-0813fc850330",
+  "state": "FAILED"
+}

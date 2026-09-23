@@ -16,6 +16,14 @@
 | `project_artifacts/execution_plan.md` | 1A | Markdown | Three-phase status | File written | No |
 | `project_artifacts/artifact_manifest.md` | 1A | Markdown | Artifact index | This file | No |
 | `Agent.md` | 1A | Markdown | Agent operating contract | Pending in this baseline | No |
+| `pyproject.toml` | 1B | TOML | Package and pytest configuration | Editable install completed with Python 3.12 | No |
+| `src/workagent_rsi/` | 1B | Python | Harness contracts, stores, adapter, evaluator, orchestrator and CLI | 14 pytest tests pass | No |
+| `tests/` | 1B | Python | Unit, integration and end-to-end tests | 14 pytest tests pass | No |
+| `project_artifacts/phase1_harness/results/run_summary.json` | 1B | JSON | Mock run results | JSON parsed and evidence paths checked | Yes, local mock data |
+| `project_artifacts/phase1_harness/results/run_summary.csv` | 1B | CSV | Tabular mock run results | Generated from same run records | Yes, local mock data |
+| `project_artifacts/phase1_harness/reports/run_report.md` | 1B | Markdown | Mock Pipeline report | Linked to per-run JSON evidence | Yes, local mock data |
+| `project_artifacts/phase1_harness/reports/Harness详细设计与运行报告.docx` | 1B | DOCX | Phase 1B design and mock run report | Reopened; rendered through Microsoft Word to one PDF page and visually inspected | Yes, local mock data |
+| `project_artifacts/phase1_harness/reports/Harness与WorkAgent运行报告.pptx` | 1B | PPTX | Phase 1B presentation | Artifact Tool finalizer passed; six slides rendered and visually inspected | Yes, local mock data |
+| `project_artifacts/phase1_harness/reports/Harness运行数据.xlsx` | 1B | XLSX | Seven-sheet run workbook | Artifact Tool formula scan passed; all sheets rendered and visually inspected | Yes, local mock data |
 
-No file under `phase1_harness/logs/` or `phase1_harness/results/` is listed as a successful run artifact because Phase 1B has not been approved or executed.
-
+Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or real Office task adapter.

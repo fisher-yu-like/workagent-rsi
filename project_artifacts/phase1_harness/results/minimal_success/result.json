@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "media_type": "text/plain",
+      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase1_harness\\results\\minimal_success\\artifacts\\2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "size_bytes": 5
+    }
+  ],
+  "case_id": "minimal_success",
+  "duration_seconds": 0.057019,
+  "ended_at": "2026-09-23T02:52:15.651896+00:00",
+  "evaluation": {
+    "critical_failures": [],
+    "dimensions": {
+      "structural_correctness": 1.0
+    },
+    "evidence": [
+      "artifact:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "trace:run-800e181b7ffc"
+    ],
+    "passed": true,
+    "score": 1.0,
+    "warnings": []
+  },
+  "git_commit": "8e8377cce2f87ac76c6fa1a96e8a3dab261e29ca",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "run_id": "run-800e181b7ffc",
+  "started_at": "2026-09-23T02:52:15.595531+00:00",
+  "state": "SUCCEEDED",
+  "workdir": "C:\\Users\\sy\\Desktop\\workagent-rsi"
+}

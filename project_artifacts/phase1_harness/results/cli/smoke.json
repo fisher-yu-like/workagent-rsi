@@ -1,0 +1,26 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "media_type": "text/plain",
+      "path": "project_artifacts\\phase1_harness\\results\\cli\\.run-data\\artifacts\\2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "sha256": "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "size_bytes": 5
+    }
+  ],
+  "evaluation": {
+    "critical_failures": [],
+    "dimensions": {
+      "structural_correctness": 1.0
+    },
+    "evidence": [
+      "artifact:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824",
+      "trace:run-da3f3ac0e757"
+    ],
+    "passed": true,
+    "score": 1.0,
+    "warnings": []
+  },
+  "run_id": "run-da3f3ac0e757",
+  "state": "SUCCEEDED"
+}

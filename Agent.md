@@ -89,7 +89,8 @@ A candidate skill version can be promoted only if all conditions hold:
 ## Current state
 
 - Literature review: completed for the two specified arXiv works.
-- Phase 1A design: completed and awaiting user approval.
-- Phase 1B implementation: not started.
-- Phase 2 and Phase 3: pending.
-
+- Phase 1A design: completed and approved.
+- Phase 1B local mock pipeline: implemented and validated.
+- Phase 1B accepted by the user with the external WorkAgent limitation recorded.
+- Phase 2 RSI framework and training plan: in progress.
+- Phase 3: pending.

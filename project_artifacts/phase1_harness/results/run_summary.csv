@@ -1,0 +1,4 @@
+case_id,run_id,state,duration_seconds,git_commit
+minimal_success,run-800e181b7ffc,SUCCEEDED,0.057019,8e8377cce2f87ac76c6fa1a96e8a3dab261e29ca
+complete_success,run-b765a2399b4b,SUCCEEDED,0.058696,8e8377cce2f87ac76c6fa1a96e8a3dab261e29ca
+controlled_failure,run-260ed93c619b,FAILED,0.047073,8e8377cce2f87ac76c6fa1a96e8a3dab261e29ca

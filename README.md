@@ -2,7 +2,7 @@
 
 Benchmark-driven recursive skill improvement for Office agents.
 
-This repository is currently at the Phase 1A design gate. The literature report and Harness/Pipeline design are complete; implementation and real pipeline execution have not been claimed.
+This repository is currently in Phase 1B. The local mock Harness pipeline is implemented and validated; a real external WorkAgent integration has not been claimed.
 
 ## Start here
 
@@ -29,7 +29,14 @@ src/workagent_rsi/             Implementation package (Phase 1B)
 - Git is the source-control system; every meaningful phase boundary receives a commit.
 - LibreOffice is optional for development but required for claims involving Office recalculation or rendered visual validation.
 
+## Run locally
+
+```powershell
+py -3.12 -m pip install -e .
+py -3.12 -m pytest -q --basetemp=.pytest-tmp
+py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml --output run.json
+```
+
 ## Current gate
 
-Phase 1A is waiting for user approval. Do not start Phase 1B until the design gate is explicitly approved.
-
+The local mock pipeline is complete. Phase 1B remains open for a concrete WorkAgent provider and real Office task execution; Phase 2 must not start before the Phase 1 gate is accepted.
