@@ -51,6 +51,19 @@
 | `project_artifacts/phase2_rsi/evidence/renders/docx/` | 2 | PNG set (2 files) | Two-page Word render evidence | Both final pages inspected at full size | No |
 | `project_artifacts/phase2_rsi/evidence/renders/experiment-matrix/` | 2 | PNG set (2 files) | Experiment workbook visual evidence | Summary and detail sheets inspected | No |
 | `project_artifacts/phase2_rsi/evidence/renders/resource-budget/` | 2 | PNG set (1 file) | Resource workbook visual evidence | Resource sheet inspected | No |
+| `project_artifacts/phase3_experiments/data/dataset_catalog.md` | 3 | Markdown | Dataset source, license, fields and leakage policy | Scope explicitly marked project-generated; external benchmark claims prohibited | No |
+| `project_artifacts/phase3_experiments/data/README.md` | 3 | Markdown | Data-layer reproducibility commands | Generator and quality-check commands documented | No |
+| `project_artifacts/phase3_experiments/data/generate_dataset.py` | 3 | Python | Deterministic pilot task generator | Python 3.12 compile passed; fixed seed and provenance output | No |
+| `project_artifacts/phase3_experiments/data/quality_check.py` | 3 | Python | Dataset schema, split and leakage gate | 14 checks passed; non-zero on drift or leakage | No |
+| `project_artifacts/phase3_experiments/data/raw/tasks_all.jsonl` | 3 | JSONL | Immutable generated task source layer | 30 records; hash recorded in provenance | No |
+| `project_artifacts/phase3_experiments/data/processed/public_tasks.jsonl` | 3 | JSONL | Candidate-facing public task layer | 25 records; excludes hidden tasks | No |
+| `project_artifacts/phase3_experiments/data/protected/hidden_tasks.jsonl` | 3 | JSONL | Local protected qualification layer | 5 records; isolated from public export | No |
+| `project_artifacts/phase3_experiments/data/splits/` | 3 | JSONL set | Split-specific task manifests | Evolve/develop/regression/OOD counts checked | No |
+| `project_artifacts/phase3_experiments/data/provenance.json` | 3 | JSON | Dataset hashes, environment and generation record | Hashes and counts cross-checked by quality gate | No |
+| `project_artifacts/phase3_experiments/data/quality_report.json` | 3 | JSON | Dataset quality and leakage report | Status `pass`; 14 checks passed | No |
+| `project_artifacts/phase3_experiments/scripts/run_b0_qualification.py` | 3 | Python | Local mock B0 qualification runner | 25 public tasks executed through existing Harness | Yes, local mock data |
+| `project_artifacts/phase3_experiments/results/b0_qualification/` | 3 | JSON/CSV/SQLite set | Per-task traces, artifacts and B0 summary | 25 succeeded, 0 failed; scope limitation recorded | Yes, local mock data |
+| `project_artifacts/phase3_experiments/results/b0_qualification/attempt_001_failure.json` | 3 | JSON | First B0 contract-mapping failure | Failure preserved with resolution | Yes, local run evidence |
 
 Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or real Office task adapter.
 

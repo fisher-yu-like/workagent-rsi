@@ -92,5 +92,7 @@ A candidate skill version can be promoted only if all conditions hold:
 - Phase 1A design: completed and approved.
 - Phase 1B local mock pipeline: implemented and validated.
 - Phase 1B accepted by the user with the external WorkAgent limitation recorded.
-- Phase 2 RSI framework and training plan: completed and awaiting user approval at the Phase 2 review gate. No training or benchmark experiment has run.
-- Phase 3: pending.
+- Phase 2 RSI framework and training plan: completed and approved on 2026-09-23.
+- Phase 3 dataset catalog and quality gate: completed for the project-generated pilot fixture. It must not be described as an external benchmark.
+- Phase 3 B0 qualification baseline: completed for the local mock Harness: 25 public tasks, 25 succeeded, 0 failed. This is trace/evaluator plumbing evidence only. The current repository only has a mock adapter and text evaluator; real Office baseline remains blocked on provider/adapter availability.
+- Phase 3 formal experiments: pending.
