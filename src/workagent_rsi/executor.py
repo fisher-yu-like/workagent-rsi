@@ -30,6 +30,15 @@ class LocalOfficeAdapter:
         "word": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "powerpoint": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     }
+    WINDOWS_RESERVED_NAMES = {
+        "CON",
+        "PRN",
+        "AUX",
+        "NUL",
+        "CLOCK$",
+        *(f"COM{index}" for index in range(1, 10)),
+        *(f"LPT{index}" for index in range(1, 10)),
+    }
 
     def __init__(self, output_root: str | Path) -> None:
         self.output_root = Path(output_root)
@@ -40,7 +49,12 @@ class LocalOfficeAdapter:
         if domain not in self.MEDIA_TYPES:
             yield {"kind": "failure", "message": f"unsupported Office domain: {task.domain}", "retryable": False}
             return
-        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", task.task_id) or ".." in task.task_id:
+        task_id_root = task.task_id.split(".", 1)[0].upper()
+        if (
+            not re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?", task.task_id)
+            or ".." in task.task_id
+            or task_id_root in self.WINDOWS_RESERVED_NAMES
+        ):
             yield {
                 "kind": "failure",
                 "message": f"unsafe task_id for artifact path: {task.task_id}",

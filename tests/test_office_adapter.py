@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 from workagent_rsi.contracts import TaskSpec
 from workagent_rsi.executor import LocalOfficeAdapter
 
@@ -28,6 +30,14 @@ def test_local_office_adapter_rejects_unknown_domain(tmp_path: Path):
 
 def test_local_office_adapter_rejects_path_like_task_id(tmp_path: Path):
     task = TaskSpec(task_id="..\\escape", domain="word", instruction="Create")
+    events = list(LocalOfficeAdapter(tmp_path).execute(task, "b0.office.local"))
+    assert events[-1]["kind"] == "failure"
+    assert "task_id" in events[-1]["message"]
+
+
+@pytest.mark.parametrize("task_id", ["CON", "report."])
+def test_local_office_adapter_rejects_windows_unsafe_task_id(tmp_path: Path, task_id: str):
+    task = TaskSpec(task_id=task_id, domain="word", instruction="Create")
     events = list(LocalOfficeAdapter(tmp_path).execute(task, "b0.office.local"))
     assert events[-1]["kind"] == "failure"
     assert "task_id" in events[-1]["message"]
