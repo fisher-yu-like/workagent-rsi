@@ -65,6 +65,7 @@
 | `project_artifacts/phase3_experiments/scripts/run_b0_qualification.py` | 3 | Python | Local mock B0 qualification runner | 25 public tasks executed through existing Harness | Yes, local mock data |
 | `project_artifacts/phase3_experiments/results/b0_qualification/` | 3 | JSON/CSV/SQLite set | Per-task traces, artifacts and B0 summary | 25 succeeded, 0 failed; scope limitation recorded | Yes, local mock data |
 | `project_artifacts/phase3_experiments/results/b0_qualification/attempt_001_failure.json` | 3 | JSON | First B0 contract-mapping failure | Failure preserved with resolution | Yes, local run evidence |
+| `project_artifacts/phase3_experiments/results/b0_qualification/qualification_scope.md` | 3 | Markdown | B0 claim boundary | Explicitly excludes Office benchmark interpretation | Yes, local mock data |
 
 Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or real Office task adapter.
 
