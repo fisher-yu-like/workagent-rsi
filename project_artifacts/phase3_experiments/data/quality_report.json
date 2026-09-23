@@ -1,0 +1,97 @@
+{
+  "checks": [
+    {
+      "detail": "count=30 expected=30",
+      "name": "task_count",
+      "passed": true
+    },
+    {
+      "detail": "unique=30 total=30",
+      "name": "unique_task_ids",
+      "passed": true
+    },
+    {
+      "detail": "unique=30 total=30",
+      "name": "unique_instructions",
+      "passed": true
+    },
+    {
+      "detail": "Counter({'evolve': 12, 'develop': 6, 'hidden': 5, 'regression': 4, 'ood_transfer': 3})",
+      "name": "split_counts",
+      "passed": true
+    },
+    {
+      "detail": "Counter({'excel': 10, 'word': 10, 'powerpoint': 10})",
+      "name": "domain_counts",
+      "passed": true
+    },
+    {
+      "detail": "hidden_in_public=0",
+      "name": "public_excludes_hidden",
+      "passed": true
+    },
+    {
+      "detail": "protected=5 expected=5",
+      "name": "protected_matches_hidden",
+      "passed": true
+    },
+    {
+      "detail": "count=25 expected=25",
+      "name": "public_count",
+      "passed": true
+    },
+    {
+      "detail": "count=5 expected=5",
+      "name": "hidden_count",
+      "passed": true
+    },
+    {
+      "detail": "malformed_tasks=[]",
+      "name": "schema_fields",
+      "passed": true
+    },
+    {
+      "detail": "{'project-generated'}",
+      "name": "source_boundary",
+      "passed": true
+    },
+    {
+      "detail": "versions=['synthetic-office-taskset-v0.1.0']",
+      "name": "version_consistency",
+      "passed": true
+    },
+    {
+      "detail": "provenance=synthetic-office-taskset-v0.1.0",
+      "name": "provenance_version",
+      "passed": true
+    },
+    {
+      "detail": "provenance=30 actual=30",
+      "name": "provenance_count",
+      "passed": true
+    }
+  ],
+  "dataset_version": "synthetic-office-taskset-v0.1.0",
+  "domain_counts": {
+    "excel": 10,
+    "powerpoint": 10,
+    "word": 10
+  },
+  "failures": [],
+  "files": {
+    "processed/public_tasks.jsonl": "07c8ecfbdd11f04f3c3066fbcec061802f697d3e1df2c7bc9ac095ee04b5aca6",
+    "protected/hidden_tasks.jsonl": "9acade71c977c73d2c3652240d53f5238ba751f3dadbdfd5230ad655fe99dd37",
+    "raw/tasks_all.jsonl": "b5f975790e998153a40c20e1cf514d9ca98f606badc29f20ebb2b3ffb83e3af9"
+  },
+  "protected_count": 5,
+  "public_count": 25,
+  "split_counts": {
+    "develop": 6,
+    "evolve": 12,
+    "hidden": 5,
+    "ood_transfer": 3,
+    "regression": 4
+  },
+  "status": "pass",
+  "task_count": 30
+}

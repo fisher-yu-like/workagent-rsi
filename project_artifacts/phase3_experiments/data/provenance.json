@@ -1,0 +1,36 @@
+{
+  "dataset_version": "synthetic-office-taskset-v0.1.0",
+  "domain_counts": {
+    "excel": 10,
+    "powerpoint": 10,
+    "word": 10
+  },
+  "files": {
+    "processed/public_tasks.jsonl": "07c8ecfbdd11f04f3c3066fbcec061802f697d3e1df2c7bc9ac095ee04b5aca6",
+    "protected/hidden.jsonl": "9acade71c977c73d2c3652240d53f5238ba751f3dadbdfd5230ad655fe99dd37",
+    "protected/hidden_tasks.jsonl": "9acade71c977c73d2c3652240d53f5238ba751f3dadbdfd5230ad655fe99dd37",
+    "raw/tasks_all.jsonl": "b5f975790e998153a40c20e1cf514d9ca98f606badc29f20ebb2b3ffb83e3af9",
+    "splits/develop.jsonl": "29864b1ec0a51cf6564989164a3c9b15cc29152cae0d65441e8618a52476d979",
+    "splits/evolve.jsonl": "baeba86445e513f02bbdda809097586aca1ce8fafaebe91a6bff7aa353ce2413",
+    "splits/ood_transfer.jsonl": "217b2d6818a8f5af2f73b829443eacdfe6397454e204929378cd0379ffef3a26",
+    "splits/regression.jsonl": "91b0bb5e33a7ca2c2e3ff4f7efc45d4c977b3c2a135184a3ca0493c6664466d9"
+  },
+  "generated_at": "2026-09-23T08:31:26.382817+00:00",
+  "generator": "generate_dataset.py",
+  "git_commit": "ff048c0530c527fae39e88a4e6b68908eaae23ff",
+  "license_note": "Internal generated fixture; no external benchmark license claimed",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "protected_task_count": 5,
+  "public_task_count": 25,
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "seed": 20260923,
+  "source_kind": "project-generated",
+  "split_counts": {
+    "develop": 6,
+    "evolve": 12,
+    "hidden": 5,
+    "ood_transfer": 3,
+    "regression": 4
+  },
+  "task_count": 30
+}
