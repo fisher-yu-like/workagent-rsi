@@ -40,3 +40,4 @@ py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml --output run.json
 ## Current gate
 
 Phase 1 and Phase 2 have been accepted. The Phase 3 pilot dataset, mock B0 qualification, and local Office provider/evaluator qualification are complete. Formal E01-E12 experiments remain pending until an external WorkAgent/candidate generator is configured; local qualification evidence must not be reported as an RSI experiment result.
+# workagent-rsi
