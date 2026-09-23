@@ -1,0 +1,7 @@
+task_id: complete-echo
+domain: smoke
+instruction: monthly report placeholder
+expected_constraints:
+  required_text: monthly report placeholder
+risk_level: low
+

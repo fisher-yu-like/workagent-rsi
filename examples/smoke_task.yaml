@@ -1,0 +1,7 @@
+task_id: smoke-echo
+domain: smoke
+instruction: hello
+expected_constraints:
+  required_text: hello
+risk_level: low
+

@@ -1,6 +1,8 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.pytest-tmp/
+.artifact-build/
 .venv/
 venv/
 dist/
@@ -13,5 +15,8 @@ project_artifacts/**/results/*
 project_artifacts/**/checkpoints/*
 !project_artifacts/**/logs/.gitkeep
 !project_artifacts/**/results/.gitkeep
+!project_artifacts/phase1_harness/results/run_summary.csv
+!project_artifacts/phase1_harness/results/run_summary.json
+!project_artifacts/phase1_harness/results/*/
+!project_artifacts/phase1_harness/results/*/result.json
 !project_artifacts/**/checkpoints/.gitkeep
-

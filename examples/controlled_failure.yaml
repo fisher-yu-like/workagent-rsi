@@ -1,0 +1,5 @@
+task_id: controlled-failure
+domain: smoke
+instruction: fail
+risk_level: low
+
