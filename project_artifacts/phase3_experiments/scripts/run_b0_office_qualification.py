@@ -88,8 +88,9 @@ def main() -> int:
     (RESULT_ROOT / "qualification_scope.md").write_text(
         "# B0 Office Qualification Scope\n\n"
         "This qualification uses the local Python Office artifact adapter and reopens each generated "
-        "DOCX, XLSX or PPTX with its corresponding library. It is not an external WorkAgent provider "
-        "run and does not yet include COM render parity or hidden evaluation.\n",
+        "DOCX, XLSX or PPTX with its corresponding library. The generated files must also pass the "
+        "separate Microsoft Office COM parity script before the provider gate is considered complete. "
+        "This is not an external WorkAgent provider run and does not include hidden evaluation.\n",
         encoding="utf-8",
     )
     print(json.dumps({key: summary[key] for key in ("run_type", "task_count", "success_count", "failure_count", "mean_score", "git_commit")}, sort_keys=True))

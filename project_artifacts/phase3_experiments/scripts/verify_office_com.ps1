@@ -5,6 +5,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $apps = @{}
+$versions = @{}
 $rows = @()
 $files = Get-ChildItem -LiteralPath $Root -Recurse -File | Where-Object { $_.Extension.ToLowerInvariant() -in @('.docx', '.xlsx', '.pptx') }
 
@@ -29,6 +30,7 @@ function Get-App([string]$extension) {
         default { throw "Unsupported extension: $extension" }
     }
     $apps[$extension] = $app
+    $versions[$extension] = [string]$app.Version
     return $app
 }
 
@@ -64,7 +66,11 @@ try {
 }
 
 $report = [ordered]@{
-    office_versions = [ordered]@{ word = '16.0'; excel = '16.0'; powerpoint = '16.0' }
+    office_versions = [ordered]@{
+        word = $versions['.docx']
+        excel = $versions['.xlsx']
+        powerpoint = $versions['.pptx']
+    }
     file_count = $rows.Count
     opened_count = @($rows | Where-Object opened).Count
     failures = @($rows | Where-Object { -not $_.opened })

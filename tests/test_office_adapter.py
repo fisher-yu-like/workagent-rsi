@@ -24,3 +24,10 @@ def test_local_office_adapter_rejects_unknown_domain(tmp_path: Path):
     events = list(LocalOfficeAdapter(tmp_path).execute(task, "b0.office.local"))
     assert events[-1]["kind"] == "failure"
     assert events[-1]["retryable"] is False
+
+
+def test_local_office_adapter_rejects_path_like_task_id(tmp_path: Path):
+    task = TaskSpec(task_id="..\\escape", domain="word", instruction="Create")
+    events = list(LocalOfficeAdapter(tmp_path).execute(task, "b0.office.local"))
+    assert events[-1]["kind"] == "failure"
+    assert "task_id" in events[-1]["message"]

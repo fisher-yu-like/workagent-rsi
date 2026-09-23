@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
-from typing import Any
 from pathlib import Path
+import re
+from typing import Any
 
 from .contracts import TaskSpec
 
@@ -38,6 +39,13 @@ class LocalOfficeAdapter:
         domain = task.domain.lower()
         if domain not in self.MEDIA_TYPES:
             yield {"kind": "failure", "message": f"unsupported Office domain: {task.domain}", "retryable": False}
+            return
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", task.task_id) or ".." in task.task_id:
+            yield {
+                "kind": "failure",
+                "message": f"unsafe task_id for artifact path: {task.task_id}",
+                "retryable": False,
+            }
             return
         marker = str(task.expected_constraints.get("required_text", task.task_id))
         self.output_root.mkdir(parents=True, exist_ok=True)
