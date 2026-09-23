@@ -21,6 +21,7 @@ from workagent_rsi.contracts import TaskSpec
 from workagent_rsi.evaluator import OfficeArtifactEvaluator
 from workagent_rsi.executor import LocalOfficeAdapter
 from workagent_rsi.orchestrator import Orchestrator
+from workagent_rsi.path_safety import validated_task_directory
 from workagent_rsi.storage import ArtifactStore, TraceStore
 
 
@@ -35,7 +36,7 @@ def main() -> int:
     started_at = datetime.now(timezone.utc)
     for task_data in tasks:
         task_id = task_data["task_id"]
-        run_root = RESULT_ROOT / task_id
+        run_root = validated_task_directory(RESULT_ROOT, task_id)
         task = TaskSpec(
             task_id=task_id,
             domain=task_data["domain"],

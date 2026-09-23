@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from pathlib import Path
-import re
 from typing import Any
 
 from .contracts import TaskSpec
+from .path_safety import validated_task_directory
 
 
 class MockWorkAgentAdapter:
@@ -30,16 +30,6 @@ class LocalOfficeAdapter:
         "word": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "powerpoint": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     }
-    WINDOWS_RESERVED_NAMES = {
-        "CON",
-        "PRN",
-        "AUX",
-        "NUL",
-        "CLOCK$",
-        *(f"COM{index}" for index in range(1, 10)),
-        *(f"LPT{index}" for index in range(1, 10)),
-    }
-
     def __init__(self, output_root: str | Path) -> None:
         self.output_root = Path(output_root)
 
@@ -49,15 +39,12 @@ class LocalOfficeAdapter:
         if domain not in self.MEDIA_TYPES:
             yield {"kind": "failure", "message": f"unsupported Office domain: {task.domain}", "retryable": False}
             return
-        task_id_root = task.task_id.split(".", 1)[0].upper()
-        if (
-            not re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?", task.task_id)
-            or ".." in task.task_id
-            or task_id_root in self.WINDOWS_RESERVED_NAMES
-        ):
+        try:
+            validated_task_directory(self.output_root, task.task_id)
+        except ValueError as exc:
             yield {
                 "kind": "failure",
-                "message": f"unsafe task_id for artifact path: {task.task_id}",
+                "message": str(exc),
                 "retryable": False,
             }
             return

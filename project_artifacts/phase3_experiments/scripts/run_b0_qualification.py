@@ -23,6 +23,7 @@ from workagent_rsi.contracts import TaskSpec
 from workagent_rsi.evaluator import BasicEvaluator
 from workagent_rsi.executor import MockWorkAgentAdapter
 from workagent_rsi.orchestrator import Orchestrator
+from workagent_rsi.path_safety import validated_task_directory
 from workagent_rsi.storage import ArtifactStore, TraceStore
 
 
@@ -41,7 +42,7 @@ def main() -> int:
     rows: list[dict] = []
     for task_data in tasks:
         task_id = task_data["task_id"]
-        run_root = RESULT_ROOT / task_id
+        run_root = validated_task_directory(RESULT_ROOT, task_id)
         orchestrator = Orchestrator(
             artifact_store=ArtifactStore(run_root / "artifacts"),
             trace_store=TraceStore(run_root / "trace.db"),

@@ -15,10 +15,10 @@
 | `project_artifacts/phase1_harness/design/implementation_backlog.md` | 1A | Markdown | Phase 1B backlog | File written | No |
 | `project_artifacts/execution_plan.md` | 1A | Markdown | Three-phase status | File written | No |
 | `project_artifacts/artifact_manifest.md` | 1A | Markdown | Artifact index | This file | No |
-| `Agent.md` | 1A | Markdown | Agent operating contract | Pending in this baseline | No |
+| `Agent.md` | 1A-3 | Markdown | Agent operating contract and current stage gates | Phase 3 qualification boundary reviewed | No |
 | `pyproject.toml` | 1B | TOML | Package and pytest configuration | Editable install completed with Python 3.12 | No |
-| `src/workagent_rsi/` | 1B | Python | Harness contracts, stores, adapter, evaluator, orchestrator and CLI | 14 pytest tests pass | No |
-| `tests/` | 1B | Python | Unit, integration and end-to-end tests | 14 pytest tests pass | No |
+| `src/workagent_rsi/` | 1B-3 | Python | Harness contracts, stores, adapters, evaluators, path safety, orchestrator and CLI | 26 pytest tests pass | No |
+| `tests/` | 1B-3 | Python | Unit, integration, path-safety and end-to-end tests | 26 pytest tests pass | No |
 | `project_artifacts/phase1_harness/results/run_summary.json` | 1B | JSON | Mock run results | JSON parsed and evidence paths checked | Yes, local mock data |
 | `project_artifacts/phase1_harness/results/run_summary.csv` | 1B | CSV | Tabular mock run results | Generated from same run records | Yes, local mock data |
 | `project_artifacts/phase1_harness/reports/run_report.md` | 1B | Markdown | Mock Pipeline report | Linked to per-run JSON evidence | Yes, local mock data |
@@ -70,14 +70,17 @@
 | `src/workagent_rsi/evaluator.py` | 3 | Python | OfficeArtifactEvaluator | Reopens DOCX/XLSX/PPTX, validates media type and marker | Yes, local qualification |
 | `src/workagent_rsi/orchestrator.py` | 3 | Python | Binary artifact ingestion | Content-addressed storage accepts generated Office files | Yes, local qualification |
 | `src/workagent_rsi/storage.py` | 3 | Python | File-to-artifact helper | TDD tests pass | No |
-| `tests/test_office_adapter.py` | 3 | Python | Local Office adapter tests | 2 tests pass | No |
+| `tests/test_office_adapter.py` | 3 | Python | Local Office adapter and artifact-path safety tests | 5 tests pass | No |
 | `tests/test_office_evaluator.py` | 3 | Python | Format evaluator and orchestrator tests | 2 tests pass | No |
+| `tests/test_path_safety.py` | 3 | Python | Shared task-directory safety boundary | 5 tests pass | No |
 | `project_artifacts/phase3_experiments/scripts/run_b0_office_qualification.py` | 3 | Python | 25-task local Office qualification runner | 25 succeeded, 0 failed | Yes, local qualification |
 | `project_artifacts/phase3_experiments/scripts/verify_office_com.ps1` | 3 | PowerShell | COM environment parity check | 25 DOCX/XLSX/PPTX opened by Office 16.0 | Yes, local qualification |
 | `project_artifacts/phase3_experiments/results/b0_office_qualification/` | 3 | JSON/SQLite/OOXML set | Real local Office artifacts, traces and summary | 25 succeeded, 0 failed; Office COM 25/25 | Yes, local qualification |
 | `project_artifacts/phase3_experiments/results/b0_office_qualification/com_attempt_001_failure.json` | 3 | JSON | First COM parity failure | Failure and resolution preserved | Yes, local run evidence |
 | `project_artifacts/phase3_experiments/README.md` | 3 | Markdown | Phase 3 status and formal-experiment claim boundary | Local qualification separated from pending E01-E12 | No |
 
-Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or real Office task adapter.
+Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or the local Office task adapter added in Phase 3.
 
 Phase 2 artifacts are designs and plans. They contain no executed training, dataset experiment or benchmark score.
+
+Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Microsoft Office COM reopening. It is not an external WorkAgent run, hidden evaluation, candidate-generation run, or E01-E12 RSI experiment.

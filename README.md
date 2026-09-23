@@ -2,7 +2,7 @@
 
 Benchmark-driven recursive skill improvement for Office agents.
 
-This repository is currently in Phase 1B. The local mock Harness pipeline is implemented and validated; a real external WorkAgent integration has not been claimed.
+This repository is currently at the Phase 3 formal-experiment gate. The mock Harness, RSI design, pilot dataset, and local Office provider/evaluator qualification are implemented and validated. A real external WorkAgent integration and E01-E12 experiment results have not been claimed.
 
 ## Start here
 
@@ -18,8 +18,8 @@ This repository is currently in Phase 1B. The local mock Harness pipeline is imp
 docs/                         Literature report and preserved sources
 project_artifacts/            Phase-gated designs, logs, results and reports
 Agent.md                      Agent operating contract and execution gates
-tests/                        Single root for automated tests (Phase 1B)
-src/workagent_rsi/             Implementation package (Phase 1B)
+tests/                        Single root for automated tests
+src/workagent_rsi/             Harness and local Office qualification package
 ```
 
 ## Tooling policy
@@ -33,10 +33,10 @@ src/workagent_rsi/             Implementation package (Phase 1B)
 
 ```powershell
 py -3.12 -m pip install -e .
-py -3.12 -m pytest -q --basetemp=.pytest-tmp
+py -3.12 -m pytest -q --basetemp="$env:TEMP\workagent-rsi-tests"
 py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml --output run.json
 ```
 
 ## Current gate
 
-The local mock pipeline is complete. Phase 1B remains open for a concrete WorkAgent provider and real Office task execution; Phase 2 must not start before the Phase 1 gate is accepted.
+Phase 1 and Phase 2 have been accepted. The Phase 3 pilot dataset, mock B0 qualification, and local Office provider/evaluator qualification are complete. Formal E01-E12 experiments remain pending until an external WorkAgent/candidate generator is configured; local qualification evidence must not be reported as an RSI experiment result.

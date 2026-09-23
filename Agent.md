@@ -94,6 +94,6 @@ A candidate skill version can be promoted only if all conditions hold:
 - Phase 1B accepted by the user with the external WorkAgent limitation recorded.
 - Phase 2 RSI framework and training plan: completed and approved on 2026-09-23.
 - Phase 3 dataset catalog and quality gate: completed for the project-generated pilot fixture. It must not be described as an external benchmark.
-- Phase 3 B0 qualification baseline: completed for the local mock Harness: 25 public tasks, 25 succeeded, 0 failed. This is trace/evaluator plumbing evidence only. The current repository only has a mock adapter and text evaluator; real Office baseline remains blocked on provider/adapter availability.
+- Phase 3 B0 qualification baseline: completed for the local mock Harness: 25 public tasks, 25 succeeded, 0 failed. This is trace/evaluator plumbing evidence only and is separate from the local Office provider qualification below.
 - Phase 3 Office provider and evaluator qualification: completed for the local executor. LocalOfficeAdapter, OfficeArtifactEvaluator and Word/Excel/PowerPoint 16.0 COM parity passed 25/25 public tasks. Formal external WorkAgent experiments remain pending because no external provider/candidate generator is configured.
 - Phase 3 formal experiments: pending.
