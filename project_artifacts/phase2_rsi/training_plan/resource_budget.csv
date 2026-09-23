@@ -1,0 +1,8 @@
+resource,unit,quantity_estimate,unit_cost_input,total_formula,authorization_note
+Pilot baseline task runs,run,540,,quantity times unit cost,Required before search
+Excel candidate evaluations,run,2160,,quantity times unit cost,Six rounds times four candidates under capped task subsets
+Human evaluator calibration,hour,12,,quantity times unit cost,Two reviewers for sampled artifacts
+Office render verification,artifact,300,,quantity times unit cost,Use measured render time in Phase 3
+Local CPU/GPU execution,hour,40,,quantity times unit cost,Current host only; no large-model training
+Storage,GB-month,25,,quantity times unit cost,Raw artifacts traces and render previews
+Contingency,percent,20,,subtotal times percentage,Requires approval if consumed

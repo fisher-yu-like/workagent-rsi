@@ -1,0 +1,13 @@
+experiment_id,priority,hypothesis,domain,method,comparator,split,repeats,primary_metric,status
+E01,P0,H1,excel,B0 fixed skill,none,develop,3,task success rate,planned
+E02,P0,H1,excel,B1 self-refine,B0,develop,3,task success rate,planned
+E03,P0,H1-H2,excel,B3 gen plus verifier,B2 gen only,develop+regression,3,critical regression rate,planned
+E04,P0,H1,excel,B4 modular evaluator,B1 self-refine,develop+regression,3,invalid promotion rate,planned
+E05,P0,H1-H5,excel,B5 full WorkAgent-RSI,B1 self-refine,all protected splits,3,hidden score delta,planned
+E06,P1,H2,excel,verifier enabled,verifier disabled,regression,5,critical regression rate,planned
+E07,P1,H3,excel+word+ppt,artifact evaluator,response-only judge,human audit,1,evaluator-human agreement,planned
+E08,P1,H4,cross-domain,shared data-processing skill,domain-specific skill,ood transfer,3,transfer delta,planned
+E09,P0,H5,excel,RRSI proposal regularization,no proposal regularization,hidden+ood,3,evolve-hidden gap,planned
+E10,P0,H5,excel,RRSI selection regularization,no selection regularization,hidden+ood,3,evolve-hidden gap,planned
+E11,P1,H5,excel,leakage critic enabled,critic disabled,adversarial+hidden,3,leakage rejection rate,planned
+E12,P2,H1-H5,word+ppt,full WorkAgent-RSI,B1 self-refine,all protected splits,3,artifact correctness,planned

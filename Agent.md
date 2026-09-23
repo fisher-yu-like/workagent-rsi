@@ -92,5 +92,5 @@ A candidate skill version can be promoted only if all conditions hold:
 - Phase 1A design: completed and approved.
 - Phase 1B local mock pipeline: implemented and validated.
 - Phase 1B accepted by the user with the external WorkAgent limitation recorded.
-- Phase 2 RSI framework and training plan: in progress.
+- Phase 2 RSI framework and training plan: completed and awaiting user approval at the Phase 2 review gate. No training or benchmark experiment has run.
 - Phase 3: pending.
