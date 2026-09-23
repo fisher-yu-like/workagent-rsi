@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from pathlib import Path
 from uuid import uuid4
 
 from .contracts import TaskSpec
@@ -34,7 +35,14 @@ class Orchestrator:
                 for event in self.adapter.execute(task, skill_id):
                     self.trace_store.append_event(run_id, event["kind"], {**event, "attempt": attempts})
                     if event["kind"] == "artifact":
-                        artifacts.append(self.artifact_store.put_bytes(event["content"].encode("utf-8"), event.get("media_type", "application/octet-stream")))
+                        if "artifact_path" in event:
+                            artifact_path = Path(event["artifact_path"])
+                            artifacts.append(self.artifact_store.put_bytes(artifact_path.read_bytes(), event.get("media_type", "application/octet-stream")))
+                        else:
+                            content = event.get("content", b"")
+                            if isinstance(content, str):
+                                content = content.encode("utf-8")
+                            artifacts.append(self.artifact_store.put_bytes(content, event.get("media_type", "application/octet-stream")))
                     elif event["kind"] == "failure":
                         failure = {"message": event["message"], "retryable": event.get("retryable", False), "attempts": attempts}
                         break

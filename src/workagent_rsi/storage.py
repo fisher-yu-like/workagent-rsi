@@ -27,6 +27,9 @@ class ArtifactStore:
             size_bytes=len(content),
         )
 
+    def put_file(self, source: str | Path, media_type: str) -> ArtifactRef:
+        return self.put_bytes(Path(source).read_bytes(), media_type)
+
 
 class TraceStore:
     def __init__(self, database: str | Path) -> None:
@@ -77,4 +80,3 @@ class TraceStore:
         with self._connect() as conn:
             rows = conn.execute("SELECT kind, payload, created_at FROM events WHERE run_id = ? ORDER BY id", (run_id,)).fetchall()
         return [{"kind": kind, "payload": json.loads(payload), "created_at": created_at} for kind, payload, created_at in rows]
-

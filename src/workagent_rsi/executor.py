@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from typing import Any
+from pathlib import Path
 
 from .contracts import TaskSpec
 
@@ -19,3 +20,52 @@ class MockWorkAgentAdapter:
             return
         yield {"kind": "artifact", "content": task.instruction, "media_type": "text/plain"}
 
+
+class LocalOfficeAdapter:
+    """Create genuine Office artifacts for local provider qualification."""
+
+    MEDIA_TYPES = {
+        "excel": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "word": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "powerpoint": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    }
+
+    def __init__(self, output_root: str | Path) -> None:
+        self.output_root = Path(output_root)
+
+    def execute(self, task: TaskSpec, skill_id: str) -> Iterable[dict[str, Any]]:
+        yield {"kind": "started", "skill_id": skill_id, "task_id": task.task_id}
+        domain = task.domain.lower()
+        if domain not in self.MEDIA_TYPES:
+            yield {"kind": "failure", "message": f"unsupported Office domain: {task.domain}", "retryable": False}
+            return
+        marker = str(task.expected_constraints.get("required_text", task.task_id))
+        self.output_root.mkdir(parents=True, exist_ok=True)
+        if domain == "excel":
+            from openpyxl import Workbook
+
+            path = self.output_root / f"{task.task_id}.xlsx"
+            workbook = Workbook()
+            sheet = workbook.active
+            sheet.title = "Artifact"
+            sheet["A1"] = marker
+            sheet["A2"] = task.instruction
+            workbook.save(path)
+        elif domain == "word":
+            from docx import Document
+
+            path = self.output_root / f"{task.task_id}.docx"
+            document = Document()
+            document.add_heading(task.instruction, level=1)
+            document.add_paragraph(marker)
+            document.save(path)
+        else:
+            from pptx import Presentation
+
+            path = self.output_root / f"{task.task_id}.pptx"
+            presentation = Presentation()
+            slide = presentation.slides.add_slide(presentation.slide_layouts[1])
+            slide.shapes.title.text = task.instruction
+            slide.placeholders[1].text = marker
+            presentation.save(path)
+        yield {"kind": "artifact", "artifact_path": str(path), "media_type": self.MEDIA_TYPES[domain]}

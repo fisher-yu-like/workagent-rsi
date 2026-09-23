@@ -66,6 +66,16 @@
 | `project_artifacts/phase3_experiments/results/b0_qualification/` | 3 | JSON/CSV/SQLite set | Per-task traces, artifacts and B0 summary | 25 succeeded, 0 failed; scope limitation recorded | Yes, local mock data |
 | `project_artifacts/phase3_experiments/results/b0_qualification/attempt_001_failure.json` | 3 | JSON | First B0 contract-mapping failure | Failure preserved with resolution | Yes, local run evidence |
 | `project_artifacts/phase3_experiments/results/b0_qualification/qualification_scope.md` | 3 | Markdown | B0 claim boundary | Explicitly excludes Office benchmark interpretation | Yes, local mock data |
+| `src/workagent_rsi/executor.py` | 3 | Python | LocalOfficeAdapter | TDD tests and 25-task Office qualification pass | Yes, local qualification |
+| `src/workagent_rsi/evaluator.py` | 3 | Python | OfficeArtifactEvaluator | Reopens DOCX/XLSX/PPTX, validates media type and marker | Yes, local qualification |
+| `src/workagent_rsi/orchestrator.py` | 3 | Python | Binary artifact ingestion | Content-addressed storage accepts generated Office files | Yes, local qualification |
+| `src/workagent_rsi/storage.py` | 3 | Python | File-to-artifact helper | TDD tests pass | No |
+| `tests/test_office_adapter.py` | 3 | Python | Local Office adapter tests | 2 tests pass | No |
+| `tests/test_office_evaluator.py` | 3 | Python | Format evaluator and orchestrator tests | 2 tests pass | No |
+| `project_artifacts/phase3_experiments/scripts/run_b0_office_qualification.py` | 3 | Python | 25-task local Office qualification runner | 25 succeeded, 0 failed | Yes, local qualification |
+| `project_artifacts/phase3_experiments/scripts/verify_office_com.ps1` | 3 | PowerShell | COM environment parity check | 25 DOCX/XLSX/PPTX opened by Office 16.0 | Yes, local qualification |
+| `project_artifacts/phase3_experiments/results/b0_office_qualification/` | 3 | JSON/SQLite/OOXML set | Real local Office artifacts, traces and summary | 25 succeeded, 0 failed; Office COM 25/25 | Yes, local qualification |
+| `project_artifacts/phase3_experiments/results/b0_office_qualification/com_attempt_001_failure.json` | 3 | JSON | First COM parity failure | Failure and resolution preserved | Yes, local run evidence |
 
 Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or real Office task adapter.
 
