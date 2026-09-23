@@ -58,6 +58,7 @@
 | `project_artifacts/phase3_experiments/data/raw/tasks_all.jsonl` | 3 | JSONL | Immutable generated task source layer | 30 records; hash recorded in provenance | No |
 | `project_artifacts/phase3_experiments/data/processed/public_tasks.jsonl` | 3 | JSONL | Candidate-facing public task layer | 25 records; excludes hidden tasks | No |
 | `project_artifacts/phase3_experiments/data/protected/hidden_tasks.jsonl` | 3 | JSONL | Local protected qualification layer | 5 records; isolated from public export | No |
+| `project_artifacts/phase3_experiments/data/protected/hidden.jsonl` | 3 | JSONL | Protected hidden split manifest | 5 records; hash recorded in provenance | No |
 | `project_artifacts/phase3_experiments/data/splits/` | 3 | JSONL set | Split-specific task manifests | Evolve/develop/regression/OOD counts checked | No |
 | `project_artifacts/phase3_experiments/data/provenance.json` | 3 | JSON | Dataset hashes, environment and generation record | Hashes and counts cross-checked by quality gate | No |
 | `project_artifacts/phase3_experiments/data/quality_report.json` | 3 | JSON | Dataset quality and leakage report | Status `pass`; 14 checks passed | No |

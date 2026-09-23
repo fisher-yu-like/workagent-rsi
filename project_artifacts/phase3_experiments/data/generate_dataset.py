@@ -120,6 +120,7 @@ def main() -> int:
         RAW_DIR / "tasks_all.jsonl",
         PROCESSED_DIR / "public_tasks.jsonl",
         PROTECTED_DIR / "hidden_tasks.jsonl",
+        PROTECTED_DIR / "hidden.jsonl",
         *sorted(SPLIT_DIR.glob("*.jsonl")),
     ]
     provenance = {
