@@ -1,0 +1,164 @@
+﻿{
+    "office_versions":  {
+                            "word":  "16.0",
+                            "excel":  "16.0",
+                            "powerpoint":  "16.0"
+                        },
+    "file_count":  25,
+    "opened_count":  25,
+    "failures":  [
+
+                 ],
+    "rows":  [
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-001\\generated\\p3-task-001.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-002\\generated\\p3-task-002.docx",
+                     "extension":  ".docx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-003\\generated\\p3-task-003.pptx",
+                     "extension":  ".pptx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-004\\generated\\p3-task-004.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-005\\generated\\p3-task-005.docx",
+                     "extension":  ".docx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-006\\generated\\p3-task-006.pptx",
+                     "extension":  ".pptx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-007\\generated\\p3-task-007.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-008\\generated\\p3-task-008.docx",
+                     "extension":  ".docx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-009\\generated\\p3-task-009.pptx",
+                     "extension":  ".pptx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-010\\generated\\p3-task-010.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-011\\generated\\p3-task-011.docx",
+                     "extension":  ".docx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-012\\generated\\p3-task-012.pptx",
+                     "extension":  ".pptx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-013\\generated\\p3-task-013.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-014\\generated\\p3-task-014.docx",
+                     "extension":  ".docx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-015\\generated\\p3-task-015.pptx",
+                     "extension":  ".pptx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-016\\generated\\p3-task-016.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-017\\generated\\p3-task-017.docx",
+                     "extension":  ".docx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-018\\generated\\p3-task-018.pptx",
+                     "extension":  ".pptx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-019\\generated\\p3-task-019.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-020\\generated\\p3-task-020.docx",
+                     "extension":  ".docx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-021\\generated\\p3-task-021.pptx",
+                     "extension":  ".pptx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-022\\generated\\p3-task-022.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-028\\generated\\p3-task-028.xlsx",
+                     "extension":  ".xlsx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-029\\generated\\p3-task-029.docx",
+                     "extension":  ".docx",
+                     "opened":  true,
+                     "error":  null
+                 },
+                 {
+                     "file":  "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-030\\generated\\p3-task-030.pptx",
+                     "extension":  ".pptx",
+                     "opened":  true,
+                     "error":  null
+                 }
+             ]
+}

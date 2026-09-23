@@ -1,0 +1,9 @@
+{
+  "attempt": 1,
+  "command": "verify_office_com.ps1",
+  "exit_code": 124,
+  "failure_class": "COM_invocation_and_lifecycle",
+  "observed": "Word/PPTX opened successfully; Excel Workbooks.Open positional signature failed and per-file COM startup exceeded the timeout.",
+  "resolution": "Reuse one COM application per extension and use the minimal Excel Workbooks.Open(path, null, true) signature.",
+  "recorded_at": "2026-09-23"
+}

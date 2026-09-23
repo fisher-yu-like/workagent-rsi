@@ -1,0 +1,220 @@
+{
+  "adapter": "LocalOfficeAdapter",
+  "dataset_version": "synthetic-office-taskset-v0.1.0",
+  "ended_at": "2026-09-23T10:46:07.277139+00:00",
+  "evaluator": "OfficeArtifactEvaluator",
+  "external_workagent": false,
+  "failure_count": 0,
+  "git_commit": "68241c97aab7e003c2329891e71dfe4091439b79",
+  "mean_score": 1.0,
+  "office_artifact_validity": true,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "qualification_only": true,
+  "rows": [
+    {
+      "domain": "excel",
+      "run_id": "run-85d9e3e458b5",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-001"
+    },
+    {
+      "domain": "word",
+      "run_id": "run-d2bc0fbebd5b",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-002"
+    },
+    {
+      "domain": "powerpoint",
+      "run_id": "run-2fa5ad0a546e",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-003"
+    },
+    {
+      "domain": "excel",
+      "run_id": "run-945942236782",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-004"
+    },
+    {
+      "domain": "word",
+      "run_id": "run-742b9e6e02c4",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-005"
+    },
+    {
+      "domain": "powerpoint",
+      "run_id": "run-d20dd21e4134",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-006"
+    },
+    {
+      "domain": "excel",
+      "run_id": "run-31aa3ab266de",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-007"
+    },
+    {
+      "domain": "word",
+      "run_id": "run-196525fe9e5e",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-008"
+    },
+    {
+      "domain": "powerpoint",
+      "run_id": "run-a333524af0bc",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-009"
+    },
+    {
+      "domain": "excel",
+      "run_id": "run-881c961931c7",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-010"
+    },
+    {
+      "domain": "word",
+      "run_id": "run-a27eee55450e",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-011"
+    },
+    {
+      "domain": "powerpoint",
+      "run_id": "run-7892146cdada",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-012"
+    },
+    {
+      "domain": "excel",
+      "run_id": "run-b7a235e50e8d",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-013"
+    },
+    {
+      "domain": "word",
+      "run_id": "run-b0126686c4f9",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-014"
+    },
+    {
+      "domain": "powerpoint",
+      "run_id": "run-ae3756610d93",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-015"
+    },
+    {
+      "domain": "excel",
+      "run_id": "run-9793773454b3",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-016"
+    },
+    {
+      "domain": "word",
+      "run_id": "run-295a32ab8780",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-017"
+    },
+    {
+      "domain": "powerpoint",
+      "run_id": "run-9d6c0070f795",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-018"
+    },
+    {
+      "domain": "excel",
+      "run_id": "run-51ec63462a73",
+      "score": 1.0,
+      "split": "regression",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-019"
+    },
+    {
+      "domain": "word",
+      "run_id": "run-1ba1215fe6fc",
+      "score": 1.0,
+      "split": "regression",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-020"
+    },
+    {
+      "domain": "powerpoint",
+      "run_id": "run-38e3beeefa72",
+      "score": 1.0,
+      "split": "regression",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-021"
+    },
+    {
+      "domain": "excel",
+      "run_id": "run-e777a6557f67",
+      "score": 1.0,
+      "split": "regression",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-022"
+    },
+    {
+      "domain": "excel",
+      "run_id": "run-70a12e85f2a7",
+      "score": 1.0,
+      "split": "ood_transfer",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-028"
+    },
+    {
+      "domain": "word",
+      "run_id": "run-8ca5326632d9",
+      "score": 1.0,
+      "split": "ood_transfer",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-029"
+    },
+    {
+      "domain": "powerpoint",
+      "run_id": "run-5e6d8c7ca238",
+      "score": 1.0,
+      "split": "ood_transfer",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-030"
+    }
+  ],
+  "run_type": "real_local_office_qualification",
+  "started_at": "2026-09-23T10:46:02.508925+00:00",
+  "success_count": 25,
+  "task_count": 25
+}

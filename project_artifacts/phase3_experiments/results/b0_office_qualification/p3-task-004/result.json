@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "9433cc11af96169de35e805c15e6de1a585331dde54701501452c03b2c04ae84",
+      "media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-004\\artifacts\\9433cc11af96169de35e805c15e6de1a585331dde54701501452c03b2c04ae84",
+      "sha256": "9433cc11af96169de35e805c15e6de1a585331dde54701501452c03b2c04ae84",
+      "size_bytes": 4907
+    }
+  ],
+  "domain": "excel",
+  "duration_seconds": 0.10506,
+  "evaluation": {
+    "critical_failures": [],
+    "dimensions": {
+      "format_validity": 1.0,
+      "marker_correctness": 1.0
+    },
+    "evidence": [
+      "artifact:9433cc11af96169de35e805c15e6de1a585331dde54701501452c03b2c04ae84",
+      "trace:run-945942236782"
+    ],
+    "passed": true,
+    "score": 1.0,
+    "warnings": []
+  },
+  "git_commit": "68241c97aab7e003c2329891e71dfe4091439b79",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "run_id": "run-945942236782",
+  "split": "evolve",
+  "state": "SUCCEEDED",
+  "task_id": "p3-task-004"
+}

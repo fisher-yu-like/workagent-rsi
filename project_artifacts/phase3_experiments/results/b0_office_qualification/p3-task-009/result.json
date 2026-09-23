@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "c87b22019de06c9d88eefd58aa9e6ea13c4c012bca7756d2c654765892ab663d",
+      "media_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-009\\artifacts\\c87b22019de06c9d88eefd58aa9e6ea13c4c012bca7756d2c654765892ab663d",
+      "sha256": "c87b22019de06c9d88eefd58aa9e6ea13c4c012bca7756d2c654765892ab663d",
+      "size_bytes": 28304
+    }
+  ],
+  "domain": "powerpoint",
+  "duration_seconds": 0.090111,
+  "evaluation": {
+    "critical_failures": [],
+    "dimensions": {
+      "format_validity": 1.0,
+      "marker_correctness": 1.0
+    },
+    "evidence": [
+      "artifact:c87b22019de06c9d88eefd58aa9e6ea13c4c012bca7756d2c654765892ab663d",
+      "trace:run-a333524af0bc"
+    ],
+    "passed": true,
+    "score": 1.0,
+    "warnings": []
+  },
+  "git_commit": "68241c97aab7e003c2329891e71dfe4091439b79",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "run_id": "run-a333524af0bc",
+  "split": "evolve",
+  "state": "SUCCEEDED",
+  "task_id": "p3-task-009"
+}
