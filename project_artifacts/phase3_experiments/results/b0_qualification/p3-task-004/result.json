@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "artifact_id": "4f3adb2d7c0276db4296af015131953b0440578b2e3b3bac4fac34238e809d77",
+      "media_type": "text/plain",
+      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_qualification\\p3-task-004\\artifacts\\4f3adb2d7c0276db4296af015131953b0440578b2e3b3bac4fac34238e809d77",
+      "sha256": "4f3adb2d7c0276db4296af015131953b0440578b2e3b3bac4fac34238e809d77",
+      "size_bytes": 103
+    }
+  ],
+  "domain": "excel",
+  "duration_seconds": 0.077672,
+  "evaluation": {
+    "critical_failures": [],
+    "dimensions": {
+      "structural_correctness": 1.0
+    },
+    "evidence": [
+      "artifact:4f3adb2d7c0276db4296af015131953b0440578b2e3b3bac4fac34238e809d77",
+      "trace:run-f6735ee43dbe"
+    ],
+    "passed": true,
+    "score": 1.0,
+    "warnings": []
+  },
+  "git_commit": "ff048c0530c527fae39e88a4e6b68908eaae23ff",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "run_id": "run-f6735ee43dbe",
+  "split": "evolve",
+  "state": "SUCCEEDED",
+  "task_id": "p3-task-004",
+  "workdir": "C:\\Users\\sy\\Desktop\\workagent-rsi"
+}

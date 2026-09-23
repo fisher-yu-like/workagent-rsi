@@ -1,0 +1,9 @@
+{
+  "attempt": 1,
+  "command": "py -3.12 project_artifacts\\phase3_experiments\\scripts\\run_b0_qualification.py",
+  "exit_code": 1,
+  "failure_class": "contract_mapping",
+  "error": "TaskSpec rejected dataset provenance fields because the runner passed the full task record into an extra=forbid contract.",
+  "resolution": "Map only TaskSpec contract fields in the runner; retain dataset provenance in the dataset layer.",
+  "recorded_at": "2026-09-23"
+}

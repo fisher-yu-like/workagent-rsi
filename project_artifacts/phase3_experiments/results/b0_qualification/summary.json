@@ -1,0 +1,196 @@
+{
+  "adapter": "MockWorkAgentAdapter",
+  "dataset_public_sha256": "07c8ecfbdd11f04f3c3066fbcec061802f697d3e1df2c7bc9ac095ee04b5aca6",
+  "dataset_version": "synthetic-office-taskset-v0.1.0",
+  "ended_at": "2026-09-23T08:32:29.129199+00:00",
+  "evaluator": "BasicEvaluator",
+  "external_workagent": false,
+  "failure_count": 0,
+  "git_commit": "ff048c0530c527fae39e88a4e6b68908eaae23ff",
+  "mean_score": 1.0,
+  "office_artifact_validity": false,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "qualification_only": true,
+  "rows": [
+    {
+      "run_id": "run-87713f715c48",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-001"
+    },
+    {
+      "run_id": "run-a31cbb6192e2",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-002"
+    },
+    {
+      "run_id": "run-ac7dd4367490",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-003"
+    },
+    {
+      "run_id": "run-f6735ee43dbe",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-004"
+    },
+    {
+      "run_id": "run-01b0b62d0ab2",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-005"
+    },
+    {
+      "run_id": "run-42d40e5eab94",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-006"
+    },
+    {
+      "run_id": "run-ddc078437095",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-007"
+    },
+    {
+      "run_id": "run-983c0a152297",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-008"
+    },
+    {
+      "run_id": "run-a134869c5f70",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-009"
+    },
+    {
+      "run_id": "run-1989a08264b1",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-010"
+    },
+    {
+      "run_id": "run-e44b0e3ea9df",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-011"
+    },
+    {
+      "run_id": "run-e86e068c1463",
+      "score": 1.0,
+      "split": "evolve",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-012"
+    },
+    {
+      "run_id": "run-075b45d0e082",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-013"
+    },
+    {
+      "run_id": "run-f9df5e37fe3a",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-014"
+    },
+    {
+      "run_id": "run-99712cd24ad6",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-015"
+    },
+    {
+      "run_id": "run-bc4f24ababcd",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-016"
+    },
+    {
+      "run_id": "run-bcaf4dba6b29",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-017"
+    },
+    {
+      "run_id": "run-27d5c65cdc48",
+      "score": 1.0,
+      "split": "develop",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-018"
+    },
+    {
+      "run_id": "run-1e45956c0383",
+      "score": 1.0,
+      "split": "regression",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-019"
+    },
+    {
+      "run_id": "run-8a9317bfe91d",
+      "score": 1.0,
+      "split": "regression",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-020"
+    },
+    {
+      "run_id": "run-b3cb49e7f95c",
+      "score": 1.0,
+      "split": "regression",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-021"
+    },
+    {
+      "run_id": "run-8fac6e358508",
+      "score": 1.0,
+      "split": "regression",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-022"
+    },
+    {
+      "run_id": "run-a87be02bc1c2",
+      "score": 1.0,
+      "split": "ood_transfer",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-028"
+    },
+    {
+      "run_id": "run-e96e6a95ea83",
+      "score": 1.0,
+      "split": "ood_transfer",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-029"
+    },
+    {
+      "run_id": "run-12de95445f80",
+      "score": 1.0,
+      "split": "ood_transfer",
+      "state": "SUCCEEDED",
+      "task_id": "p3-task-030"
+    }
+  ],
+  "run_type": "mock_harness_qualification",
+  "started_at": "2026-09-23T08:32:25.333600+00:00",
+  "success_count": 25,
+  "task_count": 25
+}
