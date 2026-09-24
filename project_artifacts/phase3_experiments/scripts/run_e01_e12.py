@@ -31,14 +31,20 @@ def main() -> int:
         default=ROOT / "project_artifacts" / "phase3_experiments" / "results" / "e01_e12",
     )
     parser.add_argument("--timeout-seconds", type=int, default=180)
+    parser.add_argument("--codex-backend", choices=("remote", "ollama"), default="ollama")
+    parser.add_argument("--local-model", default="qwen2.5:7b")
     args = parser.parse_args()
 
     schema = ROOT / "project_artifacts" / "phase3_experiments" / "provider" / "candidate_patch.schema.json"
     if args.provider == "codex":
+        extra_args = ["--ignore-user-config"]
+        if args.codex_backend == "ollama":
+            extra_args.extend(["--oss", "--local-provider", "ollama", "--model", args.local_model])
         provider = CodexCandidateProvider(
             schema_path=schema,
             provider_version=codex_version(),
             timeout_seconds=args.timeout_seconds,
+            extra_args=extra_args,
         )
     else:
         provider = DeterministicCandidateProvider()

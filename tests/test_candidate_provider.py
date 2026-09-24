@@ -54,6 +54,7 @@ def test_codex_provider_constructs_isolated_structured_command(tmp_path: Path):
     provider = CodexCandidateProvider(
         schema_path=tmp_path / "schema.json",
         provider_version="0.144.2",
+        extra_args=["--ignore-user-config", "--oss", "--local-provider", "ollama", "--model", "qwen2.5:7b"],
         runner=runner,
     )
     (tmp_path / "schema.json").write_text("{}", encoding="utf-8")
@@ -63,6 +64,8 @@ def test_codex_provider_constructs_isolated_structured_command(tmp_path: Path):
     assert patch is not None
     assert record.status == "completed"
     assert "--ephemeral" in command
+    assert "--ignore-user-config" in command
+    assert command[command.index("--local-provider") + 1] == "ollama"
     assert command[command.index("--sandbox") + 1] == "workspace-write"
     assert command[command.index("--output-schema") + 1].endswith("schema.json")
     assert command[command.index("--cd") + 1] == str(tmp_path)

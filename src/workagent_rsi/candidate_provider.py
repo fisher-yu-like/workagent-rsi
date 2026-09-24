@@ -46,12 +46,14 @@ class CodexCandidateProvider:
         *,
         executable: str = "codex",
         timeout_seconds: int = 180,
+        extra_args: list[str] | None = None,
         runner: Runner = _default_runner,
     ) -> None:
         self.schema_path = Path(schema_path).resolve()
         self.provider_version = provider_version
         self.executable = executable
         self.timeout_seconds = timeout_seconds
+        self.extra_args = list(extra_args or [])
         self.runner = runner
 
     def generate(
@@ -72,6 +74,7 @@ class CodexCandidateProvider:
         command = [
             self.executable,
             "exec",
+            *self.extra_args,
             "--ephemeral",
             "--sandbox",
             "workspace-write",
