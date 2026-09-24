@@ -17,8 +17,8 @@
 | `project_artifacts/artifact_manifest.md` | 1A | Markdown | Artifact index | This file | No |
 | `Agent.md` | 1A-3 | Markdown | Agent operating contract and current stage gates | Phase 3 qualification boundary reviewed | No |
 | `pyproject.toml` | 1B | TOML | Package and pytest configuration | Editable install completed with Python 3.12 | No |
-| `src/workagent_rsi/` | 1B-3 | Python | Harness contracts, stores, adapters, evaluators, path safety, orchestrator and CLI | 26 pytest tests pass | No |
-| `tests/` | 1B-3 | Python | Unit, integration, path-safety and end-to-end tests | 26 pytest tests pass | No |
+| `src/workagent_rsi/` | 1B-3 | Python | Harness plus closed-loop RSI, provider isolation, governance and Office evaluation | 56 pytest tests pass | No |
+| `tests/` | 1B-3 | Python | Unit, integration, provider isolation, governance, Office and end-to-end tests | 56 pytest tests pass | No |
 | `project_artifacts/phase1_harness/results/run_summary.json` | 1B | JSON | Mock run results | JSON parsed and evidence paths checked | Yes, local mock data |
 | `project_artifacts/phase1_harness/results/run_summary.csv` | 1B | CSV | Tabular mock run results | Generated from same run records | Yes, local mock data |
 | `project_artifacts/phase1_harness/reports/run_report.md` | 1B | Markdown | Mock Pipeline report | Linked to per-run JSON evidence | Yes, local mock data |
@@ -77,7 +77,23 @@
 | `project_artifacts/phase3_experiments/scripts/verify_office_com.ps1` | 3 | PowerShell | COM environment parity check | 25 DOCX/XLSX/PPTX opened by Office 16.0 | Yes, local qualification |
 | `project_artifacts/phase3_experiments/results/b0_office_qualification/` | 3 | JSON/SQLite/OOXML set | Real local Office artifacts, traces and summary | 25 succeeded, 0 failed; Office COM 25/25 | Yes, local qualification |
 | `project_artifacts/phase3_experiments/results/b0_office_qualification/com_attempt_001_failure.json` | 3 | JSON | First COM parity failure | Failure and resolution preserved | Yes, local run evidence |
-| `project_artifacts/phase3_experiments/README.md` | 3 | Markdown | Phase 3 status and formal-experiment claim boundary | Local qualification separated from pending E01-E12 | No |
+| `project_artifacts/phase3_experiments/README.md` | 3 | Markdown | Phase 3 status and claim boundary | Local qualification separated from completed pilot E01-E12 and unperformed main study | No |
+| `src/workagent_rsi/rsi_contracts.py` | 3 | Python | Candidate, verification, registry, promotion, contract and experiment records | Pydantic strict-schema tests pass | No |
+| `src/workagent_rsi/candidate_workspace.py` | 3 | Python | Isolated allowlisted candidate workspace | Hidden/evaluator exclusion and path tests pass | Yes, provider boundary |
+| `src/workagent_rsi/candidate_provider.py` | 3 | Python | Deterministic and Codex CLI candidate providers | Failure modes and real Ollama-backed invocation recorded | Yes, provider evidence |
+| `src/workagent_rsi/diagnosis.py` | 3 | Python | Deterministic failure taxonomy | Stable classification tests pass | No |
+| `src/workagent_rsi/leakage.py` | 3 | Python | Protected-value, path and task-map critic | Adversarial E11 fixture rejected | Yes, pilot evidence |
+| `src/workagent_rsi/verifier.py` | 3 | Python | Fail-closed path/leakage/schema/compile/test verification | Ordering and critical-stop tests pass | Yes, pilot evidence |
+| `src/workagent_rsi/registry.py` | 3 | Python/SQLite | Immutable skill versions, lineage, champion alias and rollback | Immutability and rollback tests pass | Yes, pilot evidence |
+| `src/workagent_rsi/promotion.py` | 3 | Python | Non-compensatory promotion gates | Per-gate rejection tests pass | Yes, pilot evidence |
+| `src/workagent_rsi/skill_runtime.py` | 3 | Python | Version-controlled real Office artifact generation | Baseline/candidate artifact difference tested | Yes, pilot evidence |
+| `src/workagent_rsi/frozen_evaluator.py` | 3 | Python | Frozen split/evaluator identity, hidden redaction and automated response judge | Hash, redaction and disagreement tests pass | Yes, pilot evidence |
+| `src/workagent_rsi/rsi_loop.py` | 3 | Python | Diagnosis-to-promotion closed loop | Fake-provider promotion and rollback pass | Yes, pilot evidence |
+| `src/workagent_rsi/experiment_runner.py` | 3 | Python | Immutable E01-E12 invocation runner and paired policy replay | Status and comparator tests pass | Yes, pilot evidence |
+| `project_artifacts/phase3_experiments/scripts/run_e01_e12.py` | 3 | Python | Codex/Ollama and deterministic experiment CLI | E01-E12 latest invocations completed | Yes, pilot evidence |
+| `project_artifacts/phase3_experiments/results/e01_e12/latest_summary.json` | 3 | JSON | Machine-readable latest completed invocation index | 12/12 experiment IDs present and completed | Yes, pilot evidence |
+| `project_artifacts/phase3_experiments/results/e01_e12/latest_summary.md` | 3 | Markdown | Human-readable experiment index | Links each experiment to immutable invocation | Yes, pilot evidence |
+| `docs/project_overview_zh.md` | 3 | Markdown | Overall Chinese project introduction | Evidence and claim boundaries cross-checked | Yes, summarized evidence |
 
 Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or the local Office task adapter added in Phase 3.
 

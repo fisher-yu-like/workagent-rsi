@@ -2,10 +2,11 @@
 
 Benchmark-driven recursive skill improvement for Office agents.
 
-This repository is currently at the Phase 3 formal-experiment gate. The mock Harness, RSI design, pilot dataset, and local Office provider/evaluator qualification are implemented and validated. A real external WorkAgent integration and E01-E12 experiment results have not been claimed.
+This repository has completed the bounded Phase 3 closed-loop pilot. The Harness, local Office qualification, isolated Codex/Ollama candidate provider, verifier, frozen evaluator, registry, promotion/rollback, and E01-E12 pilot evidence are implemented. This remains a 30-task project-generated pilot, not an external WorkAgent benchmark or powered main study.
 
 ## Start here
 
+- [Chinese project overview](docs/project_overview_zh.md)
 - [Literature review](docs/literature_review.md)
 - [Agent operating contract](Agent.md)
 - [Execution plan](project_artifacts/execution_plan.md)
@@ -19,7 +20,7 @@ docs/                         Literature report and preserved sources
 project_artifacts/            Phase-gated designs, logs, results and reports
 Agent.md                      Agent operating contract and execution gates
 tests/                        Single root for automated tests
-src/workagent_rsi/             Harness and local Office qualification package
+src/workagent_rsi/             Harness, closed-loop RSI and Office evaluation package
 ```
 
 ## Tooling policy
@@ -35,9 +36,10 @@ src/workagent_rsi/             Harness and local Office qualification package
 py -3.12 -m pip install -e .
 py -3.12 -m pytest -q --basetemp="$env:TEMP\workagent-rsi-tests"
 py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml --output run.json
+py -3.12 project_artifacts/phase3_experiments/scripts/run_e01_e12.py --provider codex --codex-backend ollama --local-model qwen2.5:7b
 ```
 
 ## Current gate
 
-Phase 1 and Phase 2 have been accepted. The Phase 3 pilot dataset, mock B0 qualification, and local Office provider/evaluator qualification are complete. Formal E01-E12 experiments remain pending until an external WorkAgent/candidate generator is configured; local qualification evidence must not be reported as an RSI experiment result.
+Phase 1 and Phase 2 are accepted. Phase 3 data quality, Mock B0, Local Office B0, Office COM, Codex/Ollama candidate generation, and all E01-E12 pilot invocations are complete. Results are mechanism-validation evidence for the controlled pilot and must not be reported as an external WorkAgent result or main-study conclusion.
 # workagent-rsi
