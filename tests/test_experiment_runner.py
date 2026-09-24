@@ -49,3 +49,20 @@ def test_experiment_runner_refuses_existing_invocation(tmp_path: Path):
         pass
     else:
         raise AssertionError("existing invocation must not be overwritten")
+
+
+def test_experiment_runner_records_explicit_policy_comparators(tmp_path: Path):
+    runner = ExperimentRunner(data_root(tmp_path), tmp_path / "repo")
+    expected = {
+        "E03": "generator_only_accept_rate",
+        "E04": "develop_only_accept_rate",
+        "E06": "verifier_disabled_accept_rate",
+        "E08": "shared_ood_score",
+        "E09": "proposal_unregularized_admissible",
+        "E10": "selection_unregularized_accept_rate",
+    }
+    for experiment_id, metric in expected.items():
+        runner.run(experiment_id, DeterministicCandidateProvider(), tmp_path / "results", invocation_id=experiment_id.lower())
+        summary = json.loads((tmp_path / "results" / experiment_id / experiment_id.lower() / "summary.json").read_text())
+        assert summary["comparison_mode"] == "paired_candidate_policy_replay"
+        assert metric in summary["metrics"]

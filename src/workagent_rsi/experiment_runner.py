@@ -151,7 +151,15 @@ class ExperimentRunner:
                 elif round_result.get("status") == "failed":
                     status = "failed"
                     failure = str(round_result.get("provider_record", {}).get("error"))
-                summary = {"experiment_id": experiment_id, "arm": self._arm(experiment_id), "round": round_result, "metrics": round_result.get("metrics", {})}
+                comparison_metrics = self._comparison_metrics(experiment_id, round_result)
+                summary = {
+                    "experiment_id": experiment_id,
+                    "arm": self._arm(experiment_id),
+                    "round": round_result,
+                    "metrics": {**round_result.get("metrics", {}), **comparison_metrics},
+                }
+                if comparison_metrics:
+                    summary["comparison_mode"] = "paired_candidate_policy_replay"
         except Exception as exc:
             status = "failed"
             failure = str(exc)
@@ -239,6 +247,51 @@ class ExperimentRunner:
             )
             for row in rows
         ]
+
+    @staticmethod
+    def _comparison_metrics(experiment_id: str, result: dict) -> dict[str, float]:
+        candidate_exists = 1.0 if result.get("candidate") else 0.0
+        verification_passed = 1.0 if result.get("verification", {}).get("passed") else 0.0
+        decision_accept = 1.0 if result.get("decision", {}).get("decision") == "accept" else 0.0
+        metrics = result.get("metrics", {})
+        develop_only = 1.0 if float(metrics.get("candidate_develop", 0.0)) > float(metrics.get("champion_develop", 0.0)) else 0.0
+        if experiment_id == "E03":
+            return {
+                "generator_only_accept_rate": candidate_exists,
+                "verified_accept_rate": verification_passed,
+                "invalid_promotion_rate": max(0.0, candidate_exists - verification_passed),
+            }
+        if experiment_id == "E04":
+            return {
+                "develop_only_accept_rate": develop_only,
+                "modular_accept_rate": decision_accept,
+                "invalid_promotion_rate": max(0.0, develop_only - decision_accept),
+            }
+        if experiment_id == "E06":
+            return {
+                "verifier_enabled_pass_rate": verification_passed,
+                "verifier_disabled_accept_rate": candidate_exists,
+                "verifier_prevented_acceptance_rate": max(0.0, candidate_exists - verification_passed),
+            }
+        if experiment_id == "E08":
+            shared = float(result.get("candidate_reports", {}).get("ood_transfer", {}).get("score", 0.0))
+            domain_specific = float(result.get("baseline", {}).get("ood_transfer", {}).get("score", 0.0))
+            return {"shared_ood_score": shared, "domain_specific_ood_score": domain_specific, "transfer_delta": shared - domain_specific}
+        if experiment_id == "E09":
+            edits = float(len(result.get("candidate", {}).get("atomic_edits", [])))
+            budget = float(result.get("candidate", {}).get("edit_budget", 0))
+            return {
+                "proposal_regularized_admissible": 1.0 if edits <= budget and budget > 0 else 0.0,
+                "proposal_unregularized_admissible": candidate_exists,
+                "proposal_edit_count": edits,
+            }
+        if experiment_id == "E10":
+            return {
+                "selection_regularized_accept_rate": decision_accept,
+                "selection_unregularized_accept_rate": develop_only,
+                "selection_prevented_acceptance_rate": max(0.0, develop_only - decision_accept),
+            }
+        return {}
 
     @staticmethod
     def _arm(experiment_id: str) -> str:
