@@ -16,7 +16,7 @@ Build and execute a bounded, reproducible recursive skill-improvement loop for t
 - Local Codex CLI generation is a real model-backed provider execution, but it is not an external WorkAgent product.
 - LocalOfficeAdapter is a deterministic Office artifact provider, not a general-purpose Office agent.
 - Hidden task content is evaluator-only. Candidate generation receives no hidden IDs, prompts, expected values, or per-task feedback.
-- E07 requires independent human labels. Without them, the system creates an audit bundle and marks the experiment pending_human_audit. A model review cannot be relabeled as human audit.
+- E07 uses two automated, separately configured evaluation channels: the artifact evaluator and a response-only judge. It reports agreement and disagreement without claiming human validation.
 - Provider or infrastructure failure produces unavailable, failed, or blocked, never an imputed score.
 
 ## Non-goals
@@ -140,7 +140,7 @@ Safety, leakage, regression, reproducibility, and missing-evidence gates are non
 
 The runner consumes the E01-E12 matrix and creates one immutable invocation root per run. It stores contract, arm configuration, data hashes, provider records, candidates, verification reports, evaluation reports, promotion decisions, timing and cost data, command logs, and final status.
 
-Allowed statuses are completed, failed, unavailable, pending_human_audit, and blocked. Completed means every required pilot artifact exists. Existing completed invocation roots are never overwritten.
+Allowed statuses are completed, failed, unavailable, and blocked. Completed means every required pilot artifact exists. Existing completed invocation roots are never overwritten.
 
 ## E01-E12 pilot interpretation
 
@@ -150,7 +150,7 @@ Allowed statuses are completed, failed, unavailable, pending_human_audit, and bl
 - E04 compares monolithic feedback and modular frozen-evaluator feedback without allowing evaluator edits.
 - E05 runs the complete promotion loop over permitted pilot splits.
 - E06 ablates the verifier and preserves every other contract field.
-- E07 creates artifact-evaluator, response-judge, and human-audit records. Without independent human labels the status is pending_human_audit.
+- E07 compares artifact-evaluator and independently configured response-judge records and reports automated agreement and disagreement.
 - E08 compares a shared data-processing candidate with domain-specific candidates on OOD and cross-domain tasks.
 - E09 removes proposal regularization only.
 - E10 removes selection regularization only.
@@ -193,7 +193,7 @@ Unit tests use a controlled fake provider process. Real Codex integration is a s
 - immutable registry and rollback evidence;
 - E01-E12 experiment contracts and runner;
 - honest pilot status roots for every attempted experiment;
-- an E07 anonymous audit bundle;
+- an E07 automated cross-evaluation bundle;
 - updated Agent.md, README, execution plan, and artifact manifest;
 - docs/project_overview_zh.md covering research basis, architecture, components, data, pipeline, experiments, evidence, limitations, and reproduction.
 
@@ -206,7 +206,7 @@ Unit tests use a controlled fake provider process. Real Codex integration is a s
 5. Access tests prove hidden, evaluator, and governance files are absent from candidate workspaces.
 6. B0 mock and local Office qualification remain non-regressed.
 7. Every E01-E12 experiment has a real immutable status record and no fabricated score.
-8. E07 remains pending_human_audit until independent human labels are supplied.
+8. E07 produces artifact-evaluator and response-judge outputs with automated agreement and disagreement metrics, without any human-label claim.
 9. Registry versions and historical evidence remain immutable and rollback only moves the champion alias.
 10. The Chinese overview distinguishes implemented results, pilot evidence, pending human evidence, and unperformed main-study work.
 

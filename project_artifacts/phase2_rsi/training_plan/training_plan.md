@@ -10,7 +10,7 @@ Test whether modular, independently verified skill improvement increases Office 
 |---|---|---|---|
 | H1 Modular gen/verify/evaluator is more controllable than monolithic reflection | E01-E05 | task success, diagnosis accuracy, invalid promotion rate | Fixed, Self-Refine, gen-only, gen+verify, full RSI |
 | H2 Independent verification reduces regressions | E03-E06 | critical regression rate | with vs without verifier |
-| H3 Artifact-level evaluation better captures success | E07 | disagreement with response-only judge and human audit | response judge vs file evaluator |
+| H3 Artifact-level evaluation better captures success | E07 | disagreement and agreement with an independently configured response-only judge | response judge vs file evaluator |
 | H4 Some Excel skills transfer to Word/PPT | E08 | cross-domain transfer delta | domain-specific vs shared component |
 | H5 Protected splits and regularization reduce overfitting | E09-E11 | hidden/OOD delta, evolve-hidden gap | unregularized vs RRSI |
 
