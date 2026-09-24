@@ -1,0 +1,54 @@
+diff --git a/AGENTS.md b/AGENTS.md
+new file mode 100644
+index 0000000..e2b909e
+--- /dev/null
++++ b/AGENTS.md
+@@ -0,0 +1,6 @@
++# Candidate Workspace Policy
++
++- Edit only files already present in this workspace.
++- Do not access parent directories, hidden tasks, evaluators, governance policy, credentials, or historical evidence.
++- Return a structured candidate patch; do not deploy or modify the source repository.
++- Do not add network, subprocess, or unrestricted filesystem access.
+diff --git a/diagnoses.json b/diagnoses.json
+new file mode 100644
+index 0000000..eb2bb89
+--- /dev/null
++++ b/diagnoses.json
+@@ -0,0 +1,28 @@
++[
++  {
++    "causal_hypothesis": "generated artifact omitted required task content",
++    "confidence": 0.9,
++    "diagnosis_id": "fefbc9932af14ad3eac2",
++    "evidence_refs": [
++      "ffdcb2a7f50b108e4c2c202693c2f56f8ca01c0d5c8e4a4cd79965484432cc18"
++    ],
++    "failure_class": "semantic",
++    "recommended_component": "prompt",
++    "run_ids": [
++      "baseline-p3-task-013"
++    ]
++  },
++  {
++    "causal_hypothesis": "generated artifact omitted required task content",
++    "confidence": 0.9,
++    "diagnosis_id": "ab44c6f2e027e9ee3f27",
++    "evidence_refs": [
++      "0413f8976baaf018c6b6a8bd9ea4434a3a128d8607114fa2eae0b688299aaf76"
++    ],
++    "failure_class": "semantic",
++    "recommended_component": "prompt",
++    "run_ids": [
++      "baseline-p3-task-016"
++    ]
++  }
++]
+\ No newline at end of file
+diff --git a/skill.json b/skill.json
+new file mode 100644
+index 0000000..3b0a5cf
+--- /dev/null
++++ b/skill.json
+@@ -0,0 +1 @@
++{"marker_source": "task_id"}

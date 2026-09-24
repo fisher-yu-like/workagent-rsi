@@ -1,0 +1,106 @@
+diff --git a/AGENTS.md b/AGENTS.md
+new file mode 100644
+index 0000000..e2b909e
+--- /dev/null
++++ b/AGENTS.md
+@@ -0,0 +1,6 @@
++# Candidate Workspace Policy
++
++- Edit only files already present in this workspace.
++- Do not access parent directories, hidden tasks, evaluators, governance policy, credentials, or historical evidence.
++- Return a structured candidate patch; do not deploy or modify the source repository.
++- Do not add network, subprocess, or unrestricted filesystem access.
+diff --git a/diagnoses.json b/diagnoses.json
+new file mode 100644
+index 0000000..c994d48
+--- /dev/null
++++ b/diagnoses.json
+@@ -0,0 +1,80 @@
++[
++  {
++    "causal_hypothesis": "generated artifact omitted required task content",
++    "confidence": 0.9,
++    "diagnosis_id": "3d6a1885a245fbaff676",
++    "evidence_refs": [
++      "61a4d91417b79464220a69a38c099a4157d42435d4812f2985c3437bfc8059f6"
++    ],
++    "failure_class": "semantic",
++    "recommended_component": "prompt",
++    "run_ids": [
++      "baseline-p3-task-013"
++    ]
++  },
++  {
++    "causal_hypothesis": "generated artifact omitted required task content",
++    "confidence": 0.9,
++    "diagnosis_id": "51187f9c47ba3b5dabba",
++    "evidence_refs": [
++      "6ca418bbc4743270aac370edc86b95efabcce744f5e265d5920fa91be9dc1042"
++    ],
++    "failure_class": "semantic",
++    "recommended_component": "prompt",
++    "run_ids": [
++      "baseline-p3-task-014"
++    ]
++  },
++  {
++    "causal_hypothesis": "generated artifact omitted required task content",
++    "confidence": 0.9,
++    "diagnosis_id": "73d929c10f99a3b366d9",
++    "evidence_refs": [
++      "e76a834cef85dd758628d509f26de795dfa5baafc4133f1d8ecfef25122210bc"
++    ],
++    "failure_class": "semantic",
++    "recommended_component": "prompt",
++    "run_ids": [
++      "baseline-p3-task-015"
++    ]
++  },
++  {
++    "causal_hypothesis": "generated artifact omitted required task content",
++    "confidence": 0.9,
++    "diagnosis_id": "e6a8626bdc8573b3eb00",
++    "evidence_refs": [
++      "4d9040d2773631526aba7b8605f168aff9be17087d1919bdf7a2cff4f93c7b96"
++    ],
++    "failure_class": "semantic",
++    "recommended_component": "prompt",
++    "run_ids": [
++      "baseline-p3-task-016"
++    ]
++  },
++  {
++    "causal_hypothesis": "generated artifact omitted required task content",
++    "confidence": 0.9,
++    "diagnosis_id": "a863b5f605d5a5f9e34b",
++    "evidence_refs": [
++      "1a9467809c126e3d9c0b168e581f214ece5958fe4e31058b72e7b7e212ae4573"
++    ],
++    "failure_class": "semantic",
++    "recommended_component": "prompt",
++    "run_ids": [
++      "baseline-p3-task-017"
++    ]
++  },
++  {
++    "causal_hypothesis": "generated artifact omitted required task content",
++    "confidence": 0.9,
++    "diagnosis_id": "fc88abc129d889846da9",
++    "evidence_refs": [
++      "bbce09589b0b516d65996c4cc39f4b7ddb94505545f0c7ab7a95a0ebec4b5f3e"
++    ],
++    "failure_class": "semantic",
++    "recommended_component": "prompt",
++    "run_ids": [
++      "baseline-p3-task-018"
++    ]
++  }
++]
+\ No newline at end of file
+diff --git a/skill.json b/skill.json
+new file mode 100644
+index 0000000..3b0a5cf
+--- /dev/null
++++ b/skill.json
+@@ -0,0 +1 @@
++{"marker_source": "task_id"}

@@ -1,0 +1,130 @@
+{
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "rows": [
+    {
+      "artifact_id": "409b68adf97f1e8fd966fac0b62e5485567836511ca211b3540cadadb54e0967",
+      "critical_failures": [
+        "required marker missing: P3-TASK-001"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-001"
+    },
+    {
+      "artifact_id": "2c0051bbac24744817c6e350a356ebe5bfcc23e879069fd50145cef83fe656ea",
+      "critical_failures": [
+        "required marker missing: P3-TASK-002"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-002"
+    },
+    {
+      "artifact_id": "b47be9b27ee78ece3b788331bc4c682d96063bb042e804e465910a2051cabb90",
+      "critical_failures": [
+        "required marker missing: P3-TASK-003"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-003"
+    },
+    {
+      "artifact_id": "f7fae586d2309d4b9b4eabec9644b9889133adbe3ef1a30d716d18c6ed55db7f",
+      "critical_failures": [
+        "required marker missing: P3-TASK-004"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-004"
+    },
+    {
+      "artifact_id": "e270d065b1a20f195897bb771b80d7cc1c3ee7160c2397b8f26d557068f68a88",
+      "critical_failures": [
+        "required marker missing: P3-TASK-005"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-005"
+    },
+    {
+      "artifact_id": "f1451b61e1e5425b7fd8a54b5f1d5777dd216bc9c502f3fa9d3f6b01e7d88435",
+      "critical_failures": [
+        "required marker missing: P3-TASK-006"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-006"
+    },
+    {
+      "artifact_id": "bd8fc0f58e012ee122ab15d1f948ad2d0f7c5fd3f508e18392b6fd0a31cfd851",
+      "critical_failures": [
+        "required marker missing: P3-TASK-007"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-007"
+    },
+    {
+      "artifact_id": "0eb49909f13d056d80cfd1332adcf59da19c6b6512ff2ee8bd95a1de56d494de",
+      "critical_failures": [
+        "required marker missing: P3-TASK-008"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-008"
+    },
+    {
+      "artifact_id": "5f9d263119540cd0bf079427aee789f90d9878740a071303c09ad762cd311262",
+      "critical_failures": [
+        "required marker missing: P3-TASK-009"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-009"
+    },
+    {
+      "artifact_id": "929dec404d7e1264f3d9d2e9d0b37c73b70741734936ff8903e08d483b78f29f",
+      "critical_failures": [
+        "required marker missing: P3-TASK-010"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-010"
+    },
+    {
+      "artifact_id": "81d929dc98395a938674552b970eeb6e9e740414f0d14b9d92557c57ca609419",
+      "critical_failures": [
+        "required marker missing: P3-TASK-011"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-011"
+    },
+    {
+      "artifact_id": "9d5cc80bff27a4a6979d2275df55eb5f97b4d2a6f751e0235567836fd4ac0f22",
+      "critical_failures": [
+        "required marker missing: P3-TASK-012"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-012"
+    }
+  ],
+  "score": 0.0,
+  "split": "evolve",
+  "split_hash": "099529a324e1946d0646d24f6e933a8ccef7636bccbb5bebdd69d4c5414cc1de",
+  "success_count": 0,
+  "task_count": 12
+}

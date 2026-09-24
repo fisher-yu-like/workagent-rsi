@@ -1,0 +1,50 @@
+{
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "rows": [
+    {
+      "artifact_id": "05943747e2b87cc5ff498509e325cc8e05101c1c859b9b9a342c11fe0f6e8b95",
+      "critical_failures": [
+        "required marker missing: P3-TASK-023"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-023"
+    },
+    {
+      "artifact_id": "bcec22b9aff82eec007be48d5b64df55be4503e84d04554740b4d467406f093d",
+      "critical_failures": [
+        "required marker missing: P3-TASK-024"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-024"
+    },
+    {
+      "artifact_id": "c9d372a41d8bcf803d1441b3c40d980f80bb7e6c747bdc7013ec3789c9c1400e",
+      "critical_failures": [
+        "required marker missing: P3-TASK-026"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-026"
+    },
+    {
+      "artifact_id": "143120b2d83620a4046d3d9c4da5316dbe1601a089e3d266e0feaebf889ef8c5",
+      "critical_failures": [
+        "required marker missing: P3-TASK-027"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-027"
+    }
+  ],
+  "score": 0.0,
+  "split": "hidden",
+  "split_hash": "43f9aec3d841d2c8adbcb3362425a2ea0e515f90905e7c2ff56c232ed942ae83",
+  "success_count": 0,
+  "task_count": 4
+}

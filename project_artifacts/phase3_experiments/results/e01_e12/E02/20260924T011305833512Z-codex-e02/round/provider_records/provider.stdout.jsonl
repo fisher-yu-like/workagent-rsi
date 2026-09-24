@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a0d0f9-31af-7841-b593-8ab002e5dffd"}
+{"type":"turn.started"}
+{"type":"error","message":"Missing environment variable: `OPENAI_API_KEY`."}
+{"type":"turn.failed","error":{"message":"Missing environment variable: `OPENAI_API_KEY`."}}

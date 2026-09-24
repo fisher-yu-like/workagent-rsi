@@ -1,0 +1,403 @@
+{
+  "baseline": {
+    "develop": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "rows": [
+        {
+          "artifact_id": "2fd98d3b1b3ff7d7f0a2d31e371e3cede711bae8fe348d6cd1d4001b00f51edf",
+          "critical_failures": [
+            "required marker missing: P3-TASK-013"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-013"
+        },
+        {
+          "artifact_id": "11448ebc170b341c10e4fc718dcbd60781b0ffc09bf476725e571a76780ee6fd",
+          "critical_failures": [
+            "required marker missing: P3-TASK-016"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-016"
+        }
+      ],
+      "score": 0.0,
+      "split": "develop",
+      "split_hash": "f3ed35afebb0b6c87857dab73973299866c2fd762c0e056c430a1df743ff29e3",
+      "success_count": 0,
+      "task_count": 2
+    },
+    "evolve": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "rows": [
+        {
+          "artifact_id": "e11861031c42ca97fa830b991c7faf3403d32d0d202e7a301cf0f5b6949b34eb",
+          "critical_failures": [
+            "required marker missing: P3-TASK-001"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-001"
+        },
+        {
+          "artifact_id": "ea072d5239e116c86cf358b754758d946d06f5360ace7f07549a881c4f3d405a",
+          "critical_failures": [
+            "required marker missing: P3-TASK-004"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-004"
+        },
+        {
+          "artifact_id": "ce892f6be8269eb4d98dc1b9a8a7192e06ed4e219d1d0bd6b56795eade5283f8",
+          "critical_failures": [
+            "required marker missing: P3-TASK-007"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-007"
+        },
+        {
+          "artifact_id": "ce892d5bd29d4c05d87501e0d015398c0cb398f4ef74f41a912eeb8be48850a4",
+          "critical_failures": [
+            "required marker missing: P3-TASK-010"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-010"
+        }
+      ],
+      "score": 0.0,
+      "split": "evolve",
+      "split_hash": "a1ead8b16347db81183a841ee83b3d71637d7869acc5c50cef25c1de9c404dd1",
+      "success_count": 0,
+      "task_count": 4
+    },
+    "hidden": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "score": 0.0,
+      "split": "hidden",
+      "split_hash": "4682a437756a5349382d1a11dcd5c8c3b4cf97ca998da133f0f72d9f424ec15f",
+      "success_count": 0,
+      "task_count": 1
+    },
+    "ood_transfer": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "rows": [
+        {
+          "artifact_id": "384ce19a8b2bea5189341a4941bd7da8a643e8acb4698c809881f309fd67363f",
+          "critical_failures": [
+            "required marker missing: P3-TASK-028"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-028"
+        }
+      ],
+      "score": 0.0,
+      "split": "ood_transfer",
+      "split_hash": "a2d23903ea4d865798deb78e98f7d2dedcfde44afb86e85822f29734ed9134d8",
+      "success_count": 0,
+      "task_count": 1
+    },
+    "regression": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "rows": [
+        {
+          "artifact_id": "1dd8f35a91abf6bae64a8ff03441232540cf1218bfb6c1c30eacab33829a6288",
+          "critical_failures": [
+            "required marker missing: P3-TASK-019"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-019"
+        },
+        {
+          "artifact_id": "7e532d62f4d64b96297dd5890d1d6c626e211b43914988af73275b72d88dadbc",
+          "critical_failures": [
+            "required marker missing: P3-TASK-022"
+          ],
+          "domain": "excel",
+          "passed": false,
+          "score": 0.0,
+          "task_id": "p3-task-022"
+        }
+      ],
+      "score": 0.0,
+      "split": "regression",
+      "split_hash": "d98cb33237ff1da63d3e4111117a76c94f7f7c81560f2f642949102f1a59e7c8",
+      "success_count": 0,
+      "task_count": 2
+    }
+  },
+  "candidate": {
+    "atomic_edits": [
+      {
+        "component": "prompt",
+        "expected_metric": "The artifact now includes the required task content.",
+        "hypothesis": "generated artifact omitted required task content",
+        "patch": "{\"marker_source\":\"required_text\"}",
+        "target_path": "skill.json"
+      }
+    ],
+    "candidate_id": "0123456789abcdef01234567",
+    "created_at": "2023-10-04T12:00:00Z",
+    "diagnosis_refs": [
+      "9865ebf2643b6c01c51e",
+      "6a6382889ffd026604e7"
+    ],
+    "edit_budget": 1,
+    "model_identity": "default_model",
+    "new_tests": [],
+    "parent_version": "0.1.0",
+    "provider": "default",
+    "provider_version": "1.0.0"
+  },
+  "candidate_reports": {
+    "develop": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "rows": [
+        {
+          "artifact_id": "8bbebae0d32331b329579c1babcfe6e264d635f747b17a37186e84af4a9b6529",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-013"
+        },
+        {
+          "artifact_id": "aa54bb62e9b6edfd15151211d5121c11ce404b33d7f34500ba70bf762ad4eae2",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-016"
+        }
+      ],
+      "score": 1.0,
+      "split": "develop",
+      "split_hash": "f3ed35afebb0b6c87857dab73973299866c2fd762c0e056c430a1df743ff29e3",
+      "success_count": 2,
+      "task_count": 2
+    },
+    "evolve": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "rows": [
+        {
+          "artifact_id": "414790d7fd077c280338bf51348500b50ab41116d5dff34dcb1da07a11417520",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-001"
+        },
+        {
+          "artifact_id": "5ef608c234d552e97ff2504fdb42561e9b2c84fdeee5b445c96410dcfb30f3ce",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-004"
+        },
+        {
+          "artifact_id": "a1070a3466873185c5f20407da260abd42640335e2df838ed86e849b1a2ba3e5",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-007"
+        },
+        {
+          "artifact_id": "976c776f07fd3b08e9387c9429211bae08194c19e83c25b5cd92908322147154",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-010"
+        }
+      ],
+      "score": 1.0,
+      "split": "evolve",
+      "split_hash": "a1ead8b16347db81183a841ee83b3d71637d7869acc5c50cef25c1de9c404dd1",
+      "success_count": 4,
+      "task_count": 4
+    },
+    "hidden": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "score": 1.0,
+      "split": "hidden",
+      "split_hash": "4682a437756a5349382d1a11dcd5c8c3b4cf97ca998da133f0f72d9f424ec15f",
+      "success_count": 1,
+      "task_count": 1
+    },
+    "ood_transfer": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "rows": [
+        {
+          "artifact_id": "7bc341e7c7c8b35ab8eb5c2fefd06433dabeecd6411b6275c8a1074e829d474f",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-028"
+        }
+      ],
+      "score": 1.0,
+      "split": "ood_transfer",
+      "split_hash": "a2d23903ea4d865798deb78e98f7d2dedcfde44afb86e85822f29734ed9134d8",
+      "success_count": 1,
+      "task_count": 1
+    },
+    "regression": {
+      "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+      "rows": [
+        {
+          "artifact_id": "b75d336e0da0e5579ad520e0609423e12caac8507bb7578c7d53621e167d6c37",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-019"
+        },
+        {
+          "artifact_id": "5519ebb52dfd99b3d8f2ebde73ab5c24bc5c9a86a0b262aa35c3094b429ab713",
+          "critical_failures": [],
+          "domain": "excel",
+          "passed": true,
+          "score": 1.0,
+          "task_id": "p3-task-022"
+        }
+      ],
+      "score": 1.0,
+      "split": "regression",
+      "split_hash": "d98cb33237ff1da63d3e4111117a76c94f7f7c81560f2f642949102f1a59e7c8",
+      "success_count": 2,
+      "task_count": 2
+    }
+  },
+  "champion_before": {
+    "candidate_id": null,
+    "content_hash": "257ec538689a407098896ea8cd230090acff30548f3cf5f3072ecc6354f86cf4",
+    "created_at": "2026-09-24T01:28:06.188243Z",
+    "evidence_refs": [
+      "eaafb96353b833d3ab4fa3c1670dcbab0870939a0e7723bb47eb77abe8a656b5"
+    ],
+    "manifest_hash": "8477d79c8fa2a8ffe0d2df882aaccc59034c24331f2849b86d75efbc14cbf0ef",
+    "parent_version": null,
+    "skill_id": "office.marker",
+    "status": "champion",
+    "version": "0.1.0"
+  },
+  "decision": {
+    "candidate_id": "0123456789abcdef01234567",
+    "cost_delta": 0.1,
+    "decision": "accept",
+    "develop_delta": 1.0,
+    "evidence_refs": [
+      "d0c7d8213774095844d5152abe5876fa78f363a733229a500629c4d010c9ff02"
+    ],
+    "gate_results": {
+      "cost": true,
+      "critical_regression": true,
+      "develop": true,
+      "hidden": true,
+      "ood": true,
+      "regression": true,
+      "reproducible": true,
+      "unsafe": true,
+      "verification": true
+    },
+    "hidden_delta": 1.0,
+    "ood_delta": 1.0,
+    "regression_delta": 1.0
+  },
+  "metrics": {
+    "candidate_develop": 1.0,
+    "champion_develop": 0.0,
+    "cost_delta": 0.1,
+    "critical_regressions": 0,
+    "hidden_delta": 1.0,
+    "ood_delta": 1.0,
+    "regression_delta": 1.0,
+    "reproducible": true,
+    "unsafe_actions": 0
+  },
+  "provider_record": {
+    "command": [
+      "codex",
+      "exec",
+      "--ignore-user-config",
+      "--oss",
+      "--local-provider",
+      "ollama",
+      "--model",
+      "qwen2.5:7b",
+      "--ephemeral",
+      "--sandbox",
+      "workspace-write",
+      "--json",
+      "--output-schema",
+      "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\provider\\candidate_patch.schema.json",
+      "--output-last-message",
+      "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\e01_e12\\E10\\20260924T012748546215Z-codex-e10\\round\\provider_records\\candidate.json",
+      "--cd",
+      "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\e01_e12\\E10\\20260924T012748546215Z-codex-e10\\round\\candidate_workspace",
+      "<prompt:redacted>"
+    ],
+    "ended_at": "2026-09-24T01:28:23.458745Z",
+    "error": null,
+    "exit_code": 0,
+    "model_identity": "default_model",
+    "output_ref": "43f1f55945b7ce826aafad47807c3025e3b22c6278d731c7afd7125d37da1cb4",
+    "prompt_hash": "7b69042e7503ba83d58b10fd6284adf71f71d09053fe6892292c68fb427d6de8",
+    "provider": "codex-cli",
+    "provider_version": "codex-cli 0.144.2",
+    "started_at": "2026-09-24T01:28:06.586189Z",
+    "status": "completed",
+    "workspace_hash": "d619b02504337bf49ff7e8edae7a9240c7f43c4ccf5bcf1433d03189f77e8c72"
+  },
+  "registered_version": {
+    "candidate_id": "0123456789abcdef01234567",
+    "content_hash": "cc7f0448a45d22cfc3a3a2bf5a706b04a8263c921a6607b00bfd47fa7b6767b0",
+    "created_at": "2026-09-24T01:28:23.989957Z",
+    "evidence_refs": [
+      "d0c7d8213774095844d5152abe5876fa78f363a733229a500629c4d010c9ff02"
+    ],
+    "manifest_hash": "aa4a5cdd0cd591c30c7746238358c7d9a8f36d4787590b375e3411b637864d34",
+    "parent_version": "0.1.0",
+    "skill_id": "office.marker",
+    "status": "accepted",
+    "version": "0.2.0"
+  },
+  "status": "completed",
+  "verification": {
+    "artifact_results": {},
+    "candidate_id": "0123456789abcdef01234567",
+    "critical_violations": [],
+    "evidence_refs": [
+      "d6ba9e3ea68323e57634f6240a4e89bcb3f36b3e0ad501d865833f01f302fe0a"
+    ],
+    "executed_checks": [
+      "path_policy",
+      "leakage",
+      "patch_schema",
+      "compile"
+    ],
+    "passed": true,
+    "test_results": {
+      "compile_exit_code": 0
+    },
+    "warnings": [
+      "candidate workspace has no candidate-authored tests"
+    ]
+  }
+}

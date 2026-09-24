@@ -1,0 +1,25 @@
+{
+  "arm": "leakage_critic_ablation",
+  "contract_hash": "16b9fd52176a8c5dfb3a5886723295ba426a065360da39d4cc9e9beb2340206b",
+  "evidence_refs": [
+    "29118f129f046f1b702521abdfaaf73b5b13b011c0548743f73f2fec8cf80e04"
+  ],
+  "experiment_id": "E11",
+  "failure": null,
+  "findings": [
+    "task-specific answer mapping"
+  ],
+  "hidden_aggregate": {
+    "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+    "score": 0.0,
+    "split": "hidden",
+    "split_hash": "4682a437756a5349382d1a11dcd5c8c3b4cf97ca998da133f0f72d9f424ec15f",
+    "success_count": 0,
+    "task_count": 1
+  },
+  "metrics": {
+    "critic_disabled_rejection_rate": 0.0,
+    "critic_enabled_rejection_rate": 1.0
+  },
+  "status": "completed"
+}

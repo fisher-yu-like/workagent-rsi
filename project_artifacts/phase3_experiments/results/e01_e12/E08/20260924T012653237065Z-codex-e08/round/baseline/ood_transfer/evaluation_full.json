@@ -1,0 +1,40 @@
+{
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "rows": [
+    {
+      "artifact_id": "986c48be1aec972e42b88d42e1ef60019041d3f7339756c9607705353d4395b3",
+      "critical_failures": [
+        "required marker missing: P3-TASK-028"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-028"
+    },
+    {
+      "artifact_id": "7b72f45fe51b11977f939fca632d2d0e3f303b1507ba25ef7951fe286e9d1092",
+      "critical_failures": [
+        "required marker missing: P3-TASK-029"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-029"
+    },
+    {
+      "artifact_id": "280da7daf50df4063d02069bf9b083a3d6d1e498d737a73ac4fb47e46599d08a",
+      "critical_failures": [
+        "required marker missing: P3-TASK-030"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-030"
+    }
+  ],
+  "score": 0.0,
+  "split": "ood_transfer",
+  "split_hash": "f38e9d140f0077b52d063f1d86b44aafc7f85442b6fdcae43ec467aa06daca69",
+  "success_count": 0,
+  "task_count": 3
+}

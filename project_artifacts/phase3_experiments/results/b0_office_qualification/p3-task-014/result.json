@@ -1,15 +1,15 @@
 {
   "artifacts": [
     {
-      "artifact_id": "5d43bb6c489147d1f774a2bb0594b25772bb2b76732ea893cb975d7d7ed0e9ab",
+      "artifact_id": "186204a6f0b69c04277756d5e0867e313bedb06c7de1ff9fcf3bbf225b542717",
       "media_type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-014\\artifacts\\5d43bb6c489147d1f774a2bb0594b25772bb2b76732ea893cb975d7d7ed0e9ab",
-      "sha256": "5d43bb6c489147d1f774a2bb0594b25772bb2b76732ea893cb975d7d7ed0e9ab",
+      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-014\\artifacts\\186204a6f0b69c04277756d5e0867e313bedb06c7de1ff9fcf3bbf225b542717",
+      "sha256": "186204a6f0b69c04277756d5e0867e313bedb06c7de1ff9fcf3bbf225b542717",
       "size_bytes": 36679
     }
   ],
   "domain": "word",
-  "duration_seconds": 0.084614,
+  "duration_seconds": 0.102832,
   "evaluation": {
     "critical_failures": [],
     "dimensions": {
@@ -17,17 +17,17 @@
       "marker_correctness": 1.0
     },
     "evidence": [
-      "artifact:5d43bb6c489147d1f774a2bb0594b25772bb2b76732ea893cb975d7d7ed0e9ab",
-      "trace:run-b0126686c4f9"
+      "artifact:186204a6f0b69c04277756d5e0867e313bedb06c7de1ff9fcf3bbf225b542717",
+      "trace:run-3d1461ce4047"
     ],
     "passed": true,
     "score": 1.0,
     "warnings": []
   },
-  "git_commit": "68241c97aab7e003c2329891e71dfe4091439b79",
+  "git_commit": "6329c030d8d718dc59cf6442226715d4d79a8242",
   "platform": "Windows-11-10.0.26200-SP0",
   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
-  "run_id": "run-b0126686c4f9",
+  "run_id": "run-3d1461ce4047",
   "split": "develop",
   "state": "SUCCEEDED",
   "task_id": "p3-task-014"

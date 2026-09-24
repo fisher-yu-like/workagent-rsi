@@ -1,0 +1,30 @@
+{
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "rows": [
+    {
+      "artifact_id": "cbc2c2fcde71d0e3a1d22f2316bbc1ee1bdd4ed10bb7a5a526df42dec6ecd822",
+      "critical_failures": [
+        "required marker missing: P3-TASK-019"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-019"
+    },
+    {
+      "artifact_id": "a06e08b6512eae14a3e48405c77738eb65a057e206df9027ab270ee0b2b1094b",
+      "critical_failures": [
+        "required marker missing: P3-TASK-022"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-022"
+    }
+  ],
+  "score": 0.0,
+  "split": "regression",
+  "split_hash": "d98cb33237ff1da63d3e4111117a76c94f7f7c81560f2f642949102f1a59e7c8",
+  "success_count": 0,
+  "task_count": 2
+}

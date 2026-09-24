@@ -1,0 +1,5 @@
+{"type":"thread.started","thread_id":"01a0d103-c417-7643-9f83-d4379ffa7cab"}
+{"type":"item.completed","item":{"id":"item_0","type":"error","message":"Model metadata for `qwen2.5:7b` not found. Defaulting to fallback metadata; this can degrade performance and cause issues."}}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_1","type":"agent_message","text":"{\"candidate_id\": \"01d4c8e91234567890\", \"parent_version\": \"0.1.0\", \"provider\": \"default\", \"provider_version\": \"1.0.0\", \"model_identity\": \"gpt-4\", \"diagnosis_refs\": [\"0d78a3311fd2f78c23ed\", \"013f101711599d5ad3af\"], \"atomic_edits\": [{\"component\": \"prompt\", \"target_path\": \"skill.json\", \"hypothesis\": \"generated artifact omitted required task content\", \"expected_metric\": \"a more comprehensive artifact\", \"patch\": \"{\\\"marker_source\\\":\\\"required_text\\\"}\"}], \"new_tests\": [], \"edit_budget\": 1, \"created_at\": \"2023-10-10T12:00:00Z\"}"}}
+{"type":"turn.completed","usage":{"input_tokens":2050,"cached_input_tokens":4,"output_tokens":224,"reasoning_output_tokens":0}}

@@ -1,0 +1,42 @@
+{
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "rows": [
+    {
+      "artifact_id": "ee1ee7035c9e6491aea71e75ec034f4895f1391e088551f2865dfd63226e5275",
+      "critical_failures": [],
+      "domain": "word",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-023"
+    },
+    {
+      "artifact_id": "9537565b6bd7dd68a1c3eeb60783f5680ea4ec90c38fb1bc3cba209f09848a3e",
+      "critical_failures": [],
+      "domain": "powerpoint",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-024"
+    },
+    {
+      "artifact_id": "ceb385ad2ff497237b5583224cf7ba1adff3e438fa7c968acf550ad132138fed",
+      "critical_failures": [],
+      "domain": "word",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-026"
+    },
+    {
+      "artifact_id": "33ed749ba791628720a47c6d573d4840c48da0a3278e37e7fab71b76f8b43ea2",
+      "critical_failures": [],
+      "domain": "powerpoint",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-027"
+    }
+  ],
+  "score": 1.0,
+  "split": "hidden",
+  "split_hash": "43f9aec3d841d2c8adbcb3362425a2ea0e515f90905e7c2ff56c232ed942ae83",
+  "success_count": 4,
+  "task_count": 4
+}

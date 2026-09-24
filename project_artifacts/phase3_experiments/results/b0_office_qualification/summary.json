@@ -1,11 +1,11 @@
 {
   "adapter": "LocalOfficeAdapter",
   "dataset_version": "synthetic-office-taskset-v0.1.0",
-  "ended_at": "2026-09-23T10:46:07.277139+00:00",
+  "ended_at": "2026-09-24T01:36:23.029685+00:00",
   "evaluator": "OfficeArtifactEvaluator",
   "external_workagent": false,
   "failure_count": 0,
-  "git_commit": "68241c97aab7e003c2329891e71dfe4091439b79",
+  "git_commit": "6329c030d8d718dc59cf6442226715d4d79a8242",
   "mean_score": 1.0,
   "office_artifact_validity": true,
   "platform": "Windows-11-10.0.26200-SP0",
@@ -14,7 +14,7 @@
   "rows": [
     {
       "domain": "excel",
-      "run_id": "run-85d9e3e458b5",
+      "run_id": "run-ebe9fb33fdb7",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -22,7 +22,7 @@
     },
     {
       "domain": "word",
-      "run_id": "run-d2bc0fbebd5b",
+      "run_id": "run-044b73deaf23",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -30,7 +30,7 @@
     },
     {
       "domain": "powerpoint",
-      "run_id": "run-2fa5ad0a546e",
+      "run_id": "run-e6418cd07e22",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -38,7 +38,7 @@
     },
     {
       "domain": "excel",
-      "run_id": "run-945942236782",
+      "run_id": "run-3d8cc1e10ce5",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -46,7 +46,7 @@
     },
     {
       "domain": "word",
-      "run_id": "run-742b9e6e02c4",
+      "run_id": "run-97a73df062fa",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -54,7 +54,7 @@
     },
     {
       "domain": "powerpoint",
-      "run_id": "run-d20dd21e4134",
+      "run_id": "run-cc6bcb6b2c75",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -62,7 +62,7 @@
     },
     {
       "domain": "excel",
-      "run_id": "run-31aa3ab266de",
+      "run_id": "run-ad18b3b288dc",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -70,7 +70,7 @@
     },
     {
       "domain": "word",
-      "run_id": "run-196525fe9e5e",
+      "run_id": "run-6df27ba3d848",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -78,7 +78,7 @@
     },
     {
       "domain": "powerpoint",
-      "run_id": "run-a333524af0bc",
+      "run_id": "run-a8c2e40f574d",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -86,7 +86,7 @@
     },
     {
       "domain": "excel",
-      "run_id": "run-881c961931c7",
+      "run_id": "run-02fbf1372fd6",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -94,7 +94,7 @@
     },
     {
       "domain": "word",
-      "run_id": "run-a27eee55450e",
+      "run_id": "run-6f98a9f2f1d1",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -102,7 +102,7 @@
     },
     {
       "domain": "powerpoint",
-      "run_id": "run-7892146cdada",
+      "run_id": "run-d8724e9baf63",
       "score": 1.0,
       "split": "evolve",
       "state": "SUCCEEDED",
@@ -110,7 +110,7 @@
     },
     {
       "domain": "excel",
-      "run_id": "run-b7a235e50e8d",
+      "run_id": "run-593a63f80bc0",
       "score": 1.0,
       "split": "develop",
       "state": "SUCCEEDED",
@@ -118,7 +118,7 @@
     },
     {
       "domain": "word",
-      "run_id": "run-b0126686c4f9",
+      "run_id": "run-3d1461ce4047",
       "score": 1.0,
       "split": "develop",
       "state": "SUCCEEDED",
@@ -126,7 +126,7 @@
     },
     {
       "domain": "powerpoint",
-      "run_id": "run-ae3756610d93",
+      "run_id": "run-8fc85062af4d",
       "score": 1.0,
       "split": "develop",
       "state": "SUCCEEDED",
@@ -134,7 +134,7 @@
     },
     {
       "domain": "excel",
-      "run_id": "run-9793773454b3",
+      "run_id": "run-29ef477d663c",
       "score": 1.0,
       "split": "develop",
       "state": "SUCCEEDED",
@@ -142,7 +142,7 @@
     },
     {
       "domain": "word",
-      "run_id": "run-295a32ab8780",
+      "run_id": "run-01aa9fa19ca5",
       "score": 1.0,
       "split": "develop",
       "state": "SUCCEEDED",
@@ -150,7 +150,7 @@
     },
     {
       "domain": "powerpoint",
-      "run_id": "run-9d6c0070f795",
+      "run_id": "run-cf8baf98a449",
       "score": 1.0,
       "split": "develop",
       "state": "SUCCEEDED",
@@ -158,7 +158,7 @@
     },
     {
       "domain": "excel",
-      "run_id": "run-51ec63462a73",
+      "run_id": "run-40e9a0350963",
       "score": 1.0,
       "split": "regression",
       "state": "SUCCEEDED",
@@ -166,7 +166,7 @@
     },
     {
       "domain": "word",
-      "run_id": "run-1ba1215fe6fc",
+      "run_id": "run-14c3f43039df",
       "score": 1.0,
       "split": "regression",
       "state": "SUCCEEDED",
@@ -174,7 +174,7 @@
     },
     {
       "domain": "powerpoint",
-      "run_id": "run-38e3beeefa72",
+      "run_id": "run-d3cf4c1aa45f",
       "score": 1.0,
       "split": "regression",
       "state": "SUCCEEDED",
@@ -182,7 +182,7 @@
     },
     {
       "domain": "excel",
-      "run_id": "run-e777a6557f67",
+      "run_id": "run-2ffb33ba67ea",
       "score": 1.0,
       "split": "regression",
       "state": "SUCCEEDED",
@@ -190,7 +190,7 @@
     },
     {
       "domain": "excel",
-      "run_id": "run-70a12e85f2a7",
+      "run_id": "run-bf7170e46fa3",
       "score": 1.0,
       "split": "ood_transfer",
       "state": "SUCCEEDED",
@@ -198,7 +198,7 @@
     },
     {
       "domain": "word",
-      "run_id": "run-8ca5326632d9",
+      "run_id": "run-0143ea2e1255",
       "score": 1.0,
       "split": "ood_transfer",
       "state": "SUCCEEDED",
@@ -206,7 +206,7 @@
     },
     {
       "domain": "powerpoint",
-      "run_id": "run-5e6d8c7ca238",
+      "run_id": "run-f78ad46cba30",
       "score": 1.0,
       "split": "ood_transfer",
       "state": "SUCCEEDED",
@@ -214,7 +214,7 @@
     }
   ],
   "run_type": "real_local_office_qualification",
-  "started_at": "2026-09-23T10:46:02.508925+00:00",
+  "started_at": "2026-09-24T01:36:18.342262+00:00",
   "success_count": 25,
   "task_count": 25
 }

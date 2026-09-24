@@ -1,0 +1,3 @@
+Reading additional input from stdin...
+2026-09-24T01:13:08.460683Z ERROR codex_core::session::session: failed to load skill C:\Users\sy\.codex\skills\nature-statistics\SKILL.md: missing YAML frontmatter delimited by ---
+2026-09-24T01:13:08.831600Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when UnexpectedServerResponse("HTTP 403: {\"error\":{\"code\":\"403\",\"message\":\"Forbidden\",\"id\":\"hkg1::qf8n7-1790212390455-bc2cd72d81d8\"}}\n")

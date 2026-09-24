@@ -1,0 +1,28 @@
+{
+  "command": [
+    "codex",
+    "exec",
+    "--ephemeral",
+    "--sandbox",
+    "workspace-write",
+    "--json",
+    "--output-schema",
+    "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\provider\\candidate_patch.schema.json",
+    "--output-last-message",
+    "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\e01_e12\\E02\\20260924T011305833512Z-codex-e02\\round\\provider_records\\candidate.json",
+    "--cd",
+    "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\e01_e12\\E02\\20260924T011305833512Z-codex-e02\\round\\candidate_workspace",
+    "<prompt:redacted>"
+  ],
+  "ended_at": "2026-09-24T01:13:26.884865Z",
+  "error": "provider exited with code 1",
+  "exit_code": 1,
+  "model_identity": null,
+  "output_ref": null,
+  "prompt_hash": "6fe8661e98ecc8a9a4b51e6b84b05e3092d73db973e81f15600ac9807533eb28",
+  "provider": "codex-cli",
+  "provider_version": "codex-cli 0.144.2",
+  "started_at": "2026-09-24T01:13:06.599105Z",
+  "status": "failed",
+  "workspace_hash": "cdca219cd1255ade3bfd6e324c24f3b468cb21cc5f8508b9cab2f01e9c0d428d"
+}

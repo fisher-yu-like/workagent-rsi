@@ -1,0 +1,26 @@
+{
+  "contract_id": "E04-pilot-v1",
+  "dataset_hash": "eaafb96353b833d3ab4fa3c1670dcbab0870939a0e7723bb47eb77abe8a656b5",
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "git_commit": "65d307658bc4412a2202176465ffa488eb12a6ec",
+  "provider_policy": "codex-backed-local-or-declared-test-provider",
+  "repeats": 1,
+  "seeds": [
+    20260924
+  ],
+  "split_hashes": {
+    "develop": "f3ed35afebb0b6c87857dab73973299866c2fd762c0e056c430a1df743ff29e3",
+    "evolve": "a1ead8b16347db81183a841ee83b3d71637d7869acc5c50cef25c1de9c404dd1",
+    "hidden": "4682a437756a5349382d1a11dcd5c8c3b4cf97ca998da133f0f72d9f424ec15f",
+    "ood_transfer": "a2d23903ea4d865798deb78e98f7d2dedcfde44afb86e85822f29734ed9134d8",
+    "regression": "d98cb33237ff1da63d3e4111117a76c94f7f7c81560f2f642949102f1a59e7c8"
+  },
+  "thresholds": {
+    "develop_gain": 0.05,
+    "hidden_degradation": 0.01,
+    "max_cost_delta": 1.0,
+    "ood_degradation": 0.01,
+    "regression_tolerance": 0.01
+  },
+  "timeout_seconds": 180
+}

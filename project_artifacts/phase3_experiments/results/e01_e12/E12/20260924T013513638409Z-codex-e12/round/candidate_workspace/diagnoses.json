@@ -1,0 +1,54 @@
+[
+  {
+    "causal_hypothesis": "generated artifact omitted required task content",
+    "confidence": 0.9,
+    "diagnosis_id": "fe5db9a3f7d4da259267",
+    "evidence_refs": [
+      "4e2e1e5da09e2598f24073b64f1e1010af1c4bf9ae02be232937947c017ad742"
+    ],
+    "failure_class": "semantic",
+    "recommended_component": "prompt",
+    "run_ids": [
+      "baseline-p3-task-014"
+    ]
+  },
+  {
+    "causal_hypothesis": "generated artifact omitted required task content",
+    "confidence": 0.9,
+    "diagnosis_id": "bca6fec6ff569afa137e",
+    "evidence_refs": [
+      "058890d4d71ce2f7f88b8ba4f0d271bc856fcf5ead672d8a08210fd91d08e42f"
+    ],
+    "failure_class": "semantic",
+    "recommended_component": "prompt",
+    "run_ids": [
+      "baseline-p3-task-015"
+    ]
+  },
+  {
+    "causal_hypothesis": "generated artifact omitted required task content",
+    "confidence": 0.9,
+    "diagnosis_id": "a636097a8e6822847340",
+    "evidence_refs": [
+      "56b5871fbd2bba1f7183043730fb006de4b95d59ebe4b52acadd05f0065d3ee1"
+    ],
+    "failure_class": "semantic",
+    "recommended_component": "prompt",
+    "run_ids": [
+      "baseline-p3-task-017"
+    ]
+  },
+  {
+    "causal_hypothesis": "generated artifact omitted required task content",
+    "confidence": 0.9,
+    "diagnosis_id": "4a1618099653ac1668bf",
+    "evidence_refs": [
+      "c0ba3bae7119e688f60fc75442729d4196b95d491a12c3faa7bf8464cf6e850d"
+    ],
+    "failure_class": "semantic",
+    "recommended_component": "prompt",
+    "run_ids": [
+      "baseline-p3-task-018"
+    ]
+  }
+]

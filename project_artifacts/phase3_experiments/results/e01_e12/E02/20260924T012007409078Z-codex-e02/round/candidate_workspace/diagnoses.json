@@ -1,0 +1,28 @@
+[
+  {
+    "causal_hypothesis": "generated artifact omitted required task content",
+    "confidence": 0.9,
+    "diagnosis_id": "074d41baf0ca2624c43a",
+    "evidence_refs": [
+      "424921e3ae98150a6895c5e86e6d13cf8d1da8d78ad29de8ed91bbd031f60e3d"
+    ],
+    "failure_class": "semantic",
+    "recommended_component": "prompt",
+    "run_ids": [
+      "baseline-p3-task-013"
+    ]
+  },
+  {
+    "causal_hypothesis": "generated artifact omitted required task content",
+    "confidence": 0.9,
+    "diagnosis_id": "e8818b560ea31a653951",
+    "evidence_refs": [
+      "c797ecd5540e49575619a7103a827a64771383fb839ac29ecda7265daf7ca201"
+    ],
+    "failure_class": "semantic",
+    "recommended_component": "prompt",
+    "run_ids": [
+      "baseline-p3-task-016"
+    ]
+  }
+]

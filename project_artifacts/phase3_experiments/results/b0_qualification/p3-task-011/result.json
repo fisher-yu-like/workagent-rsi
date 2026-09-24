@@ -9,7 +9,7 @@
     }
   ],
   "domain": "word",
-  "duration_seconds": 0.05573,
+  "duration_seconds": 0.058869,
   "evaluation": {
     "critical_failures": [],
     "dimensions": {
@@ -17,16 +17,16 @@
     },
     "evidence": [
       "artifact:ac0937734388da51181c92f4e1dddb3b0962a9fd0988764a6dc16e2a9a906689",
-      "trace:run-e44b0e3ea9df"
+      "trace:run-c3cee3d9688f"
     ],
     "passed": true,
     "score": 1.0,
     "warnings": []
   },
-  "git_commit": "ff048c0530c527fae39e88a4e6b68908eaae23ff",
+  "git_commit": "6329c030d8d718dc59cf6442226715d4d79a8242",
   "platform": "Windows-11-10.0.26200-SP0",
   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
-  "run_id": "run-e44b0e3ea9df",
+  "run_id": "run-c3cee3d9688f",
   "split": "evolve",
   "state": "SUCCEEDED",
   "task_id": "p3-task-011",

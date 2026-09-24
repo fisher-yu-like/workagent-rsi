@@ -1,0 +1,90 @@
+{
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "rows": [
+    {
+      "artifact_id": "01046acf57345976fc34823ea44a72dee43d94fda817033c95d831916dab14ca",
+      "critical_failures": [
+        "required marker missing: P3-TASK-002"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-002"
+    },
+    {
+      "artifact_id": "f11c552a6d25ac5e6ab505479019c686b3762579a25c278038fae0bbf337914c",
+      "critical_failures": [
+        "required marker missing: P3-TASK-003"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-003"
+    },
+    {
+      "artifact_id": "6d068c98fdf427a087a867b0b31dbe0b69703934227c1a5761e2e1706fa756b1",
+      "critical_failures": [
+        "required marker missing: P3-TASK-005"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-005"
+    },
+    {
+      "artifact_id": "c7c205f66021bcceab1dd6b53afba2e49a686e88c2e6a3520039701d6de05b42",
+      "critical_failures": [
+        "required marker missing: P3-TASK-006"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-006"
+    },
+    {
+      "artifact_id": "085484b82b6aadd1f4beba427223127168c39566e516d08c77535e25478b862c",
+      "critical_failures": [
+        "required marker missing: P3-TASK-008"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-008"
+    },
+    {
+      "artifact_id": "70df36a7782bec3c3e2018f7bdbdd3b1942a10512bb986a69003baeb7b559daa",
+      "critical_failures": [
+        "required marker missing: P3-TASK-009"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-009"
+    },
+    {
+      "artifact_id": "50569d396d887ace0689ebd151c7f4dfb3eedea13f875a05d31b9cebaf124866",
+      "critical_failures": [
+        "required marker missing: P3-TASK-011"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-011"
+    },
+    {
+      "artifact_id": "ea5014aa33fdf1fd0729a4dc02b50fb36eeb532d434b232483e7f36dacb44b70",
+      "critical_failures": [
+        "required marker missing: P3-TASK-012"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-012"
+    }
+  ],
+  "score": 0.0,
+  "split": "evolve",
+  "split_hash": "32f5455f6c69685717915db608f6eb30e3a280f617bc264ccf5cbffe01a3e364",
+  "success_count": 0,
+  "task_count": 8
+}

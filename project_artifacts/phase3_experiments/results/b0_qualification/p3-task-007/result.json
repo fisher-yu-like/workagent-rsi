@@ -9,7 +9,7 @@
     }
   ],
   "domain": "excel",
-  "duration_seconds": 0.059998,
+  "duration_seconds": 0.057039,
   "evaluation": {
     "critical_failures": [],
     "dimensions": {
@@ -17,16 +17,16 @@
     },
     "evidence": [
       "artifact:b3d46f57d5e0eab8a20daa75dcc3cc962f4280474e680eccd08b9a5bd181932d",
-      "trace:run-ddc078437095"
+      "trace:run-cadbc6cd9a7f"
     ],
     "passed": true,
     "score": 1.0,
     "warnings": []
   },
-  "git_commit": "ff048c0530c527fae39e88a4e6b68908eaae23ff",
+  "git_commit": "6329c030d8d718dc59cf6442226715d4d79a8242",
   "platform": "Windows-11-10.0.26200-SP0",
   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
-  "run_id": "run-ddc078437095",
+  "run_id": "run-cadbc6cd9a7f",
   "split": "evolve",
   "state": "SUCCEEDED",
   "task_id": "p3-task-007",

@@ -1,0 +1,74 @@
+{
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "rows": [
+    {
+      "artifact_id": "6a7239abf7078b92a9f9cc02037a0e029983a87b79d767b046fb34f619f7bd5f",
+      "critical_failures": [],
+      "domain": "word",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-002"
+    },
+    {
+      "artifact_id": "7285067c3157e565857cfce8357653e720826aed95ce053c23c4260da28806a5",
+      "critical_failures": [],
+      "domain": "powerpoint",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-003"
+    },
+    {
+      "artifact_id": "e291e7045998e89288cbd5f3affa98973b658b4258e0cf567d84cc9254f2a5aa",
+      "critical_failures": [],
+      "domain": "word",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-005"
+    },
+    {
+      "artifact_id": "aa18732bd7b2d0de13f435f44442636841f2b5976bfdc2cbe9bf900c42df97da",
+      "critical_failures": [],
+      "domain": "powerpoint",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-006"
+    },
+    {
+      "artifact_id": "24558b05df75a514855783b35c613c3d746a145f31abd95f4f1d6adfddef3614",
+      "critical_failures": [],
+      "domain": "word",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-008"
+    },
+    {
+      "artifact_id": "e6da348345ffc53fccc164d44905074aa687e6361b36208e9140c4b4d757203b",
+      "critical_failures": [],
+      "domain": "powerpoint",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-009"
+    },
+    {
+      "artifact_id": "1a59ff96ca0042666bb3e823c4d88561a98b43e57164160ca31281c223d3d363",
+      "critical_failures": [],
+      "domain": "word",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-011"
+    },
+    {
+      "artifact_id": "7e15688814a3c837d37d23d42c3ab5dbb5c9ecd61de8a3a3b9c63a04215595f9",
+      "critical_failures": [],
+      "domain": "powerpoint",
+      "passed": true,
+      "score": 1.0,
+      "task_id": "p3-task-012"
+    }
+  ],
+  "score": 1.0,
+  "split": "evolve",
+  "split_hash": "32f5455f6c69685717915db608f6eb30e3a280f617bc264ccf5cbffe01a3e364",
+  "success_count": 8,
+  "task_count": 8
+}

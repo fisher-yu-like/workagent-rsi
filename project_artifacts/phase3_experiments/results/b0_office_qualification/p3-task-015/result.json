@@ -1,15 +1,15 @@
 {
   "artifacts": [
     {
-      "artifact_id": "1a106fac93d8296bca6063de33d0dd8b7a5589f144fbd54ace392d90d78e2cd2",
+      "artifact_id": "68970a0bd1e015d37494017f3006ce87066b4c556edd380eaba2cb5af871d0da",
       "media_type": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-015\\artifacts\\1a106fac93d8296bca6063de33d0dd8b7a5589f144fbd54ace392d90d78e2cd2",
-      "sha256": "1a106fac93d8296bca6063de33d0dd8b7a5589f144fbd54ace392d90d78e2cd2",
+      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-015\\artifacts\\68970a0bd1e015d37494017f3006ce87066b4c556edd380eaba2cb5af871d0da",
+      "sha256": "68970a0bd1e015d37494017f3006ce87066b4c556edd380eaba2cb5af871d0da",
       "size_bytes": 28304
     }
   ],
   "domain": "powerpoint",
-  "duration_seconds": 0.086164,
+  "duration_seconds": 0.087893,
   "evaluation": {
     "critical_failures": [],
     "dimensions": {
@@ -17,17 +17,17 @@
       "marker_correctness": 1.0
     },
     "evidence": [
-      "artifact:1a106fac93d8296bca6063de33d0dd8b7a5589f144fbd54ace392d90d78e2cd2",
-      "trace:run-ae3756610d93"
+      "artifact:68970a0bd1e015d37494017f3006ce87066b4c556edd380eaba2cb5af871d0da",
+      "trace:run-8fc85062af4d"
     ],
     "passed": true,
     "score": 1.0,
     "warnings": []
   },
-  "git_commit": "68241c97aab7e003c2329891e71dfe4091439b79",
+  "git_commit": "6329c030d8d718dc59cf6442226715d4d79a8242",
   "platform": "Windows-11-10.0.26200-SP0",
   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
-  "run_id": "run-ae3756610d93",
+  "run_id": "run-8fc85062af4d",
   "split": "develop",
   "state": "SUCCEEDED",
   "task_id": "p3-task-015"

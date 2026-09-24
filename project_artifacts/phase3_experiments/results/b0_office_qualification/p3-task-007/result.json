@@ -1,15 +1,15 @@
 {
   "artifacts": [
     {
-      "artifact_id": "8783bf7b451571cd6d38ceb92115bf069b5c97b33adb96b3cadc710a185b19d9",
+      "artifact_id": "431fb1ebdb10d7d999c699be3a25c23f32a8cd0d6e0f48090cbc66439c2633fb",
       "media_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-007\\artifacts\\8783bf7b451571cd6d38ceb92115bf069b5c97b33adb96b3cadc710a185b19d9",
-      "sha256": "8783bf7b451571cd6d38ceb92115bf069b5c97b33adb96b3cadc710a185b19d9",
-      "size_bytes": 4907
+      "path": "C:\\Users\\sy\\Desktop\\workagent-rsi\\project_artifacts\\phase3_experiments\\results\\b0_office_qualification\\p3-task-007\\artifacts\\431fb1ebdb10d7d999c699be3a25c23f32a8cd0d6e0f48090cbc66439c2633fb",
+      "sha256": "431fb1ebdb10d7d999c699be3a25c23f32a8cd0d6e0f48090cbc66439c2633fb",
+      "size_bytes": 4908
     }
   ],
   "domain": "excel",
-  "duration_seconds": 0.074232,
+  "duration_seconds": 0.071777,
   "evaluation": {
     "critical_failures": [],
     "dimensions": {
@@ -17,17 +17,17 @@
       "marker_correctness": 1.0
     },
     "evidence": [
-      "artifact:8783bf7b451571cd6d38ceb92115bf069b5c97b33adb96b3cadc710a185b19d9",
-      "trace:run-31aa3ab266de"
+      "artifact:431fb1ebdb10d7d999c699be3a25c23f32a8cd0d6e0f48090cbc66439c2633fb",
+      "trace:run-ad18b3b288dc"
     ],
     "passed": true,
     "score": 1.0,
     "warnings": []
   },
-  "git_commit": "68241c97aab7e003c2329891e71dfe4091439b79",
+  "git_commit": "6329c030d8d718dc59cf6442226715d4d79a8242",
   "platform": "Windows-11-10.0.26200-SP0",
   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
-  "run_id": "run-31aa3ab266de",
+  "run_id": "run-ad18b3b288dc",
   "split": "evolve",
   "state": "SUCCEEDED",
   "task_id": "p3-task-007"

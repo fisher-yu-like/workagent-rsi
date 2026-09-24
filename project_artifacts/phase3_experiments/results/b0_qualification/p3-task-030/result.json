@@ -9,7 +9,7 @@
     }
   ],
   "domain": "powerpoint",
-  "duration_seconds": 0.057884,
+  "duration_seconds": 0.077367,
   "evaluation": {
     "critical_failures": [],
     "dimensions": {
@@ -17,16 +17,16 @@
     },
     "evidence": [
       "artifact:9cedafe19480d87ead6c564b18495d404b5396f8ea1ff7465248b3a341f28d6e",
-      "trace:run-12de95445f80"
+      "trace:run-8f4b6840c03d"
     ],
     "passed": true,
     "score": 1.0,
     "warnings": []
   },
-  "git_commit": "ff048c0530c527fae39e88a4e6b68908eaae23ff",
+  "git_commit": "6329c030d8d718dc59cf6442226715d4d79a8242",
   "platform": "Windows-11-10.0.26200-SP0",
   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
-  "run_id": "run-12de95445f80",
+  "run_id": "run-8f4b6840c03d",
   "split": "ood_transfer",
   "state": "SUCCEEDED",
   "task_id": "p3-task-030",

@@ -1,0 +1,70 @@
+{
+  "evaluator_hash": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+  "rows": [
+    {
+      "artifact_id": "6df463182c4bbee1ca60d20dc4afc0f97ccf954316d07d142ac98f65d01dfd82",
+      "critical_failures": [
+        "required marker missing: P3-TASK-013"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-013"
+    },
+    {
+      "artifact_id": "4e0e06e23f7e07eb162ebb71c3b8a7bc157ed8409cc84b5ea68cb740e4f439aa",
+      "critical_failures": [
+        "required marker missing: P3-TASK-014"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-014"
+    },
+    {
+      "artifact_id": "83e638666ea67775d4313cab3964672d9bc7bee42968a79f12eb67f0c82a7129",
+      "critical_failures": [
+        "required marker missing: P3-TASK-015"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-015"
+    },
+    {
+      "artifact_id": "ab550a28f4991df19b0e1ba779b0c3dbf268d5033346506a9050f80beef912ef",
+      "critical_failures": [
+        "required marker missing: P3-TASK-016"
+      ],
+      "domain": "excel",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-016"
+    },
+    {
+      "artifact_id": "28abf5fd678c3baeae5e1168417c3e5a1e6224bb673afd7d0542e73c32e60d8f",
+      "critical_failures": [
+        "required marker missing: P3-TASK-017"
+      ],
+      "domain": "word",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-017"
+    },
+    {
+      "artifact_id": "7f63e9dd3af1218d9b7426403da0bf80a45a51404f2286b2bf68ad5af29db05f",
+      "critical_failures": [
+        "required marker missing: P3-TASK-018"
+      ],
+      "domain": "powerpoint",
+      "passed": false,
+      "score": 0.0,
+      "task_id": "p3-task-018"
+    }
+  ],
+  "score": 0.0,
+  "split": "develop",
+  "split_hash": "30f5567babd85e320a401e76488a8248c9859b09489fd4936908b59a35c1b147",
+  "success_count": 0,
+  "task_count": 6
+}
