@@ -144,8 +144,10 @@ class CodexCandidateProvider:
         context = [item.model_dump(mode="json") for item in diagnoses]
         return (
             "Return only JSON matching the supplied schema. Propose a bounded candidate patch for "
-            "the local Office pilot. You may edit only skill.json. Do not access parent directories, "
-            "hidden tasks, evaluators, governance files, credentials, or the source repository. "
+            "the local Office pilot. You may edit only skill.json. The atomic edit patch field must be "
+            "exactly {\"marker_source\":\"required_text\"} with no Markdown, explanation, trailing quote, "
+            "or other key. Do not access parent directories, hidden tasks, evaluators, governance files, "
+            "credentials, or the source repository. "
             f"Parent version: {parent_version}. Edit budget: {edit_budget}. "
             f"Diagnoses: {json.dumps(context, sort_keys=True)}"
         )

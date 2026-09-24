@@ -69,6 +69,7 @@ def test_codex_provider_constructs_isolated_structured_command(tmp_path: Path):
     assert command[command.index("--sandbox") + 1] == "workspace-write"
     assert command[command.index("--output-schema") + 1].endswith("schema.json")
     assert command[command.index("--cd") + 1] == str(tmp_path)
+    assert '{"marker_source":"required_text"}' in command[-1]
 
 
 def test_codex_provider_records_invalid_json(tmp_path: Path):
