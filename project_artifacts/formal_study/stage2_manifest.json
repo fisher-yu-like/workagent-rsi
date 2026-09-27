@@ -1,0 +1,43 @@
+{
+  "stage": 2,
+  "stage_name": "office_file_evaluator_v2",
+  "status": "passed",
+  "recorded_at": "2026-09-27T14:33:25Z",
+  "code_commit": "ab37c71aa00f288f9a6f5be2b708007e9f405189",
+  "qualification_commit": "ab37c71aa00f288f9a6f5be2b708007e9f405189",
+  "working_tree_dirty_during_qualification": false,
+  "evaluator": {
+    "name": "OfficeArtifactEvaluator",
+    "version": "office-evaluator-v2",
+    "source_hash": "244043c1baf962ae5b20c4caff2dfef5cfbfdb39e1ec57d1477944a9d8b3ed6b",
+    "config": "project_artifacts/phase3_experiments/configs/evaluator_v2.json",
+    "validation": "project_artifacts/results/qualification/evaluator-v2/20260927T143324Z/validation.json"
+  },
+  "qualification": {
+    "provider": "ComOfficeAdapter",
+    "result_root": "project_artifacts/results/qualification/real-office/20260927T142641Z/",
+    "dataset_version": "synthetic-office-taskset-v0.1.0",
+    "task_count": 25,
+    "success_count": 25,
+    "failure_count": 0,
+    "mean_score": 1.0,
+    "domains": ["excel", "word", "powerpoint"],
+    "office_version": "16.0",
+    "automation_processes_after_run": 0
+  },
+  "verification": {
+    "pytest": "69 passed in 21.50s",
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "evaluator_validation": "three domains passed; rendering unavailable recorded separately"
+  },
+  "claim_boundary": {
+    "external_workagent": false,
+    "external_benchmark": false,
+    "manual_annotation": false,
+    "qualification_only": true,
+    "pixel_renderer_available": false,
+    "unavailable_is_not_a_score": true
+  },
+  "next_stage": "six_round_rsi_checkpoint_resume"
+}

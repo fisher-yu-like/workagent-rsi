@@ -33,6 +33,7 @@ class ExperimentRunner:
         output_root: str | Path,
         *,
         invocation_id: str | None = None,
+        rounds: int = 6,
     ) -> ExperimentResult:
         if experiment_id not in {f"E{index:02d}" for index in range(1, 13)}:
             raise ValueError(f"unknown experiment: {experiment_id}")
@@ -134,7 +135,7 @@ class ExperimentRunner:
                     evaluator=FrozenEvaluator(self.evaluator_hash),
                     promotion=PromotionController(),
                 )
-                round_result = loop.run_round(
+                round_result = loop.run(
                     skill_id=baseline.skill_id,
                     tasks_by_split=tasks,
                     contract=contract,
@@ -144,13 +145,14 @@ class ExperimentRunner:
                         allowed_targets={"skill.json"},
                         protected_paths={"evaluator.py", "frozen_evaluator.py", "promotion.py", "hidden.jsonl"},
                     ),
+                    rounds=rounds,
                 )
-                if round_result.get("status") in {"unavailable", "timeout"}:
+                if round_result.get("status") in {"unavailable", "timeout", "incomplete"}:
                     status = "unavailable"
-                    failure = str(round_result.get("provider_record", {}).get("error"))
+                    failure = str(round_result.get("failure") or round_result.get("incomplete_round", {}).get("provider_record", {}).get("error"))
                 elif round_result.get("status") == "failed":
                     status = "failed"
-                    failure = str(round_result.get("provider_record", {}).get("error"))
+                    failure = str(round_result.get("failure") or round_result.get("incomplete_round", {}).get("provider_record", {}).get("error"))
                 comparison_metrics = self._comparison_metrics(experiment_id, round_result)
                 summary = {
                     "experiment_id": experiment_id,
@@ -250,10 +252,12 @@ class ExperimentRunner:
 
     @staticmethod
     def _comparison_metrics(experiment_id: str, result: dict) -> dict[str, float]:
-        candidate_exists = 1.0 if result.get("candidate") else 0.0
-        verification_passed = 1.0 if result.get("verification", {}).get("passed") else 0.0
-        decision_accept = 1.0 if result.get("decision", {}).get("decision") == "accept" else 0.0
-        metrics = result.get("metrics", {})
+        rounds = result.get("rounds", [])
+        latest = rounds[-1] if rounds else result
+        candidate_exists = 1.0 if latest.get("candidate") else 0.0
+        verification_passed = 1.0 if latest.get("verification", {}).get("passed") else 0.0
+        decision_accept = 1.0 if latest.get("decision", {}).get("decision") == "accept" else 0.0
+        metrics = latest.get("metrics", {})
         develop_only = 1.0 if float(metrics.get("candidate_develop", 0.0)) > float(metrics.get("champion_develop", 0.0)) else 0.0
         if experiment_id == "E03":
             return {
@@ -274,12 +278,12 @@ class ExperimentRunner:
                 "verifier_prevented_acceptance_rate": max(0.0, candidate_exists - verification_passed),
             }
         if experiment_id == "E08":
-            shared = float(result.get("candidate_reports", {}).get("ood_transfer", {}).get("score", 0.0))
-            domain_specific = float(result.get("baseline", {}).get("ood_transfer", {}).get("score", 0.0))
+            shared = float(latest.get("candidate_reports", {}).get("ood_transfer", {}).get("score", 0.0))
+            domain_specific = float(latest.get("baseline", {}).get("ood_transfer", {}).get("score", 0.0))
             return {"shared_ood_score": shared, "domain_specific_ood_score": domain_specific, "transfer_delta": shared - domain_specific}
         if experiment_id == "E09":
-            edits = float(len(result.get("candidate", {}).get("atomic_edits", [])))
-            budget = float(result.get("candidate", {}).get("edit_budget", 0))
+            edits = float(len(latest.get("candidate", {}).get("atomic_edits", [])))
+            budget = float(latest.get("candidate", {}).get("edit_budget", 0))
             return {
                 "proposal_regularized_admissible": 1.0 if edits <= budget and budget > 0 else 0.0,
                 "proposal_unregularized_admissible": candidate_exists,

@@ -44,6 +44,17 @@ class SkillRegistry:
                     evidence_json TEXT NOT NULL,
                     created_at TEXT NOT NULL
                 );
+                CREATE TABLE IF NOT EXISTS negative_evidence (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    skill_id TEXT NOT NULL,
+                    candidate_id TEXT NOT NULL,
+                    parent_version TEXT NOT NULL,
+                    patch_hash TEXT NOT NULL,
+                    reason TEXT NOT NULL,
+                    evidence_json TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    UNIQUE(skill_id, candidate_id, patch_hash)
+                );
                 """
             )
 
@@ -155,6 +166,79 @@ class SkillRegistry:
                 "INSERT INTO rollbacks(skill_id, from_version, to_version, evidence_json, created_at) VALUES (?, ?, ?, ?, ?)",
                 (skill_id, from_version, to_version, json.dumps(evidence_refs), datetime.now(timezone.utc).isoformat()),
             )
+
+    def record_negative_evidence(
+        self,
+        *,
+        skill_id: str,
+        candidate_id: str,
+        parent_version: str,
+        patch_hash: str,
+        reason: str,
+        evidence_refs: list[str],
+    ) -> str:
+        """Persist a rejected candidate so an identical patch can be pruned."""
+
+        evidence_id = canonical_json_hash(
+            {
+                "skill_id": skill_id,
+                "candidate_id": candidate_id,
+                "parent_version": parent_version,
+                "patch_hash": patch_hash,
+                "reason": reason,
+                "evidence_refs": evidence_refs,
+            }
+        )
+        with self._connect() as conn:
+            conn.execute(
+                "INSERT OR IGNORE INTO negative_evidence(skill_id, candidate_id, parent_version, patch_hash, reason, evidence_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (
+                    skill_id,
+                    candidate_id,
+                    parent_version,
+                    patch_hash,
+                    reason,
+                    json.dumps({"evidence_id": evidence_id, "evidence_refs": evidence_refs}, sort_keys=True),
+                    datetime.now(timezone.utc).isoformat(),
+                ),
+            )
+        return evidence_id
+
+    def has_negative_evidence(self, *, skill_id: str, candidate_id: str | None = None, patch_hash: str | None = None) -> bool:
+        if candidate_id is None and patch_hash is None:
+            raise ValueError("candidate_id or patch_hash is required")
+        clauses = ["skill_id = ?"]
+        values: list[str] = [skill_id]
+        if candidate_id is not None:
+            clauses.append("candidate_id = ?")
+            values.append(candidate_id)
+        if patch_hash is not None:
+            clauses.append("patch_hash = ?")
+            values.append(patch_hash)
+        with self._connect() as conn:
+            row = conn.execute(
+                f"SELECT 1 FROM negative_evidence WHERE {' AND '.join(clauses)} LIMIT 1",
+                tuple(values),
+            ).fetchone()
+        return row is not None
+
+    def negative_evidence(self, skill_id: str) -> list[dict[str, Any]]:
+        with self._connect() as conn:
+            rows = conn.execute(
+                "SELECT candidate_id, parent_version, patch_hash, reason, evidence_json, created_at FROM negative_evidence WHERE skill_id = ? ORDER BY id",
+                (skill_id,),
+            ).fetchall()
+        return [
+            {
+                "candidate_id": row[0],
+                "parent_version": row[1],
+                "patch_hash": row[2],
+                "reason": row[3],
+                "evidence": json.loads(row[4]),
+                "created_at": row[5],
+            }
+            for row in rows
+        ]
 
     @staticmethod
     def _model(skill_id: str, version: str, row: tuple) -> SkillVersion:

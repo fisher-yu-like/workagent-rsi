@@ -1,65 +1,71 @@
 # WorkAgent-RSI 阶段执行日志
 
-> 这份日志用人类易读的语言记录自动执行过程。每次更新保留已完成事项、实际证据、阻塞和下一步；未执行内容不会写成已完成。
+> 这份日志用人类能直接理解的语言记录自动执行过程。每次更新保留实际证据、状态和下一步；没有执行的内容不会写成已完成。
 
 ## 当前状态
 
 - 总体状态：执行中
-- 当前阶段：阶段 2：Office 文件级自动评估器
-- 当前任务：先写格式、结构、公式、OOXML、几何检查的失败测试，再实现 evaluator v2
+- 当前阶段：阶段 3：六轮 RSI、checkpoint/resume、成本和负证据
+- 当前任务：已完成代码和回归验证，正在运行一次真实的 deterministic 六轮 pilot，并核对 checkpoint、继承和负证据文件
 - 自动批准：已收到，后续按计划自动推进；阶段失败时停止并记录原因
 - 结果根目录：`project_artifacts/results/`
-- 计划文件：[正式研究执行方案](docs/superpowers/plans/2026-09-27-formal-rsi-execution-roadmap.md)
+- 分支：`codex/closed-loop-rsi`
 
-## 2026-09-27：阶段 0 开始
+## 阶段 0：基线冻结
 
-### 已完成
+- 状态：通过，提交 `653066a`
+- `61 passed`，`compileall` 通过，pilot 数据质量检查 14 项全部通过。
+- 已记录 Python 3.12.10、依赖、Codex/Ollama、Office 16.0 COM、LibreOffice 不可用和外部 WorkAgent 未配置。
+- 已创建 `formal_study/contract.json`、`capability_matrix.json`、`baseline_manifest.json`。
+- 30 条任务被明确标为 project-generated pilot，不作为外部 benchmark 或正式主结果。
 
-- 已读取并复核正式执行方案。
-- 已确认当前工作分支为 `codex/closed-loop-rsi`，本次继续在该隔离分支工作。
-- 已确认不删除历史结果，不改变普通单轮“正常任务直接运行”的行为。
+## 阶段 1：真实 Office provider
 
-### 已完成
+- 状态：通过，代码提交 `3de1ecd3c3ce28f3e6f0ea50b811bb6ce58fd04a`。
+- COM provider 对 25 条公开任务完成 25/25，平均自动分数 1.0，覆盖 Excel、Word、PowerPoint。
+- 两次中断运行及资源泄漏原因已保留；最终运行结束后新增 automation Office 进程为 0。
+- 证据：`project_artifacts/formal_study/stage1_manifest.json`。
 
-- 阶段 0 已通过并提交为 `653066a`。
-- 阶段 1 provider 实现已提交为 `3de1ecd3c3ce28f3e6f0ea50b811bb6ce58fd04a`。
-- 新增 `office_capabilities.py`：记录 COM、LibreOffice、本地 Python provider 和外部 WorkAgent 状态。
-- 新增 `ComOfficeAdapter`、`UnavailableOfficeAdapter`、显式 provider CLI 选择和 `UNAVAILABLE` 状态。
-- 25 条公开任务通过 clean commit 的 COM provider qualification：成功 25、失败 0、平均自动分数 1.0，覆盖 Excel/Word/PowerPoint。
-- 真实 COM 重开后的 automation 进程数量为 0；资源泄漏回归测试通过。
-- 两次中断 invocation 没有被覆盖，原因和修复写入 `formal_study/stage1_manifest.json`。
-- 阶段 1 Gate：通过。
+## 阶段 2：Office 文件级 evaluator v2
 
-### 正在进行
+### 实现与红绿测试
 
-- 为三类 Office 文件写 evaluator v2 的红测试。
-- 设计只读、可 hash、与 candidate workspace 解耦的结构化检查报告。
+- 红测试先因缺少 `workagent_rsi.office_checks` 正确失败。
+- 已实现 `office_checks.py`：OOXML 包、文件 hash、Excel 工作表/单元格/公式、Word 标题/样式/OOXML、PowerPoint 文本/页数/几何。
+- 已实现 `render_checks.py`：PPT 对象重叠、越界、空白页；像素渲染器不可用时记录 `rendering: unavailable`，不转换成分数。
+- `OfficeArtifactEvaluator` 已升级为 `office-evaluator-v2`，报告含 dimensions、warnings、channel status、artifact/evaluator hash 和 evidence。
+- `FrozenEvaluator` 现在保存每个任务的维度、警告、通道状态和证据。
 
-### 阶段 2 实现进展（2026-09-27）
+### Gate 证据
 
-- 红测试已按预期先失败：缺少 `workagent_rsi.office_checks`，失败发生在功能缺失而不是测试错误。
-- 已实现 `office_checks.py`：检查 OOXML 包完整性、文件哈希、Excel 工作表/单元格/公式、Word 标题/样式/OOXML、PowerPoint 文本/页数/几何。
-- 已实现 `render_checks.py`：检查 PowerPoint 对象重叠、越界和空白页；像素渲染器不可用时明确记录 `rendering: unavailable`，不把它转换成分数。
-- `OfficeArtifactEvaluator` 已升级到 `office-evaluator-v2`，保留原有 marker/format 维度，并写入结构化 dimensions、warnings、channel status、artifact/evaluator hash 和 evidence。
-- `FrozenEvaluator` 现在把维度、警告、通道状态和证据一并保存到每个任务行。
-- 新增 `evaluator_v2.json` 和 `validate_evaluator.py`，三类 fixture 验证已通过。
-- 阶段 2 当前验证证据：质量/旧评估器/冻结评估器测试 `8 passed`；全量 pytest `69 passed`；compileall 通过；evaluator v2 三域验证通过。
+- 代码提交：`ab37c71aa00f288f9a6f5be2b708007e9f405189`。
+- 全量测试：`71 passed in 55.29s`（包含阶段 3 新增测试；阶段 2 单独验证为 69 passed）。
+- `compileall` 退出码 0，`git diff --check` 退出码 0。
+- evaluator 三域验证：`project_artifacts/results/qualification/evaluator-v2/20260927T143324Z/validation.json`，Excel/Word/PowerPoint 全部通过；PowerPoint 像素渲染通道明确为 unavailable。
+- COM qualification：`project_artifacts/results/qualification/real-office/20260927T142641Z/`，25/25 成功、0 失败、平均自动分数 1.0、Office 16.0 重开通过；EXCEL、WINWORD、POWERPNT automation 进程均为 0，运行时 `git_worktree_dirty=false`。
+- 阶段 manifest：`project_artifacts/formal_study/stage2_manifest.json`。
+- Gate 结论：通过，已自动进入阶段 3。
 
-### 已完成
+## 阶段 3：六轮 RSI
 
-- `py -3.12 -m pytest -q --basetemp="$env:TEMP\\workagent-rsi-stage0"`：`61 passed in 12.39s`。
-- `py -3.12 -m compileall -q src tests project_artifacts/phase3_experiments/scripts`：退出码 0。
-- `py -3.12 project_artifacts/phase3_experiments/data/quality_check.py`：14 项检查全部通过，任务 30 条，公开 25 条，保护 5 条。
-- Python 3.12.10、pydantic 2.13.4、pytest 9.1.1、openpyxl 3.1.5、python-docx 1.2.0、python-pptx 1.0.2、Codex CLI 0.157.1、Ollama 0.34.4 和 `qwen2.5:7b` 已记录。
-- Word、Excel、PowerPoint COM 均可连接，版本均为 16.0；LibreOffice/soffice 命令不可用；外部 WorkAgent provider 未配置。
-- 已写入 `formal_study/contract.json`、`capability_matrix.json`、`baseline_manifest.json` 和说明文件。
-- 阶段 0 Gate：通过。当前 pilot 仍明确标为 qualification/mechanism evidence，不作为外部 benchmark 或正式主结果。
+### 已完成的代码工作
 
-### 尚未完成
+- `RSILoop.run()` 已增加，默认编辑预算为 `[3, 3, 2, 2, 1, 1]`；旧 `run_round()` 保留兼容。
+- 每轮保存 champion baseline、candidate diff、diagnosis、provider record、verification、split reports、decision、rollback point 和继承的 evidence refs。
+- 每轮开始会从 registry 当前 champion 生成只读 `source_snapshots/round-*`，所以后续候选实际读取上一轮批准的 `skill.json`，而不是只看到旧 source 或反馈文本。
+- 每轮写 `round_summary.json` 和 `cost.json`；token/tool/step/render 无 provider 能力时标为 unavailable，wall time 和磁盘大小单独记录。
+- `checkpoint.json` 保存 contract、dataset split、evaluator、provider、model、代码 hash；resume 会校验身份，已完成轮次不会重新评分。
+- registry 增加 `negative_evidence` 表；被拒绝候选会记录 patch hash，重复候选会被剪枝，不会无限重复。
+- `ExperimentRunner` 和 E01-E12 入口默认使用六轮协议，仍可通过 `--rounds` 调整。
 
-- evaluator v2 尚未实现。
-- Excel 公式/结构、Word OOXML/分页、PPT 几何/溢出和自动渲染检查尚未加入正式评分。
+### 当前验证
 
-### 下一步
+- 阶段 3 红测试先因 `RSILoop.run` 不存在而失败。
+- 实现后阶段 3 相关测试和旧 RSI 测试：`4 passed`；加入中断恢复和继承性测试后，全量回归：`72 passed in 59.66s`。
+- `compileall` 通过；真实六轮 pilot 的运行证据正在生成，完成后再写阶段 3 Gate manifest。
 
-完成阶段 2 后写入真实结果，并继续阶段 3；若 evaluator hash 漂移、hidden 数据泄漏或不可用视觉通道被转换成分数，则停止并记录阻塞。
+## 下一步
+
+1. 完成 deterministic 六轮 pilot，读取每轮预算、继承证据、负证据、checkpoint 和 cost 文件。
+2. 人为中断/恢复一次未完成轮，确认只重试未完成轮并保存 resume 证据。
+3. 若 Gate 通过，进入外部数据来源/许可/质量门禁；外部许可未确认前不下载正式任务文件。

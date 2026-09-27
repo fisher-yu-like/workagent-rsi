@@ -33,6 +33,7 @@ def main() -> int:
     parser.add_argument("--timeout-seconds", type=int, default=180)
     parser.add_argument("--codex-backend", choices=("remote", "ollama"), default="ollama")
     parser.add_argument("--local-model", default="qwen2.5:7b")
+    parser.add_argument("--rounds", type=int, default=6, help="RSI rounds for candidate-loop experiments")
     args = parser.parse_args()
 
     schema = ROOT / "project_artifacts" / "phase3_experiments" / "provider" / "candidate_patch.schema.json"
@@ -57,6 +58,7 @@ def main() -> int:
             provider,
             args.output_root,
             invocation_id=f"{prefix}-{args.provider.lower()}-{experiment_id.lower()}",
+            rounds=args.rounds,
         )
         results.append(result.model_dump(mode="json"))
         print(json.dumps(results[-1], sort_keys=True))
