@@ -1,0 +1,46 @@
+{
+  "baseline_version": "baseline-protocol-v0.1.0",
+  "claim_boundary": {
+    "manual_annotation": false,
+    "external_benchmark": false,
+    "metrics_are_filled_only_from_runs": true
+  },
+  "arms": [
+    {
+      "id": "fixed_skill",
+      "description": "Run the frozen initial skill without candidate generation.",
+      "runner": "ExperimentRunner:E01",
+      "comparison_role": "lower-bound reference"
+    },
+    {
+      "id": "self_refine",
+      "description": "Allow a bounded self-refinement candidate loop.",
+      "runner": "ExperimentRunner:E02",
+      "comparison_role": "single-loop reference"
+    },
+    {
+      "id": "full_rsi",
+      "description": "Use six-round RSI with verification, protected splits and promotion gates.",
+      "runner": "ExperimentRunner:E05",
+      "comparison_role": "primary mechanism arm"
+    },
+    {
+      "id": "automated_cross_evaluation",
+      "description": "Compare independent automatic artifact and response channels.",
+      "runner": "ExperimentRunner:E07",
+      "comparison_role": "measurement audit"
+    },
+    {
+      "id": "cross_domain_transfer",
+      "description": "Measure transfer on protected domain splits.",
+      "runner": "ExperimentRunner:E08",
+      "comparison_role": "generalization audit"
+    },
+    {
+      "id": "word_powerpoint_full_rsi",
+      "description": "Run the full loop on the non-Excel Office domains.",
+      "runner": "ExperimentRunner:E12",
+      "comparison_role": "domain transfer arm"
+    }
+  ]
+}

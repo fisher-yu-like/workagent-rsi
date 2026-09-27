@@ -1,0 +1,135 @@
+{
+  "candidate_count": 5,
+  "checks": [
+    {
+      "detail": "missing manifest_version",
+      "name": "manifest_version",
+      "passed": true
+    },
+    {
+      "detail": "status=metadata_only",
+      "name": "metadata_only",
+      "passed": true
+    },
+    {
+      "detail": "count=5",
+      "name": "candidate_count",
+      "passed": true
+    },
+    {
+      "detail": "duplicate candidate ids",
+      "name": "unique_ids",
+      "passed": true
+    },
+    {
+      "detail": "missing=[]",
+      "name": "schema:officebench-v1",
+      "passed": true
+    },
+    {
+      "detail": "official repository URL is not HTTPS",
+      "name": "official_url:officebench-v1",
+      "passed": true
+    },
+    {
+      "detail": "download_status=metadata_only",
+      "name": "download_boundary:officebench-v1",
+      "passed": true
+    },
+    {
+      "detail": "unverified candidate has a checksum",
+      "name": "unverified_no_checksum:officebench-v1",
+      "passed": true
+    },
+    {
+      "detail": "missing=[]",
+      "name": "schema:spreadsheetbench-v1",
+      "passed": true
+    },
+    {
+      "detail": "official repository URL is not HTTPS",
+      "name": "official_url:spreadsheetbench-v1",
+      "passed": true
+    },
+    {
+      "detail": "download_status=metadata_only",
+      "name": "download_boundary:spreadsheetbench-v1",
+      "passed": true
+    },
+    {
+      "detail": "unverified candidate has a checksum",
+      "name": "unverified_no_checksum:spreadsheetbench-v1",
+      "passed": true
+    },
+    {
+      "detail": "missing=[]",
+      "name": "schema:osworld-v1",
+      "passed": true
+    },
+    {
+      "detail": "official repository URL is not HTTPS",
+      "name": "official_url:osworld-v1",
+      "passed": true
+    },
+    {
+      "detail": "download_status=metadata_only",
+      "name": "download_boundary:osworld-v1",
+      "passed": true
+    },
+    {
+      "detail": "unverified candidate has a checksum",
+      "name": "unverified_no_checksum:osworld-v1",
+      "passed": true
+    },
+    {
+      "detail": "missing=[]",
+      "name": "schema:windows-agent-arena-v1",
+      "passed": true
+    },
+    {
+      "detail": "official repository URL is not HTTPS",
+      "name": "official_url:windows-agent-arena-v1",
+      "passed": true
+    },
+    {
+      "detail": "download_status=metadata_only",
+      "name": "download_boundary:windows-agent-arena-v1",
+      "passed": true
+    },
+    {
+      "detail": "unverified candidate has a checksum",
+      "name": "unverified_no_checksum:windows-agent-arena-v1",
+      "passed": true
+    },
+    {
+      "detail": "missing=[]",
+      "name": "schema:spreadsheetbench-2",
+      "passed": true
+    },
+    {
+      "detail": "official repository URL is not HTTPS",
+      "name": "official_url:spreadsheetbench-2",
+      "passed": true
+    },
+    {
+      "detail": "download_status=metadata_only",
+      "name": "download_boundary:spreadsheetbench-2",
+      "passed": true
+    },
+    {
+      "detail": "unverified candidate has a checksum",
+      "name": "unverified_no_checksum:spreadsheetbench-2",
+      "passed": true
+    },
+    {
+      "detail": "[]",
+      "name": "no_external_files_before_license",
+      "passed": true
+    }
+  ],
+  "failures": [],
+  "formal_dataset_selected": null,
+  "manifest_sha256": "1d4c44c08da9901b3ce6ef6bcc545e3b29ca9aba646985769cf983a3de734a36",
+  "mode": "metadata_only",
+  "status": "pass"
+}

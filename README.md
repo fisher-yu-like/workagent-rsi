@@ -43,4 +43,9 @@ py -3.12 project_artifacts/phase3_experiments/scripts/run_b0_office_qualificatio
 ## Current gate
 
 Phase 1 and Phase 2 are accepted. Phase 3 data quality, local Office qualification, candidate generation, and the historical E01-E12 pilot are complete. The historical pilot is mechanism-validation evidence over a project-generated fixture, not an external WorkAgent result or main-study conclusion.
+
+The guarded formal entry point is
+`project_artifacts/phase3_experiments/scripts/run_formal.py`. Use `--mode pilot` for
+the local fixture; `--mode formal` stays closed until source-specific license,
+checksum, provenance and quality checks are recorded.
 # workagent-rsi

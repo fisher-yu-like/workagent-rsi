@@ -1,0 +1,56 @@
+{
+  "retrieved_at": "2026-09-27T15:23:58Z",
+  "method": "official GitHub API metadata plus official repository README and arXiv landing pages",
+  "records": [
+    {
+      "id": "officebench-v1",
+      "repository_api": "https://api.github.com/repos/zlwang-cs/OfficeBench",
+      "repository_default_branch": "main",
+      "repository_license_observed": "Apache-2.0",
+      "paper": "https://arxiv.org/abs/2407.19056",
+      "data_license_observed": null,
+      "evidence_status": "repository_code_only"
+    },
+    {
+      "id": "spreadsheetbench-v1",
+      "repository_api": "https://api.github.com/repos/RUCKBReasoning/SpreadsheetBench",
+      "repository_default_branch": "main",
+      "repository_commit": "49b73a94775fb489063f60ca1865e3a650079a79",
+      "readme": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/README.md",
+      "readme_license_statement": "CC BY SA 4.0",
+      "sample_archive": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/sample_data_200.tar.gz",
+      "sample_archive_git_blob_sha": "4ff8918668c2876f1d6b6d17845a4fe76e57ef52",
+      "sample_archive_size_bytes": 19936871,
+      "paper": "https://arxiv.org/abs/2406.14991",
+      "data_license_observed": "CC-BY-SA-4.0 in README; workbook-level provenance still pending",
+      "evidence_status": "conditional_data_candidate"
+    },
+    {
+      "id": "osworld-v1",
+      "repository_api": "https://api.github.com/repos/xlang-ai/OSWorld",
+      "repository_default_branch": "main",
+      "repository_license_observed": "Apache-2.0",
+      "paper": "https://arxiv.org/abs/2404.07972",
+      "data_license_observed": null,
+      "evidence_status": "environment_and_asset_review_required"
+    },
+    {
+      "id": "windows-agent-arena-v1",
+      "repository_api": "https://api.github.com/repos/microsoft/WindowsAgentArena",
+      "repository_default_branch": "main",
+      "repository_license_observed": "MIT",
+      "paper": "https://arxiv.org/abs/2409.08264",
+      "data_license_observed": null,
+      "evidence_status": "windows_and_office_terms_review_required"
+    },
+    {
+      "id": "spreadsheetbench-2",
+      "repository_api": "https://api.github.com/repos/RUCKBReasoning/SpreadsheetBench-2",
+      "repository_default_branch": "main",
+      "repository_license_observed": null,
+      "paper": null,
+      "data_license_observed": null,
+      "evidence_status": "no_license_metadata"
+    }
+  ]
+}
