@@ -41,3 +41,11 @@ The current verification snapshot is in `source_verification.json`. It confirms
 repository-level metadata and one README-level data statement, but does not yet
 confirm workbook-level provenance. Until all requirements are true, the quality
 gate must fail closed and the fetch script may create only a metadata report.
+
+For SpreadsheetBench specifically, the official README says the project is hosted
+under CC BY-SA 4.0 and lists the raw 912-instance archive, a 200-instance sample,
+and a Verified subset. The repository API does not expose a separate LICENSE file,
+and the README says the questions/files come from online Excel forums and include
+input/answer workbook pairs. We therefore record the archive metadata but keep the
+candidate at `conditional_review_required` until the rights and provenance of those
+workbooks are confirmed.
