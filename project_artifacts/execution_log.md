@@ -131,3 +131,26 @@
 - `retry2` 已真实生成并验证前 5 轮，但在第 6 轮暴露 registry 版本冲突：多个不同的 rejected sibling 都从 `0.2.0` champion 计算出 `0.3.0`。已增加版本分配回归测试，改为由 registry 为每个候选分配单调唯一版本，准备再次运行。
 - `retry3` 已完成完整六轮，结果状态为 `completed`，6/6 provider records 为 completed，1 个候选被接受、5 个被拒绝，develop 从 `0.0` 提升到 `1.0`；第 4 至 6 轮的无效 patch 被 verifier 拒绝，未转成成功分数。结果目录为 `project_artifacts/results/qualification/real-model/real-e05-qwen25-20260928-retry3/`。
 - 核验发现模型可能在结构化 JSON 中自报错误的 model identity；下一次结果会记录命令配置的 `ollama:qwen2.5:7b`，不再信任候选字段中的自报值。
+
+### 阶段 5 追加记录（2026-09-28）
+
+- `real-e05-qwen25-20260928-final` 已保留为真实失败证据：第 1、2 轮 provider 完成，第 3 轮返回的结构化候选缺少 `atomic_edits[0].hypothesis` 和 `atomic_edits[0].expected_metric`，`CandidatePatch` 校验拒绝，运行状态为 `unavailable`；该目录不计入分数，不作为成功运行。
+- `real-e05-qwen25-20260928-final-retry1` 已启动，继续执行六轮 E05；结果仍属于 `project-generated` pilot，不是 external benchmark 或模型权重训练。
+- 重试前验证（2026-09-28）：`py -3.12 -m pytest -q --basetemp=.pytest-stage5-final` 为 `86 passed in 44.24s`；`compileall` 退出码 0；`git diff --check` 退出码 0。
+
+### 阶段 5 真实模型 pilot 完成（2026-09-28）
+
+- `real-e05-qwen25-20260928-final-retry1` 正常完成六轮，顶层状态为 `completed`，6/6 provider records 为 `completed`。
+- Provider 为 Codex CLI `0.158.0-alpha.2.1` + Ollama `qwen2.5:7b`；checkpoint 固定记录 `model_identity=ollama:qwen2.5:7b`，不信任模型输出中的自报身份。
+- 第 1 轮接受候选，`0.1.0 -> 0.2.0`；第 2、5 轮无额外 develop gain 被拒绝；第 3、4、6 轮因非法 patch JSON 被 verifier 拒绝。最终 develop 为 `0.0 -> 1.0`，accepted=1、rejected=5、unavailable=0。
+- 机器分析已写入 `project_artifacts/results/qualification/real-model/real-e05-qwen25-20260928-final-retry1/analysis.json`；其 `claims_allowed=false`，`pilot_is_not_external_benchmark=true`，`unavailable_is_not_a_score=true`。
+- 六轮成本文件已保存 wall time 与 disk bytes；token、tool call、step、render 通道明确为 `unavailable`，未被转换为分数或零成本。
+- 阶段 manifest：`project_artifacts/formal_study/stage5_manifest.json`；人类可读报告：`project_artifacts/formal_study/stage5_real_model_report.md`。
+- 阶段 5 结论：真实 provider RSI pilot 已完成；外部正式数据 Gate 仍阻断，且本阶段不是模型权重训练，不产生外部 benchmark 主结论。
+
+### 阶段 5 最终验证（2026-09-28）
+
+- 新增阶段文件的 JSON 解析通过：`stage5_manifest.json`、最新 invocation 的 `summary.json` 和 `analysis.json` 均可读取。
+- 最终回归：`py -3.12 -m pytest -q --basetemp=.pytest-stage5-final-verify` 为 `86 passed in 43.62s`。
+- `py -3.12 -m compileall -q src project_artifacts/phase3_experiments/scripts tests` 退出码 0；`git diff --check` 退出码 0。
+- 这些验证只证明代码和证据文件一致可复核，不改变 `claims_allowed=false` 或外部 formal gate blocked 的结论。

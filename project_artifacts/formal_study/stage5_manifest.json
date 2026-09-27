@@ -1,0 +1,82 @@
+{
+  "stage": 5,
+  "stage_name": "real_model_rsi_pilot",
+  "status": "pilot_completed_formal_gate_blocked",
+  "recorded_at": "2026-09-28T01:06:36+08:00",
+  "code_commit": "8fa7b4e48b8e6c382c111e4cea622c011eefb1ad",
+  "working_tree_dirty_during_run": true,
+  "scope": {
+    "experiment": "E05",
+    "dataset_kind": "project-generated",
+    "round_count": 6,
+    "edit_budget_schedule": [3, 3, 2, 2, 1, 1],
+    "weight_training": false,
+    "manual_annotation": false
+  },
+  "provider": {
+    "provider": "codex-cli",
+    "provider_version": "codex-cli 0.158.0-alpha.2.1",
+    "local_provider": "ollama",
+    "model_identity": "ollama:qwen2.5:7b",
+    "command": "codex exec --ignore-user-config --oss --local-provider ollama --model qwen2.5:7b --ephemeral --sandbox workspace-write --json"
+  },
+  "qualification": {
+    "invocation_id": "real-e05-qwen25-20260928-final-retry1",
+    "result_root": "project_artifacts/results/qualification/real-model/real-e05-qwen25-20260928-final-retry1/",
+    "summary": "project_artifacts/results/qualification/real-model/real-e05-qwen25-20260928-final-retry1/summary.json",
+    "analysis": "project_artifacts/results/qualification/real-model/real-e05-qwen25-20260928-final-retry1/analysis.json",
+    "checkpoint": "project_artifacts/results/qualification/real-model/real-e05-qwen25-20260928-final-retry1/E05/e05/round/checkpoint.json",
+    "status": "completed",
+    "completed_rounds": 6,
+    "accepted_rounds": 1,
+    "rejected_rounds": 5,
+    "pruned_rounds": 0,
+    "initial_develop_score": 0.0,
+    "final_develop_score": 1.0,
+    "claims_allowed": false
+  },
+  "rounds": [
+    {"round": 1, "decision": "accept", "parent_version": "0.1.0", "registered_version": "0.2.0", "develop_delta": 1.0, "wall_time_seconds": 23.125753},
+    {"round": 2, "decision": "reject", "parent_version": "0.2.0", "registered_version": "0.3.0", "develop_delta": 0.0, "wall_time_seconds": 16.719037},
+    {"round": 3, "decision": "reject", "parent_version": "0.2.0", "registered_version": "0.4.0", "develop_delta": -1.0, "verification": "invalid patch JSON", "wall_time_seconds": 15.123616},
+    {"round": 4, "decision": "reject", "parent_version": "0.2.0", "registered_version": "0.5.0", "develop_delta": -1.0, "verification": "invalid patch JSON", "wall_time_seconds": 14.917325},
+    {"round": 5, "decision": "reject", "parent_version": "0.2.0", "registered_version": "0.6.0", "develop_delta": 0.0, "wall_time_seconds": 15.670848},
+    {"round": 6, "decision": "reject", "parent_version": "0.2.0", "registered_version": "0.7.0", "develop_delta": -1.0, "verification": "invalid patch JSON", "wall_time_seconds": 15.107534}
+  ],
+  "cost_record": {
+    "round_cost_files": 6,
+    "wall_time": "available",
+    "disk_bytes": "available",
+    "token_count": "unavailable",
+    "tool_calls": "unavailable",
+    "steps": "unavailable",
+    "render_cost": "unavailable"
+  },
+  "prior_attempts": [
+    {"invocation_id": "real-e05-qwen25-20260928", "status": "unavailable", "reason": "provider did not write structured output; UTF-8/Windows decoding issue was preserved"},
+    {"invocation_id": "real-e05-qwen25-20260928-retry1", "status": "unavailable", "reason": "relative output path could not be created from candidate workspace"},
+    {"invocation_id": "real-e05-qwen25-20260928-retry2", "status": "failed", "reason": "immutable registry version collision after four completed rounds"},
+    {"invocation_id": "real-e05-qwen25-20260928-retry3", "status": "completed", "reason": "six-round run retained as prior successful real-model evidence"},
+    {"invocation_id": "real-e05-qwen25-20260928-final", "status": "unavailable", "reason": "CandidatePatch validation rejected empty hypothesis and expected_metric in round 3"}
+  ],
+  "verification": {
+    "pytest": "86 passed in 44.24s",
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "analysis_claim_boundary": "pilot_is_not_external_benchmark; unavailable_is_not_a_score"
+  },
+  "formal_gate": {
+    "status": "blocked",
+    "reason": "external dataset remains unselected and workbook-level license/provenance/leakage gate is not cleared",
+    "reference": "project_artifacts/formal_study/stage4_manifest.json"
+  },
+  "claim_boundary": {
+    "external_benchmark": false,
+    "formal_main_study": false,
+    "external_workagent": false,
+    "manual_annotation": false,
+    "unavailable_is_not_a_score": true,
+    "real_model_provider_run": true,
+    "weight_training": false
+  }
+}
