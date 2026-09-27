@@ -111,7 +111,7 @@
 
 ### GitHub 同步（2026-09-28）
 
-- 分支 `codex/closed-loop-rsi` 已推送到 `origin`；远程和本地提交均为 `95ad2eabeba35de73406ef6cc38942d37491dfef`。
+- 分支 `codex/closed-loop-rsi` 已推送到 `origin`；本次阶段日志最终提交为 `de6bdb8eb4375f3d902b15952aac3c9623884e64`，远程与本地一致。
 
 ## 下一步
 
