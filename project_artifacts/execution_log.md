@@ -118,3 +118,16 @@
 1. 提交阶段 4 metadata-only 门禁、正式矩阵、guarded runner 和分析器，并记录完整测试证据。
 2. 继续核验 SpreadsheetBench workbook 级来源和许可；在 `verified + checksum + quality + leakage` 全部满足前，保持 formal runner 拒绝。
 3. 只有外部数据 Gate 通过后，才下载官方 archive、生成 raw/interim/processed 层并运行 formal matrix；否则继续进行不带外部 benchmark 声明的 pilot/工程验证。
+
+## 阶段 5：真实模型 RSI pilot（2026-09-28）
+
+- 状态：运行中。
+- 运行范围：项目生成的 pilot fixture，实验 `E05`，六轮 RSI；这是真实 Codex/Ollama 候选生成，不是模型权重训练，也不是外部 benchmark。
+- Provider：Codex CLI `0.157.1`，本地 Ollama `qwen2.5:7b`；结果根目录为 `project_artifacts/results/qualification/real-model/`。
+- 启动命令：`py -3.12 project_artifacts/phase3_experiments/scripts/run_formal.py --mode pilot --provider codex --experiments E05`。
+- 当前尚未写入分数；每轮完成后追加 provider、checkpoint、cost、验证、晋级和 claim boundary 证据。
+- 首次 invocation `real-e05-qwen25-20260928` 已结束但状态为 `unavailable`，根因是 Windows GBK 解码 Codex UTF-8 输出时触发 `UnicodeDecodeError`，不是模型评分；失败证据保留在同名结果目录。已增加显式 UTF-8、`errors=replace` 的 provider 回归测试，准备从新 invocation 重试。
+- `retry1` 仍为 `unavailable`，根因是相对 `--output-last-message` 路径在 candidate workspace 下无法创建；已增加相对 `record_root` 回归测试并统一解析绝对路径。
+- `retry2` 已真实生成并验证前 5 轮，但在第 6 轮暴露 registry 版本冲突：多个不同的 rejected sibling 都从 `0.2.0` champion 计算出 `0.3.0`。已增加版本分配回归测试，改为由 registry 为每个候选分配单调唯一版本，准备再次运行。
+- `retry3` 已完成完整六轮，结果状态为 `completed`，6/6 provider records 为 completed，1 个候选被接受、5 个被拒绝，develop 从 `0.0` 提升到 `1.0`；第 4 至 6 轮的无效 patch 被 verifier 拒绝，未转成成功分数。结果目录为 `project_artifacts/results/qualification/real-model/real-e05-qwen25-20260928-retry3/`。
+- 核验发现模型可能在结构化 JSON 中自报错误的 model identity；下一次结果会记录命令配置的 `ollama:qwen2.5:7b`，不再信任候选字段中的自报值。

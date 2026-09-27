@@ -172,6 +172,36 @@ class InterruptSecondRoundProvider:
         return self.delegate.generate(workspace, diagnoses, parent_version, edit_budget, record_root)
 
 
+class UniqueCandidateProvider:
+    provider_version = "unique-candidate-test"
+
+    def __init__(self):
+        self.calls = 0
+        self.delegate = DeterministicCandidateProvider()
+
+    def generate(self, workspace, diagnoses, parent_version, edit_budget, record_root):
+        self.calls += 1
+        candidate, record = self.delegate.generate(workspace, diagnoses, parent_version, edit_budget, record_root)
+        return candidate.model_copy(update={"candidate_id": f"candidate-{self.calls}"}), record
+
+
+def test_rejected_sibling_candidates_receive_unique_registry_versions(tmp_path: Path):
+    task = _task()
+    loop = _loop(tmp_path, UniqueCandidateProvider())
+    result = loop.run(
+        skill_id="office.marker",
+        tasks_by_split={"develop": [task]},
+        contract=_contract(task),
+        source_root=tmp_path / "source",
+        run_root=tmp_path / "run",
+        verification_policy=VerificationPolicy(allowed_targets={"skill.json"}),
+        rounds=3,
+    )
+
+    assert result["status"] == "completed"
+    assert [row["registered_version"]["version"] for row in result["rounds"]] == ["0.2.0", "0.3.0", "0.4.0"]
+
+
 def test_resume_retries_only_incomplete_round_and_uses_latest_champion(tmp_path: Path):
     task = _task()
     provider = InterruptSecondRoundProvider()

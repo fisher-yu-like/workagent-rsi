@@ -136,6 +136,7 @@ def _provider(name: str):
         provider_version=_codex_version(),
         timeout_seconds=180,
         extra_args=["--ignore-user-config", "--oss", "--local-provider", "ollama", "--model", "qwen2.5:7b"],
+        model_identity="ollama:qwen2.5:7b",
     )
 
 

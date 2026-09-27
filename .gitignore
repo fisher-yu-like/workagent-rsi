@@ -6,6 +6,7 @@ __pycache__/
 .pytest-stage2*/
 .pytest-stage3*/
 .pytest-stage4*/
+.pytest-stage5*/
 .artifact-build/
 .venv/
 venv/

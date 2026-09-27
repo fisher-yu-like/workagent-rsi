@@ -130,6 +130,25 @@ class SkillRegistry:
             raise KeyError((skill_id, version))
         return self._model(skill_id, version, row)
 
+    def next_version(self, skill_id: str, base_version: str = "0.1.0") -> str:
+        """Allocate a monotonic version for every candidate, including rejects.
+
+        Several candidates may share one champion parent. Deriving a version only
+        from that parent would reuse the same key for rejected siblings and violate
+        the registry's immutability guarantee.
+        """
+
+        with self._connect() as conn:
+            rows = conn.execute("SELECT version FROM versions WHERE skill_id = ?", (skill_id,)).fetchall()
+        versions = [str(row[0]) for row in rows]
+        if not versions:
+            versions = [base_version]
+        try:
+            major, minor, patch = max(tuple(int(part) for part in version.split(".")) for version in versions)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"registry contains a non-semver skill version: {versions}") from exc
+        return f"{major}.{minor + 1}.{patch}"
+
     def set_champion(self, skill_id: str, version: str, evidence_refs: list[str]) -> None:
         record = self.get(skill_id, version)
         if record.status not in {"accepted", "champion", "rolled_back"}:

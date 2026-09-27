@@ -35,7 +35,16 @@ def _workspace_hash(workspace: Path) -> str:
 
 
 def _default_runner(command: list[str], cwd: Path, timeout: int) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(command, cwd=cwd, timeout=timeout, capture_output=True, text=True, check=False)
+    return subprocess.run(
+        command,
+        cwd=cwd,
+        timeout=timeout,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        check=False,
+    )
 
 
 class CodexCandidateProvider:
@@ -47,6 +56,7 @@ class CodexCandidateProvider:
         executable: str = "codex",
         timeout_seconds: int = 180,
         extra_args: list[str] | None = None,
+        model_identity: str | None = None,
         runner: Runner = _default_runner,
     ) -> None:
         self.schema_path = Path(schema_path).resolve()
@@ -54,6 +64,7 @@ class CodexCandidateProvider:
         self.executable = executable
         self.timeout_seconds = timeout_seconds
         self.extra_args = list(extra_args or [])
+        self.model_identity = model_identity
         self.runner = runner
 
     def generate(
@@ -65,7 +76,7 @@ class CodexCandidateProvider:
         record_root: str | Path,
     ) -> tuple[CandidatePatch | None, ProviderRecord]:
         workspace_path = Path(workspace).resolve()
-        records = Path(record_root)
+        records = Path(record_root).resolve()
         records.mkdir(parents=True, exist_ok=True)
         output_path = records / "candidate.json"
         stdout_path = records / "provider.stdout.jsonl"
@@ -121,7 +132,7 @@ class CodexCandidateProvider:
         record = ProviderRecord(
             provider="codex-cli",
             provider_version=self.provider_version,
-            model_identity=patch.model_identity if patch else None,
+            model_identity=self.model_identity or (patch.model_identity if patch else None),
             command=command[:-1] + ["<prompt:redacted>"],
             prompt_hash=canonical_json_hash({"prompt": prompt}),
             workspace_hash=_workspace_hash(workspace_path),

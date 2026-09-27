@@ -281,7 +281,7 @@ class RSILoop:
             candidate_reports = {}
         metrics = self._metrics(baseline, candidate_reports, verification.passed)
         decision = self.promotion.decide(candidate.candidate_id, verification, metrics, contract)
-        version = self._next_version(champion.version)
+        version = self.registry.next_version(skill_id, champion.version)
         record = self.registry.register(
             skill_id=skill_id,
             version=version,
