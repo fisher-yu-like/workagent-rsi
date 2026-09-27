@@ -1,0 +1,42 @@
+{
+  "stage": 3,
+  "stage_name": "multiround_rsi_checkpoint_resume",
+  "status": "passed",
+  "recorded_at": "2026-09-27T15:09:59Z",
+  "code_commit": "312a61caa447af91eafe9180ffa5d183f7166759",
+  "working_tree_dirty_during_qualification": false,
+  "qualification": {
+    "experiment": "E05",
+    "provider": "DeterministicCandidateProvider",
+    "result_root": "project_artifacts/results/qualification/multiround-final/E05/20260927T150924352814Z-deterministic-e05/",
+    "round_count": 6,
+    "edit_budget_schedule": [3, 3, 2, 2, 1, 1],
+    "initial_develop_score": 0.0,
+    "final_develop_score": 1.0,
+    "accepted_rounds": 1,
+    "rejected_rounds": 1,
+    "pruned_rounds": 4,
+    "champion_version": "0.2.0",
+    "cost_files": 6,
+    "checkpoint": "project_artifacts/results/qualification/multiround-final/E05/20260927T150924352814Z-deterministic-e05/round/checkpoint.json"
+  },
+  "resume_evidence": {
+    "test": "tests/test_multiround_rsi.py::test_resume_retries_only_incomplete_round_and_uses_latest_champion",
+    "result": "completed round is unchanged; only incomplete round retried; candidate reads required_text champion package after promotion",
+    "provider_calls": 3,
+    "token_tool_step_channels": "unavailable recorded explicitly"
+  },
+  "verification": {
+    "pytest": "72 passed in 59.66s",
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0
+  },
+  "claim_boundary": {
+    "external_workagent": false,
+    "external_benchmark": false,
+    "manual_annotation": false,
+    "deterministic_qualification_only": true,
+    "formal_main_study_started": false
+  },
+  "next_stage": "external_dataset_license_and_quality_gate"
+}

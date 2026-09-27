@@ -62,7 +62,22 @@
 
 - 阶段 3 红测试先因 `RSILoop.run` 不存在而失败。
 - 实现后阶段 3 相关测试和旧 RSI 测试：`4 passed`；加入中断恢复和继承性测试后，全量回归：`72 passed in 59.66s`。
-- `compileall` 通过；真实六轮 pilot 的运行证据正在生成，完成后再写阶段 3 Gate manifest。
+- `compileall` 通过；真实六轮 pilot 已完成，正在写阶段 3 Gate manifest。
+
+### 阶段 3 Gate：通过（2026-09-27）
+
+- 代码提交：`312a61caa447af91eafe9180ffa5d183f7166759`，qualification 运行时工作树干净。
+- deterministic E05 六轮结果：`project_artifacts/results/qualification/multiround-final/E05/20260927T150924352814Z-deterministic-e05/`。
+- 预算为 `[3, 3, 2, 2, 1, 1]`；第 1 轮 `0.1.0 -> 0.2.0` 被接受，第 2 轮被拒绝，后 4 轮由 registry 负证据剪枝；develop 分数 `0.0 -> 1.0`。
+- 每轮都有 `round_summary.json` 和 `cost.json`，token/tool/step/render 通道在 deterministic provider 下明确标为 unavailable，wall time 与磁盘大小可用。
+- 中断恢复测试确认已完成轮不重新评分，未完成轮使用 retry 目录恢复，并读取上一轮 champion 的 `required_text` 包。
+- 阶段 manifest：`project_artifacts/formal_study/stage3_manifest.json`。
+- 阶段 3 Gate：通过，已自动进入外部数据来源、许可证和质量门禁；当前只做 metadata/adaptor，不把未核实数据写入正式结果。
+
+## 阶段 4：外部数据来源与许可门禁
+
+- 当前状态：进行中。
+- 目标是先记录 OfficeBench、SpreadsheetBench、OSWorld/Windows Agent Arena 等候选的官方来源、版本和许可状态；许可证未核实前不下载任务文件。
 
 ## 下一步
 
