@@ -154,3 +154,9 @@
 - 最终回归：`py -3.12 -m pytest -q --basetemp=.pytest-stage5-final-verify` 为 `86 passed in 43.62s`。
 - `py -3.12 -m compileall -q src project_artifacts/phase3_experiments/scripts tests` 退出码 0；`git diff --check` 退出码 0。
 - 这些验证只证明代码和证据文件一致可复核，不改变 `claims_allowed=false` 或外部 formal gate blocked 的结论。
+
+### 阶段 5 Git 收尾（2026-09-28）
+
+- 阶段 5 文档与 manifest 已提交：`94ee97c`（`record real-model RSI pilot`）。
+- 已推送到 `origin/codex/closed-loop-rsi`；推送后本地与远程 hash 均为 `94ee97c274bcf637dc485e42e1d8f3a19db2fbc8`。
+- 收尾时工作树干净，结果目录仍保留在 `project_artifacts/results/qualification/real-model/`，并未把被忽略的二进制/运行中间文件混入提交。
