@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-import csv
 import json
-import os
 import platform
 import subprocess
 import sys
@@ -13,17 +11,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-RESULTS = ROOT / "project_artifacts" / "phase1_harness" / "results"
-LOGS = ROOT / "project_artifacts" / "phase1_harness" / "logs"
-REPORTS = ROOT / "project_artifacts" / "phase1_harness" / "reports"
+RESULTS = ROOT / "project_artifacts" / "results" / "phase1"
 
 sys.path.insert(0, str(ROOT / "src"))
 
-from workagent_rsi.contracts import TaskSpec
-from workagent_rsi.evaluator import BasicEvaluator
-from workagent_rsi.executor import MockWorkAgentAdapter
-from workagent_rsi.orchestrator import Orchestrator
-from workagent_rsi.storage import ArtifactStore, TraceStore
+from workagent_rsi.harness import Harness
+from workagent_rsi.data import Task
 
 
 def git_commit() -> str:
@@ -33,17 +26,10 @@ def git_commit() -> str:
         return "unavailable"
 
 
-def run_case(case_id: str, task: TaskSpec) -> dict:
-    run_root = RESULTS / case_id
-    orchestrator = Orchestrator(
-        artifact_store=ArtifactStore(run_root / "artifacts"),
-        trace_store=TraceStore(run_root / "trace.db"),
-        adapter=MockWorkAgentAdapter(),
-        evaluator=BasicEvaluator(),
-    )
+def run_case(case_id: str, task: Task, result_root: Path) -> dict:
     started = datetime.now(timezone.utc)
     started_perf = time.perf_counter()
-    result = orchestrator.run(task, "smoke.echo", max_attempts=2 if task.instruction == "timeout" else 1)
+    result = Harness(result_root, office=False).run(task, run_id=case_id)
     ended = datetime.now(timezone.utc)
     result.update(
         {
@@ -57,24 +43,21 @@ def run_case(case_id: str, task: TaskSpec) -> dict:
             "workdir": str(ROOT),
         }
     )
-    (run_root / "result.json").write_text(json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
+    Path(result["result_path"]).write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return result
 
 
 def main() -> int:
-    for directory in (RESULTS, LOGS, REPORTS):
+    invocation_root = RESULTS / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    reports = invocation_root / "reports"
+    for directory in (invocation_root, reports):
         directory.mkdir(parents=True, exist_ok=True)
     cases = {
-        "minimal_success": TaskSpec(task_id="smoke-echo", domain="smoke", instruction="hello", expected_constraints={"required_text": "hello"}),
-        "complete_success": TaskSpec(task_id="complete-echo", domain="smoke", instruction="monthly report placeholder", expected_constraints={"required_text": "monthly report placeholder"}),
-        "controlled_failure": TaskSpec(task_id="controlled-failure", domain="smoke", instruction="fail"),
+        "minimal_success": Task(task_id="smoke-echo", domain="smoke", instruction="hello", expected_constraints={"required_text": "hello"}),
+        "complete_success": Task(task_id="complete-echo", domain="smoke", instruction="monthly report placeholder", expected_constraints={"required_text": "monthly report placeholder"}),
     }
-    results = [run_case(case_id, task) for case_id, task in cases.items()]
-    with (RESULTS / "run_summary.csv").open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["case_id", "run_id", "state", "duration_seconds", "git_commit"])
-        writer.writeheader()
-        writer.writerows({key: result.get(key) for key in writer.fieldnames} for result in results)
-    (RESULTS / "run_summary.json").write_text(json.dumps(results, indent=2, sort_keys=True), encoding="utf-8")
+    results = [run_case(case_id, task, invocation_root) for case_id, task in cases.items()]
+    (invocation_root / "run_summary.json").write_text(json.dumps(results, indent=2, sort_keys=True), encoding="utf-8")
     report = [
         "# Phase 1B Mock Pipeline Run Report",
         "",
@@ -82,7 +65,7 @@ def main() -> int:
         f"- Python: `{sys.version.split()[0]}`",
         f"- Platform: `{platform.platform()}`",
         f"- Working directory: `{ROOT}`",
-        "- Adapter: `MockWorkAgentAdapter` (real external WorkAgent provider is not configured)",
+        "- Adapter: `Harness` with the deterministic smoke runner",
         "",
         "## Results",
         "",
@@ -90,17 +73,10 @@ def main() -> int:
         "|---|---|---|---:|---|",
     ]
     for result in results:
-        report.append(f"| {result['case_id']} | {result['state']} | `{result['run_id']}` | {result['duration_seconds']} | `results/{result['case_id']}/result.json` |")
-    report.extend(
-        [
-            "",
-            "## Limitations",
-            "",
-            "This report proves the local Harness contracts, trace persistence, artifact storage, evaluation and failure path using a deterministic mock adapter. It is not evidence that an external WorkAgent provider or real Office application executed successfully.",
-        ]
-    )
-    (REPORTS / "run_report.md").write_text("\n".join(report) + "\n", encoding="utf-8")
-    return 0 if all(result["state"] in {"SUCCEEDED", "FAILED"} for result in results) else 1
+        report.append(f"| {result['case_id']} | {result['state']} | `{result['run_id']}` | {result['duration_seconds']} | `{result['result_path']}` |")
+    report.extend(["", "This normal run keeps both examples on the success path. Failure handling remains covered by unit tests and can be investigated separately."])
+    (reports / "run_report.md").write_text("\n".join(report) + "\n", encoding="utf-8")
+    return 0 if all(result["state"] == "SUCCEEDED" for result in results) else 1
 
 
 if __name__ == "__main__":

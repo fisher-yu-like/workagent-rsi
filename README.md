@@ -1,8 +1,8 @@
 # WorkAgent-RSI
 
-Benchmark-driven recursive skill improvement for Office agents.
+WorkAgent-RSI helps an Office assistant complete a task, check the generated file, and keep a verified improvement for later tasks. The normal entry point is `Harness`; one run produces one result directory under `project_artifacts/results/`.
 
-This repository has completed the bounded Phase 3 closed-loop pilot. The Harness, local Office qualification, isolated Codex/Ollama candidate provider, verifier, frozen evaluator, registry, promotion/rollback, and E01-E12 pilot evidence are implemented. This remains a 30-task project-generated pilot, not an external WorkAgent benchmark or powered main study.
+The project keeps the full research machinery behind a small vocabulary: `Run` executes, `Learn` exports an isolated workspace and proposes a bounded improvement, `Check` verifies/evaluates/promotes, and `Store` keeps the evidence and version history. Candidate isolation, leakage checks, frozen evaluation, promotion and rollback remain available through these facades and the compatible internal modules.
 
 ## Start here
 
@@ -17,7 +17,8 @@ This repository has completed the bounded Phase 3 closed-loop pilot. The Harness
 
 ```text
 docs/                         Literature report and preserved sources
-project_artifacts/            Phase-gated designs, logs, results and reports
+project_artifacts/results/    All new run output, one directory per run
+project_artifacts/            Phase-gated designs and archived evidence
 Agent.md                      Agent operating contract and execution gates
 tests/                        Single root for automated tests
 src/workagent_rsi/             Harness, closed-loop RSI and Office evaluation package
@@ -35,11 +36,11 @@ src/workagent_rsi/             Harness, closed-loop RSI and Office evaluation pa
 ```powershell
 py -3.12 -m pip install -e .
 py -3.12 -m pytest -q --basetemp="$env:TEMP\workagent-rsi-tests"
-py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml --output run.json
-py -3.12 project_artifacts/phase3_experiments/scripts/run_e01_e12.py --provider codex --codex-backend ollama --local-model qwen2.5:7b
+py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml
+py -3.12 project_artifacts/phase3_experiments/scripts/run_b0_office_qualification.py
 ```
 
 ## Current gate
 
-Phase 1 and Phase 2 are accepted. Phase 3 data quality, Mock B0, Local Office B0, Office COM, Codex/Ollama candidate generation, and all E01-E12 pilot invocations are complete. Results are mechanism-validation evidence for the controlled pilot and must not be reported as an external WorkAgent result or main-study conclusion.
+Phase 1 and Phase 2 are accepted. Phase 3 data quality, local Office qualification, candidate generation, and the historical E01-E12 pilot are complete. The historical pilot is mechanism-validation evidence over a project-generated fixture, not an external WorkAgent result or main-study conclusion.
 # workagent-rsi

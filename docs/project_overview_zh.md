@@ -1,205 +1,133 @@
-# WorkAgent-RSI 项目整体介绍
+# WorkAgent-RSI 项目介绍
 
-## 1. 项目定位
+## 先用一句话说明
 
-WorkAgent-RSI 是一个面向 Excel、Word 和 PowerPoint 办公任务的、基准驱动的递归技能改进框架。这里的 RSI 指 Recursive Skill Improvement，即在固定任务、验证器、评估器和晋级政策约束下改进 Prompt、工具策略、上下文、Office 脚本和候选测试，而不是让模型不受限制地修改自身权重、目标或评估标准。
+这个项目让一个办公助手完成任务、检查生成的文件，并把确认有效的工作方法保存下来，供下一次任务继续使用。
 
-项目的核心原则是：候选生成器可以提出修改，独立 verifier 决定候选是否安全可执行，冻结 evaluator 判断候选是否真的变好，promotion controller 决定是否注册为新 champion，registry 保留不可变版本并支持 rollback。
+目前支持 Excel、Word 和 PowerPoint 文件。生成的文件是真实的 `.xlsx`、`.docx` 和 `.pptx`，可以用对应的 Office 库重新打开检查。
 
-本仓库已完成 Harness、Office 资格验证、Codex-backed candidate provider、闭环 RSI 基础设施和 E01-E12 的 30-task pilot。结果不能解释为正式主研究、外部 WorkAgent 产品性能或通用 Office 能力。
+## 你只需要记住五个词
 
-## 2. 研究基础
+```text
+Harness  总入口
+Run      完成一次任务并生成文件
+Learn    根据失败记录提出改进
+Check    检查文件和改进是否安全、有效
+Store    保存文件、日志、版本和回滚记录
+```
 
-项目最初调研的两篇参考工作保存在 docs/literature_review.md 和 docs/sources/。Phase 2 将参考思想落实为以下工程约束：
+日常使用只需要调用 `Harness`：
 
-- 候选提出、验证、评估和晋级权力分离；
-- 候选只能进行有预算的原子编辑；
-- hidden/OOD 结果不得向候选生成器泄漏任务级信息；
-- evaluator、hidden tests、promotion policy、allowlist 和历史证据属于保护区；
-- 每个接受或拒绝决策必须指向真实 trace、artifact、hash 和 evaluator 输出；
-- 缺失能力保持 failed、unavailable 或 blocked，不补造分数。
+```python
+from workagent_rsi import Harness
 
-## 3. 当前架构
+result = Harness("project_artifacts/results").run({
+    "task_id": "report-001",
+    "domain": "word",
+    "instruction": "Create a document containing REPORT-001",
+    "expected_constraints": {"required_text": "REPORT-001"},
+})
+print(result["state"])
+print(result["result_path"])
+```
 
-~~~mermaid
-flowchart TB
-  DATA[Versioned Pilot Dataset] --> RUN[Benchmark and Experiment Runner]
-  REG[Immutable Skill Registry] --> EXEC[Skill-Aware Office Executor]
-  RUN --> EXEC
-  EXEC --> TRACE[SQLite Trace Memory]
-  EXEC --> ART[Content-Addressed Artifact Store]
-  TRACE --> DIAG[Deterministic Failure Diagnoser]
-  ART --> DIAG
-  DIAG --> PROVIDER[Codex CLI Candidate Provider]
-  REG --> PROVIDER
-  PROVIDER --> WS[Isolated Candidate Workspace]
-  WS --> LEAK[Leakage Critic]
-  LEAK --> VERIFY[Fail-Closed Verifier]
-  VERIFY --> FROZEN[Frozen Artifact Evaluator]
-  FROZEN --> PROMOTE[Promotion Controller]
-  PROMOTE --> REG
-  REG --> ROLLBACK[Rollback Manager]
-  FROZEN --> REPORT[E01-E12 Evidence]
-~~~
+命令行也可以完成同一件事：
 
-### 3.1 已实现组件和真实地址
+```powershell
+py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml
+```
 
-| 组件 | 地址 | 当前作用 |
+每次运行都会在下面创建一个独立目录：
+
+```text
+project_artifacts/results/<run-id>/
+├── task.json       # 本次任务
+├── result.json     # 最终结果
+├── trace.db        # 运行过程和状态变化
+├── artifacts/      # 内容寻址保存的文件
+├── generated/      # 本次生成的 Office 文件
+└── skills/         # 本次运行需要的技能版本记录
+```
+
+## 一次正常运行怎么走
+
+```text
+任务
+  ↓
+Run 生成文件
+  ↓
+Check 重新打开文件并检查格式和要求
+  ↓
+Store 保存结果
+  ↓
+返回 SUCCEEDED 或 FAILED
+```
+
+默认的 Office 运行直接使用任务中写明的 `required_text`。因此普通单轮运行从正常路径开始，不需要先制造一个错误再观察改进。
+
+如果需要研究技能改进，才会额外进入下面的流程：
+
+```text
+失败记录 → Learn 提出小修改 → Check 验证 → Check 评估 → 接受或拒绝 → Store 保存版本
+```
+
+这部分仍然保留完整能力：候选在隔离目录中生成，不能读取 hidden 数据，也不能修改 evaluator、晋级规则、工具白名单或历史证据；验证、评估、晋级和回滚仍由不同的内部对象负责。对外名称变短，安全边界没有变弱。
+
+## 当前代码怎么对应
+
+| 简单名称 | 入口文件 | 作用 |
 |---|---|---|
-| 基础任务与 artifact 契约 | src/workagent_rsi/contracts.py | TaskSpec、SkillManifest、ArtifactRef、EvaluationReport |
-| RSI 证据契约 | src/workagent_rsi/rsi_contracts.py | CandidatePatch、FailureDiagnosis、VerificationReport、SkillVersion、PromotionDecision、EvaluationContract、ExperimentResult |
-| Harness orchestrator | src/workagent_rsi/orchestrator.py | 运行状态、重试、artifact ingestion、evaluator 调用 |
-| Mock/Office adapters | src/workagent_rsi/executor.py | Mock Harness 与本地真实 OOXML 资格验证 |
-| Skill-aware Office runtime | src/workagent_rsi/skill_runtime.py | 根据版本化 marker policy 生成真实 XLSX、DOCX、PPTX |
-| 确定性故障诊断 | src/workagent_rsi/diagnosis.py | 从公开失败证据分类 input/planning/tool/format/semantic/visual/evaluator/safety |
-| 候选隔离 | src/workagent_rsi/candidate_workspace.py | allowlist 复制、保护文件排除、独立 Git、候选 AGENTS 规则 |
-| Candidate provider | src/workagent_rsi/candidate_provider.py | Codex CLI/Ollama 或 deterministic test provider，结构化 CandidatePatch 输出 |
-| 泄漏检查 | src/workagent_rsi/leakage.py | 保护值、task-specific map、evaluator/governance 路径和越权能力检查 |
-| Verifier | src/workagent_rsi/verifier.py | path policy、leakage、patch JSON、compile、candidate tests，fail-closed |
-| Frozen evaluator | src/workagent_rsi/frozen_evaluator.py | split/evaluator hash 校验、真实 Office artifact 评价、hidden 行级结果隐藏、自动 response judge |
-| Registry/Rollback | src/workagent_rsi/registry.py | 内容寻址 skill package、SQLite 版本索引、champion alias、lineage、rollback |
-| Promotion | src/workagent_rsi/promotion.py | develop、regression、hidden、OOD、安全、复现、成本非补偿式门禁 |
-| RSI loop | src/workagent_rsi/rsi_loop.py | diagnosis→provider→verify→evaluate→promote→registry |
-| Experiment runner | src/workagent_rsi/experiment_runner.py | E01-E12 immutable invocation 和 comparator replay |
-| 命令入口 | project_artifacts/phase3_experiments/scripts/run_e01_e12.py | 运行指定或全部实验 |
+| `Harness` | `src/workagent_rsi/harness.py` | 对外唯一的日常入口 |
+| `Run` | `src/workagent_rsi/run.py` | 选择 smoke 或 Office 运行器并完成一次任务 |
+| `Learn` | `src/workagent_rsi/learn.py` | 诊断失败并生成受限候选 |
+| `Check` | `src/workagent_rsi/check.py` | 提供验证、评估和晋级服务 |
+| `Store` | `src/workagent_rsi/store.py` | 统一保存文件、日志、技能版本和回滚信息 |
+| `Task`、`Change`、`Report` | `src/workagent_rsi/data.py` | 提供容易理解的数据名称 |
 
-## 4. Skill 如何表示和工作
+原来的 `candidate_provider.py`、`verifier.py`、`frozen_evaluator.py`、`registry.py` 等文件继续保留，作为内部实现和兼容导入。这样已有测试、实验记录和外部调用不会因为改名失效；新代码可以只使用上表中的短名称。
 
-Pilot skill 是一个不可变的版本化 JSON package。当前最小技能参数是 marker_source：
+简化入口不是功能删减：`Learn` 仍然提供候选工作区导出、失败诊断和候选生成；`Check` 仍然提供补丁验证、Office 文件评估、冻结 split 评估和晋级门禁；`Store` 仍然提供内容寻址 artifact、trace、版本注册、lineage、champion 切换和回滚；`Harness.resume()` 可以读取已有运行的状态和事件。更复杂的 E01-E12 runner 和完整 `RSILoop` 仍保留在内部模块中，原有导入和实验脚本继续有效。
 
-- task_id：baseline 行为，将任务 ID 写入 artifact；
-- required_text：candidate 行为，将任务要求的标记写入 artifact。
+## 两篇参考工作的影响
 
-Baseline 的 task_id 策略是故意设置的可观察缺陷，用于验证闭环能否从真实 Office 失败中诊断、生成候选、验证并晋级。它不是生产 Office agent 的质量基线。
+项目借鉴了两类思想：
 
-SkillVersion 保存 skill_id、version、parent_version、content_hash、manifest_hash、candidate_id、status、evidence_refs 和 created_at。Skill package 存入 registry/packages/<content_hash>/，历史版本不能覆盖；champion 只是 SQLite 中可移动的 alias。Rollback 只移动 alias，不删除版本和历史证据。
+1. RRSI 提醒我们，候选修改要小、要有证据，并且要经过独立检查，不能只看开发集分数。
+2. RSI 框架工作提醒我们，真正的持续改进必须把有效修改保存到下一轮，而不是只在当前任务里反思一次。
 
-CandidatePatch 由一个或多个 AtomicEdit 构成。每个 edit 必须包含 target_path、component、hypothesis、expected_metric 和 patch。当前 pilot 将可编辑目标限制为 skill.json，模型的 patch 字段必须是精确 JSON 对象。
+因此项目保留了候选隔离、泄漏检查、冻结评估、回归和 OOD 检查、成本门禁、版本注册及回滚。当前实现属于 L1 和受控 L2：系统能自动执行规定的改进流程，也能在批准范围内选择修改类型；不会把当前结果表述成 L3、L4 或 L5。
 
-## 5. Candidate provider
+## 结果和历史证据
 
-真实 candidate provider 使用：
+所有新运行结果统一放在 `project_artifacts/results/`。其中：
 
-- Codex CLI 0.144.2；
-- Codex 的 ephemeral、workspace-write、JSONL 和 output-schema 模式；
-- 本机 Ollama provider；
-- qwen2.5:7b 模型。
+- `project_artifacts/results/<run-id>/`：日常单轮运行；
+- `project_artifacts/results/qualification/`：新的本地资格运行；
+- `project_artifacts/results/experiments/`：新的研究实验运行。
 
-运行目录是新建的独立 candidate workspace，不是主仓库。Workspace 仅包含 champion skill.json、公开 diagnosis、候选规则和 AGENTS.md；不包含 hidden tasks、evaluator、promotion policy、registry history 或项目复制的凭据。
+旧的 `project_artifacts/phase1_harness/results/` 和 `project_artifacts/phase3_experiments/results/` 是此前已经完成的历史证据，保留用于追溯，不会被新运行覆盖。
 
-远程 provider 路径在资格探测中出现过配置环境变量缺失和网络超时，均保留为失败证据。Ollama provider 成功返回真实 token usage 和结构化输出。第一条本地候选因 patch 尾随引号被 verifier 拒绝；收紧 provider 合约后候选通过。这些失败没有被删除或改写成成功。
+历史 E01-E12 pilot 使用了一个专门的缺陷基线来验证闭环机制。那是研究用历史记录，不是普通运行的默认行为，也不代表外部 WorkAgent 的性能。当前 pilot 只有 30 个项目生成任务，不能作为正式主研究结论。
 
-## 6. 执行 Pipeline
+## 常用命令
 
-### 6.1 单轮 RSI
-
-1. 从 registry 读取 champion。
-2. 在 develop/evolve 等允许 split 上生成真实 Office artifacts。
-3. Frozen evaluator 重新打开 artifact 并输出任务级失败。
-4. FailureDiagnoser 生成带证据 hash 的诊断。
-5. CandidateWorkspaceBuilder 导出受限候选目录。
-6. Codex provider 返回 schema-valid CandidatePatch。
-7. LeakageCritic 与 CandidateVerifier 执行保护路径、泄漏、JSON、compile 和测试门禁。
-8. 通过的 candidate 应用到新的 skill package。
-9. 在 develop、regression、hidden、OOD 上重新生成真实 artifacts。
-10. PromotionController 执行非补偿式门禁。
-11. 接受的版本注册并移动 champion alias；拒绝版本保留证据。
-12. Rollback 可将 alias 移回任一已接受父版本。
-
-### 6.2 Hidden 数据隔离
-
-Hidden split 文件位于 project_artifacts/phase3_experiments/data/protected/。候选 workspace 不复制这些文件。FrozenEvaluator 在 hidden split 上保存受保护的完整结果，但公开 report 只返回 task_count、success_count、score、split hash 和 evaluator hash，不返回行级任务内容。
-
-## 7. 数据与基础资格验证
-
-Pilot 数据集版本为 synthetic-office-taskset-v0.1.0：
-
-- 30 个 project-generated 任务；
-- Excel、Word、PowerPoint 各 10 个；
-- evolve 12、develop 6、regression 4、hidden 5、OOD 3；
-- public 25、protected 5；
-- 14 项数据质量检查全部通过。
-
-基础 Harness 回归：
-
-- Mock B0：25/25 succeeded，mean score 1.0；
-- Local Office B0：25/25 succeeded，mean score 1.0；
-- Word/Excel/PowerPoint COM：25/25 打开成功，版本均为 16.0。
-
-Mock B0 和 Local Office B0 是资格验证，不是 RSI 实验结果。
-
-## 8. E01-E12 Pilot 结果
-
-最终索引位于 project_artifacts/phase3_experiments/results/e01_e12/latest_summary.json 和 latest_summary.md。每个实验保留独立 contract、provider logs、candidate、verification、真实 Office artifacts、evaluation、registry 和 decision。
-
-| 实验 | 最新 Pilot 结果 | 解释 |
-|---|---|---|
-| E01 | fixed baseline task success 0.0 | 故意有缺陷的 task_id marker baseline |
-| E02 | develop 0.0→1.0；regression/hidden/OOD delta 1.0 | Self-Refine 候选通过 verifier 和 promotion |
-| E03 | generator-only accept 1.0；verified accept 1.0；invalid promotion 0.0 | 同一真实候选的 paired policy replay |
-| E04 | develop-only accept 1.0；modular accept 1.0；invalid promotion 0.0 | 当前候选未触发额外 evaluator 拒绝 |
-| E05 | develop 0.0→1.0；critical regressions 0 | 完整闭环成功晋级 |
-| E06 | verifier enabled pass 1.0；disabled accept 1.0；prevented 0.0 | 当前干净候选两种政策一致 |
-| E07 | automated agreement rate 0.0 | response judge 只看指令而 artifact evaluator 发现真实文件缺标记；无人工标注声明 |
-| E08 | domain-specific OOD 0.0；shared OOD 1.0；transfer delta 1.0 | shared marker policy 在 OOD Office artifact 上通过 |
-| E09 | edit count 1；regularized/unregularized admissible 均 1.0 | 候选本身满足单原子编辑预算 |
-| E10 | regularized/unregularized accept 均 1.0；prevented 0.0 | 所有保护门禁均通过 |
-| E11 | critic enabled rejection 1.0；disabled rejection 0.0 | task-specific answer map 被 leakage critic 拦截 |
-| E12 | Word/PPT develop 0.0→1.0；protected deltas 1.0 | Word/PPT 闭环真实 artifact 验证通过 |
-
-这些数值是为闭环机制构造的 pilot，任务和 skill 变化高度受控，不能解释为自然分布中的模型能力提升，也不能用于正式统计显著性或产品比较。
-
-## 9. E07 自动交叉评估
-
-用户明确要求不使用人工标注，因此 E07 改为两个自动通道：
-
-- Artifact evaluator：真实重新打开 DOCX/XLSX/PPTX 并检查要求标记；
-- Response judge：只根据任务指令文本做自动判断。
-
-E07 agreement rate 为 0.0，说明 response-only 评价在本 pilot 中会把“指令包含要求”误认为“最终文件包含要求”。该结果支持 artifact-level evaluator 的必要性，但不是 evaluator-human agreement。
-
-## 10. 安全与可信边界
-
-- Candidate 不能写主仓库。
-- Candidate workspace 不包含 hidden/evaluator/governance 文件。
-- 相对路径、Windows 保留名、路径穿越和 symlink 受到限制。
-- Provider 输出必须通过 JSON schema 和 Pydantic contract。
-- evaluator、promotion、registry 历史和 allowlist 不可由候选修改。
-- safety、leakage、critical regression、hidden/OOD、reproducibility 和 cost gate 不能互相补偿。
-- 失败 provider 输出、无效 patch 和被拒候选继续保留。
-- 实验 invocation 不覆盖旧目录。
-
-## 11. 测试与复现
-
-所有测试均位于单一顶层 tests/ 目录。
-
-~~~powershell
+```powershell
+# 安装
 py -3.12 -m pip install -e .
+
+# 运行全部测试
 py -3.12 -m pytest -q --basetemp="$env:TEMP\workagent-rsi-tests"
-py -3.12 project_artifacts/phase3_experiments/data/quality_check.py
-py -3.12 project_artifacts/phase3_experiments/scripts/run_b0_qualification.py
+
+# 运行一次普通任务，结果写入 project_artifacts/results
+py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml
+
+# 运行本地资格检查，结果也写入 project_artifacts/results
 py -3.12 project_artifacts/phase3_experiments/scripts/run_b0_office_qualification.py
-powershell -ExecutionPolicy Bypass -File project_artifacts/phase3_experiments/scripts/verify_office_com.ps1 -Root project_artifacts/phase3_experiments/results/b0_office_qualification -OutputJson project_artifacts/phase3_experiments/results/b0_office_qualification/com_validation.json
-py -3.12 project_artifacts/phase3_experiments/scripts/run_e01_e12.py --provider codex --codex-backend ollama --local-model qwen2.5:7b
-~~~
+```
 
-## 12. 已知限制与下一步
+## 研究资料
 
-- 数据集只有 30 个合成 pilot 任务，不能支持主研究结论。
-- 当前 skill 只控制 marker policy，尚未覆盖复杂公式、模板迁移、布局优化和视觉生成。
-- qwen2.5:7b 的本地模型 metadata 在 Codex CLI 中使用 fallback metadata，可能影响 token/上下文估计。
-- E03/E04/E06/E09/E10 的 comparator 使用同一真实候选进行 paired policy replay，隔离政策影响，但没有执行独立候选搜索轨迹。
-- Frozen evaluator 当前聚焦格式和 required marker，尚未包含完整公式重算、Word 分页、PPT 重叠和视觉 judge。
-- 远程 provider 网络路径不稳定，本次最终候选证据来自本地 Ollama。
-- 正式主研究仍需要扩展到至少 90 个独立来源/模板任务、更多 seeds、视觉人工校准样本以及第二个 executor/model。
-
-## 13. 主要证据入口
-
-- 设计规格：docs/superpowers/specs/2026-09-24-workagent-rsi-closed-loop-design.md
-- 实施计划：docs/superpowers/plans/2026-09-24-workagent-rsi-closed-loop.md
-- 数据质量：project_artifacts/phase3_experiments/data/quality_report.json
-- Mock B0：project_artifacts/phase3_experiments/results/b0_qualification/summary.json
-- Office B0：project_artifacts/phase3_experiments/results/b0_office_qualification/summary.json
-- Office COM：project_artifacts/phase3_experiments/results/b0_office_qualification/com_validation.json
-- E01-E12 总索引：project_artifacts/phase3_experiments/results/e01_e12/latest_summary.json
-- 单实验完整证据：project_artifacts/phase3_experiments/results/e01_e12/Exx/<invocation>/
+- 两篇参考工作的调研：[docs/literature_review.md](literature_review.md)
+- Agent 执行规则：[Agent.md](../Agent.md)
+- 三阶段执行计划：[Codex三阶段项目执行计划.md](../Codex三阶段项目执行计划.md)
+- 当前代码包说明：[src/workagent_rsi/README.md](../src/workagent_rsi/README.md)

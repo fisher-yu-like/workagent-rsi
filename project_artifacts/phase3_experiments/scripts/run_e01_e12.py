@@ -28,7 +28,7 @@ def main() -> int:
     parser.add_argument(
         "--output-root",
         type=Path,
-        default=ROOT / "project_artifacts" / "phase3_experiments" / "results" / "e01_e12",
+        default=ROOT / "project_artifacts" / "results" / "experiments" / "e01_e12",
     )
     parser.add_argument("--timeout-seconds", type=int, default=180)
     parser.add_argument("--codex-backend", choices=("remote", "ollama"), default="ollama")

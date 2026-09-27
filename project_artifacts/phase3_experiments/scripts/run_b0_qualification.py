@@ -15,16 +15,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 DATA_ROOT = ROOT / "project_artifacts" / "phase3_experiments" / "data"
 PUBLIC_TASKS = DATA_ROOT / "processed" / "public_tasks.jsonl"
-RESULT_ROOT = ROOT / "project_artifacts" / "phase3_experiments" / "results" / "b0_qualification"
+RESULT_ROOT = ROOT / "project_artifacts" / "results" / "qualification" / "mock"
 
 sys.path.insert(0, str(ROOT / "src"))
 
-from workagent_rsi.contracts import TaskSpec
-from workagent_rsi.evaluator import BasicEvaluator
-from workagent_rsi.executor import MockWorkAgentAdapter
-from workagent_rsi.orchestrator import Orchestrator
-from workagent_rsi.path_safety import validated_task_directory
-from workagent_rsi.storage import ArtifactStore, TraceStore
+from workagent_rsi.data import Task
+from workagent_rsi.harness import Harness
 
 
 def git_commit() -> str:
@@ -37,20 +33,14 @@ def sha256(path: Path) -> str:
 
 def main() -> int:
     tasks = [json.loads(line) for line in PUBLIC_TASKS.read_text(encoding="utf-8").splitlines() if line.strip()]
-    RESULT_ROOT.mkdir(parents=True, exist_ok=True)
+    invocation_root = RESULT_ROOT / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    invocation_root.mkdir(parents=True, exist_ok=True)
     started_at = datetime.now(timezone.utc)
     rows: list[dict] = []
     for task_data in tasks:
         task_id = task_data["task_id"]
-        run_root = validated_task_directory(RESULT_ROOT, task_id)
-        orchestrator = Orchestrator(
-            artifact_store=ArtifactStore(run_root / "artifacts"),
-            trace_store=TraceStore(run_root / "trace.db"),
-            adapter=MockWorkAgentAdapter(),
-            evaluator=BasicEvaluator(),
-        )
         started_perf = time.perf_counter()
-        task = TaskSpec(
+        task = Task(
             task_id=task_data["task_id"],
             domain=task_data["domain"],
             instruction=task_data["instruction"],
@@ -59,7 +49,7 @@ def main() -> int:
             risk_level=task_data.get("risk_level", "low"),
             hidden_test=task_data.get("hidden_test", False),
         )
-        result = orchestrator.run(task, "b0.fixed.mock", max_attempts=1)
+        result = Harness(invocation_root, office=False).run(task, run_id=task_id)
         result.update(
             {
                 "task_id": task_id,
@@ -72,7 +62,7 @@ def main() -> int:
                 "workdir": str(ROOT),
             }
         )
-        (run_root / "result.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        Path(result["result_path"]).write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         rows.append(result)
 
     summary = {
@@ -95,12 +85,12 @@ def main() -> int:
         "adapter": "MockWorkAgentAdapter",
         "rows": [{"task_id": row["task_id"], "split": row["split"], "state": row["state"], "score": row.get("evaluation", {}).get("score", 0.0), "run_id": row["run_id"]} for row in rows],
     }
-    (RESULT_ROOT / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    with (RESULT_ROOT / "summary.csv").open("w", newline="", encoding="utf-8") as handle:
+    (invocation_root / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    with (invocation_root / "summary.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=["task_id", "split", "state", "score", "run_id"])
         writer.writeheader()
         writer.writerows(summary["rows"])
-    (RESULT_ROOT / "qualification_scope.md").write_text(
+    (invocation_root / "qualification_scope.md").write_text(
         "# B0 Qualification Scope\n\n"
         "This is a real execution of the local Harness over the public project-generated task set. "
         "The MockWorkAgentAdapter emits text and BasicEvaluator checks a required marker. The result "

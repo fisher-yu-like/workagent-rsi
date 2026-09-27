@@ -13,16 +13,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 DATA_ROOT = ROOT / "project_artifacts" / "phase3_experiments" / "data"
 PUBLIC_TASKS = DATA_ROOT / "processed" / "public_tasks.jsonl"
-RESULT_ROOT = ROOT / "project_artifacts" / "phase3_experiments" / "results" / "b0_office_qualification"
+RESULT_ROOT = ROOT / "project_artifacts" / "results" / "qualification" / "office"
 
 sys.path.insert(0, str(ROOT / "src"))
 
-from workagent_rsi.contracts import TaskSpec
-from workagent_rsi.evaluator import OfficeArtifactEvaluator
-from workagent_rsi.executor import LocalOfficeAdapter
-from workagent_rsi.orchestrator import Orchestrator
-from workagent_rsi.path_safety import validated_task_directory
-from workagent_rsi.storage import ArtifactStore, TraceStore
+from workagent_rsi.data import Task
+from workagent_rsi.harness import Harness
 
 
 def git_commit() -> str:
@@ -31,13 +27,13 @@ def git_commit() -> str:
 
 def main() -> int:
     tasks = [json.loads(line) for line in PUBLIC_TASKS.read_text(encoding="utf-8").splitlines() if line.strip()]
-    RESULT_ROOT.mkdir(parents=True, exist_ok=True)
+    invocation_root = RESULT_ROOT / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    invocation_root.mkdir(parents=True, exist_ok=True)
     rows = []
     started_at = datetime.now(timezone.utc)
     for task_data in tasks:
         task_id = task_data["task_id"]
-        run_root = validated_task_directory(RESULT_ROOT, task_id)
-        task = TaskSpec(
+        task = Task(
             task_id=task_id,
             domain=task_data["domain"],
             instruction=task_data["instruction"],
@@ -47,12 +43,7 @@ def main() -> int:
             hidden_test=False,
         )
         started_perf = time.perf_counter()
-        result = Orchestrator(
-            artifact_store=ArtifactStore(run_root / "artifacts"),
-            trace_store=TraceStore(run_root / "trace.db"),
-            adapter=LocalOfficeAdapter(run_root / "generated"),
-            evaluator=OfficeArtifactEvaluator(),
-        ).run(task, "b0.office.local", max_attempts=1)
+        result = Harness(invocation_root, office=True).run(task, run_id=task_id)
         result.update(
             {
                 "task_id": task_id,
@@ -64,7 +55,7 @@ def main() -> int:
                 "platform": platform.platform(),
             }
         )
-        (run_root / "result.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        Path(result["result_path"]).write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         rows.append(result)
     summary = {
         "run_type": "real_local_office_qualification",
@@ -85,8 +76,8 @@ def main() -> int:
         "evaluator": "OfficeArtifactEvaluator",
         "rows": [{"task_id": row["task_id"], "domain": row["domain"], "split": row["split"], "state": row["state"], "score": row.get("evaluation", {}).get("score", 0.0), "run_id": row["run_id"]} for row in rows],
     }
-    (RESULT_ROOT / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    (RESULT_ROOT / "qualification_scope.md").write_text(
+    (invocation_root / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    (invocation_root / "qualification_scope.md").write_text(
         "# B0 Office Qualification Scope\n\n"
         "This qualification uses the local Python Office artifact adapter and reopens each generated "
         "DOCX, XLSX or PPTX with its corresponding library. The generated files must also pass the "

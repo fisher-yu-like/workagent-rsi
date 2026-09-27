@@ -17,8 +17,15 @@
 | `project_artifacts/artifact_manifest.md` | 1A | Markdown | Artifact index | This file | No |
 | `Agent.md` | 1A-3 | Markdown | Agent operating contract and current stage gates | Phase 3 qualification boundary reviewed | No |
 | `pyproject.toml` | 1B | TOML | Package and pytest configuration | Editable install completed with Python 3.12 | No |
-| `src/workagent_rsi/` | 1B-3 | Python | Harness plus closed-loop RSI, provider isolation, governance and Office evaluation | 56 pytest tests pass | No |
-| `tests/` | 1B-3 | Python | Unit, integration, provider isolation, governance, Office and end-to-end tests | 56 pytest tests pass | No |
+| `src/workagent_rsi/` | 1B-3 | Python | Harness plus closed-loop RSI, provider isolation, governance and Office evaluation | 61 pytest tests pass in the final verification | No |
+| `tests/` | 1B-3 | Python | Unit, integration, provider isolation, governance, Office and end-to-end tests | 61 pytest tests pass; all tests remain under this single directory | No |
+| `src/workagent_rsi/harness.py` | 1B-3 | Python | Simple public entry point for a normal run | Smoke and Office single-run checks pass | No |
+| `src/workagent_rsi/run.py` | 1B-3 | Python | Short execution service for smoke and Office tasks | Smoke and Office single-run checks pass | No |
+| `src/workagent_rsi/learn.py` | 3 | Python | Short facade for diagnosis and candidate generation | Diagnosis and provider tests pass | No |
+| `src/workagent_rsi/check.py` | 3 | Python | Short facade for verification, evaluation and promotion | Existing governance tests pass | No |
+| `src/workagent_rsi/store.py` | 1B-3 | Python | Single run directory for artifacts, traces and skill history | Single-run directory check passes | No |
+| `src/workagent_rsi/data.py` | 1B-3 | Python | Short aliases for validated records | Contract tests pass | No |
+| `project_artifacts/results/` | 1B-3 | Directory | Root for all new run output | Smoke and Office runs written below this root | Yes, local run data |
 | `project_artifacts/phase1_harness/results/run_summary.json` | 1B | JSON | Mock run results | JSON parsed and evidence paths checked | Yes, local mock data |
 | `project_artifacts/phase1_harness/results/run_summary.csv` | 1B | CSV | Tabular mock run results | Generated from same run records | Yes, local mock data |
 | `project_artifacts/phase1_harness/reports/run_report.md` | 1B | Markdown | Mock Pipeline report | Linked to per-run JSON evidence | Yes, local mock data |

@@ -19,16 +19,16 @@ WorkAgent-RSI is a benchmark-driven recursive skill improvement framework for Of
 
 ## Architecture principles
 
-- `orchestrator-skill`: owns run lifecycle, retries, resume and promotion decisions.
-- `gen-skill`: proposes a structured candidate manifest/patch and rationale; it cannot deploy.
-- `verify-skill`: performs schema, tool, permission, sandbox, Office-format, security and regression checks.
-- `evaluator-skill`: is version-pinned and independently maintained; it computes hard gates and configured quality dimensions.
-- `skill-registry`: stores immutable versions, parent links, applicability conditions, evidence and rollback pointers.
-- `trace-memory`: stores tasks, tool calls, intermediate state, failures, evaluator outputs and before/after comparisons.
-- `executor`: exposes mock and real WorkAgent adapters behind one interface.
-- `artifact-store`: content-addressed, append-only storage for inputs, outputs, logs and reports.
-- `benchmark-runner`: separates develop, regression, hidden, OOD/transfer and adversarial tasks.
-- `promotion-and-rollback`: enforces safety, improvement, non-regression, cost, reproducibility and approval gates.
+The user-facing architecture uses six short names:
+
+- `Harness`: the only normal entry point; starts a run, returns its result and can resume a saved trace.
+- `Run`: executes a task, calls the selected adapter and creates the Office artifact.
+- `Learn`: exports an isolated workspace, diagnoses observed failures and proposes a bounded candidate change.
+- `Check`: independently verifies candidates, evaluates artifacts or frozen splits and applies promotion gates.
+- `Store`: keeps artifacts, traces, immutable skill versions, lineage, champion aliases and rollback records.
+- `Data`: contains the validated task, change, report and version records.
+
+The older files remain internal compatibility modules. Their responsibilities still stay separate: candidate generation cannot deploy, verification cannot change evaluator rules, the frozen evaluator cannot be changed by a candidate, and promotion cannot rewrite historical evidence. The shorter names reduce the number of concepts a user must learn; they do not remove any safety or evaluation function.
 
 ## Three-stage project execution plan
 
@@ -47,8 +47,8 @@ WorkAgent-RSI is a benchmark-driven recursive skill improvement framework for Of
 
 1. Implement typed contracts, storage, allowlisted tools, mock adapter and orchestrator.
 2. Run static checks, unit tests, integration tests, smoke test and end-to-end test.
-3. Run one minimal task, one complete task and one controlled failure when the adapter is available.
-4. Preserve run evidence under `project_artifacts/phase1_harness/logs/`, `results/` and `reports/`.
+3. Run normal successful tasks through the public `Harness` entry point. Use a naturally observed failure or a dedicated unit test only when failure behavior is being investigated.
+4. Preserve new run evidence under `project_artifacts/results/`; historical phase directories remain read-only archives.
 5. Generate Office reports only from actual results and validate them with corresponding libraries.
 6. Stop at the Stage 1 acceptance gate and wait for user confirmation.
 
@@ -98,3 +98,4 @@ A candidate skill version can be promoted only if all conditions hold:
 - Phase 3 Office provider and evaluator qualification: completed for the local executor. LocalOfficeAdapter, OfficeArtifactEvaluator and Word/Excel/PowerPoint 16.0 COM reopening passed 25/25 public tasks.
 - Phase 3 closed-loop infrastructure: completed with isolated candidate workspaces, deterministic diagnosis, Codex CLI plus local Ollama provider, leakage critic, fail-closed verifier, frozen evaluator, immutable registry, promotion controller and rollback.
 - Phase 3 E01-E12 pilot: completed on the 30-task project-generated fixture. All result claims remain pilot-only; E07 is automated artifact-versus-response cross-evaluation with no human-label claim.
+- Simple public Harness API: available through `workagent_rsi.Harness`; normal runs use the task's required text and write all new evidence below `project_artifacts/results/`.

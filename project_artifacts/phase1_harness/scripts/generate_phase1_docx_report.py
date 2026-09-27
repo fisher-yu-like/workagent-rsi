@@ -117,7 +117,7 @@ def main() -> int:
             set_font(paragraph.add_run(value), "Microsoft YaHei", 9.5)
 
     add_heading(document, "复现与限制")
-    add_body(document, "复现命令为 py -3.12 project_artifacts/phase1_harness/scripts/run_phase1_cases.py。每个 case 的 JSON 和 SQLite trace 位于 project_artifacts/phase1_harness/results。当前结果只证明本地 mock Harness 闭环，真实 WorkAgent 接入和 Office 引擎验证仍是下一步任务。")
+    add_body(document, "复现命令为 py -3.12 project_artifacts/phase1_harness/scripts/run_phase1_cases.py。新运行的 JSON 和 SQLite trace 位于 project_artifacts/results/phase1。历史 phase1 目录保留用于追溯；当前结果只证明本地 Harness 的执行和记录能力。")
 
     document.save(REPORT)
     print(REPORT)

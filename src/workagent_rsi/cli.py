@@ -7,24 +7,24 @@ from typing import Sequence
 
 import yaml
 
-from .contracts import TaskSpec
-from .evaluator import BasicEvaluator
-from .executor import MockWorkAgentAdapter
-from .orchestrator import Orchestrator
-from .storage import ArtifactStore, TraceStore
+from .harness import Harness
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Run the WorkAgent-RSI local mock pipeline")
+    parser = argparse.ArgumentParser(description="Run one normal WorkAgent-RSI task")
     parser.add_argument("task", type=Path)
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--results-dir",
+        type=Path,
+        default=Path("project_artifacts") / "results",
+        help="folder that contains one directory per run (default: project_artifacts/results)",
+    )
+    parser.add_argument("--output", type=Path, help="optional exact result.json path for compatibility")
     args = parser.parse_args(argv)
     payload = yaml.safe_load(args.task.read_text(encoding="utf-8"))
-    task = TaskSpec.model_validate(payload)
-    root = args.output.parent / ".run-data"
-    result = Orchestrator(ArtifactStore(root / "artifacts"), TraceStore(root / "trace.db"), MockWorkAgentAdapter(), BasicEvaluator()).run(task, "smoke.echo")
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
+    result = Harness(args.results_dir).run(payload, result_path=args.output)
+    if args.output is None:
+        print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["state"] == "SUCCEEDED" else 1
 
 
