@@ -1,5 +1,5 @@
 {
-  "retrieved_at": "2026-09-27T15:23:58Z",
+  "retrieved_at": "2026-09-28T00:18:00+08:00",
   "method": "official GitHub API metadata plus official repository README and arXiv landing pages",
   "records": [
     {
@@ -17,12 +17,20 @@
       "repository_default_branch": "main",
       "repository_commit": "49b73a94775fb489063f60ca1865e3a650079a79",
       "readme": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/README.md",
+      "readme_blob_sha": "d5ae034cb14d8da4733cfc5f38a067eee792aef9",
       "readme_license_statement": "CC BY SA 4.0",
+      "readme_scope_audit": "project-level statement; README says questions and spreadsheet files are derived from online Excel forums and includes input/answer workbook pairs",
       "sample_archive": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/sample_data_200.tar.gz",
       "sample_archive_git_blob_sha": "4ff8918668c2876f1d6b6d17845a4fe76e57ef52",
       "sample_archive_size_bytes": 19936871,
+      "full_archive": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_912_v0.1.tar.gz",
+      "full_archive_git_blob_sha": "b4583957c7838204bb45c1a7af35d3581e7e8fb3",
+      "full_archive_size_bytes": 95752357,
+      "verified_subset_archive": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_verified_400.tar.gz",
+      "verified_subset_git_blob_sha": "b6baaf0f23ef5adc1cd22078f4eeb3102b4a7c72",
+      "verified_subset_size_bytes": 14958255,
       "paper": "https://arxiv.org/abs/2406.14991",
-      "data_license_observed": "CC-BY-SA-4.0 in README; workbook-level provenance still pending",
+      "data_license_observed": "CC-BY-SA-4.0 in README; project-level scope and workbook-level provenance still pending",
       "evidence_status": "conditional_data_candidate"
     },
     {

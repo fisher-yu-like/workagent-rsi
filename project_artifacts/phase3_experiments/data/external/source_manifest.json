@@ -33,8 +33,8 @@
       "official_repository": "https://github.com/RUCKBReasoning/SpreadsheetBench",
       "official_paper": "https://arxiv.org/abs/2406.14991",
       "official_homepage": "https://spreadsheetbench.github.io/",
-      "data_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/all_data_912.tar.gz",
-      "version": "912-instruction-release-2025-04",
+      "data_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_912_v0.1.tar.gz",
+      "version": "repository-main-49b73a94775fb489063f60ca1865e3a650079a79",
       "scope": "912 real-world spreadsheet instructions and 2,729 test cases; sample release contains 200 data points",
       "repository_license": "CC-BY-SA-4.0 (README statement)",
       "data_license": "CC-BY-SA-4.0 (README statement; file-level provenance still required)",
@@ -43,7 +43,13 @@
       "redistribution_status": "conditional",
       "checksum": null,
       "leakage_risks": ["questions derived from public Excel forums", "source workbooks may contain third-party or personal content", "answer workbooks can leak hidden targets"],
-      "notes": "Best first candidate for an Excel sub-study only after checking the release archive and workbook-level terms."
+      "license_evidence": {
+        "source": "official README.md",
+        "statement": "The project is hosted with the CC BY SA 4.0 License.",
+        "scope": "project-level statement; does not independently clear third-party forum workbooks or answer files",
+        "readme_blob_sha": "d5ae034cb14d8da4733cfc5f38a067eee792aef9"
+      },
+      "notes": "Best first candidate for an Excel sub-study only after checking the release archive and workbook-level terms. The official README describes forum-derived files and answer workbooks, so this remains conditional until file-level provenance is confirmed."
     },
     {
       "id": "osworld-v1",
