@@ -4,6 +4,7 @@
   "status": "metadata_gate_passed_formal_gate_blocked",
   "recorded_at": "2026-09-28T00:10:00+08:00",
   "code_commit": "5aeb601aee5fdb21a0cb1654ac6b4fdf004633dd",
+  "metadata_revision": "919939b8a4a09cb62be644227a5c93cc20c50172",
   "working_tree_dirty_during_qualification": false,
   "metadata_gate": {
     "manifest": "project_artifacts/phase3_experiments/data/external/source_manifest.json",
