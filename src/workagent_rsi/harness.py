@@ -9,6 +9,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from .contracts import TaskSpec
+from .office_capabilities import CapabilityReport
 from .run import Run
 
 
@@ -20,9 +21,18 @@ class Harness:
     of starting from a deliberately broken skill.
     """
 
-    def __init__(self, results_dir: str | Path = "project_artifacts/results", *, office: bool | None = None) -> None:
+    def __init__(
+        self,
+        results_dir: str | Path = "project_artifacts/results",
+        *,
+        office: bool | None = None,
+        execution_provider: str | None = None,
+        capability_report: CapabilityReport | None = None,
+    ) -> None:
         self.results_dir = Path(results_dir)
         self.office = office
+        self.execution_provider = execution_provider
+        self.capability_report = capability_report
 
     def run(
         self,
@@ -41,7 +51,12 @@ class Harness:
             json.dumps(task.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
             encoding="utf-8",
         )
-        result = Run(root, office=self.office).execute(task, max_attempts=max_attempts)
+        result = Run(
+            root,
+            office=self.office,
+            execution_provider=self.execution_provider,
+            capability_report=self.capability_report,
+        ).execute(task, max_attempts=max_attempts)
         result["result_path"] = str(output.resolve())
         result["result_dir"] = str(root.resolve())
         output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -58,7 +73,7 @@ class Harness:
             run_id = json.loads(result_file.read_text(encoding="utf-8")).get("run_id")
         if not run_id:
             raise ValueError("result.json does not contain a run_id")
-        return Run(root, office=self.office).resume(run_id)
+        return Run(root, office=self.office, execution_provider=self.execution_provider).resume(run_id)
 
     def _paths(
         self,

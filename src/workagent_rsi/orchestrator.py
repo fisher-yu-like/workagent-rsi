@@ -6,12 +6,11 @@ from uuid import uuid4
 
 from .contracts import TaskSpec
 from .evaluator import BasicEvaluator
-from .executor import MockWorkAgentAdapter
 from .storage import ArtifactStore, TraceStore
 
 
 class Orchestrator:
-    def __init__(self, artifact_store: ArtifactStore, trace_store: TraceStore, adapter: MockWorkAgentAdapter, evaluator: BasicEvaluator) -> None:
+    def __init__(self, artifact_store: ArtifactStore, trace_store: TraceStore, adapter, evaluator: BasicEvaluator) -> None:
         self.artifact_store = artifact_store
         self.trace_store = trace_store
         self.adapter = adapter
@@ -43,15 +42,22 @@ class Orchestrator:
                             if isinstance(content, str):
                                 content = content.encode("utf-8")
                             artifacts.append(self.artifact_store.put_bytes(content, event.get("media_type", "application/octet-stream")))
-                    elif event["kind"] == "failure":
-                        failure = {"message": event["message"], "retryable": event.get("retryable", False), "attempts": attempts}
+                    elif event["kind"] in {"failure", "unavailable"}:
+                        failure = {
+                            "message": event["message"],
+                            "retryable": event.get("retryable", False),
+                            "attempts": attempts,
+                            "status": event["kind"],
+                            "provider": event.get("provider"),
+                        }
                         break
                 if failure is None or not failure["retryable"] or attempts >= max_attempts:
                     break
                 self.trace_store.append_event(run_id, "retrying", {"attempt": attempts, "next_attempt": attempts + 1})
             if failure is not None:
-                self.trace_store.set_state(run_id, "FAILED")
-                return {"run_id": run_id, "state": "FAILED", "artifacts": [a.model_dump() for a in artifacts], "failure": failure}
+                state = "UNAVAILABLE" if failure.get("status") == "unavailable" else "FAILED"
+                self.trace_store.set_state(run_id, state)
+                return {"run_id": run_id, "state": state, "artifacts": [a.model_dump() for a in artifacts], "failure": failure}
             self.trace_store.set_state(run_id, "EVALUATING")
             report = self.evaluator.evaluate(task, artifacts, run_id)
             state = "SUCCEEDED" if report.passed else "FAILED"
