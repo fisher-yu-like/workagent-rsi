@@ -5,8 +5,8 @@
 ## 当前状态
 
 - 总体状态：执行中
-- 当前阶段：阶段 1：真实 Office 执行器 provider
-- 当前任务：实现 Office 能力探测、provider 选择和失败关闭记录
+- 当前阶段：阶段 2：Office 文件级自动评估器
+- 当前任务：先写格式、结构、公式、OOXML、几何检查的失败测试，再实现 evaluator v2
 - 自动批准：已收到，后续按计划自动推进；阶段失败时停止并记录原因
 - 结果根目录：`project_artifacts/results/`
 - 计划文件：[正式研究执行方案](docs/superpowers/plans/2026-09-27-formal-rsi-execution-roadmap.md)
@@ -19,11 +19,21 @@
 - 已确认当前工作分支为 `codex/closed-loop-rsi`，本次继续在该隔离分支工作。
 - 已确认不删除历史结果，不改变普通单轮“正常任务直接运行”的行为。
 
+### 已完成
+
+- 阶段 0 已通过并提交为 `653066a`。
+- 阶段 1 provider 实现已提交为 `3de1ecd3c3ce28f3e6f0ea50b811bb6ce58fd04a`。
+- 新增 `office_capabilities.py`：记录 COM、LibreOffice、本地 Python provider 和外部 WorkAgent 状态。
+- 新增 `ComOfficeAdapter`、`UnavailableOfficeAdapter`、显式 provider CLI 选择和 `UNAVAILABLE` 状态。
+- 25 条公开任务通过 clean commit 的 COM provider qualification：成功 25、失败 0、平均自动分数 1.0，覆盖 Excel/Word/PowerPoint。
+- 真实 COM 重开后的 automation 进程数量为 0；资源泄漏回归测试通过。
+- 两次中断 invocation 没有被覆盖，原因和修复写入 `formal_study/stage1_manifest.json`。
+- 阶段 1 Gate：通过。
+
 ### 正在进行
 
-- 记录 Git commit、Python 和依赖版本。
-- 运行现有测试、编译检查和 pilot 数据质量检查。
-- 检查 Office、LibreOffice、Codex CLI 和 Ollama 能力。
+- 为三类 Office 文件写 evaluator v2 的红测试。
+- 设计只读、可 hash、与 candidate workspace 解耦的结构化检查报告。
 
 ### 已完成
 
@@ -37,9 +47,9 @@
 
 ### 尚未完成
 
-- 阶段 1 provider 能力探测和显式选择尚未实现。
-- 阶段 1 三域真实重开 qualification 尚未重新运行。
+- evaluator v2 尚未实现。
+- Excel 公式/结构、Word OOXML/分页、PPT 几何/溢出和自动渲染检查尚未加入正式评分。
 
 ### 下一步
 
-完成阶段 1 后写入真实结果，并继续阶段 2；若出现 Office 进程残留、artifact hash 缺失或 provider 把 unavailable 转成成功，则停止并记录阻塞。
+完成阶段 2 后写入真实结果，并继续阶段 3；若 evaluator hash 漂移、hidden 数据泄漏或不可用视觉通道被转换成分数，则停止并记录阻塞。

@@ -1,0 +1,48 @@
+{
+  "stage": 1,
+  "stage_name": "real_office_provider",
+  "status": "passed",
+  "recorded_at": "2026-09-27T13:57:11Z",
+  "code_commit": "3de1ecd3c3ce28f3e6f0ea50b811bb6ce58fd04a",
+  "working_tree_dirty": false,
+  "capability_report": "project_artifacts/results/qualification/capabilities/20260927T135619Z/capability_report.json",
+  "final_invocation": "project_artifacts/results/qualification/real-office/20260927T135057Z/",
+  "provider": "ComOfficeAdapter",
+  "evaluator": "OfficeArtifactEvaluator",
+  "qualification": {
+    "task_count": 25,
+    "success_count": 25,
+    "failure_count": 0,
+    "mean_score": 1.0,
+    "domains": ["excel", "word", "powerpoint"],
+    "git_commit_recorded_in_summary": "3de1ecd3c3ce28f3e6f0ea50b811bb6ce58fd04a",
+    "git_worktree_dirty": false,
+    "git_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "verification": {
+    "pytest": "65 passed in 18.53s",
+    "compileall_exit_code": 0,
+    "git_diff_check_exit_code": 0,
+    "automation_office_processes_after_run": 0
+  },
+  "interrupted_runs": [
+    {
+      "root": "project_artifacts/results/qualification/real-office/20260927T132049Z/",
+      "status": "interrupted",
+      "completed_tasks_before_stop": 8,
+      "reason": "capability probing was repeated for every task; stopped before continuing"
+    },
+    {
+      "root": "project_artifacts/results/qualification/real-office/20260927T133132Z/",
+      "status": "interrupted",
+      "completed_tasks_before_stop": 17,
+      "reason": "COM cleanup leaked automation processes; stopped, diagnosed and fixed before rerun"
+    }
+  ],
+  "claim_boundary": {
+    "external_workagent": false,
+    "external_benchmark": false,
+    "manual_annotation": false,
+    "local_com_qualification_only": true
+  }
+}

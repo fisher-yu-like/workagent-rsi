@@ -106,6 +106,9 @@
 | `project_artifacts/formal_study/capability_matrix.json` | 4 | JSON | Machine capability and provider availability | Commands and versions recorded | Yes, stage 0 evidence |
 | `project_artifacts/formal_study/baseline_manifest.json` | 4 | JSON | Stage 0 test, compile, data and claim boundary manifest | 61 tests, compileall and 14 data checks passed | Yes, stage 0 evidence |
 | `project_artifacts/formal_study/README.md` | 4 | Markdown | Human-readable formal baseline explanation | Cross-checked with the three manifests | Yes, stage 0 evidence |
+| `project_artifacts/formal_study/stage1_manifest.json` | 4 | JSON | Clean-commit real Office provider qualification and interruption record | 25/25 COM tasks passed; no automation processes remained | Yes, stage 1 evidence |
+| `project_artifacts/phase3_experiments/scripts/check_office_capabilities.py` | 4 | Python | Record Word/Excel/PowerPoint/LibreOffice/provider capabilities | Clean capability invocation completed | Yes, stage 1 evidence |
+| `tests/test_office_capabilities.py` | 4 | Python | Capability selection, fail-closed provider and COM cleanup tests | 4 tests pass in the 65-test suite | No |
 
 Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or the local Office task adapter added in Phase 3.
 
