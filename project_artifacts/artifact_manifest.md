@@ -101,6 +101,11 @@
 | `project_artifacts/phase3_experiments/results/e01_e12/latest_summary.json` | 3 | JSON | Machine-readable latest completed invocation index | 12/12 experiment IDs present and completed | Yes, pilot evidence |
 | `project_artifacts/phase3_experiments/results/e01_e12/latest_summary.md` | 3 | Markdown | Human-readable experiment index | Links each experiment to immutable invocation | Yes, pilot evidence |
 | `docs/project_overview_zh.md` | 3 | Markdown | Overall Chinese project introduction | Evidence and claim boundaries cross-checked | Yes, summarized evidence |
+| `project_artifacts/execution_log.md` | 4 | Markdown | Human-readable live stage log | Updated after each stage task and gate | Yes, execution record |
+| `project_artifacts/formal_study/contract.json` | 4 | JSON | Frozen formal-study contract and RSI policy | Parsed and hash-bound to baseline | Yes, stage 0 evidence |
+| `project_artifacts/formal_study/capability_matrix.json` | 4 | JSON | Machine capability and provider availability | Commands and versions recorded | Yes, stage 0 evidence |
+| `project_artifacts/formal_study/baseline_manifest.json` | 4 | JSON | Stage 0 test, compile, data and claim boundary manifest | 61 tests, compileall and 14 data checks passed | Yes, stage 0 evidence |
+| `project_artifacts/formal_study/README.md` | 4 | Markdown | Human-readable formal baseline explanation | Cross-checked with the three manifests | Yes, stage 0 evidence |
 
 Phase 1B local mock runs are real executions of the repository code. They are not executions of an external WorkAgent provider or the local Office task adapter added in Phase 3.
 

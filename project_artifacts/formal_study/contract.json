@@ -1,0 +1,50 @@
+{
+  "contract_id": "workagent-rsi-formal-v0.1",
+  "created_at": "2026-09-27T12:58:10Z",
+  "repository_commit": "21f482ae9ab1d80b9f7cc4518f62e8ad9a8aeb95",
+  "implementation_base_commit": "59987d4",
+  "python": "3.12.10",
+  "dataset_policy": {
+    "qualification_dataset": "synthetic-office-taskset-v0.1.0",
+    "qualification_dataset_sha256": "b5f975790e998153a40c20e1cf514d9ca98f606badc29f20ebb2b3ffb83e3af9",
+    "formal_dataset": "not_selected_until_external_license_gate",
+    "formal_results_allowed": false
+  },
+  "splits": {
+    "evolve": "baeba86445e513f02bbdda809097586aca1ce8fafaebe91a6bff7aa353ce2413",
+    "develop": "29864b1ec0a51cf6564989164a3c9b15cc29152cae0d65441e8618a52476d979",
+    "regression": "91b0bb5e33a7ca2c2e3ff4f7efc45d4c977b3c2a135184a3ca0493c6664466d9",
+    "hidden": "9acade71c977c73d2c3652240d53f5238ba751f3dadbdfd5230ad655fe99dd37",
+    "ood_transfer": "217b2d6818a8f5af2f73b829443eacdfe6397454e204929378cd0379ffef3a26"
+  },
+  "evaluator": {
+    "name": "FrozenEvaluator",
+    "source_sha256": "3e94c0fc09bc7164dc6115f2f71ce6bb91b2b547c9728006ed94cd79f62d9941",
+    "status": "pilot_evaluator_only",
+    "formal_claims_allowed": false
+  },
+  "rsi_policy": {
+    "max_rounds": 6,
+    "edit_budget_schedule": [3, 3, 2, 2, 1, 1],
+    "protected_splits": ["regression", "hidden", "ood_transfer"],
+    "candidate_workspace_allowlist": ["skill.json"],
+    "promotion_requires": [
+      "verification",
+      "strict_develop_gain",
+      "no_critical_regression",
+      "hidden_non_regression",
+      "ood_non_regression",
+      "cost_gate",
+      "reproducible_evidence"
+    ]
+  },
+  "provider_policy": {
+    "task_execution": "local_office_or_declared_real_provider",
+    "candidate_generation": "codex-cli-or-deterministic",
+    "ordinary_single_run_llm": false,
+    "manual_annotation": false,
+    "unavailable_is_not_a_score": true
+  },
+  "result_root": "project_artifacts/results",
+  "status": "baseline_frozen_only"
+}

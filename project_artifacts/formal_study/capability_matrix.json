@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-09-27T12:58:10Z",
+  "repository_commit": "21f482ae9ab1d80b9f7cc4518f62e8ad9a8aeb95",
+  "platform": "Microsoft Windows 11 Home 10.0.26200",
+  "capabilities": {
+    "python_3_12": {
+      "status": "available",
+      "version": "3.12.10",
+      "evidence": "py -3.12 --version"
+    },
+    "pydantic": {"status": "available", "version": "2.13.4"},
+    "pytest": {"status": "available", "version": "9.1.1"},
+    "openpyxl": {"status": "available", "version": "3.1.5"},
+    "python_docx": {"status": "available", "version": "1.2.0"},
+    "python_pptx": {"status": "available", "version": "1.0.2"},
+    "codex_cli": {"status": "available", "version": "0.157.1"},
+    "ollama": {"status": "available", "version": "0.34.4"},
+    "ollama_qwen2_5_7b": {"status": "available", "model": "qwen2.5:7b"},
+    "microsoft_word_com": {"status": "available", "version": "16.0"},
+    "microsoft_excel_com": {"status": "available", "version": "16.0"},
+    "microsoft_powerpoint_com": {"status": "available", "version": "16.0"},
+    "libreoffice": {
+      "status": "unavailable",
+      "evidence": "Get-Command soffice/libreoffice returned no command"
+    },
+    "external_workagent_provider": {
+      "status": "not_claimed",
+      "reason": "No external WorkAgent endpoint or credentials configured"
+    },
+    "manual_annotation": {
+      "status": "disabled",
+      "reason": "Main study uses automatic file, structure, geometry and fixed-model checks"
+    }
+  },
+  "qualification_results": {
+    "mock_tasks": {"count": 25, "success": 25, "failure": 0, "scope": "trace/evaluator plumbing only"},
+    "local_office_tasks": {"count": 25, "success": 25, "failure": 0, "scope": "local artifact qualification only"},
+    "dataset_quality_checks": {"count": 14, "failures": 0, "status": "pass"}
+  }
+}

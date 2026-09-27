@@ -99,3 +99,6 @@ A candidate skill version can be promoted only if all conditions hold:
 - Phase 3 closed-loop infrastructure: completed with isolated candidate workspaces, deterministic diagnosis, Codex CLI plus local Ollama provider, leakage critic, fail-closed verifier, frozen evaluator, immutable registry, promotion controller and rollback.
 - Phase 3 E01-E12 pilot: completed on the 30-task project-generated fixture. All result claims remain pilot-only; E07 is automated artifact-versus-response cross-evaluation with no human-label claim.
 - Simple public Harness API: available through `workagent_rsi.Harness`; normal runs use the task's required text and write all new evidence below `project_artifacts/results/`.
+- Formal execution roadmap: approved for automatic execution on 2026-09-27; human-readable live log is `project_artifacts/execution_log.md`.
+- Stage 0 baseline freeze: completed on 2026-09-27 at commit `21f482ae9ab1d80b9f7cc4518f62e8ad9a8aeb95`; 61 tests passed, compileall passed, 14 pilot data-quality checks passed, Office 16.0 COM was available for all three applications, LibreOffice was unavailable, and no external WorkAgent result is claimed.
+- Current primary task: Stage 1 real Office provider upgrade. The agent must append progress and evidence to `project_artifacts/execution_log.md` before moving to the next stage.

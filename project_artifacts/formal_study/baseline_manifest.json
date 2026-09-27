@@ -1,0 +1,32 @@
+{
+  "manifest_id": "baseline-20260927-stage0",
+  "recorded_at": "2026-09-27T12:58:10Z",
+  "repository_commit": "21f482ae9ab1d80b9f7cc4518f62e8ad9a8aeb95",
+  "branch": "codex/closed-loop-rsi",
+  "working_directory": "C:/Users/sy/Desktop/workagent-rsi",
+  "checks": {
+    "pytest": {"command": "py -3.12 -m pytest -q --basetemp=$env:TEMP\\workagent-rsi-stage0", "exit_code": 0, "summary": "61 passed in 12.39s"},
+    "compileall": {"command": "py -3.12 -m compileall -q src tests project_artifacts/phase3_experiments/scripts", "exit_code": 0},
+    "dataset_quality": {"command": "py -3.12 project_artifacts/phase3_experiments/data/quality_check.py", "exit_code": 0, "summary": "14 checks passed"},
+    "git_diff_check": {"command": "git diff --check", "exit_code": 0}
+  },
+  "dataset": {
+    "version": "synthetic-office-taskset-v0.1.0",
+    "task_count": 30,
+    "public_count": 25,
+    "protected_count": 5,
+    "domain_counts": {"excel": 10, "word": 10, "powerpoint": 10},
+    "split_counts": {"evolve": 12, "develop": 6, "regression": 4, "hidden": 5, "ood_transfer": 3},
+    "raw_sha256": "b5f975790e998153a40c20e1cf514d9ca98f606badc29f20ebb2b3ffb83e3af9",
+    "public_sha256": "07c8ecfbdd11f04f3c3066fbcec061802f697d3e1df2c7bc9ac095ee04b5aca6",
+    "hidden_sha256": "9acade71c977c73d2c3652240d53f5238ba751f3dadbdfd5230ad655fe99dd37"
+  },
+  "claim_boundary": {
+    "pilot_is_external_benchmark": false,
+    "pilot_is_external_workagent": false,
+    "formal_training_started": false,
+    "formal_main_study_started": false,
+    "manual_labels_used": false
+  },
+  "status": "stage0_ready_for_stage1"
+}
