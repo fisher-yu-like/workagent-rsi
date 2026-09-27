@@ -36,6 +36,20 @@
     "task_success_rate": 0.0,
     "claims_allowed": false
   },
+  "pilot_matrix": {
+    "result_root": "project_artifacts/results/qualification/formal-pilot/stage4-pilot-matrix-20260928b/",
+    "experiments": ["E01", "E02", "E05", "E07", "E08", "E12"],
+    "completed": 6,
+    "unavailable_or_timeout": 0,
+    "failed": 0,
+    "analysis": "project_artifacts/results/qualification/formal-pilot/stage4-pilot-matrix-20260928b/analysis.json",
+    "observed_metrics": {
+      "E05_initial_develop_score": 0.0,
+      "E05_final_develop_score": 1.0,
+      "E08_transfer_delta": -1.0
+    },
+    "claims_allowed": false
+  },
   "verification": {
     "pytest": "82 passed in 73.37s",
     "compileall_exit_code": 0,
