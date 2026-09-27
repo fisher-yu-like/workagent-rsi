@@ -54,6 +54,10 @@ class FrozenEvaluator:
                     "score": report.score,
                     "artifact_id": ref.artifact_id,
                     "critical_failures": report.critical_failures,
+                    "warnings": report.warnings,
+                    "dimensions": report.dimensions,
+                    "channel_status": report.channel_status,
+                    "evidence": report.evidence,
                 }
             )
         score = sum(float(row.get("score", 0.0)) for row in rows) / len(rows) if rows else 0.0

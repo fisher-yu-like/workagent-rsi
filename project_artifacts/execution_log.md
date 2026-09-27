@@ -35,6 +35,16 @@
 - 为三类 Office 文件写 evaluator v2 的红测试。
 - 设计只读、可 hash、与 candidate workspace 解耦的结构化检查报告。
 
+### 阶段 2 实现进展（2026-09-27）
+
+- 红测试已按预期先失败：缺少 `workagent_rsi.office_checks`，失败发生在功能缺失而不是测试错误。
+- 已实现 `office_checks.py`：检查 OOXML 包完整性、文件哈希、Excel 工作表/单元格/公式、Word 标题/样式/OOXML、PowerPoint 文本/页数/几何。
+- 已实现 `render_checks.py`：检查 PowerPoint 对象重叠、越界和空白页；像素渲染器不可用时明确记录 `rendering: unavailable`，不把它转换成分数。
+- `OfficeArtifactEvaluator` 已升级到 `office-evaluator-v2`，保留原有 marker/format 维度，并写入结构化 dimensions、warnings、channel status、artifact/evaluator hash 和 evidence。
+- `FrozenEvaluator` 现在把维度、警告、通道状态和证据一并保存到每个任务行。
+- 新增 `evaluator_v2.json` 和 `validate_evaluator.py`，三类 fixture 验证已通过。
+- 阶段 2 当前验证证据：质量/旧评估器/冻结评估器测试 `8 passed`；全量 pytest `69 passed`；compileall 通过；evaluator v2 三域验证通过。
+
 ### 已完成
 
 - `py -3.12 -m pytest -q --basetemp="$env:TEMP\\workagent-rsi-stage0"`：`61 passed in 12.39s`。

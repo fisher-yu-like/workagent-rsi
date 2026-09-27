@@ -73,4 +73,5 @@ class EvaluationReport(BaseModel):
     warnings: list[str] = Field(default_factory=list)
     dimensions: dict[str, float] = Field(default_factory=dict)
     evidence: list[str] = Field(default_factory=list)
+    channel_status: dict[str, str] = Field(default_factory=dict)
 

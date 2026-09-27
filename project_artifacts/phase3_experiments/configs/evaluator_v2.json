@@ -1,0 +1,51 @@
+{
+  "name": "workagent-rsi-office-file-evaluator",
+  "version": "office-evaluator-v2",
+  "domains": {
+    "excel": [
+      "format_validity",
+      "marker_correctness",
+      "structure_correctness",
+      "cell_correctness",
+      "formula_correctness"
+    ],
+    "word": [
+      "format_validity",
+      "marker_correctness",
+      "structure_correctness",
+      "heading_correctness",
+      "style_correctness",
+      "ooxml_correctness"
+    ],
+    "powerpoint": [
+      "format_validity",
+      "marker_correctness",
+      "structure_correctness",
+      "text_structure_correctness",
+      "geometry_correctness"
+    ]
+  },
+  "hard_checks": [
+    "ooxml_package_readable",
+    "expected_media_type",
+    "required_text",
+    "declared_structure",
+    "declared_formula",
+    "declared_geometry"
+  ],
+  "optional_channels": {
+    "pixel_rendering": "unavailable_is_not_a_score",
+    "visual_language_model": "unavailable_is_not_a_score"
+  },
+  "evidence_policy": {
+    "record_artifact_sha256": true,
+    "record_evaluator_hash": true,
+    "record_check_evidence": true,
+    "candidate_workspace_access": false
+  },
+  "score_policy": {
+    "pass_score": 1.0,
+    "fail_score": 0.0,
+    "unavailable_channels_excluded_from_aggregate": true
+  }
+}

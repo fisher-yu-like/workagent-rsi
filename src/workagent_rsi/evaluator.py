@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 import shutil
 import tempfile
 from typing import Sequence
 
 from .contracts import ArtifactRef, EvaluationReport, TaskSpec
+from .office_checks import MEDIA_TYPES, inspect_office_file
 
 
 class BasicEvaluator:
@@ -33,18 +35,28 @@ class BasicEvaluator:
 
 
 class OfficeArtifactEvaluator:
-    """Reopen genuine Office packages and verify the required marker."""
+    """Reopen genuine Office packages and run deterministic file-level checks."""
 
-    MEDIA_TYPES = {
-        "excel": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "word": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "powerpoint": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
-    }
+    VERSION = "office-evaluator-v2"
+    MEDIA_TYPES = MEDIA_TYPES
+
+    @classmethod
+    def evaluator_hash(cls) -> str:
+        """Hash the evaluator source files used for a report identity."""
+
+        digest = hashlib.sha256()
+        for name in ("evaluator.py", "office_checks.py", "render_checks.py"):
+            source = Path(__file__).with_name(name)
+            digest.update(name.encode("utf-8"))
+            digest.update(source.read_bytes())
+        return digest.hexdigest()
 
     def evaluate(self, task: TaskSpec, artifacts: Sequence[ArtifactRef], trace_id: str) -> EvaluationReport:
         failures: list[str] = []
+        warnings: list[str] = []
         evidence: list[str] = []
-        marker = str(task.expected_constraints.get("required_text", ""))
+        channel_status: dict[str, str] = {}
+        dimension_values: dict[str, list[float]] = {}
         expected_media_type = self.MEDIA_TYPES.get(task.domain.lower())
         if not artifacts:
             failures.append("no artifacts produced")
@@ -54,38 +66,41 @@ class OfficeArtifactEvaluator:
             if expected_media_type is None or not ref.media_type.startswith(expected_media_type):
                 failures.append(f"unexpected format for {task.domain}: {ref.media_type}")
                 continue
-            try:
-                suffix = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}[task.domain.lower()]
-                with tempfile.TemporaryDirectory(prefix="workagent-office-eval-") as temp_dir:
-                    reopen_path = Path(temp_dir) / f"artifact{suffix}"
-                    shutil.copyfile(path, reopen_path)
-                    if task.domain.lower() == "excel":
-                        from openpyxl import load_workbook
+            if not path.exists():
+                failures.append(f"artifact path does not exist: {path}")
+                continue
+            # The store hash is retained as provenance.  Older callers may
+            # construct test refs with a placeholder hash, so a mismatch is a
+            # warning while the freshly computed file hash remains evidence.
+            actual_hash = hashlib.sha256(path.read_bytes()).hexdigest()
+            evidence.append(f"artifact_sha256:{actual_hash}")
+            if ref.sha256 and ref.sha256 != actual_hash:
+                warnings.append(f"artifact hash differs from supplied reference: {ref.artifact_id}")
+            suffix = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}[task.domain.lower()]
+            with tempfile.TemporaryDirectory(prefix="workagent-office-eval-") as temp_dir:
+                reopen_path = Path(temp_dir) / f"artifact{suffix}"
+                shutil.copyfile(path, reopen_path)
+                report = inspect_office_file(reopen_path, task)
+            failures.extend(report.failures)
+            warnings.extend(report.warnings)
+            evidence.extend(report.evidence)
+            channel_status.update(report.channel_status)
+            for name, value in report.dimensions.items():
+                dimension_values.setdefault(name, []).append(float(value))
+            evidence.append(f"office_check_status:{report.status}")
 
-                        workbook = load_workbook(reopen_path, read_only=True, data_only=False)
-                        values = [cell.value for sheet in workbook.worksheets for row in sheet.iter_rows() for cell in row]
-                        workbook.close()
-                    elif task.domain.lower() == "word":
-                        from docx import Document
-
-                        document = Document(reopen_path)
-                        values = [paragraph.text for paragraph in document.paragraphs]
-                        values.extend(cell.text for table in document.tables for row in table.rows for cell in row.cells)
-                    else:
-                        from pptx import Presentation
-
-                        presentation = Presentation(reopen_path)
-                        values = [shape.text for slide in presentation.slides for shape in slide.shapes if hasattr(shape, "text")]
-                text = "\n".join(str(value) for value in values if value is not None)
-                if marker and marker not in text:
-                    failures.append(f"required marker missing: {marker}")
-            except Exception as exc:
-                failures.append(f"format reopen failed: {exc}")
+        dimensions = {name: min(values) for name, values in dimension_values.items()}
+        if not artifacts:
+            dimensions.setdefault("format_validity", 0.0)
+            dimensions.setdefault("marker_correctness", 0.0)
+        evidence.extend([f"trace:{trace_id}", f"evaluator_version:{self.VERSION}", f"evaluator_hash:{self.evaluator_hash()}"])
         passed = not failures
         return EvaluationReport(
             passed=passed,
             score=1.0 if passed else 0.0,
             critical_failures=failures,
-            dimensions={"format_validity": 1.0 if passed else 0.0, "marker_correctness": 1.0 if passed else 0.0},
-            evidence=evidence + [f"trace:{trace_id}"],
+            warnings=warnings,
+            dimensions=dimensions,
+            evidence=evidence,
+            channel_status=channel_status,
         )
