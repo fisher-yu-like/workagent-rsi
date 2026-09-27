@@ -27,6 +27,8 @@ def test_external_manifest_is_metadata_only_and_has_official_sources():
     assert manifest["policy"]["download_requires_data_license"] is True
     assert all(item["official_repository"].startswith("https://") for item in manifest["candidates"])
     assert all(item["download_status"] == "metadata_only" for item in manifest["candidates"])
+    spreadsheet = next(item for item in manifest["candidates"] if item["id"] == "spreadsheetbench-v1")
+    assert spreadsheet["data_url"].startswith("https://raw.githubusercontent.com/")
 
 
 def test_external_intake_refuses_download_without_verified_license(tmp_path: Path):

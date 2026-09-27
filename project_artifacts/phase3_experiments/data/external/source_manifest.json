@@ -33,7 +33,7 @@
       "official_repository": "https://github.com/RUCKBReasoning/SpreadsheetBench",
       "official_paper": "https://arxiv.org/abs/2406.14991",
       "official_homepage": "https://spreadsheetbench.github.io/",
-      "data_url": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/main/data/spreadsheetbench_912_v0.1.tar.gz",
+      "data_url": "https://raw.githubusercontent.com/RUCKBReasoning/SpreadsheetBench/main/data/spreadsheetbench_912_v0.1.tar.gz",
       "version": "repository-main-49b73a94775fb489063f60ca1865e3a650079a79",
       "scope": "912 real-world spreadsheet instructions and 2,729 test cases; sample release contains 200 data points",
       "repository_license": "CC-BY-SA-4.0 (README statement)",

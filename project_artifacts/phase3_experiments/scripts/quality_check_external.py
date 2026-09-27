@@ -27,7 +27,7 @@ def check_manifest(payload: dict) -> tuple[list[dict], list[str]]:
             failures.append(f"{name}: {detail}")
 
     candidates = payload.get("candidates", [])
-    check("manifest_version", bool(payload.get("manifest_version")), "missing manifest_version")
+    check("manifest_version", bool(payload.get("manifest_version")), "present" if payload.get("manifest_version") else "missing manifest_version")
     check("metadata_only", payload.get("status") == "metadata_only", f"status={payload.get('status')}")
     check("candidate_count", len(candidates) >= 1, f"count={len(candidates)}")
     ids = [item.get("id") for item in candidates]

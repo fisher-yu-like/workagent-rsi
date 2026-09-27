@@ -2,7 +2,7 @@
   "candidate_count": 5,
   "checks": [
     {
-      "detail": "missing manifest_version",
+      "detail": "present",
       "name": "manifest_version",
       "passed": true
     },
@@ -129,7 +129,7 @@
   ],
   "failures": [],
   "formal_dataset_selected": null,
-  "manifest_sha256": "02c795b310b0f5aa1098cb6fff71a9f270f9a821278d16c85ad5cb5daa72ebd1",
+  "manifest_sha256": "0869bf5f2320d9b1d374bf2ed2313057163e411dcc5e88f9c2a939a2b9b94fbc",
   "mode": "metadata_only",
   "status": "pass"
 }
