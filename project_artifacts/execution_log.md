@@ -160,3 +160,11 @@
 - 阶段 5 文档与 manifest 已提交：`94ee97c`（`record real-model RSI pilot`）。
 - 已推送到 `origin/codex/closed-loop-rsi`；推送后本地与远程 hash 均为 `94ee97c274bcf637dc485e42e1d8f3a19db2fbc8`。
 - 收尾时工作树干净，结果目录仍保留在 `project_artifacts/results/qualification/real-model/`，并未把被忽略的二进制/运行中间文件混入提交。
+
+## 通用 Office WorkAgent 执行器：规格待审（2026-09-29）
+
+- 用户确认先搭建通用 Office WorkAgent；首版支持 Excel、Word、PowerPoint 从零创建和基于输入副本编辑，再执行评估与 RSI。
+- 设计采用本机 Codex CLI + Ollama `qwen2.5:7b`，模型在每次运行的独立工作区通过 Python Office 库产出真实文件；输入原件只复制、不覆盖，WorkAgent 失败不自动降级模板生成器。
+- 已核验 Codex CLI `0.157.1`、Ollama `0.34.4`、`qwen2.5:7b` 可用，Word/Excel/PowerPoint COM 均为 `16.0`；Docker daemon 不可用，首版安全边界明确为 Codex `workspace-write`，不宣称容器级隔离。
+- 六项自建 pilot 将覆盖三种格式的创建和编辑；先记录真实 baseline，再用冻结检查器与跨格式回归运行 RSI。它只属于 project-generated 工程证据；不人为制造失败、不改模型权重、不冒称外部 benchmark。
+- 规格文档已写入：`docs/superpowers/specs/2026-09-29-general-office-workagent-design.md`。当前等待用户审阅规格；在其批准前，尚未改动 WorkAgent 生产代码，也未运行本阶段的真实 Office 生成任务。
