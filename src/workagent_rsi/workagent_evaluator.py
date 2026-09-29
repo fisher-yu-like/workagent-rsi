@@ -63,7 +63,15 @@ class WorkAgentFrozenEvaluator:
             elapsed = time.perf_counter() - started
             evaluation = result.get("evaluation")
             raw_score = evaluation.get("score") if isinstance(evaluation, dict) else None
-            valid_score = isinstance(raw_score, (int, float)) and not isinstance(raw_score, bool) and math.isfinite(raw_score)
+            score = None
+            if isinstance(raw_score, (int, float)) and not isinstance(raw_score, bool):
+                try:
+                    converted = float(raw_score)
+                    if math.isfinite(converted):
+                        score = converted
+                except OverflowError:
+                    pass
+            valid_score = score is not None
             terminal = result.get("state") in {"SUCCEEDED", "FAILED"} and valid_score
             row = {
                 "task_id": task.task_id,
@@ -74,7 +82,7 @@ class WorkAgentFrozenEvaluator:
             if terminal:
                 row.update(
                     passed=bool(evaluation.get("passed")),
-                    score=float(raw_score),
+                    score=score,
                     critical_failures=evaluation.get("critical_failures", []),
                     wall_time_seconds=round(elapsed, 6),
                 )

@@ -43,3 +43,19 @@ GREEN and regression evidence:
 - `$env:PYTHONPYCACHEPREFIX='project_artifacts/results/test-runs/plan-t7-review-pycache'; py -3.12 -m compileall -q src/workagent_rsi; git diff --check; git diff --stat -- src/workagent_rsi/workagent_evaluator.py tests/test_workagent_office.py` — exit 0; only line-ending warnings, two code/test files changed (51 insertions, 6 deletions).
 
 No live model, qualification, or RSI run was launched in this follow-up.
+
+## Review follow-up 2: oversized numeric score and frozen matrix
+The review exposed a new edge case in the prior score guard: `math.isfinite(10**400)` raised `OverflowError`. The evaluator now converts only numeric `int`/`float` values (excluding `bool`) inside an overflow guard and accepts only finite converted values. Oversized integers remain incomplete with their persisted row and no score or wall-time cost.
+
+The controller also identified an additional Task 7 plan gap beyond the narrow score fix: the RSI config had four tasks, while the approved Task 6 matrix requires twelve. The config now contains three project-generated tasks per split, one each for Excel, Word, and PowerPoint. Develop, hidden, and alternate-layout OOD tasks are create tasks; regression tasks edit named original inputs (`transactions.xlsx`, `status_draft.docx`, `briefing_draft.pptx`) to be generated invocation-locally in Task 8. Instructions and evaluator-only constraints remain separate. No run outcomes are asserted or fabricated.
+
+RED evidence:
+- `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t7-review2-red tests/test_workagent_office.py -k 'malformed_terminal_score and evaluation5'` — 1 failed as expected with `OverflowError: int too large to convert to float`.
+- `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t7-review2-config-red tests/test_workagent_office.py -k twelve_domain_balanced` — 1 failed as expected, showing one task per split rather than three.
+
+GREEN and regression evidence:
+- `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t7-review2-green tests/test_workagent_office.py -k 'malformed_terminal_score or twelve_domain_balanced'` — 7 passed, 99 deselected.
+- `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t7-review2-full tests/test_workagent_office.py tests/test_experiment_runner.py tests/test_rsi_loop.py tests/test_promotion.py tests/test_verifier.py` — 112 passed, 3 skipped in 33.09s.
+- `$env:PYTHONPYCACHEPREFIX='project_artifacts/results/test-runs/plan-t7-review2-pycache'; py -3.12 -m compileall -q src/workagent_rsi; git diff --check; git diff --stat -- src/workagent_rsi/workagent_evaluator.py tests/test_workagent_office.py project_artifacts/phase3_experiments/configs/general_office_rsi.json` — exit 0; line-ending warnings only; 3 Task 7 files changed.
+
+An initial `-k oversized_integer` selection matched no parametrized test and exited 1 with 105 deselected; the corrected `evaluation5` selection above captured the intended RED. No live model or RSI run was launched.

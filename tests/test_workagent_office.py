@@ -90,6 +90,7 @@ def test_workagent_frozen_evaluator_real_office_files_and_hashes(monkeypatch, tm
 
 @pytest.mark.parametrize("evaluation", [
     {}, {"score": None}, {"score": "invalid"}, {"score": float("nan")}, {"score": float("inf")},
+    {"score": 10**400},
 ])
 def test_workagent_frozen_evaluator_malformed_terminal_score_is_incomplete(monkeypatch, tmp_path: Path, evaluation: dict):
     task = TaskSpec(task_id="malformed", domain="excel", instruction="Create Excel")
@@ -125,6 +126,23 @@ def test_workagent_frozen_evaluator_rejects_live_hash_drift_before_run(monkeypat
     with pytest.raises(ValueError, match="evaluator hash"):
         frozen.evaluate_split([task], "develop", WorkAgentSkill(instructions="test instructions"), contract, root)
     assert not root.exists()
+
+
+def test_general_office_rsi_config_has_twelve_domain_balanced_tasks():
+    config_path = Path(__file__).resolve().parents[1] / "project_artifacts/phase3_experiments/configs/general_office_rsi.json"
+    splits = json.loads(config_path.read_text(encoding="utf-8"))["splits"]
+    assert set(splits) == {"develop", "regression", "hidden", "ood_transfer"}
+    assert {split: len(tasks) for split, tasks in splits.items()} == {
+        "develop": 3, "regression": 3, "hidden": 3, "ood_transfer": 3,
+    }
+    assert len({task["task_id"] for tasks in splits.values() for task in tasks}) == 12
+    for split, tasks in splits.items():
+        assert {task["domain"] for task in tasks} == {"excel", "word", "powerpoint"}
+        assert {task["kind"] for task in tasks} == {"edit" if split == "regression" else "create"}
+        for task in tasks:
+            assert task["instruction"] and task["expected_constraints"]
+            assert bool(task["input_files"]) == (split == "regression")
+            assert not any(key in task["instruction"] for key in task["expected_constraints"])
 
 
 def _rsi_tasks():
