@@ -744,7 +744,7 @@ def test_general_office_runner_retry_help_and_metadata(monkeypatch, tmp_path: Pa
     prior_id = "20260929T190856Z-ab3365c5"
     prior = tmp_path / prior_id
     prior.mkdir()
-    prior_summary = {"config_sha256": "a" * 64, "task_count": 6, "success_count": 0, "failure_count": 6}
+    prior_summary = _general_office_prior_summary(prior)
     prior_bytes = json.dumps(prior_summary).encode("utf-8")
     (prior / "summary.json").write_bytes(prior_bytes)
     monkeypatch.setattr(pilot, "probe_capabilities", lambda: CapabilityReport.for_testing(powerpoint_com=None))
@@ -767,6 +767,79 @@ def test_general_office_runner_retry_help_and_metadata(monkeypatch, tmp_path: Pa
     for value in (prior_id, str(prior.resolve()), "a" * 64, lineage["new_config_sha256"], "revised-prompt-and-criteria", "0 succeeded", "6 failed"):
         assert value in report
     assert (prior / "summary.json").read_bytes() == prior_bytes
+
+
+def _general_office_prior_summary(prior: Path) -> dict:
+    """Test-sized shape of the recorded 20260929T190856Z-ab3365c5 pilot summary."""
+    task_ids = ("excel-create", "excel-edit", "word-create", "word-edit", "powerpoint-create", "powerpoint-edit")
+    return {
+        "pilot_id": "general-office-six-task-engineering-pilot-v1",
+        "invocation": str(prior.resolve()),
+        "config_sha256": "a" * 64,
+        "task_count": 6,
+        "success_count": 0,
+        "failure_count": 6,
+        "rows": [{"task_id": task_id, "state": "FAILED"} for task_id in task_ids],
+    }
+
+
+@pytest.mark.parametrize("corruption", ["short_hash", "uppercase_hash", "wrong_pilot", "wrong_path", "wrong_task_count", "wrong_success_count", "wrong_failure_count", "unexplained_extra_failure"])
+def test_general_office_runner_retry_rejects_foreign_or_inconsistent_summary(monkeypatch, tmp_path: Path, corruption: str):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    monkeypatch.setattr(pilot, "probe_capabilities", lambda: pytest.fail("invalid summary must be rejected before COM probe"))
+    monkeypatch.setattr(pilot, "Harness", lambda *args, **kwargs: pytest.fail("invalid summary must not launch Harness"))
+    prior_id = "20260929T190856Z-ab3365c5"
+    prior = tmp_path / prior_id
+    prior.mkdir()
+    summary = _general_office_prior_summary(prior)
+    if corruption == "short_hash":
+        summary["config_sha256"] = "a" * 63
+    elif corruption == "uppercase_hash":
+        summary["config_sha256"] = "A" * 64
+    elif corruption == "wrong_pilot":
+        summary["pilot_id"] = "another-pilot"
+    elif corruption == "wrong_path":
+        summary["invocation"] = str((tmp_path / "another-invocation").resolve())
+    elif corruption == "wrong_task_count":
+        summary["task_count"] = 5
+    elif corruption == "wrong_success_count":
+        summary["success_count"] = 1
+    elif corruption == "wrong_failure_count":
+        summary["failure_count"] = 5
+    else:
+        summary["failure_count"] = 7
+    (prior / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
+
+    with pytest.raises(SystemExit) as exc:
+        pilot.main(["--retry-of", prior_id])
+    assert exc.value.code == 2
+    assert [path.name for path in tmp_path.iterdir()] == [prior_id]
+
+
+@pytest.mark.parametrize("case", ["com_preflight", "top_level_exception"])
+def test_general_office_runner_retry_accepts_legitimate_runner_failure_counts(monkeypatch, tmp_path: Path, case: str):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    monkeypatch.setattr(pilot, "probe_capabilities", lambda: CapabilityReport.for_testing(powerpoint_com=None))
+    monkeypatch.setattr(pilot, "Harness", lambda *args, **kwargs: pytest.fail("mocked COM preflight must not launch Harness"))
+    prior_id = "20260929T190856Z-ab3365c5"
+    prior = tmp_path / prior_id
+    prior.mkdir()
+    summary = _general_office_prior_summary(prior)
+    if case == "com_preflight":
+        summary.update(rows=[], task_count=0, success_count=0, failure_count=0, failure="COM unavailable")
+    else:
+        summary.update(rows=summary["rows"][:2], task_count=2, success_count=0, failure_count=3, failure="top-level exception")
+    (prior / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
+
+    assert pilot.main(["--retry-of", prior_id]) == 1
+    current = next(path for path in tmp_path.iterdir() if path.name != prior_id)
+    lineage = json.loads((current / "summary.json").read_text(encoding="utf-8"))["retry_lineage"]
+    assert lineage["prior_failure_count"] == summary["failure_count"]
 
 
 @pytest.mark.parametrize("prior_id,make_directory", [("", False), ("../outside", False), ("C:/outside", False), ("20260929T190856Z-ab3365c5", True)])

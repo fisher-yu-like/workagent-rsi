@@ -32,6 +32,8 @@ CONFIG = ROOT / "project_artifacts/phase3_experiments/configs/general_office_pil
 RESULT_ROOT = ROOT / "project_artifacts/results/qualification/general-office"
 SUFFIXES = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}
 INVOCATION_ID = re.compile(r"[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}\Z")
+SHA256 = re.compile(r"[0-9a-f]{64}\Z")
+PILOT_ID = "general-office-six-task-engineering-pilot-v1"
 
 
 def _write_json(path: Path, value: object) -> None:
@@ -103,6 +105,23 @@ def _retry_lineage(prior_id: str, parser: argparse.ArgumentParser, new_config_sh
         for key in ("task_count", "success_count", "failure_count")
     ):
         parser.error("--retry-of summary.json lacks prior config hash or result counts")
+    if not SHA256.fullmatch(saved["config_sha256"]) or saved.get("pilot_id") != PILOT_ID:
+        parser.error("--retry-of summary.json does not identify this pilot and a valid config SHA-256")
+    invocation = saved.get("invocation")
+    if not isinstance(invocation, str) or not Path(invocation).is_absolute() or Path(invocation).resolve() != prior.resolve():
+        parser.error("--retry-of summary.json invocation does not match the prior directory")
+    rows = saved.get("rows")
+    if not isinstance(rows, list) or len(rows) != saved["task_count"] or any(
+        not isinstance(row, dict) or row.get("state") not in ("SUCCEEDED", "FAILED") for row in rows
+    ):
+        parser.error("--retry-of summary.json task rows do not match task_count")
+    successes = sum(row["state"] == "SUCCEEDED" for row in rows)
+    failures = len(rows) - successes
+    extra_failures = saved["failure_count"] - failures
+    if saved["success_count"] != successes or extra_failures not in (0, 1) or (
+        extra_failures == 1 and (not isinstance(saved.get("failure"), str) or not saved["failure"])
+    ):
+        parser.error("--retry-of summary.json result counts contradict task rows")
     return {
         "retry_of_invocation_id": prior_id,
         "retry_of_invocation_path": str(prior.resolve()),
