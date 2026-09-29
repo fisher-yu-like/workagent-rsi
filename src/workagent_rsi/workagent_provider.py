@@ -7,6 +7,7 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
+from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -102,7 +103,7 @@ class CodexOfficeProvider:
             if path.is_file() and ".git" not in path.parts and "provider_records" not in path.parts
         })
         records.mkdir(parents=True, exist_ok=True)
-        response_path = records / "agent_response.json"
+        response_path = records / f"agent_response-{uuid4().hex}.json"
         command = self.command(workspace, response_path, self.schema_path)
         (records / "prompt.txt").write_text(prompt, encoding="utf-8", newline="\n")
         (records / "command.json").write_text(json.dumps(command, indent=2) + "\n", encoding="utf-8", newline="\n")

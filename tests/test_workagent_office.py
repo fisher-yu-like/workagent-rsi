@@ -116,7 +116,8 @@ def test_provider_runs_prompt_on_stdin_and_persists_success_evidence(monkeypatch
     assert outcome.record.workspace_hash == canonical_json_hash({"input.txt": sha256_file(workspace / "input.txt")})
     assert outcome.record.exit_code == 0
     assert outcome.record.started_at <= outcome.record.ended_at
-    assert outcome.record.output_ref == sha256_file(records / "agent_response.json")
+    response_path = Path(observed["command"][observed["command"].index("--output-last-message") + 1])
+    assert outcome.record.output_ref == sha256_file(response_path)
     assert observed["input"] == "make a report"
     assert observed["capture_output"] is True
     assert observed["text"] is True
@@ -125,7 +126,8 @@ def test_provider_runs_prompt_on_stdin_and_persists_success_evidence(monkeypatch
     assert (records / "prompt.txt").read_text(encoding="utf-8") == "make a report"
     assert (records / "provider.stdout.jsonl").read_text(encoding="utf-8") == '{"type":"done"}\n'
     assert (records / "provider.stderr.txt").read_text(encoding="utf-8") == "notice\n"
-    assert json.loads((records / "agent_response.json").read_text(encoding="utf-8")) == response
+    assert response_path.parent == records
+    assert json.loads(response_path.read_text(encoding="utf-8")) == response
     assert json.loads((records / "command.json").read_text(encoding="utf-8")) == observed["command"]
     assert json.loads((records / "provider_record.json").read_text(encoding="utf-8")) == outcome.record.model_dump(mode="json")
 
@@ -165,3 +167,30 @@ def test_provider_missing_executable_is_unavailable(monkeypatch, tmp_path: Path)
     assert (records / "provider.stdout.jsonl").read_text(encoding="utf-8") == ""
     assert (records / "provider.stderr.txt").read_text(encoding="utf-8") == ""
     assert json.loads((records / "provider_record.json").read_text(encoding="utf-8"))["status"] == "unavailable"
+
+
+def test_provider_reused_record_root_does_not_accept_stale_response(monkeypatch, tmp_path: Path):
+    records = tmp_path / "records"
+    response = {"status": "completed", "deliverables": [], "summary": "first run", "input_files_used": []}
+    calls = []
+
+    def fake_run(command, **kwargs):
+        output_path = Path(command[command.index("--output-last-message") + 1])
+        calls.append(output_path)
+        if len(calls) == 1:
+            output_path.write_text(json.dumps(response), encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    provider = CodexOfficeProvider(WorkAgentConfig())
+    first = provider.run("first", tmp_path, records)
+    second = provider.run("second", tmp_path, records)
+
+    assert first.status == "completed"
+    assert second.status == "failed"
+    assert second.response is None
+    assert second.record is not None
+    assert second.record.output_ref is None
+    assert calls[0] != calls[1]
+    assert calls[0].exists()
+    assert json.loads(calls[0].read_text(encoding="utf-8")) == response
