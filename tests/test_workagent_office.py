@@ -239,10 +239,29 @@ def test_input_copy_rejects_cross_domain_and_nonregular_files(tmp_path: Path):
         copy_task_inputs(_office_task(input_files=("folder.xlsx",)), tmp_path / "workspace", tmp_path)
 
 
-@pytest.mark.parametrize("name", ["../source.xlsx", "missing.xlsx", "source.xls", "//server/share/source.xlsx", "C:/source.xlsx", "/source.xlsx"])
+@pytest.mark.parametrize("name", ["../source.xlsx", "missing.xlsx", "source.xls", "//server/share/source.xlsx", r"\\server\share\source.xlsx"])
 def test_input_copy_rejects_unsafe_or_unsupported_paths(tmp_path: Path, name: str):
     with pytest.raises(ValueError):
         copy_task_inputs(_office_task(input_files=(name,)), tmp_path / "workspace", tmp_path)
+
+
+def test_input_copy_accepts_explicit_local_absolute_path_without_leaking_it(tmp_path: Path):
+    input_base = tmp_path / "unused-base"
+    input_base.mkdir()
+    source = tmp_path / "provided" / "source.xlsx"
+    source.parent.mkdir()
+    Workbook().save(source)
+    task = _office_task(input_files=(str(source),))
+    workspace = tmp_path / "workspace"
+
+    manifest = copy_task_inputs(task, workspace, input_base)
+    verify_task_input_hashes(task, workspace, input_base, manifest)
+    prompt = build_task_prompt(task, manifest, "Use clear sheet names")
+
+    assert sha256_file(workspace / "inputs/0001-source.xlsx") == sha256_file(source)
+    assert str(source) not in json.dumps(manifest)
+    assert str(source) not in (workspace / "input_manifest.json").read_text(encoding="utf-8")
+    assert str(source) not in prompt
 
 
 def test_input_copy_rejects_symlinked_parent(tmp_path: Path):

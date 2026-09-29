@@ -47,6 +47,19 @@ def _safe_relative_input(value: str) -> Path:
     return Path(*pieces)
 
 
+def _source_path(value: str, base: Path) -> Path:
+    if not value or value.startswith(("//", "\\\\")):
+        raise ValueError("network and empty input paths are not allowed")
+    if any(part == ".." for part in value.replace("\\", "/").split("/")):
+        raise ValueError("input path has a traversal component")
+    path = Path(value)
+    if path.is_absolute():
+        if path.drive.startswith("\\\\"):
+            raise ValueError("network input paths are not allowed")
+        return path
+    return base / _safe_relative_input(value)
+
+
 def copy_task_inputs(task: TaskSpec, workspace: Path, input_base: Path) -> dict:
     """Copy explicitly named task-domain Office files and save a private manifest."""
     suffix = _domain_suffix(task)
@@ -57,13 +70,12 @@ def copy_task_inputs(task: TaskSpec, workspace: Path, input_base: Path) -> dict:
     files: list[dict[str, object]] = []
     sources: list[tuple[Path, str, str]] = []
     for index, value in enumerate(task.input_files, 1):
-        relative = _safe_relative_input(value)
-        source = base / relative
+        source = _source_path(value, base)
         _check_existing_segments(source)
         if not source.exists() or not source.is_file() or not stat.S_ISREG(source.lstat().st_mode):
-            raise ValueError(f"input is not a regular file: {relative.name}")
+            raise ValueError(f"input is not a regular file: {source.name}")
         if source.suffix != suffix:
-            raise ValueError(f"input format does not match {task.domain}: {relative.name}")
+            raise ValueError(f"input format does not match {task.domain}: {source.name}")
         safe_name = re.sub(r"[^A-Za-z0-9._-]", "_", source.name)
         if safe_name in ("", ".", ".."):
             raise ValueError("input filename has no safe representation")
@@ -105,8 +117,7 @@ def verify_task_input_hashes(task: TaskSpec, workspace: Path, input_base: Path, 
     base = Path(input_base).absolute()
     workspace = Path(workspace).absolute()
     for index, (value, item) in enumerate(zip(task.input_files, files), 1):
-        relative = _safe_relative_input(value)
-        source = base / relative
+        source = _source_path(value, base)
         _check_existing_segments(source)
         copied_name = f"inputs/{index:04d}-{re.sub(r'[^A-Za-z0-9._-]', '_', source.name)}"
         if not isinstance(item, dict) or item.get("copied") != copied_name or item.get("source") != source.name:
