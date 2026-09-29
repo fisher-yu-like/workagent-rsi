@@ -8,7 +8,19 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "project_artifacts/phase3_experiments/scripts/run_workagent_rsi.py"
-BASELINE = ROOT / "project_artifacts/results/qualification/general-office/20260929T195704Z-a4674234"
+
+
+@pytest.fixture(autouse=True)
+def forbid_historical_results(monkeypatch):
+    """Unit tests must remain runnable without ignored qualification records."""
+    original = Path.open
+    historical = ROOT / "project_artifacts/results/qualification"
+
+    def guarded(path, *args, **kwargs):
+        assert not path.resolve().is_relative_to(historical.resolve()), "unit test read ignored historical evidence"
+        return original(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", guarded)
 
 
 def _fake_com(path, domain):
@@ -22,14 +34,29 @@ def _module():
     return module
 
 
-def test_real_failed_baseline_blocks_before_runner_and_preserves_contract(tmp_path):
+@pytest.fixture
+def baseline(tmp_path, monkeypatch):
+    """Create representative failed evidence through the real pilot/Harness path."""
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+    from workagent_rsi.workagent_provider import CodexOfficeProvider, ProviderOutcome
+
+    result_root = tmp_path / "qualification"
+    monkeypatch.setattr(pilot, "RESULT_ROOT", result_root)
+    monkeypatch.setattr(pilot, "probe_capabilities", CapabilityReport.for_testing)
+    monkeypatch.setattr(CodexOfficeProvider, "run", lambda *args: ProviderOutcome(status="failed", error="fixture: no deliverables"))
+    assert pilot.main([]) == 1
+    return next(result_root.iterdir())
+
+
+def test_real_failed_baseline_blocks_before_runner_and_preserves_contract(tmp_path, baseline):
     """Removing the gate would call the forbidden model runner on the 0/6 baseline."""
     module = _module()
 
     def forbidden(*args, **kwargs):
         raise AssertionError("RSI runner must not start")
 
-    result = module.run_invocation(BASELINE, tmp_path / "invocation", runner_factory=forbidden, source_com_verify=_fake_com)
+    result = module.run_invocation(baseline, tmp_path / "invocation", runner_factory=forbidden, source_com_verify=_fake_com)
     assert result == 1
     summary = json.loads((tmp_path / "invocation/summary.json").read_text(encoding="utf-8"))
     contract = json.loads((tmp_path / "invocation/contract.json").read_text(encoding="utf-8"))
@@ -48,24 +75,22 @@ def test_real_failed_baseline_blocks_before_runner_and_preserves_contract(tmp_pa
     assert "阻断" in (tmp_path / "invocation/qualification_report.md").read_text(encoding="utf-8")
 
 
-def test_tampered_baseline_row_is_rejected_before_runner(tmp_path):
+def test_tampered_baseline_row_is_rejected_before_runner(tmp_path, baseline):
     """A summary-only success edit must not make qualification eligible."""
     module = _module()
-    summary = json.loads((BASELINE / "summary.json").read_text(encoding="utf-8"))
+    summary = json.loads((baseline / "summary.json").read_text(encoding="utf-8"))
     summary["rows"][0]["state"] = "SUCCEEDED"
     summary["success_count"] = 1
     summary["failure_count"] = 5
-    tampered = tmp_path / "tampered"
-    tampered.mkdir()
-    (tampered / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
-    result = module.run_invocation(tampered, tmp_path / "result", runner_factory=lambda: (_ for _ in ()).throw(AssertionError("runner called")), source_com_verify=_fake_com)
+    (baseline / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
+    result = module.run_invocation(baseline, tmp_path / "result", runner_factory=lambda: (_ for _ in ()).throw(AssertionError("runner called")), source_com_verify=_fake_com)
     assert result == 1
     saved = json.loads((tmp_path / "result/summary.json").read_text(encoding="utf-8"))
     assert saved["status"] == "blocked"
-    assert "evidence" in saved["block_reason"].lower() or "证据" in saved["block_reason"]
+    assert "persisted row mismatch" in saved["block_reason"]
 
 
-def test_qualified_baseline_wires_one_bounded_round_with_mocked_run(tmp_path, monkeypatch):
+def test_qualified_baseline_wires_one_bounded_round_with_mocked_run(tmp_path, monkeypatch, baseline):
     """A valid gate must keep the real RSI interface reachable without a model call."""
     module = _module()
     monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
@@ -80,10 +105,18 @@ def test_qualified_baseline_wires_one_bounded_round_with_mocked_run(tmp_path, mo
             assert {key: len(value) for key, value in tasks.items()} == {"develop": 3, "regression": 3, "hidden": 3, "ood_transfer": 3}
             assert skill.instructions
             assert isinstance(provider, module.WorkAgentCandidateProvider)
+            contract = json.loads((output_root.parent / "contract.json").read_text(encoding="utf-8"))
+            matrix = output_root.parent / "rsi_tasks.json"
+            assert matrix.read_bytes() == module.CONFIG.read_bytes()
+            assert contract["task_config_sha256"] == module.sha256_file(matrix)
+            assert contract["split_hashes"] == {
+                split: module.canonical_json_hash([task.model_dump(mode="json") for task in rows])
+                for split, rows in tasks.items()
+            }
             return {"status": "completed", "accepted": 0}
 
     output = tmp_path / "eligible"
-    assert module.run_invocation(BASELINE, output, runner_factory=FakeRunner, source_com_verify=_fake_com) == 0
+    assert module.run_invocation(baseline, output, runner_factory=FakeRunner, source_com_verify=_fake_com) == 0
     summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
     assert summary["rsi_started"] is True
     assert summary["rsi_result"]["accepted"] == 0
@@ -106,7 +139,7 @@ def test_missing_or_malformed_baseline_summary_still_writes_blocked_reports(tmp_
     assert "阻断" in (output / "qualification_report.md").read_text(encoding="utf-8")
 
 
-def test_runner_exception_preserves_partial_evidence_and_failed_reports(tmp_path, monkeypatch):
+def test_runner_exception_preserves_partial_evidence_and_failed_reports(tmp_path, monkeypatch, baseline):
     """An eligible-run crash must not erase nested artifacts or omit aggregate reports."""
     module = _module()
     monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
@@ -121,7 +154,7 @@ def test_runner_exception_preserves_partial_evidence_and_failed_reports(tmp_path
             raise RuntimeError("run failed")
 
     output = tmp_path / "result"
-    assert module.run_invocation(BASELINE, output, runner_factory=CrashingRunner, source_com_verify=_fake_com) == 1
+    assert module.run_invocation(baseline, output, runner_factory=CrashingRunner, source_com_verify=_fake_com) == 1
     summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
     assert summary["status"] == "failed"
     assert summary["rsi_started"] is True
@@ -130,7 +163,7 @@ def test_runner_exception_preserves_partial_evidence_and_failed_reports(tmp_path
     assert "失败" in (output / "qualification_report.md").read_text(encoding="utf-8")
 
 
-def test_incomplete_result_exits_nonzero_and_detects_candidate_evidence(tmp_path, monkeypatch):
+def test_incomplete_result_exits_nonzero_and_detects_candidate_evidence(tmp_path, monkeypatch, baseline):
     """An incomplete RSI return is not reported as completed or successful."""
     module = _module()
     monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
@@ -143,10 +176,11 @@ def test_incomplete_result_exits_nonzero_and_detects_candidate_evidence(tmp_path
             evidence = output_root / "rounds/round-01/provider_records"
             evidence.mkdir(parents=True)
             (evidence / "provider_record.json").write_text("{}", encoding="utf-8")
+            (output_root.parent / "candidate_launch_attempt.json").write_text('{"command": ["codex", "exec"]}', encoding="utf-8")
             return {"status": "incomplete", "incomplete_round": {"status": "unavailable"}}
 
     output = tmp_path / "result"
-    assert module.run_invocation(BASELINE, output, runner_factory=IncompleteRunner, source_com_verify=_fake_com) == 1
+    assert module.run_invocation(baseline, output, runner_factory=IncompleteRunner, source_com_verify=_fake_com) == 1
     summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
     assert summary["status"] == "incomplete"
     assert summary["candidate_started"] is True
@@ -164,23 +198,23 @@ def test_baseline_selector_accepts_direct_id_only(tmp_path, monkeypatch):
             module.resolve_baseline_invocation(unsafe)
 
 
-def test_unreadable_baseline_summary_hash_still_blocks(tmp_path, monkeypatch):
+def test_unreadable_baseline_summary_hash_still_blocks(tmp_path, monkeypatch, baseline):
     """An OSError while hashing baseline evidence must not prevent reports."""
     module = _module()
     original = module.sha256_file
 
     def unreadable(path):
-        if Path(path) == BASELINE / "summary.json":
+        if Path(path) == baseline / "summary.json":
             raise OSError("read denied")
         return original(path)
 
     monkeypatch.setattr(module, "sha256_file", unreadable)
     output = tmp_path / "result"
-    assert module.run_invocation(BASELINE, output, runner_factory=lambda **kwargs: (_ for _ in ()).throw(AssertionError("model called")), source_com_verify=_fake_com) == 1
+    assert module.run_invocation(baseline, output, runner_factory=lambda **kwargs: (_ for _ in ()).throw(AssertionError("model called")), source_com_verify=_fake_com) == 1
     assert json.loads((output / "summary.json").read_text(encoding="utf-8"))["status"] == "blocked"
 
 
-def test_source_com_exception_persists_failed_validation_and_blocked_reports(tmp_path):
+def test_source_com_exception_persists_failed_validation_and_blocked_reports(tmp_path, baseline):
     """A source validation probe failure must not escape before aggregate reports."""
     module = _module()
 
@@ -188,13 +222,13 @@ def test_source_com_exception_persists_failed_validation_and_blocked_reports(tmp
         raise OSError("COM unavailable")
 
     output = tmp_path / "result"
-    assert module.run_invocation(BASELINE, output, runner_factory=lambda **kwargs: (_ for _ in ()).throw(AssertionError("model called")), source_com_verify=broken_com) == 1
+    assert module.run_invocation(baseline, output, runner_factory=lambda **kwargs: (_ for _ in ()).throw(AssertionError("model called")), source_com_verify=broken_com) == 1
     validation = json.loads((output / "source_office_validation.json").read_text(encoding="utf-8"))
     assert validation["passed"] is False
     assert json.loads((output / "summary.json").read_text(encoding="utf-8"))["status"] == "blocked"
 
 
-def test_candidate_launch_permission_error_counts_as_attempt_without_provider_record(tmp_path, monkeypatch):
+def test_candidate_launch_permission_error_counts_as_attempt_without_provider_record(tmp_path, monkeypatch, baseline):
     """A launch exception after reaching the runner boundary must survive aggregate reporting."""
     module = _module()
     monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
@@ -213,10 +247,31 @@ def test_candidate_launch_permission_error_counts_as_attempt_without_provider_re
             raise AssertionError("unreachable")
 
     output = tmp_path / "result"
-    assert module.run_invocation(BASELINE, output, runner_factory=LaunchingRunner, source_com_verify=_fake_com) == 1
+    assert module.run_invocation(baseline, output, runner_factory=LaunchingRunner, source_com_verify=_fake_com) == 1
     summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
     assert summary["status"] == "failed"
     assert summary["candidate_started"] is True
     assert json.loads((output / "candidate_launch_attempt.json").read_text(encoding="utf-8"))["command"] == ["codex", "exec"]
     assert not list(output.rglob("provider_record.json"))
     assert json.loads((output / "analysis.json").read_text(encoding="utf-8"))["candidate_started"] is True
+
+
+def test_baseline_provider_records_do_not_claim_candidate_started(tmp_path, monkeypatch):
+    module = _module()
+    monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
+
+    class BaselineOnlyRunner:
+        def __init__(self, **kwargs):
+            pass
+
+        def run(self, tasks, skill, provider, output_root, *, rounds):
+            records = output_root / "rounds/round-01/baseline/develop/task/run/provider_records"
+            records.mkdir(parents=True)
+            (records / "provider_record.json").write_text('{"provider": "codex-cli"}', encoding="utf-8")
+            return {"status": "no_candidate_needed"}
+
+    baseline = tmp_path / "baseline"
+    output = tmp_path / "result"
+    assert module.run_invocation(baseline, output, runner_factory=BaselineOnlyRunner, source_com_verify=_fake_com) == 0
+    assert json.loads((output / "summary.json").read_text(encoding="utf-8"))["candidate_started"] is False
+    assert json.loads((output / "analysis.json").read_text(encoding="utf-8"))["candidate_started"] is False

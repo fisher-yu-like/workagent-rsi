@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .contracts import TaskSpec
+from .artifact_com import persist_com_result, verify_stored_office_artifacts
 from .evaluator import BasicEvaluator, OfficeArtifactEvaluator
 from .executor import ComOfficeAdapter, LocalOfficeAdapter, MockWorkAgentAdapter, UnavailableOfficeAdapter
 from .office_capabilities import CapabilityReport
@@ -84,12 +85,36 @@ class Run:
             raise ValueError("Office task cannot use smoke provider implicitly")
         if provider != "smoke" and not use_office:
             raise ValueError(f"Office provider {provider} requires an Office task domain")
-        return Orchestrator(
+        result = Orchestrator(
             artifact_store=self.store.files,
             trace_store=self.store.logs,
             adapter=adapter,
             evaluator=evaluator,
         ).run(task, skill_id or default_skill, max_attempts=max_attempts)
+        if provider == "workagent":
+            if not self.workagent_config.verify_com:
+                com = {"ok": False, "status": "disabled"}
+            elif result["state"] != "SUCCEEDED":
+                com = {"ok": False, "status": "not_run", "error": "Office evaluation did not pass"}
+            else:
+                com = verify_stored_office_artifacts(result["artifacts"], task.domain.lower(), self.root)
+                if com["ok"] is not True:
+                    result["state"] = "UNAVAILABLE" if com["status"] in {"unavailable", "timeout"} else "FAILED"
+                    result["failure"] = {"message": com["error"], "status": com["status"], "retryable": False, "provider": "office-com"}
+                    result["evaluation"]["passed"] = False
+                    result["evaluation"]["critical_failures"].append("required COM verification: " + com["error"])
+                    if result["state"] == "UNAVAILABLE":
+                        result["evaluation"].pop("score", None)
+                    else:
+                        result["evaluation"]["score"] = 0.0
+                    self.store.logs.set_state(result["run_id"], result["state"])
+            result["com_reopen"] = com
+            if "evaluation" in result:
+                result["evaluation"].setdefault("channel_status", {})["com"] = com["status"]
+            persist_com_result(self.root, com)
+            if com["status"] != "not_run":
+                self.store.logs.append_event(result["run_id"], "com_reopen", com)
+        return result
 
     def resume(self, run_id: str) -> dict:
         """Read the persisted state and trace for a run in this directory."""

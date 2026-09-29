@@ -28,6 +28,15 @@ class WorkAgentFrozenEvaluator:
         self.evaluator_hash = evaluator_hash
         self.workagent_config = workagent_config or WorkAgentConfig()
         self.input_base = Path(input_base) if input_base is not None else Path.cwd()
+        # Evaluator-owned state never enters candidate context or public reports.
+        self._task_outcomes: dict[Path, dict[str, bool]] = {}
+
+    def critical_regressions(self, baseline_root: Path, candidate_root: Path) -> int:
+        baseline = self._task_outcomes[baseline_root.resolve()]
+        candidate = self._task_outcomes[candidate_root.resolve()]
+        if baseline.keys() != candidate.keys():
+            raise ValueError("regression task evidence does not match frozen split")
+        return sum(passed and not candidate[task_id] for task_id, passed in baseline.items())
 
     def evaluate_split(
         self,
@@ -106,6 +115,7 @@ class WorkAgentFrozenEvaluator:
             full["completed_wall_time_seconds"] = round(completed_seconds, 6)
         if complete:
             full["score"] = sum(row["score"] for row in rows) / len(rows)
+            self._task_outcomes[root.resolve()] = {row["task_id"]: row["passed"] for row in rows}
         (root / "evaluation_full.json").write_text(json.dumps(full, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         public = {key: value for key, value in full.items() if key != "rows"}
         if split_name == "develop" and reveal_per_task:

@@ -254,8 +254,7 @@ def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=Wor
             summary["status"] = "failed"
             summary["failure"] = f"{type(exc).__name__}: {exc}"
             reason = f"RSI execution failed: {exc}"
-    summary["candidate_started"] = (root / "candidate_launch_attempt.json").is_file() or (
-        any((root / "rsi").rglob("provider_record.json")) if (root / "rsi").exists() else False)
+    summary["candidate_started"] = (root / "candidate_launch_attempt.json").is_file()
     summary["ended_at"] = datetime.now(timezone.utc).isoformat()
     summary["wall_time_seconds"] = (datetime.now(timezone.utc) - started).total_seconds()
     _write_json(root / "summary.json", summary)

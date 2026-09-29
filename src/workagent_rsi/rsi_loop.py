@@ -328,9 +328,9 @@ class RSILoop:
             candidate_reports = {}
         metrics = self._metrics(baseline, candidate_reports, verification.passed)
         if self._is_workagent:
-            metrics["critical_regressions"] = max(
-                0, baseline.get("regression", {}).get("success_count", 0) - candidate_reports.get("regression", {}).get("success_count", 0)
-            )
+            metrics["critical_regressions"] = self.evaluator.critical_regressions(
+                root / "baseline" / "regression", root / "candidate" / "regression"
+            ) if candidate_reports else baseline.get("regression", {}).get("success_count", 0)
             baseline_time = sum(report["completed_wall_time_seconds"] for report in baseline.values())
             candidate_time = sum(report["completed_wall_time_seconds"] for report in candidate_reports.values()) if candidate_reports else baseline_time
             if candidate_reports and baseline_time:

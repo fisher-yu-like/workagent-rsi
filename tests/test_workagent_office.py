@@ -73,7 +73,7 @@ def test_workagent_frozen_evaluator_real_office_files_and_hashes(monkeypatch, tm
         TaskSpec(task_id="powerpoint", domain="powerpoint", instruction="Create PowerPoint", expected_constraints={"required_slide_count": 1, "required_shape_text": ["Review complete"]}),
     ]
     contract = _rsi_contract({"develop": tasks})
-    evaluator = WorkAgentFrozenEvaluator(contract.evaluator_hash, input_base=tmp_path)
+    evaluator = WorkAgentFrozenEvaluator(contract.evaluator_hash, input_base=tmp_path, workagent_config=WorkAgentConfig(verify_com=False))
     result = evaluator.evaluate_split(tasks, "develop", WorkAgentSkill(instructions="good instructions"), contract, tmp_path / "results", reveal_per_task=True)
     assert result["status"] == "completed" and result["score"] == 1.0
     assert len(result["rows"]) == 3
@@ -163,7 +163,7 @@ def test_workagent_rsi_no_diagnosis_does_not_generate(monkeypatch, tmp_path: Pat
         def generate(self, *args):
             pytest.fail("candidate provider must not run without observed develop failure")
 
-    summary = WorkAgentExperimentRunner(input_base=tmp_path).run(
+    summary = WorkAgentExperimentRunner(input_base=tmp_path, workagent_config=WorkAgentConfig(verify_com=False)).run(
         _rsi_tasks(), WorkAgentSkill(instructions="good instructions"), ForbiddenProvider(), tmp_path / "experiment")
     assert summary["status"] == "no_candidate_needed"
     assert summary["rounds"][0]["champion_before"] == summary["rounds"][0]["champion_after"]
@@ -183,7 +183,7 @@ def test_workagent_rsi_unavailable_baseline_stops_without_score(monkeypatch, tmp
         def generate(self, *args):
             pytest.fail("candidate provider must not run after incomplete baseline")
 
-    summary = WorkAgentExperimentRunner(input_base=tmp_path).run(
+    summary = WorkAgentExperimentRunner(input_base=tmp_path, workagent_config=WorkAgentConfig(verify_com=False)).run(
         _rsi_tasks(), WorkAgentSkill(instructions="bad instructions"), ForbiddenProvider(), tmp_path / "experiment")
     assert summary["status"] == "incomplete"
     assert "initial_develop_score" not in summary["metrics"]
@@ -216,7 +216,7 @@ def test_workagent_rsi_candidate_verification_and_rollback(monkeypatch, tmp_path
     class PatchProvider:
         generate = staticmethod(_instruction_candidate)
 
-    summary = WorkAgentExperimentRunner(input_base=tmp_path).run(
+    summary = WorkAgentExperimentRunner(input_base=tmp_path, workagent_config=WorkAgentConfig(verify_com=False)).run(
         _rsi_tasks(), WorkAgentSkill(instructions="bad instructions"), PatchProvider(), tmp_path / "experiment")
     assert summary["status"] == "completed"
     row = summary["rounds"][0]
@@ -246,7 +246,7 @@ def test_workagent_rsi_unavailable_candidate_stops_before_promotion(monkeypatch,
     class PatchProvider:
         generate = staticmethod(_instruction_candidate)
 
-    summary = WorkAgentExperimentRunner(input_base=tmp_path).run(
+    summary = WorkAgentExperimentRunner(input_base=tmp_path, workagent_config=WorkAgentConfig(verify_com=False)).run(
         _rsi_tasks(), WorkAgentSkill(instructions="bad instructions"), PatchProvider(), tmp_path / "experiment")
     assert summary["status"] == "incomplete"
     row = summary["incomplete_round"]
@@ -752,7 +752,7 @@ def test_harness_workagent_stores_validated_excel_and_provider_trace(monkeypatch
         return subprocess.CompletedProcess(command, 0, stdout='{"type":"done"}\n', stderr="")
 
     monkeypatch.setattr(subprocess, "run", fake_run)
-    harness = Harness(tmp_path / "results", execution_provider="workagent", workagent_config=WorkAgentConfig())
+    harness = Harness(tmp_path / "results", execution_provider="workagent", workagent_config=WorkAgentConfig(verify_com=False))
     result = harness.run(_harness_excel_task((str(source),)))
 
     assert result["state"] == "SUCCEEDED"
@@ -767,7 +767,7 @@ def test_harness_workagent_stores_validated_excel_and_provider_trace(monkeypatch
     assert saved["run_id"] == result["run_id"] and saved["artifacts"] == result["artifacts"]
     events = harness.resume(result["result_dir"])["events"]
     kinds = [event["kind"] for event in events]
-    assert kinds == ["run_started", "started", "input_manifest", "provider_output", "artifact"]
+    assert kinds == ["run_started", "started", "input_manifest", "provider_output", "artifact", "com_reopen"]
     provider = events[3]["payload"]
     assert provider["record"]["provider"] == "codex-cli"
     assert provider["record"]["model_identity"] == "ollama:qwen2.5:7b"

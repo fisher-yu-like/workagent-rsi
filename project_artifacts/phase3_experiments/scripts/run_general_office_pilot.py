@@ -22,10 +22,12 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
 
 from workagent_rsi.contracts import TaskSpec
+from workagent_rsi.artifact_com import verify_stored_office_artifacts
 from workagent_rsi.evaluator import OfficeArtifactEvaluator
 from workagent_rsi.harness import Harness
 from workagent_rsi.hashing import sha256_file
 from workagent_rsi.office_capabilities import probe_capabilities, verify_artifact_with_com
+from workagent_rsi.workagent_provider import WorkAgentConfig
 
 
 CONFIG = ROOT / "project_artifacts/phase3_experiments/configs/general_office_pilot.json"
@@ -220,16 +222,20 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError(f"source hash mismatch before {task_id}")
                 task = TaskSpec(task_id=task_id, domain=item["domain"], instruction=item["instruction"],
                                 input_files=tuple(item["input_files"]), expected_constraints=item["expected_constraints"])
-                outcome = Harness(root, office=True, execution_provider="workagent", input_base=root / "inputs").run(task, run_id=task_id, max_attempts=1)
+                # Qualification owns its explicit artifact COM gate below.
+                outcome = Harness(root, office=True, execution_provider="workagent", input_base=root / "inputs",
+                                  workagent_config=WorkAgentConfig(verify_com=False)).run(task, run_id=task_id, max_attempts=1)
                 run_root = Path(outcome["result_dir"])
                 after = {name: sha256_file(root / "inputs" / name) for name in item["input_files"] if (root / "inputs" / name).is_file()}
                 hashes_ok = before == after == {name: source_hashes[name] for name in before}
                 artifacts = outcome.get("artifacts", [])
-                suffix_ok = len(artifacts) == 1 and Path(artifacts[0]["path"]).suffix.lower() == SUFFIXES[item["domain"]]
                 evaluation_passed = outcome["state"] == "SUCCEEDED" and outcome.get("evaluation", {}).get("passed") is True
-                com = verify_artifact_with_com(artifacts[0]["path"], item["domain"]) if evaluation_passed and suffix_ok and hashes_ok else {
-                    "ok": False, "status": "not_run", "error": "artifact did not pass Office evaluation, suffix, and source-integrity gates"
+                com = verify_stored_office_artifacts(artifacts, item["domain"], run_root, verify=verify_artifact_with_com) if evaluation_passed and len(artifacts) == 1 and hashes_ok else {
+                    "ok": False, "status": "not_run", "error": "artifact did not pass Office evaluation, count, and source-integrity gates"
                 }
+                # Retain the evidence field for compatibility; the type is
+                # established by trusted metadata and hash, not the store path.
+                suffix_ok = com.get("artifact_type_ok") is True
                 _write_json(run_root / "com_reopen.json", com)
                 if "evaluation" in outcome:
                     _write_json(run_root / "evaluation.json", outcome["evaluation"])

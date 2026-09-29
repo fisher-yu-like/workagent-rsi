@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import subprocess
 from datetime import datetime, timezone
@@ -143,6 +144,9 @@ class CodexOfficeProvider:
             stderr = completed.stderr or ""
             if exit_code != 0:
                 error = f"provider exited with code {exit_code}"
+                if _environment_failure(stdout, stderr, self.config.model):
+                    status = "unavailable"
+                    error += ": required CLI/provider/model capability unavailable (see stdout/stderr)"
             elif not response_path.exists():
                 error = "provider did not write structured output"
             else:
@@ -191,3 +195,24 @@ def _decode_process_output(value: str | bytes | None) -> str:
     if isinstance(value, bytes):
         return value.decode("utf-8", errors="replace")
     return value or ""
+
+
+def _environment_failure(stdout: str, stderr: str, model: str) -> bool:
+    """Recognize explicit environment errors; unknown nonzero exits stay failed."""
+    diagnostic = (stderr + "\n" + stdout).lower()
+    required_flags = ("--ignore-user-config", "--oss", "--local-provider", "--model", "--ephemeral",
+                      "--sandbox", "--json", "--output-schema", "--output-last-message", "--cd")
+    for line in diagnostic.splitlines():
+        if any(flag in line for flag in required_flags) and re.search(
+            r"unexpected argument|unrecognized (?:argument|option)|unknown (?:argument|option)|invalid value|unsupported (?:argument|option)", line
+        ):
+            return True
+        if ("ollama" in line or "localhost:11434" in line or "127.0.0.1:11434" in line) and re.search(
+            r"connection refused|could not connect|failed to connect|not running|unavailable", line
+        ):
+            return True
+        if (model.lower() in line or re.search(r"\b(?:model|ollama)\s+['\"]?[^\s'\"]+['\"]?", line)) and re.search(
+            r"not found|does not exist|not available|does not support (?:tools|tool calling|json schema|structured output)|unsupported model", line
+        ):
+            return True
+    return False
