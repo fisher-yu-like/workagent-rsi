@@ -3,11 +3,13 @@ import subprocess
 from pathlib import Path
 
 import pytest
+import yaml
 from docx import Document
 from openpyxl import Workbook
 from pydantic import ValidationError
 
 from workagent_rsi.contracts import TaskSpec
+from workagent_rsi.cli import main as cli_main
 from workagent_rsi.hashing import canonical_json_hash, sha256_file
 from workagent_rsi.harness import Harness
 from workagent_rsi.workagent_office import build_task_prompt, copy_task_inputs, validate_deliverables, verify_task_input_hashes
@@ -18,6 +20,60 @@ from workagent_rsi.workagent_provider import (
     WorkAgentConfig,
     build_agent_response_schema,
 )
+
+
+def test_cli_accepts_explicit_workagent_provider(monkeypatch, tmp_path: Path):
+    task_file = tmp_path / "task.yaml"
+    task_file.write_text(yaml.safe_dump({"task_id": "cli-explicit", "domain": "excel", "instruction": "Create a workbook"}), encoding="utf-8")
+
+    def missing_provider(command, **kwargs):
+        raise FileNotFoundError("codex not found")
+
+    monkeypatch.setattr(subprocess, "run", missing_provider)
+    exit_code = cli_main([str(task_file), "--results-dir", str(tmp_path / "results"), "--execution-provider", "workagent"])
+
+    assert exit_code == 1
+    result = json.loads(next((tmp_path / "results").glob("*/result.json")).read_text(encoding="utf-8"))
+    assert result["state"] == "UNAVAILABLE"
+
+
+def test_cli_defaults_office_tasks_to_workagent(monkeypatch, tmp_path: Path):
+    task_file = tmp_path / "task.yaml"
+    task_file.write_text(yaml.safe_dump({"task_id": "cli-default", "domain": "excel", "instruction": "Create a workbook"}), encoding="utf-8")
+
+    def missing_provider(command, **kwargs):
+        raise FileNotFoundError("codex not found")
+
+    monkeypatch.setattr(subprocess, "run", missing_provider)
+    exit_code = cli_main([str(task_file), "--results-dir", str(tmp_path / "results")])
+
+    assert exit_code == 1
+    result = json.loads(next((tmp_path / "results").glob("*/result.json")).read_text(encoding="utf-8"))
+    assert result["state"] == "UNAVAILABLE"
+
+
+def test_cli_resolves_relative_input_files_from_task_yaml_directory(monkeypatch, tmp_path: Path):
+    task_dir = tmp_path / "task-directory"
+    task_dir.mkdir()
+    Workbook().save(task_dir / "source.xlsx")
+    task_file = task_dir / "task.yaml"
+    task_file.write_text(yaml.safe_dump({"task_id": "cli-input", "domain": "excel", "instruction": "Edit the workbook", "input_files": ["source.xlsx"]}), encoding="utf-8")
+    elsewhere = tmp_path / "elsewhere"
+    elsewhere.mkdir()
+    monkeypatch.chdir(elsewhere)
+
+    def missing_provider(command, **kwargs):
+        raise FileNotFoundError("codex not found")
+
+    monkeypatch.setattr(subprocess, "run", missing_provider)
+    exit_code = cli_main([str(task_file), "--results-dir", str(tmp_path / "results")])
+
+    assert exit_code == 1
+    result_file = next((tmp_path / "results").glob("*/result.json"))
+    assert json.loads(result_file.read_text(encoding="utf-8"))["state"] == "UNAVAILABLE"
+    manifest = json.loads((result_file.parent / "agent_workspace/input_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["files"][0]["source"] == "source.xlsx"
+    assert (result_file.parent / "agent_workspace/inputs/0001-source.xlsx").is_file()
 
 
 def test_workagent_config_has_bounded_local_defaults():

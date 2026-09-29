@@ -40,6 +40,31 @@ py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml
 py -3.12 project_artifacts/phase3_experiments/scripts/run_b0_office_qualification.py
 ```
 
+For a real Office run, save a task YAML beside any input files it names. For example,
+`office_task.yaml` can contain:
+
+```yaml
+task_id: monthly-report
+domain: excel
+instruction: Edit the supplied workbook into a monthly summary with clear headings.
+input_files:
+  - source.xlsx
+```
+
+Then run `py -3.12 -m workagent_rsi.cli office_task.yaml --execution-provider workagent`.
+The `source.xlsx` path is resolved from `office_task.yaml`'s directory, not the
+shell's current directory. The provider flag is optional for Office tasks:
+`excel`, `word`, and `powerpoint` domains use WorkAgent by default. A `smoke`
+task uses the smoke provider by default. Supported Office inputs and outputs
+are `.xlsx` for Excel, `.docx` for Word, and `.pptx` for PowerPoint; formats
+must match the task domain.
+
+WorkAgent uses the local Codex CLI with Ollama `qwen2.5:7b` by default. It does
+not fall back to a template when the model is unavailable or fails. Its
+`workspace-write` sandbox is not verified to prevent reads outside the task
+workspace and is not a strong isolation boundary for sensitive inputs. Until
+that limit is resolved, use only non-sensitive, project-generated inputs.
+
 ## Current gate
 
 Phase 1 and Phase 2 are accepted. Phase 3 data quality, local Office qualification, candidate generation, and the historical E01-E12 pilot are complete. The historical pilot is mechanism-validation evidence over a project-generated fixture, not an external WorkAgent result or main-study conclusion.

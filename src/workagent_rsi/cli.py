@@ -22,12 +22,15 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--output", type=Path, help="optional exact result.json path for compatibility")
     parser.add_argument(
         "--execution-provider",
-        choices=("smoke", "local_office", "com", "libreoffice"),
-        help="explicit task execution provider; default selects smoke or local_office from the task domain",
+        choices=("smoke", "workagent", "local_office", "com", "libreoffice"),
+        help="explicit task execution provider; default selects smoke or workagent from the task domain",
     )
     args = parser.parse_args(argv)
     payload = yaml.safe_load(args.task.read_text(encoding="utf-8"))
-    result = Harness(args.results_dir, execution_provider=args.execution_provider).run(payload, result_path=args.output)
+    input_base = args.task.resolve().parent
+    result = Harness(args.results_dir, execution_provider=args.execution_provider, input_base=input_base).run(
+        payload, result_path=args.output
+    )
     if args.output is None:
         print(json.dumps(result, indent=2, sort_keys=True))
     return 0 if result["state"] == "SUCCEEDED" else 1
