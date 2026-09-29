@@ -23,6 +23,179 @@ from workagent_rsi.workagent_provider import (
     WorkAgentConfig,
     build_agent_response_schema,
 )
+from workagent_rsi.workagent_provider import WorkAgentSkill
+from workagent_rsi.workagent_evaluator import WorkAgentFrozenEvaluator
+from workagent_rsi.rsi_contracts import EvaluationContract
+from workagent_rsi.evaluator import OfficeArtifactEvaluator
+
+
+def _rsi_contract(tasks_by_split: dict[str, list[TaskSpec]]) -> EvaluationContract:
+    hashes = {split: canonical_json_hash([task.model_dump(mode="json") for task in tasks])
+              for split, tasks in tasks_by_split.items()}
+    return EvaluationContract(contract_id="test", dataset_hash=canonical_json_hash(hashes),
+        split_hashes=hashes, evaluator_hash=OfficeArtifactEvaluator.evaluator_hash(),
+        provider_policy="deterministic-test", seeds=[1], repeats=1, timeout_seconds=30,
+        thresholds={"develop_gain": 0.05}, git_commit="test")
+
+
+def _deterministic_office_provider(self, prompt, workspace, records):
+    workspace.mkdir(parents=True, exist_ok=True)
+    outputs = workspace / "outputs"
+    outputs.mkdir()
+    if "Excel" in prompt or "excel" in prompt:
+        artifact = outputs / "result.xlsx"
+        book = Workbook()
+        book.active["A1"] = "Ready" if "good instructions" in prompt else "Wrong"
+        book.save(artifact)
+    elif "Word" in prompt or "word" in prompt:
+        artifact = outputs / "result.docx"
+        doc = Document()
+        doc.add_paragraph("Status ready" if "good instructions" in prompt else "Wrong")
+        doc.save(artifact)
+    else:
+        artifact = outputs / "result.pptx"
+        deck = Presentation()
+        slide = deck.slides.add_slide(deck.slide_layouts[6])
+        box = slide.shapes.add_textbox(Inches(1), Inches(1), Inches(4), Inches(1))
+        box.text = "Review complete" if "good instructions" in prompt else "Wrong"
+        deck.save(artifact)
+    response = AgentResponse(status="completed", deliverables=["outputs/" + artifact.name], summary="done", input_files_used=[])
+    (workspace / "agent_response.json").write_text(response.model_dump_json(), encoding="utf-8")
+    (workspace / "deliverables.json").write_text(json.dumps({"deliverables": response.deliverables}), encoding="utf-8")
+    return ProviderOutcome(status="completed", response=response)
+
+
+def test_workagent_frozen_evaluator_real_office_files_and_hashes(monkeypatch, tmp_path: Path):
+    monkeypatch.setattr(CodexOfficeProvider, "run", _deterministic_office_provider)
+    tasks = [
+        TaskSpec(task_id="excel", domain="excel", instruction="Create Excel", expected_constraints={"required_cells": {"Sheet!A1": "Ready"}}),
+        TaskSpec(task_id="word", domain="word", instruction="Create Word", expected_constraints={"required_text": "Status ready"}),
+        TaskSpec(task_id="powerpoint", domain="powerpoint", instruction="Create PowerPoint", expected_constraints={"required_slide_count": 1, "required_shape_text": ["Review complete"]}),
+    ]
+    contract = _rsi_contract({"develop": tasks})
+    evaluator = WorkAgentFrozenEvaluator(contract.evaluator_hash, input_base=tmp_path)
+    result = evaluator.evaluate_split(tasks, "develop", WorkAgentSkill(instructions="good instructions"), contract, tmp_path / "results", reveal_per_task=True)
+    assert result["status"] == "completed" and result["score"] == 1.0
+    assert len(result["rows"]) == 3
+    for task in tasks:
+        run = tmp_path / "results" / task.task_id / "run"
+        assert (run / "result.json").is_file()
+        assert (run / "trace.sqlite").exists() or list(run.glob("*.db"))
+        assert list((run / "artifacts").rglob("*"))
+    with pytest.raises(ValueError, match="split hash"):
+        evaluator.evaluate_split(tasks[:-1], "develop", WorkAgentSkill(instructions="good instructions"), contract, tmp_path / "bad")
+    with pytest.raises(ValueError, match="evaluator hash"):
+        WorkAgentFrozenEvaluator("wrong").evaluate_split(tasks, "develop", WorkAgentSkill(instructions="good instructions"), contract, tmp_path / "bad")
+
+
+def _rsi_tasks():
+    return {
+        "develop": [TaskSpec(task_id="dev-excel", domain="excel", instruction="Create Excel", expected_constraints={"required_cells": {"Sheet!A1": "Ready"}})],
+        "regression": [TaskSpec(task_id="reg-word", domain="word", instruction="Create Word", expected_constraints={"required_text": "Status ready"})],
+        "hidden": [TaskSpec(task_id="hidden-powerpoint", domain="powerpoint", instruction="Create PowerPoint", expected_constraints={"required_slide_count": 1, "required_shape_text": ["Review complete"]})],
+        "ood_transfer": [TaskSpec(task_id="ood-excel", domain="excel", instruction="Create Excel", expected_constraints={"required_cells": {"Sheet!A1": "Ready"}})],
+    }
+
+
+def test_workagent_rsi_no_diagnosis_does_not_generate(monkeypatch, tmp_path: Path):
+    from workagent_rsi.workagent_experiment import WorkAgentExperimentRunner
+
+    monkeypatch.setattr(CodexOfficeProvider, "run", _deterministic_office_provider)
+
+    class ForbiddenProvider:
+        def generate(self, *args):
+            pytest.fail("candidate provider must not run without observed develop failure")
+
+    summary = WorkAgentExperimentRunner(input_base=tmp_path).run(
+        _rsi_tasks(), WorkAgentSkill(instructions="good instructions"), ForbiddenProvider(), tmp_path / "experiment")
+    assert summary["status"] == "no_candidate_needed"
+    assert summary["rounds"][0]["champion_before"] == summary["rounds"][0]["champion_after"]
+    assert "rows" not in summary["rounds"][0]["baseline"]["hidden"]
+    assert "rows" not in summary["rounds"][0]["baseline"]["ood_transfer"]
+
+
+def test_workagent_rsi_unavailable_baseline_stops_without_score(monkeypatch, tmp_path: Path):
+    from workagent_rsi.workagent_experiment import WorkAgentExperimentRunner
+
+    def unavailable(*args):
+        return ProviderOutcome(status="unavailable", error="deterministic missing provider")
+
+    monkeypatch.setattr(CodexOfficeProvider, "run", unavailable)
+
+    class ForbiddenProvider:
+        def generate(self, *args):
+            pytest.fail("candidate provider must not run after incomplete baseline")
+
+    summary = WorkAgentExperimentRunner(input_base=tmp_path).run(
+        _rsi_tasks(), WorkAgentSkill(instructions="bad instructions"), ForbiddenProvider(), tmp_path / "experiment")
+    assert summary["status"] == "incomplete"
+    assert "initial_develop_score" not in summary["metrics"]
+    assert "score" not in summary["incomplete_round"]["baseline"]["develop"]
+    assert not (tmp_path / "experiment" / "rounds" / "round-01" / "candidate_workspace").exists()
+
+
+def _instruction_candidate(workspace, diagnoses, parent_version, edit_budget, record_root):
+    from datetime import datetime, timezone
+    from workagent_rsi.rsi_contracts import AtomicEdit, CandidatePatch, ProviderRecord
+
+    now = datetime.now(timezone.utc)
+    patch = CandidatePatch(candidate_id="deterministic-instructions", parent_version=parent_version,
+        provider="deterministic", provider_version="1", diagnosis_refs=[ref for diagnosis in diagnoses for ref in diagnosis.evidence_refs],
+        atomic_edits=[AtomicEdit(component="prompt", target_path="skill.json", hypothesis="repair required content",
+            expected_metric="task_success_rate", patch=json.dumps({"instructions": "good instructions"}))],
+        edit_budget=edit_budget, created_at=now)
+    record = ProviderRecord(provider="deterministic", provider_version="1", command=[],
+        prompt_hash="a" * 64, workspace_hash="b" * 64, started_at=now, ended_at=now,
+        exit_code=0, status="completed")
+    return patch, record
+
+
+def test_workagent_rsi_candidate_verification_and_rollback(monkeypatch, tmp_path: Path):
+    from workagent_rsi.workagent_experiment import WorkAgentExperimentRunner
+    from workagent_rsi.registry import SkillRegistry
+
+    monkeypatch.setattr(CodexOfficeProvider, "run", _deterministic_office_provider)
+
+    class PatchProvider:
+        generate = staticmethod(_instruction_candidate)
+
+    summary = WorkAgentExperimentRunner(input_base=tmp_path).run(
+        _rsi_tasks(), WorkAgentSkill(instructions="bad instructions"), PatchProvider(), tmp_path / "experiment")
+    assert summary["status"] == "completed"
+    row = summary["rounds"][0]
+    assert row["verification"]["passed"]
+    assert row["metrics"]["candidate_develop"] > row["metrics"]["champion_develop"]
+    assert row["metrics"]["cost_delta"] != 0.1
+    assert "rows" not in row["candidate_reports"]["hidden"]
+    assert "rows" not in row["candidate_reports"]["ood_transfer"]
+    assert row["decision"]["decision"] in {"accept", "reject"}
+    if row["decision"]["decision"] == "reject":
+        registry = SkillRegistry(tmp_path / "experiment" / "registry")
+        assert registry.champion("office.workagent").version == "1.0.0"
+
+
+def test_workagent_rsi_unavailable_candidate_stops_before_promotion(monkeypatch, tmp_path: Path):
+    from workagent_rsi.workagent_experiment import WorkAgentExperimentRunner
+
+    real_provider = _deterministic_office_provider
+
+    def conditional(self, prompt, workspace, records):
+        if "good instructions" in prompt:
+            return ProviderOutcome(status="unavailable", error="candidate provider unavailable")
+        return real_provider(self, prompt, workspace, records)
+
+    monkeypatch.setattr(CodexOfficeProvider, "run", conditional)
+
+    class PatchProvider:
+        generate = staticmethod(_instruction_candidate)
+
+    summary = WorkAgentExperimentRunner(input_base=tmp_path).run(
+        _rsi_tasks(), WorkAgentSkill(instructions="bad instructions"), PatchProvider(), tmp_path / "experiment")
+    assert summary["status"] == "incomplete"
+    row = summary["incomplete_round"]
+    assert "score" not in row["candidate_reports"]["develop"]
+    assert "metrics" not in row and "decision" not in row
+    assert row["champion_before"] == row["champion_after"]
 
 
 def test_cli_accepts_explicit_workagent_provider(monkeypatch, tmp_path: Path):

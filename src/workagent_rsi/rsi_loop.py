@@ -7,6 +7,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Sequence
 
+from pydantic import BaseModel
+
 from .candidate_provider import CandidateProvider
 from .candidate_workspace import CandidateWorkspaceBuilder
 from .contracts import TaskSpec
@@ -19,6 +21,7 @@ from .registry import SkillRegistry
 from .rsi_contracts import EvaluationContract
 from .skill_runtime import PilotSkillConfig
 from .verifier import CandidateVerifier, VerificationPolicy
+from .workagent_provider import WorkAgentSkill
 
 
 DEFAULT_EDIT_BUDGETS = (3, 3, 2, 2, 1, 1)
@@ -34,6 +37,7 @@ class RSILoop:
         verifier: CandidateVerifier,
         evaluator: FrozenEvaluator,
         promotion: PromotionController,
+        skill_model: type[BaseModel] = PilotSkillConfig,
     ) -> None:
         self.registry = registry
         self.workspace_builder = workspace_builder
@@ -41,6 +45,7 @@ class RSILoop:
         self.verifier = verifier
         self.evaluator = evaluator
         self.promotion = promotion
+        self.skill_model = skill_model
 
     def run(
         self,
@@ -142,7 +147,12 @@ class RSILoop:
             round_result["round_root"] = str(round_root.resolve())
             self._write_round_summary(round_root, round_result)
             (round_root / "cost.json").write_text(json.dumps(round_result["costs"], indent=2, sort_keys=True) + "\n", encoding="utf-8")
-            if round_result.get("status") in {"unavailable", "timeout", "failed"}:
+            if round_result.get("status") == "no_candidate_needed":
+                rounds_data.append(round_result)
+                summary = self._summary(identity, rounds_data, root, status="no_candidate_needed")
+                (root / "run_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+                return summary
+            if round_result.get("status") in {"unavailable", "timeout", "failed", "incomplete"}:
                 checkpoint = {
                     **identity,
                     "status": "in_progress",
@@ -194,7 +204,7 @@ class RSILoop:
         root.mkdir(parents=True, exist_ok=True)
         champion = self.registry.champion(skill_id)
         champion_package = self.registry.package(champion)
-        champion_config = PilotSkillConfig.model_validate(champion_package)
+        champion_config = self.skill_model.model_validate(champion_package)
         rollback_point = {
             "skill_id": skill_id,
             "version": champion.version,
@@ -202,6 +212,12 @@ class RSILoop:
             "evidence_refs": list(champion.evidence_refs),
         }
         baseline = self._evaluate_all(tasks_by_split, champion_config, contract, root / "baseline")
+        if self._is_workagent and self._incomplete(baseline, tasks_by_split):
+            result = {"status": "incomplete", "round_index": round_index, "champion_before": champion.model_dump(mode="json"),
+                      "champion_after": champion.model_dump(mode="json"), "rollback_point": rollback_point, "baseline": baseline,
+                      "actual_edit_count": 0}
+            self._write_round_summary(root, result)
+            return result
         public_rows = baseline.get("develop", {}).get("rows", [])
         diagnosis_input = [
             {
@@ -213,6 +229,12 @@ class RSILoop:
             for row in public_rows
         ]
         diagnoses = FailureDiagnoser().diagnose(diagnosis_input)
+        if self._is_workagent and not diagnoses:
+            result = {"status": "no_candidate_needed", "round_index": round_index,
+                      "champion_before": champion.model_dump(mode="json"), "champion_after": champion.model_dump(mode="json"),
+                      "rollback_point": rollback_point, "baseline": baseline, "actual_edit_count": 0}
+            self._write_round_summary(root, result)
+            return result
         workspace = root / "candidate_workspace"
         self.workspace_builder.export(
             source_root,
@@ -246,6 +268,23 @@ class RSILoop:
             self._write_round_summary(root, result)
             return result
 
+        if self._is_workagent:
+            try:
+                if candidate.edit_budget > edit_budget or len(candidate.atomic_edits) > edit_budget or candidate.new_tests:
+                    raise ValueError("WorkAgent candidate exceeds instruction edit budget")
+                for edit in candidate.atomic_edits:
+                    payload = json.loads(edit.patch)
+                    if edit.target_path != "skill.json" or set(payload) != {"instructions"} or not isinstance(payload["instructions"], str):
+                        raise ValueError("WorkAgent candidates may edit only skill.json instructions")
+                    self.skill_model.model_validate({**champion_package, **payload})
+            except (ValueError, TypeError) as exc:
+                result = {"status": "completed", "candidate_status": "invalid_patch", "reason": str(exc),
+                          "champion_before": champion.model_dump(mode="json"), "champion_after": champion.model_dump(mode="json"),
+                          "baseline": baseline, "candidate": candidate.model_dump(mode="json"),
+                          "actual_edit_count": len(candidate.atomic_edits)}
+                self._write_round_summary(root, result)
+                return result
+
         patch_hash = canonical_json_hash([edit.model_dump(mode="json") for edit in candidate.atomic_edits])
         if self.registry.has_negative_evidence(skill_id=skill_id, candidate_id=candidate.candidate_id, patch_hash=patch_hash):
             result = {
@@ -274,12 +313,30 @@ class RSILoop:
             candidate_package = dict(champion_package)
             for edit in candidate.atomic_edits:
                 candidate_package.update(json.loads(edit.patch))
-            candidate_config = PilotSkillConfig.model_validate(candidate_package)
+            candidate_config = self.skill_model.model_validate(candidate_package)
             candidate_reports = self._evaluate_all(tasks_by_split, candidate_config, contract, root / "candidate")
+            if self._is_workagent and self._incomplete(candidate_reports, tasks_by_split):
+                result = {"status": "incomplete", "round_index": round_index,
+                          "champion_before": champion.model_dump(mode="json"), "champion_after": champion.model_dump(mode="json"),
+                          "rollback_point": rollback_point, "baseline": baseline, "candidate_reports": candidate_reports,
+                          "candidate": candidate.model_dump(mode="json"), "verification": verification.model_dump(mode="json"),
+                          "actual_edit_count": len(candidate.atomic_edits)}
+                self._write_round_summary(root, result)
+                return result
         else:
             candidate_package = dict(champion_package)
             candidate_reports = {}
         metrics = self._metrics(baseline, candidate_reports, verification.passed)
+        if self._is_workagent:
+            metrics["critical_regressions"] = max(
+                0, baseline.get("regression", {}).get("success_count", 0) - candidate_reports.get("regression", {}).get("success_count", 0)
+            )
+            baseline_time = sum(report["completed_wall_time_seconds"] for report in baseline.values())
+            candidate_time = sum(report["completed_wall_time_seconds"] for report in candidate_reports.values()) if candidate_reports else baseline_time
+            if candidate_reports and baseline_time:
+                metrics["cost_delta"] = (candidate_time - baseline_time) / baseline_time
+            else:
+                metrics.pop("cost_delta")
         decision = self.promotion.decide(candidate.candidate_id, verification, metrics, contract)
         version = self.registry.next_version(skill_id, champion.version)
         record = self.registry.register(
@@ -351,9 +408,18 @@ class RSILoop:
                 config,
                 contract,
                 root / split,
-                reveal_per_task=split != "hidden",
+                reveal_per_task=split == "develop" if self._is_workagent else split != "hidden",
             )
         return reports
+
+    @property
+    def _is_workagent(self) -> bool:
+        return issubclass(self.skill_model, WorkAgentSkill)
+
+    @staticmethod
+    def _incomplete(reports: dict[str, dict], tasks_by_split: dict[str, Sequence[TaskSpec]]) -> bool:
+        return any(tasks and (split not in reports or reports[split].get("status") != "completed" or "score" not in reports[split])
+                   for split, tasks in tasks_by_split.items())
 
     @staticmethod
     def _metrics(baseline: dict[str, dict], candidate: dict[str, dict], verified: bool) -> dict[str, float | int | bool]:
@@ -458,6 +524,16 @@ class RSILoop:
         accepted = sum(1 for row in rounds_data if row.get("decision", {}).get("decision") == "accept")
         rejected = sum(1 for row in rounds_data if row.get("decision", {}).get("decision") == "reject")
         pruned = sum(1 for row in rounds_data if row.get("candidate_status") == "pruned_negative_evidence")
+        metrics = {
+            "accepted_rounds": float(accepted),
+            "rejected_rounds": float(rejected),
+            "pruned_rounds": float(pruned),
+            "completed_rounds": float(len(rounds_data)),
+        }
+        if first_baseline.get("develop", {}).get("score") is not None:
+            metrics["initial_develop_score"] = float(first_baseline["develop"]["score"])
+        if final_reports.get("develop", {}).get("score") is not None:
+            metrics["final_develop_score"] = float(final_reports["develop"]["score"])
         return {
             "status": status,
             "round_count": len(rounds_data),
@@ -465,12 +541,5 @@ class RSILoop:
             "checkpoint": str((root / "checkpoint.json").resolve()),
             "identity": identity,
             "champion_version": (rounds_data[-1].get("champion_after", {}).get("version") if rounds_data else None),
-            "metrics": {
-                "initial_develop_score": float(first_baseline.get("develop", {}).get("score", 0.0)),
-                "final_develop_score": float(final_reports.get("develop", {}).get("score", 0.0)),
-                "accepted_rounds": float(accepted),
-                "rejected_rounds": float(rejected),
-                "pruned_rounds": float(pruned),
-                "completed_rounds": float(len(rounds_data)),
-            },
+            "metrics": metrics,
         }

@@ -1,0 +1,10 @@
+{
+  "experiment_id": "general-office-rsi-v1",
+  "seed": 20260930,
+  "splits": {
+    "develop": [{"task_id": "rsi-develop-excel", "domain": "excel", "instruction": "Create an Excel workbook with A1 set to Ready.", "expected_constraints": {"required_cells": {"Sheet!A1": "Ready"}}}],
+    "regression": [{"task_id": "rsi-regression-word", "domain": "word", "instruction": "Create a Word document containing Status ready.", "expected_constraints": {"required_text": "Status ready"}}],
+    "hidden": [{"task_id": "rsi-hidden-powerpoint", "domain": "powerpoint", "instruction": "Create one slide containing Review complete.", "expected_constraints": {"required_slide_count": 1, "required_shape_text": ["Review complete"]}}],
+    "ood_transfer": [{"task_id": "rsi-ood-word", "domain": "word", "instruction": "Create a Word document containing Transfer check.", "expected_constraints": {"required_text": "Transfer check"}}]
+  }
+}

@@ -214,3 +214,19 @@ class DeterministicCandidateProvider:
         )
         (records / "provider_record.json").write_text(json.dumps(record.model_dump(mode="json"), indent=2, sort_keys=True) + "\n", encoding="utf-8")
         return candidate, record
+
+
+class WorkAgentCandidateProvider(CodexCandidateProvider):
+    """Candidate prompt profile restricted to the versioned instruction body."""
+
+    @staticmethod
+    def _prompt(diagnoses: Sequence[FailureDiagnosis], parent_version: str, edit_budget: int) -> str:
+        context = [item.model_dump(mode="json") for item in diagnoses]
+        return (
+            "Return only JSON matching the candidate schema. Edit only skill.json with one bounded "
+            "atomic patch exactly shaped {\"instructions\": \"...\"}. Preserve the skill version. "
+            "Do not access evaluator, hidden or OOD per-task data, protected checks, credentials, "
+            "or parent directories. Base the edit only on the supplied develop diagnoses. "
+            f"Parent version: {parent_version}. Edit budget: {edit_budget}. "
+            f"Develop diagnoses: {json.dumps(context, sort_keys=True)}"
+        )

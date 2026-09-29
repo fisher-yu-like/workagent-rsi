@@ -11,7 +11,7 @@ from pathlib import Path, PureWindowsPath
 from .contracts import TaskSpec
 from .hashing import sha256_file
 from .office_checks import MEDIA_TYPES
-from .workagent_provider import AgentResponse, WorkAgentConfig
+from .workagent_provider import AgentResponse, WorkAgentConfig, WorkAgentSkill
 from .workagent_provider import CodexOfficeProvider
 
 
@@ -133,9 +133,11 @@ def verify_task_input_hashes(task: TaskSpec, workspace: Path, input_base: Path, 
             raise ValueError("source or staged input changed after copy")
 
 
-def build_task_prompt(task: TaskSpec, input_manifest: dict, agent_instructions: str) -> str:
+def build_task_prompt(task: TaskSpec, input_manifest: dict, agent_instructions: str | WorkAgentSkill) -> str:
     """Expose only the task request and staged input paths to the agent."""
     suffix = _domain_suffix(task)
+    if isinstance(agent_instructions, WorkAgentSkill):
+        agent_instructions = agent_instructions.instructions
     template = (Path(__file__).parent / "prompts" / "office_agent.md").read_text(encoding="utf-8")
     copied_names = [item["copied"] for item in input_manifest.get("files", [])]
     input_lines = "\n".join(f"- {name}" for name in copied_names) or "- None"

@@ -30,6 +30,14 @@ class WorkAgentConfig(BaseModel):
     verify_com: bool = True
 
 
+class WorkAgentSkill(BaseModel):
+    """The only candidate-controlled part of a WorkAgent Office run."""
+
+    model_config = ConfigDict(extra="forbid")
+    version: str = Field(default="1.0.0", pattern=r"^\d+\.\d+\.\d+$")
+    instructions: str = Field(min_length=1, max_length=20000)
+
+
 class AgentResponse(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
