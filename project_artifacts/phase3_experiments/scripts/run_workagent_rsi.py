@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import argparse
 import re
+import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -80,6 +81,14 @@ def _source_inputs(root: Path) -> dict[str, str]:
 
 def _write_json(path: Path, data: object) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _candidate_runner(command: list[str], cwd: Path, timeout: int, attempt_path: Path) -> subprocess.CompletedProcess[str]:
+    """Record launch intent immediately before crossing the subprocess boundary."""
+    _write_json(attempt_path, {"attempted_at": datetime.now(timezone.utc).isoformat(),
+                               "command": command, "cwd": str(cwd), "timeout_seconds": timeout})
+    return subprocess.run(command, cwd=cwd, timeout=timeout, capture_output=True,
+                          text=True, encoding="utf-8", errors="replace", check=False)
 
 
 def _source_office_validation(root: Path, expected_hashes: dict[str, str], com_verify) -> dict:
@@ -236,7 +245,8 @@ def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=Wor
             runner = runner_factory(workagent_config=PROVIDER, input_base=root / "inputs")
             provider = WorkAgentCandidateProvider(SCHEMA, "local-1", executable=PROVIDER.executable,
                 timeout_seconds=180, model_identity=f"ollama:{PROVIDER.model}",
-                extra_args=["--ignore-user-config", "--oss", "--local-provider", "ollama", "--model", PROVIDER.model])
+                extra_args=["--ignore-user-config", "--oss", "--local-provider", "ollama", "--model", PROVIDER.model],
+                runner=lambda command, cwd, timeout: _candidate_runner(command, cwd, timeout, root / "candidate_launch_attempt.json"))
             summary["rsi_started"] = True
             summary["rsi_result"] = runner.run(tasks, SKILL, provider, root / "rsi", rounds=1)
             summary["status"] = summary["rsi_result"].get("status", "incomplete")
@@ -244,7 +254,8 @@ def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=Wor
             summary["status"] = "failed"
             summary["failure"] = f"{type(exc).__name__}: {exc}"
             reason = f"RSI execution failed: {exc}"
-    summary["candidate_started"] = any((root / "rsi").rglob("provider_record.json")) if (root / "rsi").exists() else False
+    summary["candidate_started"] = (root / "candidate_launch_attempt.json").is_file() or (
+        any((root / "rsi").rglob("provider_record.json")) if (root / "rsi").exists() else False)
     summary["ended_at"] = datetime.now(timezone.utc).isoformat()
     summary["wall_time_seconds"] = (datetime.now(timezone.utc) - started).total_seconds()
     _write_json(root / "summary.json", summary)

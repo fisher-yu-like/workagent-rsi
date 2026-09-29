@@ -23,3 +23,9 @@ An additional unreadable-baseline regression was RED (1 failed, uncaught `OSErro
 Final defensive test: a source COM probe exception was RED (1 failed, uncaught `OSError`) and GREEN (targeted suite 10 passed) after recording `probe_exception` in the input-validation evidence and blocking. Fresh full suite after this change: `199 passed, 3 skipped in 53.17s`.
 
 After all fixes, repeated only the preflight entry (not qualification or a model call): `py -3.12 project_artifacts/phase3_experiments/scripts/run_workagent_rsi.py --baseline-invocation 20260929T195704Z-a4674234` exited 1 with `status=blocked` at `project_artifacts/results/qualification/general-office/20260929T212754Z-45c2bcc1/`. The earlier preflight invocation remains intact. Current README, Agent contract and execution log point to the final evidence.
+
+## Fix round 2
+
+Finding: a candidate subprocess launch could raise before `provider_record.json`, leaving `candidate_started=false`. A candidate runner now writes `candidate_launch_attempt.json` immediately before `subprocess.run`, including the command, cwd, timeout, and attempt time. Aggregate summary/analysis derive `candidate_started` from that marker (or an existing provider record), so launch exceptions preserve the attempt while the real blocked path remains false. No real candidate provider was invoked.
+
+TDD RED: `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/task8-round2-red tests/test_workagent_rsi_entry.py -k candidate_launch_permission` returned `1 failed` because simulated `PermissionError` before provider-record creation left `candidate_started=false`. GREEN: targeted Task 8 tests `11 passed`. Full suite: `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/task8-round2-full` returned `200 passed, 3 skipped in 57.25s`. The three skips remain Windows symlink-permission cases.

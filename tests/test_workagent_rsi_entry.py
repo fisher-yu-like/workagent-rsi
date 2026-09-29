@@ -192,3 +192,31 @@ def test_source_com_exception_persists_failed_validation_and_blocked_reports(tmp
     validation = json.loads((output / "source_office_validation.json").read_text(encoding="utf-8"))
     assert validation["passed"] is False
     assert json.loads((output / "summary.json").read_text(encoding="utf-8"))["status"] == "blocked"
+
+
+def test_candidate_launch_permission_error_counts_as_attempt_without_provider_record(tmp_path, monkeypatch):
+    """A launch exception after reaching the runner boundary must survive aggregate reporting."""
+    module = _module()
+    monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
+
+    def denied(*args, **kwargs):
+        raise PermissionError("launch denied")
+
+    monkeypatch.setattr("workagent_rsi.candidate_provider.subprocess.run", denied)
+
+    class LaunchingRunner:
+        def __init__(self, **kwargs):
+            pass
+
+        def run(self, tasks, skill, provider, output_root, *, rounds):
+            provider.runner(["codex", "exec"], output_root, 180)
+            raise AssertionError("unreachable")
+
+    output = tmp_path / "result"
+    assert module.run_invocation(BASELINE, output, runner_factory=LaunchingRunner, source_com_verify=_fake_com) == 1
+    summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
+    assert summary["status"] == "failed"
+    assert summary["candidate_started"] is True
+    assert json.loads((output / "candidate_launch_attempt.json").read_text(encoding="utf-8"))["command"] == ["codex", "exec"]
+    assert not list(output.rglob("provider_record.json"))
+    assert json.loads((output / "analysis.json").read_text(encoding="utf-8"))["candidate_started"] is True
