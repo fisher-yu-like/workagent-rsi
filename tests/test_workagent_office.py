@@ -58,9 +58,7 @@ def test_cli_resolves_relative_input_files_from_task_yaml_directory(monkeypatch,
     Workbook().save(task_dir / "source.xlsx")
     task_file = task_dir / "task.yaml"
     task_file.write_text(yaml.safe_dump({"task_id": "cli-input", "domain": "excel", "instruction": "Edit the workbook", "input_files": ["source.xlsx"]}), encoding="utf-8")
-    elsewhere = tmp_path / "elsewhere"
-    elsewhere.mkdir()
-    monkeypatch.chdir(elsewhere)
+    monkeypatch.chdir(Path(__file__).resolve().parents[1])
 
     def missing_provider(command, **kwargs):
         raise FileNotFoundError("codex not found")
@@ -74,6 +72,53 @@ def test_cli_resolves_relative_input_files_from_task_yaml_directory(monkeypatch,
     manifest = json.loads((result_file.parent / "agent_workspace/input_manifest.json").read_text(encoding="utf-8"))
     assert manifest["files"][0]["source"] == "source.xlsx"
     assert (result_file.parent / "agent_workspace/inputs/0001-source.xlsx").is_file()
+
+
+def test_cli_accepts_output_inside_selected_results_run_directory(tmp_path: Path):
+    task_file = tmp_path / "task.yaml"
+    task_file.write_text(yaml.safe_dump({"task_id": "cli-output", "domain": "smoke", "instruction": "Run smoke task"}), encoding="utf-8")
+    results_dir = tmp_path / "custom-results"
+    output = results_dir / "run-one" / "result.json"
+
+    exit_code = cli_main([str(task_file), "--results-dir", str(results_dir), "--output", str(output)])
+
+    assert exit_code == 0
+    assert output.is_file()
+    assert json.loads(output.read_text(encoding="utf-8"))["result_dir"] == str(output.parent.resolve())
+
+
+@pytest.mark.parametrize("kind", ["outside", "traversal"])
+def test_cli_rejects_results_dir_outside_project_results(tmp_path: Path, kind: str):
+    task_file = tmp_path / "task.yaml"
+    task_file.write_text(yaml.safe_dump({"task_id": "cli-results-boundary", "domain": "smoke", "instruction": "Run smoke task"}), encoding="utf-8")
+    results_root = Path(__file__).resolve().parents[1] / "project_artifacts/results"
+    target = results_root.parent / f"escaped-results-{tmp_path.name}"
+    results_dir = target if kind == "outside" else results_root / ".." / target.name
+
+    with pytest.raises(SystemExit) as exc:
+        cli_main([str(task_file), "--results-dir", str(results_dir)])
+
+    assert exc.value.code == 2
+    assert not target.exists()
+
+
+@pytest.mark.parametrize("kind", ["outside", "traversal", "results_root"])
+def test_cli_rejects_output_outside_per_run_directory(tmp_path: Path, kind: str):
+    task_file = tmp_path / "task.yaml"
+    task_file.write_text(yaml.safe_dump({"task_id": "cli-output-boundary", "domain": "smoke", "instruction": "Run smoke task"}), encoding="utf-8")
+    results_dir = tmp_path / "custom-results"
+    if kind == "outside":
+        output = results_dir.parent / "escaped-result.json"
+    elif kind == "traversal":
+        output = results_dir / "run-one" / ".." / ".." / "escaped-result.json"
+    else:
+        output = results_dir / "result.json"
+
+    with pytest.raises(SystemExit) as exc:
+        cli_main([str(task_file), "--results-dir", str(results_dir), "--output", str(output)])
+
+    assert exc.value.code == 2
+    assert not results_dir.exists()
 
 
 def test_workagent_config_has_bounded_local_defaults():

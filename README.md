@@ -35,7 +35,7 @@ src/workagent_rsi/             Harness, closed-loop RSI and Office evaluation pa
 
 ```powershell
 py -3.12 -m pip install -e .
-py -3.12 -m pytest -q --basetemp="$env:TEMP\workagent-rsi-tests"
+py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/readme
 py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml
 py -3.12 project_artifacts/phase3_experiments/scripts/run_b0_office_qualification.py
 ```
