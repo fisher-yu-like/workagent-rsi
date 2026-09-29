@@ -1,4 +1,4 @@
-"""Run one task with the normal local adapters."""
+"""Run one task with the selected execution provider."""
 
 from __future__ import annotations
 
@@ -11,6 +11,8 @@ from .office_capabilities import CapabilityReport
 from .orchestrator import Orchestrator
 from .skill_runtime import PilotSkillConfig, SkillConfiguredOfficeAdapter
 from .store import Store
+from .workagent_office import WorkAgentOfficeAdapter
+from .workagent_provider import WorkAgentConfig
 
 
 OFFICE_DOMAINS = {"excel", "word", "powerpoint"}
@@ -26,18 +28,24 @@ class Run:
         office: bool | None = None,
         execution_provider: str | None = None,
         capability_report: CapabilityReport | None = None,
+        workagent_config: WorkAgentConfig | None = None,
+        agent_instructions: str = "",
+        input_base: str | Path | None = None,
     ) -> None:
         self.root = Path(root)
         self.store = Store(self.root)
         self.office = office
         self.execution_provider = execution_provider
         self.capability_report = capability_report
+        self.workagent_config = workagent_config or WorkAgentConfig()
+        self.agent_instructions = agent_instructions
+        self.input_base = Path(input_base) if input_base is not None else Path.cwd()
 
     def execute(self, task: TaskSpec, skill_id: str | None = None, *, max_attempts: int = 1) -> dict:
         if isinstance(task, dict):
             task = TaskSpec.model_validate(task)
         use_office = self.office if self.office is not None else task.domain.lower() in OFFICE_DOMAINS
-        provider = self.execution_provider or ("local_office" if use_office else "smoke")
+        provider = self.execution_provider or ("workagent" if use_office else "smoke")
         if provider == "smoke":
             adapter = MockWorkAgentAdapter()
             evaluator = BasicEvaluator()
@@ -49,6 +57,15 @@ class Run:
             )
             evaluator = OfficeArtifactEvaluator()
             default_skill = "office.normal"
+        elif provider == "workagent":
+            adapter = WorkAgentOfficeAdapter(
+                self.root,
+                self.workagent_config,
+                input_base=self.input_base,
+                agent_instructions=self.agent_instructions,
+            )
+            evaluator = OfficeArtifactEvaluator()
+            default_skill = "office.workagent"
         elif provider == "com":
             adapter = ComOfficeAdapter(
                 self.root / "generated",

@@ -18,7 +18,7 @@ def test_harness_runs_one_normal_office_round_in_one_result_folder(tmp_path: Pat
         expected_constraints={"required_text": "SIMPLE-001"},
     )
 
-    result = Harness(tmp_path / "results").run(task)
+    result = Harness(tmp_path / "results", execution_provider="local_office").run(task)
 
     assert result["state"] == "SUCCEEDED"
     assert result["evaluation"]["passed"] is True

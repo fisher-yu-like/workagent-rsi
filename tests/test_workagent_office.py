@@ -9,6 +9,7 @@ from pydantic import ValidationError
 
 from workagent_rsi.contracts import TaskSpec
 from workagent_rsi.hashing import canonical_json_hash, sha256_file
+from workagent_rsi.harness import Harness
 from workagent_rsi.workagent_office import build_task_prompt, copy_task_inputs, validate_deliverables, verify_task_input_hashes
 from workagent_rsi.workagent_provider import (
     AgentResponse,
@@ -382,3 +383,133 @@ def test_deliverable_rejects_file_count_and_malformed_response(tmp_path: Path):
     (workspace / "agent_response.json").write_text("{}", encoding="utf-8")
     with pytest.raises(ValueError):
         validate_deliverables(_office_task(), workspace, response, WorkAgentConfig())
+
+
+def _harness_excel_task(input_files=()):
+    return TaskSpec(
+        task_id="harness-excel",
+        domain="excel",
+        instruction="Create a Summary workbook with B2 set to 42",
+        input_files=input_files,
+        expected_constraints={"required_cells": {"Summary!B2": 42}},
+    )
+
+
+def test_harness_workagent_stores_validated_excel_and_provider_trace(monkeypatch, tmp_path: Path):
+    source = tmp_path / "source.xlsx"
+    Workbook().save(source)
+    source_hash = sha256_file(source)
+
+    def fake_run(command, **kwargs):
+        workspace = Path(command[command.index("--cd") + 1])
+        assert kwargs["cwd"] == workspace
+        assert (workspace / "inputs/0001-source.xlsx").is_file()
+        assert "Summary workbook" in kwargs["input"]
+        output = workspace / "outputs/report.xlsx"
+        output.parent.mkdir()
+        workbook = Workbook()
+        workbook.active.title = "Summary"
+        workbook.active["B2"] = 42
+        workbook.save(output)
+        response = {"status": "completed", "deliverables": ["outputs/report.xlsx"],
+                    "summary": "Created workbook", "input_files_used": ["inputs/0001-source.xlsx"]}
+        (workspace / "deliverables.json").write_text(json.dumps({"deliverables": response["deliverables"]}), encoding="utf-8")
+        Path(command[command.index("--output-last-message") + 1]).write_text(json.dumps(response), encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, stdout='{"type":"done"}\n', stderr="")
+
+    monkeypatch.setattr(subprocess, "run", fake_run)
+    harness = Harness(tmp_path / "results", execution_provider="workagent", workagent_config=WorkAgentConfig())
+    result = harness.run(_harness_excel_task((str(source),)))
+
+    assert result["state"] == "SUCCEEDED"
+    assert result["evaluation"]["passed"] is True
+    assert sha256_file(source) == source_hash
+    assert len(result["artifacts"]) == 1
+    artifact = Path(result["artifacts"][0]["path"])
+    assert artifact.is_file() and artifact.parent == Path(result["result_dir"]) / "artifacts"
+    assert artifact.read_bytes() == (Path(result["result_dir"]) / "agent_workspace/outputs/report.xlsx").read_bytes()
+    assert (Path(result["result_dir"]) / "provider_records/provider_record.json").is_file()
+    saved = json.loads(Path(result["result_path"]).read_text(encoding="utf-8"))
+    assert saved["run_id"] == result["run_id"] and saved["artifacts"] == result["artifacts"]
+    events = harness.resume(result["result_dir"])["events"]
+    kinds = [event["kind"] for event in events]
+    assert kinds == ["run_started", "started", "input_manifest", "provider_output", "artifact"]
+    provider = events[3]["payload"]
+    assert provider["record"]["provider"] == "codex-cli"
+    assert provider["record"]["model_identity"] == "ollama:qwen2.5:7b"
+
+
+def test_harness_workagent_unavailable_does_not_fall_back_to_template(monkeypatch, tmp_path: Path):
+    def missing_provider(command, **kwargs):
+        raise FileNotFoundError("codex not found")
+
+    monkeypatch.setattr(subprocess, "run", missing_provider)
+    result = Harness(tmp_path / "results", execution_provider="workagent").run(_harness_excel_task())
+
+    assert result["state"] == "UNAVAILABLE"
+    assert result["artifacts"] == []
+    assert "evaluation" not in result
+    assert not list((Path(result["result_dir"]) / "artifacts").iterdir())
+    kinds = [event["kind"] for event in Harness().resume(result["result_dir"])["events"]]
+    assert kinds == ["run_started", "started", "input_manifest", "provider_output", "unavailable"]
+    assert not (Path(result["result_dir"]) / "generated").exists()
+
+
+def test_harness_workagent_timeout_never_evaluates_or_emits_template(monkeypatch, tmp_path: Path):
+    def timed_out(command, **kwargs):
+        raise subprocess.TimeoutExpired(command, kwargs["timeout"], output=b"partial")
+
+    monkeypatch.setattr(subprocess, "run", timed_out)
+    result = Harness(tmp_path / "results", execution_provider="workagent").run(_harness_excel_task())
+
+    assert result["state"] == "FAILED"
+    assert result["failure"]["status"] == "timeout"
+    assert result["artifacts"] == [] and "evaluation" not in result
+    kinds = [event["kind"] for event in Harness().resume(result["result_dir"])["events"]]
+    assert kinds[-1] == "failure" and "artifact" not in kinds
+    assert not (Path(result["result_dir"]) / "generated").exists()
+
+
+@pytest.mark.parametrize("target", ["source", "copy"])
+def test_harness_workagent_rejects_input_tampering_after_provider_exit(monkeypatch, tmp_path: Path, target: str):
+    source = tmp_path / "source.xlsx"
+    Workbook().save(source)
+
+    def tampering_provider(command, **kwargs):
+        workspace = Path(command[command.index("--cd") + 1])
+        changed = source if target == "source" else workspace / "inputs/0001-source.xlsx"
+        changed.write_bytes(b"changed")
+        output = workspace / "outputs/report.xlsx"
+        output.parent.mkdir()
+        workbook = Workbook()
+        workbook.active.title = "Summary"
+        workbook.active["B2"] = 42
+        workbook.save(output)
+        response = {"status": "completed", "deliverables": ["outputs/report.xlsx"],
+                    "summary": "Created workbook", "input_files_used": ["inputs/0001-source.xlsx"]}
+        (workspace / "deliverables.json").write_text(json.dumps({"deliverables": response["deliverables"]}), encoding="utf-8")
+        Path(command[command.index("--output-last-message") + 1]).write_text(json.dumps(response), encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(subprocess, "run", tampering_provider)
+    result = Harness(tmp_path / "results", execution_provider="workagent").run(_harness_excel_task((str(source),)))
+
+    assert result["state"] == "FAILED"
+    assert "input" in result["failure"]["message"]
+    assert result["artifacts"] == [] and "evaluation" not in result
+    kinds = [event["kind"] for event in Harness().resume(result["result_dir"])["events"]]
+    assert kinds[-1] == "failure" and "artifact" not in kinds
+
+
+def test_harness_default_office_uses_workagent_and_separates_invocations(monkeypatch, tmp_path: Path):
+    def missing_provider(command, **kwargs):
+        raise FileNotFoundError("codex not found")
+
+    monkeypatch.setattr(subprocess, "run", missing_provider)
+    harness = Harness(tmp_path / "results")
+    first = harness.run(_harness_excel_task())
+    second = harness.run(_harness_excel_task())
+
+    assert first["state"] == second["state"] == "UNAVAILABLE"
+    assert first["result_dir"] != second["result_dir"]
+    assert Path(first["result_path"]).is_file() and Path(second["result_path"]).is_file()

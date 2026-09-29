@@ -11,6 +11,7 @@ from uuid import uuid4
 from .contracts import TaskSpec
 from .office_capabilities import CapabilityReport
 from .run import Run
+from .workagent_provider import WorkAgentConfig
 
 
 class Harness:
@@ -28,11 +29,17 @@ class Harness:
         office: bool | None = None,
         execution_provider: str | None = None,
         capability_report: CapabilityReport | None = None,
+        workagent_config: WorkAgentConfig | None = None,
+        agent_instructions: str = "",
+        input_base: str | Path | None = None,
     ) -> None:
         self.results_dir = Path(results_dir)
         self.office = office
         self.execution_provider = execution_provider
         self.capability_report = capability_report
+        self.workagent_config = workagent_config
+        self.agent_instructions = agent_instructions
+        self.input_base = input_base
 
     def run(
         self,
@@ -44,7 +51,7 @@ class Harness:
     ) -> dict:
         task = task if isinstance(task, TaskSpec) else TaskSpec.model_validate(task)
         root, output = self._paths(task, run_id=run_id, result_path=result_path)
-        if output.exists():
+        if output.exists() or (root / "task.json").exists():
             raise FileExistsError(output)
         root.mkdir(parents=True, exist_ok=True)
         (root / "task.json").write_text(
@@ -56,6 +63,9 @@ class Harness:
             office=self.office,
             execution_provider=self.execution_provider,
             capability_report=self.capability_report,
+            workagent_config=self.workagent_config,
+            agent_instructions=self.agent_instructions,
+            input_base=self.input_base,
         ).execute(task, max_attempts=max_attempts)
         result["result_path"] = str(output.resolve())
         result["result_dir"] = str(root.resolve())

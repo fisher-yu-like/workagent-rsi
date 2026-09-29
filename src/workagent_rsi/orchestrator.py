@@ -42,12 +42,12 @@ class Orchestrator:
                             if isinstance(content, str):
                                 content = content.encode("utf-8")
                             artifacts.append(self.artifact_store.put_bytes(content, event.get("media_type", "application/octet-stream")))
-                    elif event["kind"] in {"failure", "unavailable"}:
+                    elif event["kind"] in {"failure", "unavailable", "timeout"}:
                         failure = {
                             "message": event["message"],
                             "retryable": event.get("retryable", False),
                             "attempts": attempts,
-                            "status": event["kind"],
+                            "status": event.get("status", event["kind"]),
                             "provider": event.get("provider"),
                         }
                         break

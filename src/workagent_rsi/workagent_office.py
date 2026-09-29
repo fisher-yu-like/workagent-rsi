@@ -10,7 +10,9 @@ from pathlib import Path, PureWindowsPath
 
 from .contracts import TaskSpec
 from .hashing import sha256_file
+from .office_checks import MEDIA_TYPES
 from .workagent_provider import AgentResponse, WorkAgentConfig
+from .workagent_provider import CodexOfficeProvider
 
 
 _SUFFIXES = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}
@@ -193,3 +195,65 @@ def validate_deliverables(
             raise ValueError(f"deliverable has invalid size: {value}")
         accepted.append(path)
     return accepted
+
+
+class WorkAgentOfficeAdapter:
+    """Bridge a single isolated Office provider run into Orchestrator events."""
+
+    def __init__(
+        self,
+        run_root: Path,
+        config: WorkAgentConfig,
+        *,
+        input_base: Path,
+        agent_instructions: str = "",
+    ) -> None:
+        self.run_root = Path(run_root)
+        self.config = config
+        self.input_base = Path(input_base)
+        self.agent_instructions = agent_instructions
+        self.provider = CodexOfficeProvider(config)
+
+    def execute(self, task: TaskSpec, skill_id: str):
+        workspace = self.run_root / "agent_workspace"
+        records = self.run_root / "provider_records"
+        yield {"kind": "started", "provider": "workagent", "skill_id": skill_id}
+        try:
+            manifest = copy_task_inputs(task, workspace, self.input_base)
+        except (OSError, ValueError) as exc:
+            yield {"kind": "failure", "message": f"input staging failed: {exc}", "provider": "workagent"}
+            return
+        yield {"kind": "input_manifest", "manifest": manifest}
+
+        try:
+            prompt = build_task_prompt(task, manifest, self.agent_instructions)
+            outcome = self.provider.run(prompt, workspace, records)
+            yield {
+                "kind": "provider_output",
+                "status": outcome.status,
+                "record": outcome.record.model_dump(mode="json") if outcome.record else None,
+                "error": outcome.error,
+            }
+            # No response or artifact is trusted until both original and staged
+            # inputs have been checked after every provider exit.
+            verify_task_input_hashes(task, workspace, self.input_base, manifest)
+            if outcome.status != "completed" or outcome.response is None:
+                kind = "unavailable" if outcome.status == "unavailable" else "failure"
+                yield {
+                    "kind": kind,
+                    "message": outcome.error or f"provider ended with status {outcome.status}",
+                    "provider": "workagent",
+                    "status": outcome.status,
+                    "retryable": False,
+                }
+                return
+            paths = validate_deliverables(task, workspace, outcome.response, self.config)
+        except (OSError, ValueError) as exc:
+            yield {"kind": "failure", "message": str(exc), "provider": "workagent", "retryable": False}
+            return
+        for path in paths:
+            yield {
+                "kind": "artifact",
+                "artifact_path": str(path),
+                "media_type": MEDIA_TYPES[task.domain.lower()],
+            }
