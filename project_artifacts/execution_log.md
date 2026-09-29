@@ -168,3 +168,16 @@
 - 已核验 Codex CLI `0.157.1`、Ollama `0.34.4`、`qwen2.5:7b` 可用，Word/Excel/PowerPoint COM 均为 `16.0`；Docker daemon 不可用，首版安全边界明确为 Codex `workspace-write`，不宣称容器级隔离。
 - 六项自建 pilot 将覆盖三种格式的创建和编辑；先记录真实 baseline，再用冻结检查器与跨格式回归运行 RSI。它只属于 project-generated 工程证据；不人为制造失败、不改模型权重、不冒称外部 benchmark。
 - 规格文档已写入：`docs/superpowers/specs/2026-09-29-general-office-workagent-design.md`。当前等待用户审阅规格；在其批准前，尚未改动 WorkAgent 生产代码，也未运行本阶段的真实 Office 生成任务。
+
+### Task 8：通用 WorkAgent RSI 预检（2026-09-30）
+
+- RSI 入口 `project_artifacts/phase3_experiments/scripts/run_workagent_rsi.py` 在模型调用前冻结 12 项 project-generated 任务配置、seed、四组 split hash、三份新生成输入的 SHA-256、实时 evaluator hash、基线 skill hash、Codex/Ollama `qwen2.5:7b` 身份、超时及晋级阈值。
+- 六任务 WorkAgent qualification 的首轮 `20260929T190856Z-ab3365c5` 与第二轮 `20260929T195704Z-a4674234` 均为 **0/6 成功**。第二轮六条终态均为 FAILED；没有合格 Office 产物，因而没有 artifact evaluator 成功或 COM 产物重开。三种 Office COM capability 16.0 仅说明环境可用，不代表产物通过。
+- 新 invocation `project_artifacts/results/qualification/general-office/20260929T210812Z-e0610074/` 保存 `contract.json`、`summary.json`、`analysis.json` 与中文 `qualification_report.md`；状态为 blocked、`rsi_started=false`、`candidate_started=false`。未重跑 qualification、未调用模型、未切换到 Mistral、未将失败/不可用转换为分数。
+- 此阻断结论不影响历史 B0/local executor 与 E05 fixture 的独立证据，也不将它们当成通用 WorkAgent 成功或外部 benchmark 成绩。后续仍须先解决本地 provider 文件操作兼容性并重新做独立六任务资格运行；外部正式数据 gate 依旧关闭。
+
+#### Task 8 fix round 1
+
+- 预检修复：缺失/损坏 baseline summary 时仍会保存 blocked `summary.json`、`analysis.json` 与中文报告；合格基线若 RSI runner 抛异常，会保留局部证据并保存 failed 报告；incomplete/failed 不再返回成功退出码。`--baseline-invocation` 仅接收结果根目录下的直接子目录 ID。
+- 最终新 invocation `project_artifacts/results/qualification/general-office/20260929T212754Z-45c2bcc1/` 仍为 blocked，未调用模型/候选 provider。最新六任务资格运行仍为 **0/6 成功、6 failed、0 unavailable**；首轮同样为 **0/6 成功、6 failed、0 unavailable**。前一预检 invocation `20260929T212106Z-98ecd0ee` 亦保留，不混同基线。
+- `source_office_validation.json` 留存本次新生成的三份 **输入** 文件各自的库重开、SHA-256 不变和 COM 16.0 重开证据；它不是 WorkAgent 输出产物验证，不能替代缺失的创建/编辑资格证据。

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import argparse
 import re
 import sys
 from datetime import datetime, timezone
@@ -18,9 +19,10 @@ from workagent_rsi.evaluator import OfficeArtifactEvaluator
 from workagent_rsi.hashing import canonical_json_hash, sha256_file
 from workagent_rsi.workagent_experiment import WorkAgentExperimentRunner
 from workagent_rsi.workagent_provider import WorkAgentConfig, WorkAgentSkill
+from workagent_rsi.office_capabilities import verify_artifact_with_com
 
 from docx import Document
-from openpyxl import Workbook
+from openpyxl import Workbook, load_workbook
 from pptx import Presentation
 from pptx.util import Inches
 
@@ -41,6 +43,17 @@ THRESHOLDS = {"develop_gain": 0.05, "regression_tolerance": 0.01,
               "hidden_degradation": 0.01, "ood_degradation": 0.01, "max_cost_delta": 1.0}
 IDS = {f"{domain}-{kind}" for domain in ("excel", "word", "powerpoint") for kind in ("create", "edit")}
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
+INVOCATION_ID = re.compile(r"[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}\Z")
+
+
+def resolve_baseline_invocation(invocation_id: str) -> Path:
+    """Choose one regular direct-child qualification directory, never a path."""
+    if not INVOCATION_ID.fullmatch(invocation_id):
+        raise ValueError("baseline invocation must be a direct-child ID")
+    path = RESULT_ROOT / invocation_id
+    if path.is_symlink() or not path.is_dir() or path.resolve().parent != RESULT_ROOT.resolve():
+        raise ValueError("baseline invocation does not name a regular results directory")
+    return path
 
 
 def _source_inputs(root: Path) -> dict[str, str]:
@@ -67,6 +80,35 @@ def _source_inputs(root: Path) -> dict[str, str]:
 
 def _write_json(path: Path, data: object) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _source_office_validation(root: Path, expected_hashes: dict[str, str], com_verify) -> dict:
+    """Validate generated inputs only; this is not WorkAgent output qualification."""
+    files = []
+    for name, domain, reopen in (
+        ("transactions.xlsx", "excel", lambda path: load_workbook(path, read_only=True).close()),
+        ("status_draft.docx", "word", lambda path: Document(path)),
+        ("briefing_draft.pptx", "powerpoint", lambda path: Presentation(path)),
+    ):
+        path = root / "inputs" / name
+        row = {"name": name, "domain": domain, "sha256": sha256_file(path), "library_reopen_ok": False,
+               "com_reopen": {"ok": False, "status": "not_run"}}
+        try:
+            reopen(path)
+            row["library_reopen_ok"] = True
+        except Exception as exc:
+            row["library_error"] = str(exc)
+        if row["library_reopen_ok"] and row["sha256"] == expected_hashes[name]:
+            try:
+                row["com_reopen"] = com_verify(path, domain)
+            except Exception as exc:
+                row["com_reopen"] = {"ok": False, "status": "probe_exception", "error": str(exc)}
+        row["hash_unchanged"] = sha256_file(path) == expected_hashes[name]
+        files.append(row)
+    result = {"scope": "generated_source_inputs_not_workagent_outputs", "files": files,
+              "passed": all(row["library_reopen_ok"] and row["hash_unchanged"] and row["com_reopen"].get("ok") is True for row in files)}
+    _write_json(root / "source_office_validation.json", result)
+    return result
 
 
 def _read_json(path: Path) -> dict:
@@ -133,7 +175,8 @@ def validate_baseline(root: Path) -> tuple[dict, list[str]]:
     return summary, gaps
 
 
-def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=WorkAgentExperimentRunner) -> int:
+def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=WorkAgentExperimentRunner,
+                   source_com_verify=verify_artifact_with_com) -> int:
     """Persist immutable preflight evidence before any model or candidate process."""
     root = Path(output_root)
     root.mkdir(parents=True, exist_ok=False)
@@ -147,6 +190,13 @@ def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=Wor
     (root / "rsi_tasks.json").write_bytes(config_bytes)
     source_hashes = _source_inputs(root)
     split_hashes = {split: canonical_json_hash([task.model_dump(mode="json") for task in rows]) for split, rows in tasks.items()}
+    baseline_summary = Path(baseline_root) / "summary.json"
+    baseline_summary_error = None
+    try:
+        baseline_summary_hash = sha256_file(baseline_summary) if baseline_summary.is_file() and not baseline_summary.is_symlink() else None
+    except OSError as exc:
+        baseline_summary_hash = None
+        baseline_summary_error = str(exc)
     contract = {
         "experiment_id": config["experiment_id"], "provenance": "project-generated", "seed": config["seed"],
         "task_config_sha256": sha256_file(root / "rsi_tasks.json"), "split_hashes": split_hashes,
@@ -156,18 +206,21 @@ def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=Wor
         "workagent_executable": PROVIDER.executable, "workagent_timeout_seconds": PROVIDER.timeout_seconds,
         "candidate_timeout_seconds": 180, "promotion_thresholds": THRESHOLDS,
         "baseline_invocation": str(Path(baseline_root).resolve()),
-        "baseline_summary_sha256": sha256_file(Path(baseline_root) / "summary.json"),
+        "baseline_summary_sha256": baseline_summary_hash,
     }
     _write_json(root / "contract.json", contract)
     _write_json(root / "baseline_skill.json", SKILL.model_dump())
-    reason = None
+    source_validation = _source_office_validation(root, source_hashes, source_com_verify)
+    reason = f"baseline evidence invalid: {baseline_summary_error}" if baseline_summary_error else None
     baseline = None
     try:
         baseline, gaps = validate_baseline(Path(baseline_root))
-        if gaps:
+        if gaps and reason is None:
             reason = f"六任务基线缺少各格式成功的创建与编辑；失败任务：{', '.join(gaps)}"
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
         reason = f"baseline evidence invalid: {exc}"
+    if not source_validation["passed"]:
+        reason = f"{reason}; generated source Office validation failed" if reason else "generated source Office validation failed"
     summary = {
         "status": "blocked" if reason else "running", "block_reason": reason,
         "baseline": {"invocation": str(Path(baseline_root).resolve()),
@@ -179,35 +232,52 @@ def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=Wor
         "wall_time_seconds": (datetime.now(timezone.utc) - started).total_seconds(),
     }
     if reason is None:
-        runner = runner_factory(workagent_config=PROVIDER, input_base=root / "inputs")
-        provider = WorkAgentCandidateProvider(SCHEMA, "local-1", executable=PROVIDER.executable,
-            timeout_seconds=180, model_identity=f"ollama:{PROVIDER.model}",
-            extra_args=["--ignore-user-config", "--oss", "--local-provider", "ollama", "--model", PROVIDER.model])
-        summary["rsi_started"] = True
-        summary["rsi_result"] = runner.run(tasks, SKILL, provider, root / "rsi", rounds=1)
-        summary["status"] = summary["rsi_result"].get("status", "completed")
+        try:
+            runner = runner_factory(workagent_config=PROVIDER, input_base=root / "inputs")
+            provider = WorkAgentCandidateProvider(SCHEMA, "local-1", executable=PROVIDER.executable,
+                timeout_seconds=180, model_identity=f"ollama:{PROVIDER.model}",
+                extra_args=["--ignore-user-config", "--oss", "--local-provider", "ollama", "--model", PROVIDER.model])
+            summary["rsi_started"] = True
+            summary["rsi_result"] = runner.run(tasks, SKILL, provider, root / "rsi", rounds=1)
+            summary["status"] = summary["rsi_result"].get("status", "incomplete")
+        except Exception as exc:
+            summary["status"] = "failed"
+            summary["failure"] = f"{type(exc).__name__}: {exc}"
+            reason = f"RSI execution failed: {exc}"
+    summary["candidate_started"] = any((root / "rsi").rglob("provider_record.json")) if (root / "rsi").exists() else False
+    summary["ended_at"] = datetime.now(timezone.utc).isoformat()
+    summary["wall_time_seconds"] = (datetime.now(timezone.utc) - started).total_seconds()
     _write_json(root / "summary.json", summary)
     analysis = {"status": summary["status"], "block_reason": reason, "baseline": summary["baseline"],
-                "rsi_started": summary["rsi_started"], "claims_allowed": False,
+                "rsi_started": summary["rsi_started"], "candidate_started": summary["candidate_started"], "claims_allowed": False,
                 "external_benchmark": False, "unavailable_is_not_score": True, "token_usage": "unavailable"}
     _write_json(root / "analysis.json", analysis)
     report = ["# 通用 Office WorkAgent RSI 资格报告", "", "本次仅使用项目生成的输入，不是外部 benchmark。", "",
               f"基线：`{baseline_root}`", f"RSI invocation：`{root}`", "",
-              f"状态：{'阻断' if reason else summary['status']}",
+              f"状态：{'阻断' if summary['status'] == 'blocked' else '失败' if summary['status'] == 'failed' else summary['status']}",
               f"基线：{summary['baseline']['success_count']}/6 成功；失败 {summary['baseline']['failure_count']}/6。",
               f"原因：{reason or '资格门禁通过，已运行一轮 RSI。'}", "",
+              "source_office_validation.json 仅检查本次新生成的输入文件，并非 WorkAgent 交付物。", "",
               "未把失败或不可用任务转换为分数；未声明外部 benchmark 成绩。", ""]
     (root / "qualification_report.md").write_text("\n".join(report), encoding="utf-8")
     summary["disk_bytes"] = sum(p.stat().st_size for p in root.rglob("*") if p.is_file())
     _write_json(root / "summary.json", summary)
-    return 1 if reason else 0
+    return 0 if summary["status"] in {"completed", "no_candidate_needed"} else 1
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--baseline-invocation", default=BASELINE.name, metavar="INVOCATION_ID")
+    args = parser.parse_args(argv)
+    try:
+        baseline = resolve_baseline_invocation(args.baseline_invocation)
+    except ValueError as exc:
+        parser.error(str(exc))
     invocation = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid4().hex[:8]
     root = RESULT_ROOT / invocation
-    result = run_invocation(BASELINE, root)
-    print(json.dumps({"invocation": str(root), "status": "blocked" if result else "completed"}))
+    result = run_invocation(baseline, root)
+    status = _read_json(root / "summary.json")["status"]
+    print(json.dumps({"invocation": str(root), "status": status}))
     return result
 
 

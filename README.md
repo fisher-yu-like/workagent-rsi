@@ -76,13 +76,16 @@ checksum, provenance and quality checks are recorded.
 
 The generic WorkAgent six-task qualification is separate from the older B0/local
 Office executor and historical E05 RSI fixture. Its first and second real
-Codex/Ollama `qwen2.5:7b` invocations both passed **0/6** tasks: [first
+Codex/Ollama `qwen2.5:7b` invocations both passed **0/6** tasks (6 failed,
+0 unavailable in each): [first
 evidence](project_artifacts/results/qualification/general-office/20260929T190856Z-ab3365c5/)
 and [second evidence](project_artifacts/results/qualification/general-office/20260929T195704Z-a4674234/).
 No deliverable Office files were produced, so artifact evaluation and COM reopen
-could not establish success. The [RSI preflight report](project_artifacts/results/qualification/general-office/20260929T210812Z-e0610074/qualification_report.md)
+could not establish success. The [RSI preflight report](project_artifacts/results/qualification/general-office/20260929T212754Z-45c2bcc1/qualification_report.md)
 freezes the 12-task project-generated matrix and blocks before any WorkAgent or
-candidate call. Failure/unavailable is not a score, and none of these runs is
+candidate call. The [source-input validation](project_artifacts/results/qualification/general-office/20260929T212754Z-45c2bcc1/source_office_validation.json)
+records library, hash and COM checks on generated inputs only, not WorkAgent
+deliverables. Failure/unavailable is not a score, and none of these runs is
 an external benchmark result. A qualifying create/edit pair for each format
 remains necessary before RSI may start.
 # workagent-rsi

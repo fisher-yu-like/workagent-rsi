@@ -3,11 +3,16 @@
 import importlib.util
 import json
 from pathlib import Path
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "project_artifacts/phase3_experiments/scripts/run_workagent_rsi.py"
 BASELINE = ROOT / "project_artifacts/results/qualification/general-office/20260929T195704Z-a4674234"
+
+
+def _fake_com(path, domain):
+    return {"ok": True, "status": "available", "version": "16.0"}
 
 
 def _module():
@@ -24,7 +29,7 @@ def test_real_failed_baseline_blocks_before_runner_and_preserves_contract(tmp_pa
     def forbidden(*args, **kwargs):
         raise AssertionError("RSI runner must not start")
 
-    result = module.run_invocation(BASELINE, tmp_path / "invocation", runner_factory=forbidden)
+    result = module.run_invocation(BASELINE, tmp_path / "invocation", runner_factory=forbidden, source_com_verify=_fake_com)
     assert result == 1
     summary = json.loads((tmp_path / "invocation/summary.json").read_text(encoding="utf-8"))
     contract = json.loads((tmp_path / "invocation/contract.json").read_text(encoding="utf-8"))
@@ -35,6 +40,10 @@ def test_real_failed_baseline_blocks_before_runner_and_preserves_contract(tmp_pa
     assert len(contract["split_hashes"]) == 4
     assert len(contract["source_input_hashes"]) == 3
     assert contract["model_identity"] == "ollama:qwen2.5:7b"
+    office = json.loads((tmp_path / "invocation/source_office_validation.json").read_text(encoding="utf-8"))
+    assert office["scope"] == "generated_source_inputs_not_workagent_outputs"
+    assert {row["domain"] for row in office["files"]} == {"excel", "word", "powerpoint"}
+    assert all(row["library_reopen_ok"] and row["com_reopen"]["ok"] and row["sha256"] == contract["source_input_hashes"][row["name"]] for row in office["files"])
     assert (tmp_path / "invocation/analysis.json").is_file()
     assert "阻断" in (tmp_path / "invocation/qualification_report.md").read_text(encoding="utf-8")
 
@@ -49,7 +58,7 @@ def test_tampered_baseline_row_is_rejected_before_runner(tmp_path):
     tampered = tmp_path / "tampered"
     tampered.mkdir()
     (tampered / "summary.json").write_text(json.dumps(summary), encoding="utf-8")
-    result = module.run_invocation(tampered, tmp_path / "result", runner_factory=lambda: (_ for _ in ()).throw(AssertionError("runner called")))
+    result = module.run_invocation(tampered, tmp_path / "result", runner_factory=lambda: (_ for _ in ()).throw(AssertionError("runner called")), source_com_verify=_fake_com)
     assert result == 1
     saved = json.loads((tmp_path / "result/summary.json").read_text(encoding="utf-8"))
     assert saved["status"] == "blocked"
@@ -74,7 +83,112 @@ def test_qualified_baseline_wires_one_bounded_round_with_mocked_run(tmp_path, mo
             return {"status": "completed", "accepted": 0}
 
     output = tmp_path / "eligible"
-    assert module.run_invocation(BASELINE, output, runner_factory=FakeRunner) == 0
+    assert module.run_invocation(BASELINE, output, runner_factory=FakeRunner, source_com_verify=_fake_com) == 0
     summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
     assert summary["rsi_started"] is True
     assert summary["rsi_result"]["accepted"] == 0
+
+
+@pytest.mark.parametrize("malformed", [False, True])
+def test_missing_or_malformed_baseline_summary_still_writes_blocked_reports(tmp_path, malformed):
+    """A failed preflight read must not escape before persisted block evidence."""
+    module = _module()
+    baseline = tmp_path / "bad-baseline"
+    baseline.mkdir()
+    if malformed:
+        (baseline / "summary.json").write_text("{bad", encoding="utf-8")
+    output = tmp_path / "result"
+    assert module.run_invocation(baseline, output, runner_factory=lambda **kwargs: (_ for _ in ()).throw(AssertionError("model called")), source_com_verify=_fake_com) == 1
+    assert json.loads((output / "summary.json").read_text(encoding="utf-8"))["status"] == "blocked"
+    saved_hash = json.loads((output / "contract.json").read_text(encoding="utf-8"))["baseline_summary_sha256"]
+    assert (saved_hash is None) if not malformed else (isinstance(saved_hash, str) and len(saved_hash) == 64)
+    assert (output / "analysis.json").is_file()
+    assert "阻断" in (output / "qualification_report.md").read_text(encoding="utf-8")
+
+
+def test_runner_exception_preserves_partial_evidence_and_failed_reports(tmp_path, monkeypatch):
+    """An eligible-run crash must not erase nested artifacts or omit aggregate reports."""
+    module = _module()
+    monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
+
+    class CrashingRunner:
+        def __init__(self, **kwargs):
+            pass
+
+        def run(self, tasks, skill, provider, output_root, *, rounds):
+            output_root.mkdir(parents=True)
+            (output_root / "partial.txt").write_text("kept", encoding="utf-8")
+            raise RuntimeError("run failed")
+
+    output = tmp_path / "result"
+    assert module.run_invocation(BASELINE, output, runner_factory=CrashingRunner, source_com_verify=_fake_com) == 1
+    summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
+    assert summary["status"] == "failed"
+    assert summary["rsi_started"] is True
+    assert (output / "rsi/partial.txt").read_text(encoding="utf-8") == "kept"
+    assert json.loads((output / "analysis.json").read_text(encoding="utf-8"))["status"] == "failed"
+    assert "失败" in (output / "qualification_report.md").read_text(encoding="utf-8")
+
+
+def test_incomplete_result_exits_nonzero_and_detects_candidate_evidence(tmp_path, monkeypatch):
+    """An incomplete RSI return is not reported as completed or successful."""
+    module = _module()
+    monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
+
+    class IncompleteRunner:
+        def __init__(self, **kwargs):
+            pass
+
+        def run(self, tasks, skill, provider, output_root, *, rounds):
+            evidence = output_root / "rounds/round-01/provider_records"
+            evidence.mkdir(parents=True)
+            (evidence / "provider_record.json").write_text("{}", encoding="utf-8")
+            return {"status": "incomplete", "incomplete_round": {"status": "unavailable"}}
+
+    output = tmp_path / "result"
+    assert module.run_invocation(BASELINE, output, runner_factory=IncompleteRunner, source_com_verify=_fake_com) == 1
+    summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
+    assert summary["status"] == "incomplete"
+    assert summary["candidate_started"] is True
+
+
+def test_baseline_selector_accepts_direct_id_only(tmp_path, monkeypatch):
+    """A future qualified invocation may be selected, but traversal cannot escape results."""
+    module = _module()
+    monkeypatch.setattr(module, "RESULT_ROOT", tmp_path)
+    eligible = tmp_path / "20260930T000000Z-1234abcd"
+    eligible.mkdir()
+    assert module.resolve_baseline_invocation(eligible.name) == eligible
+    for unsafe in ("../outside", str(eligible), "bad-id"):
+        with pytest.raises(ValueError):
+            module.resolve_baseline_invocation(unsafe)
+
+
+def test_unreadable_baseline_summary_hash_still_blocks(tmp_path, monkeypatch):
+    """An OSError while hashing baseline evidence must not prevent reports."""
+    module = _module()
+    original = module.sha256_file
+
+    def unreadable(path):
+        if Path(path) == BASELINE / "summary.json":
+            raise OSError("read denied")
+        return original(path)
+
+    monkeypatch.setattr(module, "sha256_file", unreadable)
+    output = tmp_path / "result"
+    assert module.run_invocation(BASELINE, output, runner_factory=lambda **kwargs: (_ for _ in ()).throw(AssertionError("model called")), source_com_verify=_fake_com) == 1
+    assert json.loads((output / "summary.json").read_text(encoding="utf-8"))["status"] == "blocked"
+
+
+def test_source_com_exception_persists_failed_validation_and_blocked_reports(tmp_path):
+    """A source validation probe failure must not escape before aggregate reports."""
+    module = _module()
+
+    def broken_com(path, domain):
+        raise OSError("COM unavailable")
+
+    output = tmp_path / "result"
+    assert module.run_invocation(BASELINE, output, runner_factory=lambda **kwargs: (_ for _ in ()).throw(AssertionError("model called")), source_com_verify=broken_com) == 1
+    validation = json.loads((output / "source_office_validation.json").read_text(encoding="utf-8"))
+    assert validation["passed"] is False
+    assert json.loads((output / "summary.json").read_text(encoding="utf-8"))["status"] == "blocked"

@@ -5,13 +5,15 @@
 Generic Office WorkAgent supports intended Excel `.xlsx`, Word `.docx`, and
 PowerPoint `.pptx` creation/edit task contracts, but real qualification has not
 established successful artifact production. The first and second Qwen pilot
-invocations each yielded **0/6** successful tasks; no qualifying Office
+invocations each yielded **0/6** successful tasks, 6 failed and 0 unavailable;
+no qualifying Office
 deliverables or artifact COM reopen exists. See
 `project_artifacts/results/qualification/general-office/20260929T190856Z-ab3365c5/`
 and `project_artifacts/results/qualification/general-office/20260929T195704Z-a4674234/`.
 Task 8's frozen RSI preflight is blocked at
-`project_artifacts/results/qualification/general-office/20260929T210812Z-e0610074/`;
-it did not run WorkAgent or candidate generation. Older B0/local executor
+`project_artifacts/results/qualification/general-office/20260929T212754Z-45c2bcc1/`;
+it did not run WorkAgent or candidate generation. Its COM 16.0 reopening checks
+apply to freshly generated source inputs only, not WorkAgent outputs. Older B0/local executor
 qualification and historical E05 RSI evidence are different experiments, not
 proof of this generic WorkAgent. No external benchmark claim is authorized.
 
