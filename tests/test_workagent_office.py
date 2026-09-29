@@ -725,7 +725,64 @@ def test_general_office_runner_refuses_pilot_before_all_com_apps_available(monke
     assert called == []
     invocation = next(tmp_path.iterdir())
     assert (invocation / "capability_report.json").is_file()
-    assert json.loads((invocation / "summary.json").read_text(encoding="utf-8"))["task_count"] == 0
+    summary = json.loads((invocation / "summary.json").read_text(encoding="utf-8"))
+    assert summary["task_count"] == 0
+    assert "retry_lineage" not in summary
+    assert "Retry lineage" not in (invocation / "qualification_report.md").read_text(encoding="utf-8")
+
+
+def test_general_office_runner_retry_help_and_metadata(monkeypatch, tmp_path: Path, capsys):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    with pytest.raises(SystemExit) as help_exit:
+        pilot.main(["--help"])
+    assert help_exit.value.code == 0
+    assert "--retry-of" in capsys.readouterr().out
+
+    prior_id = "20260929T190856Z-ab3365c5"
+    prior = tmp_path / prior_id
+    prior.mkdir()
+    prior_summary = {"config_sha256": "a" * 64, "task_count": 6, "success_count": 0, "failure_count": 6}
+    prior_bytes = json.dumps(prior_summary).encode("utf-8")
+    (prior / "summary.json").write_bytes(prior_bytes)
+    monkeypatch.setattr(pilot, "probe_capabilities", lambda: CapabilityReport.for_testing(powerpoint_com=None))
+
+    assert pilot.main(["--retry-of", prior_id]) == 1
+    current = next(path for path in tmp_path.iterdir() if path.name != prior_id)
+    summary = json.loads((current / "summary.json").read_text(encoding="utf-8"))
+    lineage = summary["retry_lineage"]
+    assert lineage == {
+        "retry_of_invocation_id": prior_id,
+        "retry_of_invocation_path": str(prior.resolve()),
+        "prior_config_sha256": "a" * 64,
+        "prior_task_count": 6,
+        "prior_success_count": 0,
+        "prior_failure_count": 6,
+        "new_config_sha256": sha256_file(pilot.CONFIG),
+        "reason": "revised-prompt-and-criteria",
+    }
+    report = (current / "qualification_report.md").read_text(encoding="utf-8")
+    for value in (prior_id, str(prior.resolve()), "a" * 64, lineage["new_config_sha256"], "revised-prompt-and-criteria", "0 succeeded", "6 failed"):
+        assert value in report
+    assert (prior / "summary.json").read_bytes() == prior_bytes
+
+
+@pytest.mark.parametrize("prior_id,make_directory", [("", False), ("../outside", False), ("C:/outside", False), ("20260929T190856Z-ab3365c5", True)])
+def test_general_office_runner_retry_rejects_path_escape_and_missing_summary(monkeypatch, tmp_path: Path, prior_id: str, make_directory: bool):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    monkeypatch.setattr(pilot, "probe_capabilities", lambda: CapabilityReport.for_testing(powerpoint_com=None))
+    monkeypatch.setattr(pilot, "Harness", lambda *args, **kwargs: pytest.fail("invalid retry must not launch Harness"))
+    if make_directory:
+        (tmp_path / prior_id).mkdir()
+    with pytest.raises(SystemExit) as exc:
+        pilot.main(["--retry-of", prior_id])
+    assert exc.value.code == 2
+    assert sorted(path.name for path in tmp_path.iterdir()) == ([prior_id] if make_directory else [])
 
 
 @pytest.mark.parametrize("task_id", ["excel-create", "excel-edit", "word-create", "word-edit", "powerpoint-create", "powerpoint-edit"])

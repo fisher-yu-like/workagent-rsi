@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import platform
+import re
 import subprocess
 import sys
 import time
@@ -30,6 +31,7 @@ from workagent_rsi.office_capabilities import probe_capabilities, verify_artifac
 CONFIG = ROOT / "project_artifacts/phase3_experiments/configs/general_office_pilot.json"
 RESULT_ROOT = ROOT / "project_artifacts/results/qualification/general-office"
 SUFFIXES = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}
+INVOCATION_ID = re.compile(r"[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}\Z")
 
 
 def _write_json(path: Path, value: object) -> None:
@@ -82,6 +84,37 @@ def _validate_config(config: dict) -> None:
             raise ValueError("edit task needs one generated input")
 
 
+def _retry_lineage(prior_id: str, parser: argparse.ArgumentParser, new_config_sha256: str) -> dict[str, object]:
+    """Read one direct-child prior result without changing its evidence."""
+    if not INVOCATION_ID.fullmatch(prior_id):
+        parser.error("--retry-of must be a general-office invocation ID, not a path")
+    prior = RESULT_ROOT / prior_id
+    if prior.is_symlink() or not prior.is_dir() or prior.resolve().parent != RESULT_ROOT.resolve():
+        parser.error("--retry-of must identify an existing invocation under the general-office results root")
+    prior_summary = prior / "summary.json"
+    if prior_summary.is_symlink() or not prior_summary.is_file() or prior_summary.resolve().parent != prior.resolve():
+        parser.error("--retry-of invocation must contain a regular summary.json")
+    try:
+        saved = json.loads(prior_summary.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, ValueError):
+        parser.error("--retry-of summary.json is unreadable or invalid")
+    if not isinstance(saved, dict) or not isinstance(saved.get("config_sha256"), str) or not all(
+        isinstance(saved.get(key), int) and not isinstance(saved[key], bool) and saved[key] >= 0
+        for key in ("task_count", "success_count", "failure_count")
+    ):
+        parser.error("--retry-of summary.json lacks prior config hash or result counts")
+    return {
+        "retry_of_invocation_id": prior_id,
+        "retry_of_invocation_path": str(prior.resolve()),
+        "prior_config_sha256": saved["config_sha256"],
+        "prior_task_count": saved["task_count"],
+        "prior_success_count": saved["success_count"],
+        "prior_failure_count": saved["failure_count"],
+        "new_config_sha256": new_config_sha256,
+        "reason": "revised-prompt-and-criteria",
+    }
+
+
 def _report(root: Path, summary: dict) -> None:
     lines = [
         "# General Office six-task qualification",
@@ -93,6 +126,19 @@ def _report(root: Path, summary: dict) -> None:
         f"COM versions: `{json.dumps(summary['com_versions'], sort_keys=True)}`",
         f"Outcome: {summary['success_count']} succeeded, {summary['failure_count']} failed, {summary['task_count']} attempted.",
         "",
+    ]
+    if "retry_lineage" in summary:
+        lineage = summary["retry_lineage"]
+        lines += [
+            "## Retry lineage", "",
+            f"Prior invocation ID: `{lineage['retry_of_invocation_id']}`",
+            f"Prior invocation path: `{lineage['retry_of_invocation_path']}`",
+            f"Prior config SHA-256: `{lineage['prior_config_sha256']}`",
+            f"Prior result: {lineage['prior_success_count']} succeeded, {lineage['prior_failure_count']} failed, {lineage['prior_task_count']} attempted.",
+            f"New config SHA-256: `{lineage['new_config_sha256']}`",
+            f"Reason: `{lineage['reason']}`", "",
+        ]
+    lines += [
         "| Task | State | Evaluation | COM reopen | Input hashes |",
         "| --- | --- | --- | --- | --- |",
     ]
@@ -104,7 +150,10 @@ def _report(root: Path, summary: dict) -> None:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args(argv)
+    parser.add_argument("--retry-of", metavar="INVOCATION_ID", help="record lineage to a prior general-office invocation")
+    args = parser.parse_args(argv)
+    config_sha256 = sha256_file(CONFIG)
+    lineage = _retry_lineage(args.retry_of, parser, config_sha256) if args.retry_of is not None else None
     invocation = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ") + "-" + uuid4().hex[:8]
     root = RESULT_ROOT / invocation
     root.mkdir(parents=True, exist_ok=False)
@@ -116,13 +165,15 @@ def main(argv: list[str] | None = None) -> int:
     summary = {
         "pilot_id": "general-office-six-task-engineering-pilot-v1",
         "invocation": str(root), "started_at": started, "ended_at": None,
-        "config_sha256": sha256_file(CONFIG),
+        "config_sha256": config_sha256,
         "evaluator_source_sha256": OfficeArtifactEvaluator.evaluator_hash(),
         "com_versions": versions, "source_hashes": {}, "rows": [],
         "task_count": 0, "success_count": 0, "failure_count": 0,
         "python": sys.version, "platform": platform.platform(),
         "git_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
     }
+    if lineage is not None:
+        summary["retry_lineage"] = lineage
     if not all(report.is_available(name) for name in required):
         summary["failure"] = "all three Office COM applications must be available before launching model"
         summary["ended_at"] = datetime.now(timezone.utc).isoformat()
