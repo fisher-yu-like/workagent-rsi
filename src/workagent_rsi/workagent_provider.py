@@ -2,10 +2,15 @@
 
 from __future__ import annotations
 
+import json
+import subprocess
+from datetime import datetime, timezone
+from pathlib import Path
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from .hashing import canonical_json_hash, sha256_file
 from .rsi_contracts import ProviderRecord
 
 
@@ -58,3 +63,117 @@ class ProviderOutcome(BaseModel):
 def build_agent_response_schema() -> dict[str, object]:
     """Return the structured-output schema supplied to the Codex CLI."""
     return AgentResponse.model_json_schema()
+
+
+class CodexOfficeProvider:
+    def __init__(self, config: WorkAgentConfig) -> None:
+        self.config = config
+        self.schema_path = (Path(__file__).parent / "schemas" / "agent_response.schema.json").resolve()
+
+    def command(self, workspace: Path, response_path: Path, schema_path: Path) -> list[str]:
+        return [
+            self.config.executable,
+            "exec",
+            "--ignore-user-config",
+            "--oss",
+            "--local-provider",
+            "ollama",
+            "--model",
+            self.config.model,
+            "--ephemeral",
+            "--sandbox",
+            "workspace-write",
+            "--json",
+            "--output-schema",
+            str(schema_path.resolve()),
+            "--output-last-message",
+            str(response_path.resolve()),
+            "--cd",
+            str(workspace.resolve()),
+            "-",
+        ]
+
+    def run(self, prompt: str, workspace: Path, record_root: Path) -> ProviderOutcome:
+        workspace = Path(workspace).resolve()
+        records = Path(record_root).resolve()
+        workspace_hash = canonical_json_hash({
+            path.relative_to(workspace).as_posix(): sha256_file(path)
+            for path in sorted(workspace.rglob("*"))
+            if path.is_file() and ".git" not in path.parts and "provider_records" not in path.parts
+        })
+        records.mkdir(parents=True, exist_ok=True)
+        response_path = records / "agent_response.json"
+        command = self.command(workspace, response_path, self.schema_path)
+        (records / "prompt.txt").write_text(prompt, encoding="utf-8", newline="\n")
+        (records / "command.json").write_text(json.dumps(command, indent=2) + "\n", encoding="utf-8", newline="\n")
+
+        started = datetime.now(timezone.utc)
+        status = "failed"
+        response = None
+        error = None
+        exit_code = None
+        stdout = ""
+        stderr = ""
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=workspace,
+                input=prompt,
+                timeout=self.config.timeout_seconds,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                check=False,
+            )
+            exit_code = completed.returncode
+            stdout = completed.stdout or ""
+            stderr = completed.stderr or ""
+            if exit_code != 0:
+                error = f"provider exited with code {exit_code}"
+            elif not response_path.exists():
+                error = "provider did not write structured output"
+            else:
+                try:
+                    response = AgentResponse.model_validate_json(response_path.read_text(encoding="utf-8"))
+                    status = response.status
+                except ValueError as exc:
+                    error = f"invalid provider response: {exc}"
+        except subprocess.TimeoutExpired as exc:
+            status = "timeout"
+            error = f"provider timeout after {exc.timeout} seconds"
+            stdout = _decode_process_output(exc.stdout)
+            stderr = _decode_process_output(exc.stderr)
+        except FileNotFoundError as exc:
+            status = "unavailable"
+            error = str(exc)
+
+        (records / "provider.stdout.jsonl").write_text(stdout, encoding="utf-8", newline="\n")
+        (records / "provider.stderr.txt").write_text(stderr, encoding="utf-8", newline="\n")
+        ended = datetime.now(timezone.utc)
+        record = ProviderRecord(
+            provider="codex-cli",
+            provider_version="local-1",
+            model_identity=f"ollama:{self.config.model}",
+            command=command,
+            prompt_hash=canonical_json_hash({"prompt": prompt}),
+            workspace_hash=workspace_hash,
+            started_at=started,
+            ended_at=ended,
+            exit_code=exit_code,
+            status=status,
+            output_ref=sha256_file(response_path) if response_path.exists() else None,
+            error=error,
+        )
+        (records / "provider_record.json").write_text(
+            json.dumps(record.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+            newline="\n",
+        )
+        return ProviderOutcome(status=status, response=response, record=record, error=error)
+
+
+def _decode_process_output(value: str | bytes | None) -> str:
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value or ""
