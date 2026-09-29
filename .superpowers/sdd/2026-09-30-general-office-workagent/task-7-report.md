@@ -59,3 +59,12 @@ GREEN and regression evidence:
 - `$env:PYTHONPYCACHEPREFIX='project_artifacts/results/test-runs/plan-t7-review2-pycache'; py -3.12 -m compileall -q src/workagent_rsi; git diff --check; git diff --stat -- src/workagent_rsi/workagent_evaluator.py tests/test_workagent_office.py project_artifacts/phase3_experiments/configs/general_office_rsi.json` — exit 0; line-ending warnings only; 3 Task 7 files changed.
 
 An initial `-k oversized_integer` selection matched no parametrized test and exited 1 with 105 deselected; the corrected `evaluation5` selection above captured the intended RED. No live model or RSI run was launched.
+
+## Review follow-up 3: strict TaskSpec compatibility
+The twelve-task matrix still included a redundant `kind` key on every task. Since `TaskSpec` forbids extra fields, this prevented the config from being loaded for an experiment. A test now validates all twelve raw task objects with `TaskSpec.model_validate`. The `kind` keys were removed without changing split membership, instructions, regression input references, or evaluator-only constraints; create/edit intent is inferable from split and input files.
+
+- RED: `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t7-review3-red tests/test_workagent_office.py -k twelve_domain_balanced` — 1 failed, `ValidationError: kind Extra inputs are not permitted`.
+- GREEN: `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t7-review3-green tests/test_workagent_office.py -k twelve_domain_balanced` — 1 passed, 105 deselected.
+- Module regression: `py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t7-review3-module tests/test_workagent_office.py` — 103 passed, 3 skipped in 11.75s.
+
+No live model or RSI run was launched.

@@ -138,8 +138,8 @@ def test_general_office_rsi_config_has_twelve_domain_balanced_tasks():
     assert len({task["task_id"] for tasks in splits.values() for task in tasks}) == 12
     for split, tasks in splits.items():
         assert {task["domain"] for task in tasks} == {"excel", "word", "powerpoint"}
-        assert {task["kind"] for task in tasks} == {"edit" if split == "regression" else "create"}
         for task in tasks:
+            assert TaskSpec.model_validate(task).task_id == task["task_id"]
             assert task["instruction"] and task["expected_constraints"]
             assert bool(task["input_files"]) == (split == "regression")
             assert not any(key in task["instruction"] for key in task["expected_constraints"])
