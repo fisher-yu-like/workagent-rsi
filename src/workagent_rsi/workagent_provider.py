@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
@@ -103,9 +104,11 @@ class CodexOfficeProvider:
             if path.is_file() and ".git" not in path.parts and "provider_records" not in path.parts
         })
         records.mkdir(parents=True, exist_ok=True)
-        response_path = records / f"agent_response-{uuid4().hex}.json"
+        response_path = workspace / f"agent_response-{uuid4().hex}.json"
+        canonical_response_path = workspace / "agent_response.json"
+        canonical_response_path.unlink(missing_ok=True)
         command = self.command(workspace, response_path, self.schema_path)
-        (records / "prompt.txt").write_text(prompt, encoding="utf-8", newline="\n")
+        (records / "prompt.md").write_text(prompt, encoding="utf-8", newline="\n")
         (records / "command.json").write_text(json.dumps(command, indent=2) + "\n", encoding="utf-8", newline="\n")
 
         started = datetime.now(timezone.utc)
@@ -138,6 +141,8 @@ class CodexOfficeProvider:
                 try:
                     response = AgentResponse.model_validate_json(response_path.read_text(encoding="utf-8"))
                     status = response.status
+                    shutil.copyfile(response_path, canonical_response_path)
+                    shutil.copyfile(response_path, records / "agent_response.json")
                 except ValueError as exc:
                     error = f"invalid provider response: {exc}"
         except subprocess.TimeoutExpired as exc:
@@ -163,7 +168,7 @@ class CodexOfficeProvider:
             ended_at=ended,
             exit_code=exit_code,
             status=status,
-            output_ref=sha256_file(response_path) if response_path.exists() else None,
+            output_ref=sha256_file(response_path) if response is not None else None,
             error=error,
         )
         (records / "provider_record.json").write_text(
