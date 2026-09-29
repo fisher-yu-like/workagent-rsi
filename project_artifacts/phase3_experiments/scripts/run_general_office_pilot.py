@@ -140,36 +140,65 @@ def main(argv: list[str] | None = None) -> int:
         _write_json(root / "input_provenance.json", {"provenance": "project-generated", "sha256": source_hashes})
         for item in config["tasks"]:
             task_id = item["task_id"]
-            before = {name: sha256_file(root / "inputs" / name) for name in item["input_files"]}
-            if any(before[name] != source_hashes[name] for name in before):
-                raise ValueError(f"source hash mismatch before {task_id}")
-            task = TaskSpec(task_id=task_id, domain=item["domain"], instruction=item["instruction"],
-                            input_files=tuple(item["input_files"]), expected_constraints=item["expected_constraints"])
+            run_root = root / task_id
             start = time.perf_counter()
-            outcome = Harness(root, office=True, execution_provider="workagent", input_base=root / "inputs").run(task, run_id=task_id, max_attempts=1)
-            run_root = Path(outcome["result_dir"])
-            after = {name: sha256_file(root / "inputs" / name) for name in item["input_files"] if (root / "inputs" / name).is_file()}
-            hashes_ok = before == after == {name: source_hashes[name] for name in before}
-            artifacts = outcome.get("artifacts", [])
-            suffix_ok = len(artifacts) == 1 and Path(artifacts[0]["path"]).suffix.lower() == SUFFIXES[item["domain"]]
-            com = verify_artifact_with_com(artifacts[0]["path"], item["domain"]) if suffix_ok else {"ok": False, "status": "not_run", "error": "no single correct-suffix artifact"}
-            _write_json(run_root / "com_reopen.json", com)
-            if "evaluation" in outcome:
-                _write_json(run_root / "evaluation.json", outcome["evaluation"])
-            qualified = outcome["state"] == "SUCCEEDED" and outcome.get("evaluation", {}).get("passed") is True and suffix_ok and com.get("ok") is True and hashes_ok
-            row = {"task_id": task_id, "domain": item["domain"], "kind": item["kind"],
-                   "run_id": outcome["run_id"], "state": "SUCCEEDED" if qualified else "FAILED",
-                   "harness_state": outcome["state"], "evaluation_passed": outcome.get("evaluation", {}).get("passed"),
-                   "com_ok": com.get("ok"), "com_version": com.get("version"), "input_hashes_ok": hashes_ok,
-                   "source_hashes_before": before, "source_hashes_after": after, "suffix_ok": suffix_ok,
-                   "artifact_sha256": [artifact["sha256"] for artifact in artifacts],
-                   "failure": outcome.get("failure"), "evaluation_failures": outcome.get("evaluation", {}).get("critical_failures", []),
-                   "duration_seconds": round(time.perf_counter() - start, 3), "result_dir": str(run_root)}
+            before: dict[str, str] = {}
+            after: dict[str, str] = {}
+            try:
+                before = {name: sha256_file(root / "inputs" / name) for name in item["input_files"]}
+                if any(before[name] != source_hashes[name] for name in before):
+                    raise ValueError(f"source hash mismatch before {task_id}")
+                task = TaskSpec(task_id=task_id, domain=item["domain"], instruction=item["instruction"],
+                                input_files=tuple(item["input_files"]), expected_constraints=item["expected_constraints"])
+                outcome = Harness(root, office=True, execution_provider="workagent", input_base=root / "inputs").run(task, run_id=task_id, max_attempts=1)
+                run_root = Path(outcome["result_dir"])
+                after = {name: sha256_file(root / "inputs" / name) for name in item["input_files"] if (root / "inputs" / name).is_file()}
+                hashes_ok = before == after == {name: source_hashes[name] for name in before}
+                artifacts = outcome.get("artifacts", [])
+                suffix_ok = len(artifacts) == 1 and Path(artifacts[0]["path"]).suffix.lower() == SUFFIXES[item["domain"]]
+                evaluation_passed = outcome["state"] == "SUCCEEDED" and outcome.get("evaluation", {}).get("passed") is True
+                com = verify_artifact_with_com(artifacts[0]["path"], item["domain"]) if evaluation_passed and suffix_ok and hashes_ok else {
+                    "ok": False, "status": "not_run", "error": "artifact did not pass Office evaluation, suffix, and source-integrity gates"
+                }
+                _write_json(run_root / "com_reopen.json", com)
+                if "evaluation" in outcome:
+                    _write_json(run_root / "evaluation.json", outcome["evaluation"])
+                qualified = evaluation_passed and suffix_ok and com.get("ok") is True and hashes_ok
+                row = {"task_id": task_id, "domain": item["domain"], "kind": item["kind"],
+                       "run_id": outcome["run_id"], "state": "SUCCEEDED" if qualified else "FAILED",
+                       "harness_state": outcome["state"], "evaluation_passed": outcome.get("evaluation", {}).get("passed"),
+                       "com_ok": com.get("ok"), "com_version": com.get("version"), "input_hashes_ok": hashes_ok,
+                       "source_hashes_before": before, "source_hashes_after": after, "suffix_ok": suffix_ok,
+                       "artifact_sha256": [artifact["sha256"] for artifact in artifacts],
+                       "failure": outcome.get("failure"), "evaluation_failures": outcome.get("evaluation", {}).get("critical_failures", []),
+                       "duration_seconds": round(time.perf_counter() - start, 3), "result_dir": str(run_root)}
+            except Exception as exc:
+                run_root.mkdir(parents=True, exist_ok=True)
+                for name in item["input_files"]:
+                    source = root / "inputs" / name
+                    if source.is_file():
+                        try:
+                            after[name] = sha256_file(source)
+                        except OSError:
+                            pass
+                hashes_ok = all(name in source_hashes for name in item["input_files"]) and before == after == {
+                    name: source_hashes[name] for name in item["input_files"] if name in source_hashes
+                }
+                row = {"task_id": task_id, "domain": item["domain"], "kind": item["kind"],
+                       "run_id": f"runner-exception-{task_id}", "state": "FAILED", "harness_state": "RUNNER_EXCEPTION",
+                       "evaluation_passed": None, "com_ok": False, "com_version": None,
+                       "input_hashes_ok": hashes_ok, "source_hashes_before": before, "source_hashes_after": after,
+                       "suffix_ok": False, "artifact_sha256": [], "failure": {"message": str(exc), "status": "runner_exception"},
+                       "evaluation_failures": [], "duration_seconds": round(time.perf_counter() - start, 3),
+                       "result_dir": str(run_root)}
+                if not (run_root / "result.json").exists():
+                    _write_json(run_root / "result.json", row)
+                _write_json(run_root / "com_reopen.json", {"ok": False, "status": "not_run", "error": "task-level exception before qualification"})
             _write_json(run_root / "qualification_result.json", row)
             summary["rows"].append(row)
             summary["task_count"] += 1
-            summary["success_count"] += int(qualified)
-            summary["failure_count"] += int(not qualified)
+            summary["success_count"] += int(row["state"] == "SUCCEEDED")
+            summary["failure_count"] += int(row["state"] != "SUCCEEDED")
             _write_json(root / "summary.json", summary)
     except Exception as exc:
         summary["failure"] = str(exc)

@@ -726,3 +726,144 @@ def test_general_office_runner_refuses_pilot_before_all_com_apps_available(monke
     invocation = next(tmp_path.iterdir())
     assert (invocation / "capability_report.json").is_file()
     assert json.loads((invocation / "summary.json").read_text(encoding="utf-8"))["task_count"] == 0
+
+
+@pytest.mark.parametrize("task_id", ["excel-create", "excel-edit", "word-create", "word-edit", "powerpoint-create", "powerpoint-edit"])
+def test_evaluator_accepts_and_rejects_exact_general_office_pilot_constraints(tmp_path: Path, task_id: str):
+    config_path = Path(__file__).resolve().parents[1] / "project_artifacts/phase3_experiments/configs/general_office_pilot.json"
+    item = next(row for row in json.loads(config_path.read_text(encoding="utf-8"))["tasks"] if row["task_id"] == task_id)
+    task = TaskSpec(task_id=task_id, domain=item["domain"], instruction=item["instruction"], expected_constraints=item["expected_constraints"])
+    if task_id == "excel-create":
+        path = tmp_path / "satisfying.xlsx"
+        book = Workbook()
+        sheet = book.active
+        sheet.title = "Summary"
+        for cell, value in {"A1": "Quarter", "B1": "Revenue", "A2": "Q1", "B2": 120, "A3": "Q2", "B3": 150, "A4": "Q3", "B4": 180, "A5": "Total", "B5": "=SUM(B2:B4)"}.items():
+            sheet[cell] = value
+        book.save(path)
+        assert inspect_office_file(path, task).passed
+        sheet["B5"] = 450
+        book.save(path)
+        assert any("formula" in failure for failure in inspect_office_file(path, task).failures)
+    elif task_id == "excel-edit":
+        path = tmp_path / "satisfying.xlsx"
+        book = Workbook()
+        source = book.active
+        source.title = "Transactions"
+        for row in (("Item", "Revenue"), ("Alpha", 40), ("Beta", 55), ("Gamma", 65)):
+            source.append(row)
+        summary = book.create_sheet("Summary")
+        summary["A1"], summary["B1"], summary["A2"], summary["B2"] = "Metric", "Amount", "Total Revenue", "=SUM(Transactions!B2:B4)"
+        book.save(path)
+        assert inspect_office_file(path, task).passed
+        source["B3"] = 99
+        book.save(path)
+        assert any("Transactions!B3" in failure for failure in inspect_office_file(path, task).failures)
+    elif task_id in {"word-create", "word-edit"}:
+        path = tmp_path / "satisfying.docx"
+        doc = Document()
+        if task_id == "word-create":
+            for title in ("Project Status", "Progress", "Risks", "Next Actions"):
+                doc.add_heading(title, level=1)
+            body = doc.add_paragraph("Action: confirm launch date with the sponsor by Friday.")
+        else:
+            for title in ("Executive Summary", "Completed Work"):
+                doc.add_heading(title, level=1)
+            fact = doc.add_heading("The pilot completed on 12 September.", level=2)
+            doc.add_heading("Next Steps", level=1)
+            doc.add_paragraph("Action: send the final report to the steering group.")
+        doc.save(path)
+        assert inspect_office_file(path, task).passed
+        if task_id == "word-create":
+            body.text = "No action recorded."
+            failure_part = "required marker"
+        else:
+            fact.style = "Heading 1"
+            failure_part = "expected style"
+        doc.save(path)
+        assert any(failure_part in failure for failure in inspect_office_file(path, task).failures)
+    else:
+        path = tmp_path / "satisfying.pptx"
+        deck = Presentation()
+        slide_texts = (("Context",), ("Plan",), ("Decision", "Takeaway: approve the phased rollout.")) if task_id == "powerpoint-create" else (("Baseline: two regions",), ("Next step: expand to three regions",))
+        boxes = []
+        for texts in slide_texts:
+            slide = deck.slides.add_slide(deck.slide_layouts[6])
+            for index, content in enumerate(texts):
+                box = slide.shapes.add_textbox(Inches(1), Inches(1 + 2 * index), Inches(6), Inches(1))
+                box.text = content
+                boxes.append(box)
+        deck.save(path)
+        assert inspect_office_file(path, task).passed
+        if task_id == "powerpoint-create":
+            boxes[0].left = deck.slide_width + Inches(1)
+            failure_part = "exceeds slide bounds"
+        else:
+            boxes[-1].text = "A different next step"
+            failure_part = "shape texts are missing"
+        deck.save(path)
+        assert any(failure_part in failure for failure in inspect_office_file(path, task).failures)
+
+
+def test_general_office_runner_does_not_com_reopen_failed_evaluation(monkeypatch, tmp_path: Path):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    monkeypatch.setattr(pilot, "probe_capabilities", CapabilityReport.for_testing)
+    monkeypatch.setattr(pilot, "verify_artifact_with_com", lambda *args: pytest.fail("COM must not reopen failed evaluation"))
+
+    class FailedEvaluationHarness:
+        def __init__(self, root, **kwargs):
+            self.root = root
+
+        def run(self, task, **kwargs):
+            run_root = self.root / task.task_id
+            run_root.mkdir()
+            artifact = run_root / ("invalid" + {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}[task.domain])
+            artifact.write_bytes(b"invalid")
+            return {"run_id": task.task_id, "result_dir": str(run_root), "state": "FAILED",
+                    "evaluation": {"passed": False, "critical_failures": ["invalid Office structure"]},
+                    "artifacts": [{"path": str(artifact), "sha256": "sample"}]}
+
+    monkeypatch.setattr(pilot, "Harness", FailedEvaluationHarness)
+    assert pilot.main([]) == 1
+    summary = json.loads((next(tmp_path.iterdir()) / "summary.json").read_text(encoding="utf-8"))
+    assert summary["task_count"] == 6
+    assert all(row["com_ok"] is False for row in summary["rows"])
+
+
+def test_general_office_runner_records_exception_and_continues_all_six(monkeypatch, tmp_path: Path):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    monkeypatch.setattr(pilot, "probe_capabilities", CapabilityReport.for_testing)
+
+    class FailingHarness:
+        def __init__(self, root, **kwargs):
+            self.root = root
+
+        def run(self, task, **kwargs):
+            if task.task_id == "excel-edit":
+                raise RuntimeError("controlled task exception")
+            run_root = self.root / task.task_id
+            run_root.mkdir()
+            return {"run_id": task.task_id, "result_dir": str(run_root), "state": "FAILED", "artifacts": [],
+                    "failure": {"message": "no output"}}
+
+    monkeypatch.setattr(pilot, "Harness", FailingHarness)
+    assert pilot.main([]) == 1
+    invocation = next(tmp_path.iterdir())
+    summary = json.loads((invocation / "summary.json").read_text(encoding="utf-8"))
+    assert summary["task_count"] == 6 and len(summary["rows"]) == 6
+    assert "controlled task exception" in summary["rows"][1]["failure"]["message"]
+    assert (invocation / "excel-edit/qualification_result.json").exists()
+    assert summary["rows"][-1]["task_id"] == "powerpoint-edit"
+
+
+def test_office_prompt_requires_tool_action_before_claiming_completion():
+    task = TaskSpec(task_id="prompt", domain="excel", instruction="Create an example workbook")
+    prompt = build_task_prompt(task, {"files": []}, "").lower()
+    for requirement in ("create a Python script", "run the script", "reopen", "deliverables.json", "status to \"failed\""):
+        assert requirement.lower() in prompt
