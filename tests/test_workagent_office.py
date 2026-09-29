@@ -88,6 +88,45 @@ def test_workagent_frozen_evaluator_real_office_files_and_hashes(monkeypatch, tm
         WorkAgentFrozenEvaluator("wrong").evaluate_split(tasks, "develop", WorkAgentSkill(instructions="good instructions"), contract, tmp_path / "bad")
 
 
+@pytest.mark.parametrize("evaluation", [
+    {}, {"score": None}, {"score": "invalid"}, {"score": float("nan")}, {"score": float("inf")},
+])
+def test_workagent_frozen_evaluator_malformed_terminal_score_is_incomplete(monkeypatch, tmp_path: Path, evaluation: dict):
+    task = TaskSpec(task_id="malformed", domain="excel", instruction="Create Excel")
+    contract = _rsi_contract({"develop": [task]})
+
+    def malformed_harness_result(self, task, **kwargs):
+        run = self.results_dir / "run"
+        run.mkdir(parents=True)
+        result = {"state": "SUCCEEDED", "evaluation": evaluation, "result_dir": str(run)}
+        (run / "result.json").write_text(json.dumps(result), encoding="utf-8")
+        return result
+
+    monkeypatch.setattr(Harness, "run", malformed_harness_result)
+    root = tmp_path / "evaluation"
+    public = WorkAgentFrozenEvaluator(contract.evaluator_hash).evaluate_split(
+        [task], "develop", WorkAgentSkill(instructions="test instructions"), contract, root, reveal_per_task=True)
+    full = json.loads((root / "evaluation_full.json").read_text(encoding="utf-8"))
+    assert public["status"] == full["status"] == "incomplete"
+    assert public["completed_count"] == 0
+    assert "score" not in public and "completed_wall_time_seconds" not in public
+    assert "score" not in full["rows"][0] and "wall_time_seconds" not in full["rows"][0]
+    assert full["rows"][0]["status"] == "incomplete"
+    assert (root / "malformed" / "run" / "result.json").is_file()
+
+
+def test_workagent_frozen_evaluator_rejects_live_hash_drift_before_run(monkeypatch, tmp_path: Path):
+    task = TaskSpec(task_id="hash-drift", domain="excel", instruction="Create Excel")
+    contract = _rsi_contract({"develop": [task]})
+    frozen = WorkAgentFrozenEvaluator(contract.evaluator_hash)
+    monkeypatch.setattr(OfficeArtifactEvaluator, "evaluator_hash", classmethod(lambda cls: "f" * 64))
+    monkeypatch.setattr(Harness, "run", lambda *args, **kwargs: pytest.fail("Harness must not run after evaluator hash drift"))
+    root = tmp_path / "must-not-exist"
+    with pytest.raises(ValueError, match="evaluator hash"):
+        frozen.evaluate_split([task], "develop", WorkAgentSkill(instructions="test instructions"), contract, root)
+    assert not root.exists()
+
+
 def _rsi_tasks():
     return {
         "develop": [TaskSpec(task_id="dev-excel", domain="excel", instruction="Create Excel", expected_constraints={"required_cells": {"Sheet!A1": "Ready"}})],

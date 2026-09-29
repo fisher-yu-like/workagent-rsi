@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 import json
+import math
 import time
 from pathlib import Path
 from typing import Sequence
 
 from .contracts import TaskSpec
+from .evaluator import OfficeArtifactEvaluator
 from .harness import Harness
 from .hashing import canonical_json_hash
 from .path_safety import validated_task_directory
@@ -40,7 +42,8 @@ class WorkAgentFrozenEvaluator:
         split_hash = canonical_json_hash([task.model_dump(mode="json") for task in tasks])
         if contract.split_hashes.get(split_name) != split_hash:
             raise ValueError("split hash does not match frozen evaluation contract")
-        if contract.evaluator_hash != self.evaluator_hash:
+        live_evaluator_hash = OfficeArtifactEvaluator.evaluator_hash()
+        if contract.evaluator_hash != self.evaluator_hash or self.evaluator_hash != live_evaluator_hash:
             raise ValueError("evaluator hash does not match frozen evaluation contract")
         root = Path(result_root)
         root.mkdir(parents=True, exist_ok=True)
@@ -59,7 +62,9 @@ class WorkAgentFrozenEvaluator:
             result = harness.run(task, run_id="run")
             elapsed = time.perf_counter() - started
             evaluation = result.get("evaluation")
-            terminal = result.get("state") in {"SUCCEEDED", "FAILED"} and isinstance(evaluation, dict)
+            raw_score = evaluation.get("score") if isinstance(evaluation, dict) else None
+            valid_score = isinstance(raw_score, (int, float)) and not isinstance(raw_score, bool) and math.isfinite(raw_score)
+            terminal = result.get("state") in {"SUCCEEDED", "FAILED"} and valid_score
             row = {
                 "task_id": task.task_id,
                 "domain": task.domain,
@@ -69,14 +74,14 @@ class WorkAgentFrozenEvaluator:
             if terminal:
                 row.update(
                     passed=bool(evaluation.get("passed")),
-                    score=float(evaluation["score"]),
+                    score=float(raw_score),
                     critical_failures=evaluation.get("critical_failures", []),
                     wall_time_seconds=round(elapsed, 6),
                 )
                 completed_seconds += elapsed
             else:
                 row["status"] = "incomplete"
-                row["failure"] = result.get("failure")
+                row["failure"] = result.get("failure") or "missing or invalid terminal evaluation score"
             rows.append(row)
         complete = len(rows) == len(tasks) and bool(tasks) and all("score" in row for row in rows)
         full = {
@@ -85,11 +90,12 @@ class WorkAgentFrozenEvaluator:
             "task_count": len(tasks),
             "completed_count": sum("score" in row for row in rows),
             "success_count": sum(bool(row.get("passed")) for row in rows),
-            "completed_wall_time_seconds": round(completed_seconds, 6),
             "split_hash": split_hash,
-            "evaluator_hash": self.evaluator_hash,
+            "evaluator_hash": live_evaluator_hash,
             "rows": rows,
         }
+        if full["completed_count"]:
+            full["completed_wall_time_seconds"] = round(completed_seconds, 6)
         if complete:
             full["score"] = sum(row["score"] for row in rows) / len(rows)
         (root / "evaluation_full.json").write_text(json.dumps(full, indent=2, sort_keys=True) + "\n", encoding="utf-8")
