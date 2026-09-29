@@ -150,7 +150,7 @@ class CodexOfficeProvider:
             error = f"provider timeout after {exc.timeout} seconds"
             stdout = _decode_process_output(exc.stdout)
             stderr = _decode_process_output(exc.stderr)
-        except FileNotFoundError as exc:
+        except OSError as exc:
             status = "unavailable"
             error = str(exc)
 

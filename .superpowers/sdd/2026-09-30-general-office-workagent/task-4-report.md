@@ -67,3 +67,37 @@ py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/t
 - The real Codex/Ollama process was not run; integration tests inject a deterministic `subprocess.run` provider and create genuine `.xlsx` files with openpyxl.
 - Input paths default to the process working directory unless callers provide `input_base`; the YAML CLI path-resolution work is outside Task 4.
 - Existing unrelated dirty docs/spec/log changes were preserved and not staged.
+
+## Review fix round 1
+
+Two findings were covered by new public Harness regressions before modifying production code:
+
+1. The saved `task.json` must retain the task identifier/instruction while excluding evaluator constraints and original input paths. The full `TaskSpec` remains in memory for evaluation and input staging.
+2. A provider launch `PermissionError` must become `UNAVAILABLE` with a persisted provider record, a `provider_output` trace event, and exactly one terminal `unavailable` event.
+
+RED command and output:
+
+```text
+py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t4-fix-red tests/test_workagent_office.py -k 'persisted_task or provider_permission_error'
+2 failed, 54 deselected in 2.06s
+AssertionError: 'expected_constraints' was present in saved task.json
+AssertionError: state was 'FAILED' instead of 'UNAVAILABLE'
+```
+
+GREEN commands and output:
+
+```text
+py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t4-fix-green tests/test_workagent_office.py -k 'persisted_task or provider_permission_error'
+2 passed, 54 deselected in 1.00s
+
+py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t4-fix-focused tests/test_workagent_office.py
+53 passed, 3 skipped in 2.62s
+
+py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t4-fix-subset tests/test_workagent_office.py tests/test_simple_harness.py tests/test_office_adapter.py tests/test_office_evaluator.py
+65 passed, 3 skipped in 4.12s
+
+py -3.12 -m pytest -q -p no:cacheprovider --basetemp=project_artifacts/results/test-runs/plan-t4-fix-full tests
+139 passed, 3 skipped in 45.49s
+```
+
+Fix files: `src/workagent_rsi/harness.py`, `src/workagent_rsi/workagent_provider.py`, `tests/test_workagent_office.py`, and this report. No live model or sensitive input was used. The unrelated dirty docs/spec/log changes remain untouched.

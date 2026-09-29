@@ -513,3 +513,48 @@ def test_harness_default_office_uses_workagent_and_separates_invocations(monkeyp
     assert first["state"] == second["state"] == "UNAVAILABLE"
     assert first["result_dir"] != second["result_dir"]
     assert Path(first["result_path"]).is_file() and Path(second["result_path"]).is_file()
+
+
+def test_harness_persisted_task_excludes_evaluator_constraints_and_source_paths(monkeypatch, tmp_path: Path):
+    source = tmp_path / "private-source.xlsx"
+    Workbook().save(source)
+
+    def missing_provider(command, **kwargs):
+        raise FileNotFoundError("codex not found")
+
+    monkeypatch.setattr(subprocess, "run", missing_provider)
+    task = TaskSpec(
+        task_id="private-task",
+        domain="excel",
+        instruction="Build a workbook",
+        input_files=(str(source),),
+        expected_constraints={"required_cells": {"Summary!B2": "PRIVATE-EVALUATOR-ANSWER"}},
+    )
+    result = Harness(tmp_path / "results", execution_provider="workagent").run(task)
+
+    task_text = (Path(result["result_dir"]) / "task.json").read_text(encoding="utf-8")
+    saved = json.loads(task_text)
+    assert saved["task_id"] == "private-task" and saved["instruction"] == "Build a workbook"
+    assert "expected_constraints" not in saved and "input_files" not in saved
+    assert "PRIVATE-EVALUATOR-ANSWER" not in task_text
+    assert str(source) not in task_text
+
+
+def test_harness_provider_permission_error_persists_evidence_and_one_unavailable(monkeypatch, tmp_path: Path):
+    def denied_provider(command, **kwargs):
+        raise PermissionError("provider launch denied")
+
+    monkeypatch.setattr(subprocess, "run", denied_provider)
+    result = Harness(tmp_path / "results", execution_provider="workagent").run(_harness_excel_task())
+
+    assert result["state"] == "UNAVAILABLE"
+    assert result["artifacts"] == [] and "evaluation" not in result
+    root = Path(result["result_dir"])
+    record = json.loads((root / "provider_records/provider_record.json").read_text(encoding="utf-8"))
+    assert record["status"] == "unavailable"
+    assert "provider launch denied" in record["error"]
+    events = Harness().resume(root)["events"]
+    kinds = [event["kind"] for event in events]
+    assert kinds == ["run_started", "started", "input_manifest", "provider_output", "unavailable"]
+    assert events[3]["payload"]["record"] == record
+    assert "provider launch denied" in events[4]["payload"]["message"]

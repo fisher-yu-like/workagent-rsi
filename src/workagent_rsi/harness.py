@@ -55,7 +55,11 @@ class Harness:
             raise FileExistsError(output)
         root.mkdir(parents=True, exist_ok=True)
         (root / "task.json").write_text(
-            json.dumps(task.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
+            json.dumps(
+                task.model_dump(mode="json", exclude={"expected_constraints", "input_files"}),
+                indent=2,
+                sort_keys=True,
+            ) + "\n",
             encoding="utf-8",
         )
         result = Run(
