@@ -6,12 +6,15 @@ import pytest
 import yaml
 from docx import Document
 from openpyxl import Workbook
+from pptx import Presentation
+from pptx.util import Inches
 from pydantic import ValidationError
 
 from workagent_rsi.contracts import TaskSpec
 from workagent_rsi.cli import main as cli_main
 from workagent_rsi.hashing import canonical_json_hash, sha256_file
 from workagent_rsi.harness import Harness
+from workagent_rsi.office_checks import inspect_office_file
 from workagent_rsi.workagent_office import build_task_prompt, copy_task_inputs, validate_deliverables, verify_task_input_hashes
 from workagent_rsi.workagent_provider import (
     AgentResponse,
@@ -659,3 +662,67 @@ def test_harness_provider_permission_error_persists_evidence_and_one_unavailable
     assert kinds == ["run_started", "started", "input_manifest", "provider_output", "unavailable"]
     assert events[3]["payload"]["record"] == record
     assert "provider launch denied" in events[4]["payload"]["message"]
+
+
+def test_evaluator_excel_pilot_checks_sheets_cells_and_formula(tmp_path: Path):
+    path = tmp_path / "quarterly.xlsx"
+    book = Workbook()
+    sheet = book.active
+    sheet.title = "Summary"
+    sheet["A1"] = "Quarter"
+    sheet["B2"] = 120
+    sheet["B5"] = "=SUM(B2:B4)"
+    book.save(path)
+    passing = TaskSpec(task_id="excel-pass", domain="excel", instruction="Create workbook", expected_constraints={
+        "required_sheets": ["Summary"], "required_cells": {"Summary!A1": "Quarter", "Summary!B2": 120},
+        "required_formulas": {"Summary!B5": "=SUM(B2:B4)"},
+    })
+    failing = passing.model_copy(update={"expected_constraints": {"required_sheets": ["Missing"]}})
+    assert inspect_office_file(path, passing).passed
+    assert any("required sheet" in item for item in inspect_office_file(path, failing).failures)
+
+
+def test_evaluator_word_pilot_checks_headings_styles_and_text(tmp_path: Path):
+    path = tmp_path / "status.docx"
+    doc = Document()
+    doc.add_heading("Status", level=1)
+    doc.add_paragraph("Owner: Maya. Action: confirm launch date.")
+    doc.save(path)
+    passing = TaskSpec(task_id="word-pass", domain="word", instruction="Create report", expected_constraints={
+        "required_headings": ["Status"], "required_heading_styles": {"Status": "Heading 1"},
+        "required_text": "Action: confirm launch date.",
+    })
+    failing = passing.model_copy(update={"expected_constraints": {"required_heading_styles": {"Status": "Heading 2"}}})
+    assert inspect_office_file(path, passing).passed
+    assert any("expected style" in item for item in inspect_office_file(path, failing).failures)
+
+
+def test_evaluator_powerpoint_pilot_checks_count_text_and_geometry(tmp_path: Path):
+    path = tmp_path / "briefing.pptx"
+    deck = Presentation()
+    slide = deck.slides.add_slide(deck.slide_layouts[6])
+    shape = slide.shapes.add_textbox(Inches(1), Inches(1), Inches(4), Inches(1))
+    shape.text = "Launch briefing"
+    deck.save(path)
+    passing = TaskSpec(task_id="powerpoint-pass", domain="powerpoint", instruction="Create briefing", expected_constraints={
+        "required_slide_count": 1, "required_shape_text": ["Launch briefing"],
+    })
+    failing = passing.model_copy(update={"expected_constraints": {"required_slide_count": 2}})
+    report = inspect_office_file(path, passing)
+    assert report.passed and report.channel_status["geometry"] == "available"
+    assert any("slide count" in item for item in inspect_office_file(path, failing).failures)
+
+
+def test_general_office_runner_refuses_pilot_before_all_com_apps_available(monkeypatch, tmp_path: Path):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    monkeypatch.setattr(pilot, "probe_capabilities", lambda: CapabilityReport.for_testing(powerpoint_com=None))
+    called = []
+    monkeypatch.setattr(pilot, "Harness", lambda *args, **kwargs: called.append("harness"))
+    assert pilot.main([]) == 1
+    assert called == []
+    invocation = next(tmp_path.iterdir())
+    assert (invocation / "capability_report.json").is_file()
+    assert json.loads((invocation / "summary.json").read_text(encoding="utf-8"))["task_count"] == 0

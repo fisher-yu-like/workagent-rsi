@@ -1,0 +1,31 @@
+{
+  "pilot_id": "general-office-six-task-engineering-pilot-v1",
+  "evaluator": "OfficeArtifactEvaluator",
+  "evaluator_source_sha256": "244043c1baf962ae5b20c4caff2dfef5cfbfdb39e1ec57d1477944a9d8b3ed6b",
+  "tasks": [
+    {
+      "task_id": "excel-create", "domain": "excel", "kind": "create", "instruction": "Create one Excel workbook at outputs/quarterly_revenue.xlsx. Name its worksheet Summary. Put Quarter in A1 and Revenue in B1; Q1, Q2, Q3 in A2:A4; numeric revenues 120, 150, 180 in B2:B4. Put Total in A5 and the exact Excel formula =SUM(B2:B4) in B5. Save a valid xlsx file and list it in deliverables.json.", "input_files": [],
+      "expected_constraints": {"required_sheets": ["Summary"], "required_cells": {"Summary!A1": "Quarter", "Summary!B1": "Revenue", "Summary!A2": "Q1", "Summary!B2": 120, "Summary!A3": "Q2", "Summary!B3": 150, "Summary!A4": "Q3", "Summary!B4": 180, "Summary!A5": "Total"}, "required_formulas": {"Summary!B5": "=SUM(B2:B4)"}}
+    },
+    {
+      "task_id": "excel-edit", "domain": "excel", "kind": "edit", "instruction": "Edit the supplied transaction workbook and save a new workbook at outputs/transaction_summary.xlsx. Preserve the Transactions sheet and its original cells A1:B4 unchanged. Add a Summary sheet with A1=Metric, B1=Amount, A2=Total Revenue and B2 containing the exact formula =SUM(Transactions!B2:B4). Save a valid xlsx file and list it in deliverables.json.", "input_files": ["transactions.xlsx"],
+      "expected_constraints": {"required_sheets": ["Transactions", "Summary"], "required_cells": {"Transactions!A1": "Item", "Transactions!B1": "Revenue", "Transactions!A2": "Alpha", "Transactions!B2": 40, "Transactions!A3": "Beta", "Transactions!B3": 55, "Transactions!A4": "Gamma", "Transactions!B4": 65, "Summary!A1": "Metric", "Summary!B1": "Amount", "Summary!A2": "Total Revenue"}, "required_formulas": {"Summary!B2": "=SUM(Transactions!B2:B4)"}}
+    },
+    {
+      "task_id": "word-create", "domain": "word", "kind": "create", "instruction": "Create a project status report DOCX at outputs/project_status.docx. Use real Heading 1 paragraphs with the exact headings Project Status, Progress, Risks, and Next Actions. Include the exact sentence 'Action: confirm launch date with the sponsor by Friday.' in the document body. Save a valid docx file and list it in deliverables.json.", "input_files": [],
+      "expected_constraints": {"required_headings": ["Project Status", "Progress", "Risks", "Next Actions"], "required_heading_styles": {"Project Status": "Heading 1", "Progress": "Heading 1", "Risks": "Heading 1", "Next Actions": "Heading 1"}, "required_text": "Action: confirm launch date with the sponsor by Friday."}
+    },
+    {
+      "task_id": "word-edit", "domain": "word", "kind": "edit", "instruction": "Edit the supplied draft DOCX into a final report at outputs/final_status.docx. Use real Heading 1 paragraphs named Executive Summary, Completed Work, and Next Steps. Under Completed Work, preserve the exact source fact 'The pilot completed on 12 September.' as a Heading 2 paragraph. Add the exact action sentence 'Action: send the final report to the steering group.' in the document body. Save a valid docx file and list it in deliverables.json.", "input_files": ["status_draft.docx"],
+      "expected_constraints": {"required_headings": ["Executive Summary", "Completed Work", "Next Steps", "The pilot completed on 12 September."], "required_heading_styles": {"Executive Summary": "Heading 1", "Completed Work": "Heading 1", "Next Steps": "Heading 1", "The pilot completed on 12 September.": "Heading 2"}, "required_text": "Action: send the final report to the steering group."}
+    },
+    {
+      "task_id": "powerpoint-create", "domain": "powerpoint", "kind": "create", "instruction": "Create a valid three-slide PowerPoint deck at outputs/briefing.pptx. Use exactly three nonempty slides. Put these exact visible titles in separate text shapes: Context, Plan, Decision. On the third slide include the exact takeaway 'Takeaway: approve the phased rollout.' Keep all shapes inside slide bounds and do not overlap shapes. Save the deck and list it in deliverables.json.", "input_files": [],
+      "expected_constraints": {"required_slide_count": 3, "required_shape_text": ["Context", "Plan", "Decision", "Takeaway: approve the phased rollout."]}
+    },
+    {
+      "task_id": "powerpoint-edit", "domain": "powerpoint", "kind": "edit", "instruction": "Edit the supplied two-slide PowerPoint deck and save a valid final deck at outputs/updated_briefing.pptx. Preserve exactly two nonempty slides and preserve the visible source text 'Baseline: two regions'. Include the exact visible text 'Next step: expand to three regions' on the second slide. Keep all shapes inside slide bounds and do not overlap shapes. List the deck in deliverables.json.", "input_files": ["briefing_draft.pptx"],
+      "expected_constraints": {"required_slide_count": 2, "required_shape_text": ["Baseline: two regions", "Next step: expand to three regions"]}
+    }
+  ]
+}
