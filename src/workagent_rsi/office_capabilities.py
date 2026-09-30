@@ -189,16 +189,36 @@ $existingProcessIds = @()
 if ($processName) { $existingProcessIds = @(Get-Process -Name $processName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id) }
 $app = $null
 $document = $null
+$phase = "dispatch"
 try {
   switch ($domain) {
-    "word" { $app = New-Object -ComObject Word.Application; $app.Visible = $false; $app.DisplayAlerts = 0; $document = $app.Documents.Open($path, $false, $true, $false) }
-    "excel" { $app = New-Object -ComObject Excel.Application; $app.Visible = $false; $app.DisplayAlerts = $false; $document = $app.Workbooks.Open($path, $null, $true) }
-    "powerpoint" { $app = New-Object -ComObject PowerPoint.Application; $document = $app.Presentations.Open($path, $true, $true, $false) }
+    "word" {
+      $phase = "activation"
+      $app = New-Object -ComObject Word.Application
+      $app.Visible = $false
+      $app.DisplayAlerts = 0
+      $phase = "document_open"
+      $document = $app.Documents.Open($path, $false, $true, $false)
+    }
+    "excel" {
+      $phase = "activation"
+      $app = New-Object -ComObject Excel.Application
+      $app.Visible = $false
+      $app.DisplayAlerts = $false
+      $phase = "document_open"
+      $document = $app.Workbooks.Open($path, $null, $true)
+    }
+    "powerpoint" {
+      $phase = "activation"
+      $app = New-Object -ComObject PowerPoint.Application
+      $phase = "document_open"
+      $document = $app.Presentations.Open($path, $true, $true, $false)
+    }
     default { throw "unsupported Office domain: $domain" }
   }
   @{ ok = $true; version = [string]$app.Version } | ConvertTo-Json -Compress
 } catch {
-  @{ ok = $false; error = $_.Exception.Message } | ConvertTo-Json -Compress
+  @{ ok = $false; phase = $phase; error = $_.Exception.Message } | ConvertTo-Json -Compress
   exit 1
 } finally {
   if ($document -ne $null) {
@@ -223,6 +243,33 @@ try {
 '''
 
 
+_COM_ACTIVATION_ERROR_MARKERS = (
+    "class not registered",
+    "80040154",
+    "retrieving the com class factory",
+    "cannot create activex component",
+    "active object cannot be created",
+    "activation server",
+    "server execution failed",
+    "80080005",
+)
+
+
+def _is_com_activation_failure(*diagnostics: str) -> bool:
+    text = " ".join(value for value in diagnostics if value).casefold()
+    return any(marker in text for marker in _COM_ACTIVATION_ERROR_MARKERS)
+
+
+def _com_failure_status(payload: object, *diagnostics: str) -> str:
+    phase = payload.get("phase") if isinstance(payload, dict) else None
+    normalized_phase = str(phase or "").strip().casefold()
+    if normalized_phase in {"document_open", "document-open", "open"}:
+        return "failed"
+    if normalized_phase in {"activation", "application_activation", "application-activation"}:
+        return "unavailable"
+    return "unavailable" if _is_com_activation_failure(*diagnostics) else "failed"
+
+
 def verify_artifact_with_com(path: str | Path, domain: str, *, timeout_seconds: int = 60) -> dict[str, object]:
     env = os.environ.copy()
     env["WORKAGENT_ARTIFACT"] = str(Path(path).resolve())
@@ -242,7 +289,9 @@ def verify_artifact_with_com(path: str | Path, domain: str, *, timeout_seconds: 
         return {"ok": False, "status": "timeout", "error": f"COM verification timed out after {exc.timeout}s"}
     output = completed.stdout.strip().splitlines()
     if not output:
-        return {"ok": False, "status": "failed", "error": completed.stderr.strip() or "COM verification returned no output"}
+        error = completed.stderr.strip() or "COM verification returned no output"
+        status = _com_failure_status({}, error)
+        return {"ok": False, "status": status, "error": error}
     try:
         import json
 
@@ -250,7 +299,9 @@ def verify_artifact_with_com(path: str | Path, domain: str, *, timeout_seconds: 
     except (ValueError, TypeError) as exc:
         return {"ok": False, "status": "failed", "error": f"invalid COM verification output: {exc}"}
     if completed.returncode != 0 or not payload.get("ok"):
-        return {"ok": False, "status": "failed", "error": str(payload.get("error") or completed.stderr.strip())}
+        error = str(payload.get("error") or completed.stderr.strip() or "COM verification failed")
+        status = _com_failure_status(payload, error, completed.stderr.strip())
+        return {"ok": False, "status": status, "error": error}
     return {"ok": True, "status": "available", "version": payload.get("version")}
 
 

@@ -75,6 +75,46 @@ def test_com_provider_uses_injected_capability_report_without_reprobing(tmp_path
     assert "COM" in result["failure"]["message"]
 
 
+def test_verify_artifact_with_com_classifies_activation_failure_as_unavailable(monkeypatch, tmp_path):
+    from workagent_rsi import office_capabilities
+
+    completed = subprocess.CompletedProcess(
+        args=["powershell.exe"],
+        returncode=1,
+        stdout='{"ok":false,"error":"Retrieving the COM class factory for component with CLSID {000209FF-0000-0000-C000-000000000046} failed: 80040154 Class not registered"}\n',
+        stderr="",
+    )
+    monkeypatch.setattr(office_capabilities.subprocess, "run", lambda *args, **kwargs: completed)
+
+    result = office_capabilities.verify_artifact_with_com(tmp_path / "missing.docx", "word")
+
+    assert result == {
+        "ok": False,
+        "status": "unavailable",
+        "error": "Retrieving the COM class factory for component with CLSID {000209FF-0000-0000-C000-000000000046} failed: 80040154 Class not registered",
+    }
+
+
+def test_verify_artifact_with_com_keeps_document_open_failure_as_failed(monkeypatch, tmp_path):
+    from workagent_rsi import office_capabilities
+
+    completed = subprocess.CompletedProcess(
+        args=["powershell.exe"],
+        returncode=1,
+        stdout='{"ok":false,"error":"The file is corrupted and cannot be opened by Word"}\n',
+        stderr="",
+    )
+    monkeypatch.setattr(office_capabilities.subprocess, "run", lambda *args, **kwargs: completed)
+
+    result = office_capabilities.verify_artifact_with_com(tmp_path / "corrupt.docx", "word")
+
+    assert result == {
+        "ok": False,
+        "status": "failed",
+        "error": "The file is corrupted and cannot be opened by Word",
+    }
+
+
 @pytest.mark.skipif(os.name != "nt", reason="requires Windows Office COM")
 def test_com_reopen_does_not_leave_new_excel_automation_process(tmp_path):
     from workagent_rsi.office_capabilities import verify_artifact_with_com
