@@ -12,6 +12,9 @@ class PromotionController:
         metrics: dict[str, float | int | bool],
         contract: EvaluationContract,
     ) -> PromotionDecision:
+        if contract.assessment_mode == "artifact-v1":
+            from .rsi_feedback import decide_artifact
+            return decide_artifact(candidate_id, verification, metrics, contract)
         thresholds = contract.thresholds
         champion_develop = float(metrics.get("champion_develop", 0.0))
         candidate_develop = float(metrics.get("candidate_develop", 0.0))

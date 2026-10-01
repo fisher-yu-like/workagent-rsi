@@ -34,6 +34,7 @@ class RSILoop:
         verifier: CandidateVerifier,
         evaluator: FrozenEvaluator,
         promotion: PromotionController,
+        feedback_mode: str = "structured",
     ) -> None:
         self.registry = registry
         self.workspace_builder = workspace_builder
@@ -41,6 +42,9 @@ class RSILoop:
         self.verifier = verifier
         self.evaluator = evaluator
         self.promotion = promotion
+        if feedback_mode not in {"score_only", "brief", "structured"}:
+            raise ValueError("invalid artifact feedback mode")
+        self.feedback_mode = feedback_mode
 
     def run(
         self,
@@ -202,6 +206,20 @@ class RSILoop:
             "evidence_refs": list(champion.evidence_refs),
         }
         baseline = self._evaluate_all(tasks_by_split, champion_config, contract, root / "baseline")
+        artifact_mode = contract.assessment_mode == "artifact-v1"
+        feedback = None
+        if artifact_mode:
+            from .rsi_feedback import build_feedback
+            if any(task.hidden_test for task in tasks_by_split.get("develop", [])):
+                raise ValueError("hidden tasks cannot be used as develop feedback")
+            if not baseline or any(not report.get("assessment_complete") for report in baseline.values()):
+                result = {"status": "unavailable", "reason": "required artifact assessment incomplete", "round_index": round_index,
+                    "champion_before": champion.model_dump(mode="json"), "champion_after": champion.model_dump(mode="json"),
+                    "baseline": baseline, "candidate_reports": {}, "actual_edit_count": 0, "rollback_point": rollback_point}
+                self._write_round_summary(root, result)
+                return result
+            feedback = build_feedback(baseline["develop"], mode=self.feedback_mode)
+            (root / "develop_feedback.json").write_text(feedback.model_dump_json(indent=2), encoding="utf-8")
         public_rows = baseline.get("develop", {}).get("rows", [])
         diagnosis_input = [
             {
@@ -212,20 +230,24 @@ class RSILoop:
             }
             for row in public_rows
         ]
-        diagnoses = FailureDiagnoser().diagnose(diagnosis_input)
+        diagnoses = [] if artifact_mode else FailureDiagnoser().diagnose(diagnosis_input)
+        context_files = {
+            "diagnoses.json": json.dumps([item.model_dump(mode="json") for item in diagnoses], indent=2, sort_keys=True),
+            "inherited_evidence.json": json.dumps(list(inherited_evidence_refs or []), indent=2),
+        }
+        if feedback is not None:
+            context_files = {"artifact_feedback.json": feedback.model_dump_json(indent=2)}
         workspace = root / "candidate_workspace"
         self.workspace_builder.export(
             source_root,
             workspace,
             allowed_files=["skill.json"],
-            context_files={
-                "diagnoses.json": json.dumps([item.model_dump(mode="json") for item in diagnoses], indent=2, sort_keys=True),
-                "inherited_evidence.json": json.dumps(list(inherited_evidence_refs or []), indent=2),
-            },
+            context_files=context_files,
         )
-        candidate, provider_record = self.provider.generate(
+        generate = self.provider.generate_with_feedback if artifact_mode else self.provider.generate
+        candidate, provider_record = generate(
             workspace,
-            diagnoses,
+            feedback if artifact_mode else diagnoses,
             champion.version,
             edit_budget,
             root / "provider_records",
@@ -270,6 +292,28 @@ class RSILoop:
             return result
 
         verification = self.verifier.verify(candidate, workspace, verification_policy)
+        if artifact_mode and verification.passed:
+            # New mode remains a single JSON configuration; no evaluator files or arbitrary keys.
+            violations = []
+            if candidate.parent_version != champion.version or len(candidate.atomic_edits) > edit_budget:
+                violations.append("artifact candidate parent or edit budget mismatch")
+            for edit in candidate.atomic_edits:
+                patch = json.loads(edit.patch)
+                if edit.target_path != "skill.json" or len(patch) != 1 or not set(patch).issubset({"sales_rows", "sales_chart", "sales_number_format"}):
+                    violations.append("artifact candidate must change one allowlisted execution key per edit")
+            try:
+                proposed = dict(champion_package)
+                for edit in candidate.atomic_edits:
+                    proposed.update(json.loads(edit.patch))
+                PilotSkillConfig.model_validate_json(json.dumps(proposed), strict=True)
+            except ValueError as exc:
+                violations.append(str(exc))
+            verification = verification.model_copy(update={
+                "passed": not violations,
+                "critical_violations": [*verification.critical_violations, *violations],
+                "executed_checks": [*verification.executed_checks, "artifact_execution_config"],
+            })
+            verification = verification.model_copy(update={"evidence_refs": [canonical_json_hash(verification.model_dump(mode="json", exclude={"evidence_refs"}))]})
         if verification.passed:
             candidate_package = dict(champion_package)
             for edit in candidate.atomic_edits:
@@ -279,7 +323,11 @@ class RSILoop:
         else:
             candidate_package = dict(champion_package)
             candidate_reports = {}
-        metrics = self._metrics(baseline, candidate_reports, verification.passed)
+        if artifact_mode:
+            from .rsi_feedback import comparison_metrics
+            metrics = comparison_metrics(baseline, candidate_reports, root, contract)
+        else:
+            metrics = self._metrics(baseline, candidate_reports, verification.passed)
         decision = self.promotion.decide(candidate.candidate_id, verification, metrics, contract)
         version = self.registry.next_version(skill_id, champion.version)
         record = self.registry.register(
@@ -330,6 +378,7 @@ class RSILoop:
             "negative_evidence": negative_evidence,
             "edit_budget": edit_budget,
             "actual_edit_count": len(candidate.atomic_edits),
+            "retained_reports": candidate_reports if decision.decision == "accept" else baseline,
         }
         self._write_round_summary(root, result)
         return result
@@ -391,7 +440,7 @@ class RSILoop:
             for split, tasks in tasks_by_split.items()
             if tasks
         }
-        return {
+        identity = {
             "contract_hash": canonical_json_hash(contract.model_dump(mode="json")),
             "dataset_hash": contract.dataset_hash,
             "split_hashes": split_hashes,
@@ -403,6 +452,14 @@ class RSILoop:
             "model_identity": model_identity or getattr(self.provider, "model_identity", None),
             "code_hash": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
         }
+        if contract.assessment_mode == "artifact-v1":
+            from .artifact_assessment import SharedAssessment, spec_from_task
+            identity["assessment_identity"] = (self.evaluator.assessment or SharedAssessment()).identity()
+            identity["acceptance_hashes"] = {task.task_id: spec_from_task(task).fingerprint() for tasks in tasks_by_split.values() for task in tasks}
+            identity["feedback_mode"] = self.feedback_mode
+            if identity["assessment_identity"] != contract.assessment_identity or identity["acceptance_hashes"] != contract.acceptance_hashes:
+                raise ValueError("artifact assessment or input identity changed")
+        return identity
 
     def _materialize_source_snapshot(self, skill_id: str, root: Path, round_number: int, attempt: int) -> Path:
         """Expose only the current champion package to the next candidate."""
@@ -434,6 +491,9 @@ class RSILoop:
                 raise ValueError(f"{key} identity does not match checkpoint")
         if checkpoint.get("split_hashes") != identity.get("split_hashes"):
             raise ValueError("dataset split identity does not match checkpoint")
+        for key in ("assessment_identity", "acceptance_hashes", "feedback_mode"):
+            if checkpoint.get(key) != identity.get(key):
+                raise ValueError(f"{key} identity does not match checkpoint")
 
     @staticmethod
     def _write_checkpoint(path: Path, payload: dict) -> None:
@@ -454,10 +514,16 @@ class RSILoop:
     def _summary(identity: dict, rounds_data: list[dict], root: Path, *, status: str) -> dict:
         first_baseline = rounds_data[0].get("baseline", {}) if rounds_data else {}
         last_round = rounds_data[-1] if rounds_data else {}
-        final_reports = last_round.get("candidate_reports") or last_round.get("baseline", {})
+        final_reports = last_round.get("candidate_reports") if last_round.get("decision", {}).get("decision") == "accept" else last_round.get("baseline", {})
+        final_reports = final_reports or {}
         accepted = sum(1 for row in rounds_data if row.get("decision", {}).get("decision") == "accept")
         rejected = sum(1 for row in rounds_data if row.get("decision", {}).get("decision") == "reject")
         pruned = sum(1 for row in rounds_data if row.get("candidate_status") == "pruned_negative_evidence")
+        def retained_score(reports):
+            value = reports.get("develop", {}).get("score")
+            if value is None:
+                return None if "assessment_identity" in identity else 0.0
+            return float(value)
         return {
             "status": status,
             "round_count": len(rounds_data),
@@ -466,8 +532,8 @@ class RSILoop:
             "identity": identity,
             "champion_version": (rounds_data[-1].get("champion_after", {}).get("version") if rounds_data else None),
             "metrics": {
-                "initial_develop_score": float(first_baseline.get("develop", {}).get("score", 0.0)),
-                "final_develop_score": float(final_reports.get("develop", {}).get("score", 0.0)),
+                "initial_develop_score": retained_score(first_baseline),
+                "final_develop_score": retained_score(final_reports),
                 "accepted_rounds": float(accepted),
                 "rejected_rounds": float(rejected),
                 "pruned_rounds": float(pruned),
