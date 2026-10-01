@@ -12,6 +12,10 @@ from .promotion import PromotionController
 from .rsi_contracts import CandidatePatch, EvaluationContract, PromotionDecision, VerificationReport
 from .skill_runtime import PilotSkillConfig
 from .verifier import CandidateVerifier, VerificationPolicy
+from .artifact_assessment import SharedAssessment
+from .artifact_evaluator import ArtifactEvaluator
+from .artifact_verifier import ArtifactVerifier
+from .assessment_contracts import AcceptanceSpec, IssueReport, ScoreReport
 
 
 class Check:
@@ -25,12 +29,14 @@ class Check:
         evaluator: BasicEvaluator | None = None,
         office_evaluator: OfficeArtifactEvaluator | None = None,
         frozen: FrozenEvaluator | None = None,
+        artifact_assessment: SharedAssessment | None = None,
     ) -> None:
         self.verifier = verifier or CandidateVerifier()
         self.promotion = promotion or PromotionController()
         self.evaluator = evaluator or BasicEvaluator()
         self.office_evaluator = office_evaluator or OfficeArtifactEvaluator()
         self.frozen = frozen
+        self.artifact_assessment = artifact_assessment or SharedAssessment()
 
     def verify(
         self,
@@ -84,6 +90,17 @@ class Check:
 
     decide = promote
 
+    def assess_artifact(self, spec: AcceptanceSpec, artifacts: dict[str, str | Path]) -> tuple[ScoreReport, IssueReport]:
+        """Call both fixed artifact skills over one shared evidence snapshot."""
+        shared = self.artifact_assessment.inspect(spec, artifacts)
+        return ArtifactEvaluator().evaluate(shared), ArtifactVerifier().verify(shared)
+
+    def evaluate_artifact(self, spec: AcceptanceSpec, artifacts: dict[str, str | Path]) -> ScoreReport:
+        return self.assess_artifact(spec, artifacts)[0]
+
+    def verify_artifact(self, spec: AcceptanceSpec, artifacts: dict[str, str | Path]) -> IssueReport:
+        return self.assess_artifact(spec, artifacts)[1]
+
 
 __all__ = [
     "BasicEvaluator",
@@ -94,4 +111,8 @@ __all__ = [
     "PromotionController",
     "ResponseJudge",
     "VerificationPolicy",
+    "AcceptanceSpec",
+    "ArtifactEvaluator",
+    "ArtifactVerifier",
+    "SharedAssessment",
 ]
