@@ -6,7 +6,11 @@ from pathlib import Path
 import pytest
 
 from workagent_rsi import candidate_provider
-from workagent_rsi.candidate_provider import CodexCandidateProvider, DeterministicCandidateProvider
+from workagent_rsi.candidate_provider import (
+    CodexCandidateProvider,
+    DeterministicCandidateProvider,
+    OllamaWorkAgentCandidateProvider,
+)
 from workagent_rsi.rsi_contracts import FailureDiagnosis
 
 
@@ -166,3 +170,55 @@ def test_codex_provider_records_configured_model_identity(tmp_path: Path):
 
     assert patch is not None
     assert record.model_identity == "ollama:qwen2.5:7b"
+
+
+def test_native_ollama_candidate_uses_structured_chat_and_records_attempt(monkeypatch, tmp_path: Path):
+    payload = candidate_payload()
+    payload.update(provider="model-output", provider_version="model-output", model_identity="wrong")
+    response = json.dumps({"message": {"content": json.dumps(payload)}}).encode()
+    seen = {}
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return response
+
+    def open_request(request, timeout):
+        seen["request"] = request
+        seen["timeout"] = timeout
+        return FakeResponse()
+
+    attempts = []
+    monkeypatch.setattr(candidate_provider.urllib.request, "urlopen", open_request)
+    provider = OllamaWorkAgentCandidateProvider(
+        tmp_path / "schema.json", "local-1", model="qwen2.5:7b",
+        before_request=attempts.append,
+    )
+    patch, record = provider.generate(tmp_path, [diagnosis()], "0.1.0", 1, tmp_path / "records")
+
+    sent = json.loads(seen["request"].data)
+    assert attempts == [["POST", "http://localhost:11434/api/chat", "--model", "qwen2.5:7b"]]
+    assert sent["model"] == "qwen2.5:7b"
+    assert sent["format"]["title"] == "CandidatePatch"
+    assert patch is not None
+    assert patch.provider == "ollama-native"
+    assert patch.model_identity == "ollama:qwen2.5:7b"
+    assert record.provider == "ollama-native"
+    assert record.status == "completed"
+    assert json.loads((tmp_path / "records/candidate.json").read_text())["provider"] == "ollama-native"
+
+
+@pytest.mark.parametrize("failure,expected", [(TimeoutError("late"), "timeout"), (OSError("offline"), "unavailable")])
+def test_native_ollama_candidate_fails_closed(monkeypatch, tmp_path: Path, failure, expected):
+    monkeypatch.setattr(candidate_provider.urllib.request, "urlopen", lambda *args, **kwargs: (_ for _ in ()).throw(failure))
+    provider = OllamaWorkAgentCandidateProvider(tmp_path / "schema.json", "local-1", model="qwen2.5:7b")
+    patch, record = provider.generate(tmp_path, [diagnosis()], "0.1.0", 1, tmp_path / "records")
+
+    assert patch is None
+    assert record.status == expected
+    assert not (tmp_path / "records/candidate.json").exists()

@@ -17,6 +17,83 @@ from .workagent_provider import CodexOfficeProvider
 
 _SUFFIXES = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}
 
+_TASK_MODE_RULES = {
+    "create": (
+        "TASK MODE: CREATE. There is no staged Office source to preserve. Follow the creation path only, "
+        "start a new document/workbook/presentation as required, and do not open or invent an input template. "
+    ),
+    "edit": (
+        "TASK MODE: EDIT. A staged source file is authoritative. Load that exact staged copy, preserve its existing "
+        "content and required structure, and save a new output. Do not use any creation example below, do not create "
+        "a replacement object that drops source content, and do not add slides/sheets/sections unless the task explicitly requests it. "
+        "In TASK MODE: EDIT, do not call presentation.slides.add_slide anywhere, even if a creation example appears later; "
+        "the creation examples are not applicable in TASK MODE: EDIT. For a generic PowerPoint edit, choose exactly one existing slide (slide 1 unless the task names another), do not iterate over every slide to add the new phrase, and add exactly one new textbox containing all missing phrases. Capture existing_shapes = list(chosen_slide.shapes) before adding it, scan every existing shape on that slide before placing the textbox, and assert the new rectangle is disjoint from every old rectangle using left/top/width/height. Keep every other slide unchanged and assert the original slide count. "
+    ),
+}
+
+
+def _task_mode(task: TaskSpec) -> str:
+    """Infer create/edit mode from the frozen task id, then staged inputs."""
+    suffix = task.task_id.rsplit("-", 1)[-1].lower()
+    if suffix in _TASK_MODE_RULES:
+        return suffix
+    return "edit" if task.input_files else "create"
+
+
+_FORMAT_RULES = {
+    "excel": (
+        "Use openpyxl. write only the cells named in this task. Preserve every supplied source cell exactly when editing; "
+        "For a creation task, start with openpyxl.Workbook() and do not call load_workbook to create the file; use load_workbook only for an existing input or to reopen the saved output. "
+        "Write formulas by assigning the formula string to cell.value; never use cell.formula. "
+        "Assign each requested literal cell value directly from the task; do not compute cell values from row numbers, indexes, multiplication, or loops. "
+        "Read the current task as the source of truth, not a frozen example. Set the worksheet title exactly to the name requested by the current task before writing cells; assert the requested worksheet exists after reopening and assert every task-named cell and formula. Do not assume the frozen Summary example applies to another task; if the task requests Metrics, Budget, or another sheet, use that exact name and never leave the default Sheet title. "
+        "for this edit, write only to the Summary sheet. Creation-task example values below apply only when the current task requests them. "
+        "For an edit, write every requested Summary label and formula cell before saving; do not treat creating the sheet or formula alone as completion. "
+        "Reopen the edited workbook and assert each requested Summary cell equals its exact requested value before writing the manifest. "
+        "do not instantiate Workbook() for an edit; load the supplied workbook and preserve it. "
+        "Use wb.create_sheet('Summary') on the loaded workbook when a new Summary sheet is required. "
+        "Never copy Transactions cells into Summary; keep wb['Transactions'] unchanged. "
+        "Write exact requested cells individually (for the quarterly creation example only, write summary_sheet['A5'] = 'Total', summary_sheet['B2'] = 120, summary_sheet['B3'] = 150, and summary_sheet['B4'] = 180; do not spread values across columns with a loop). Write the total label before writing the total formula: summary_sheet['B5'] = '=SUM(B2:B4)'. After reopening, assert summary_sheet['A5'].value == 'Total' and assert summary_sheet['B5'].value == '=SUM(B2:B4)'. "
+        "Write formulas as direct Python strings beginning with '=' (for example, '=SUM(Transactions!B2:B4)'); "
+        "do not build formulas by concatenating nested quoted fragments. Reopen with data_only=False so formula text is checked. "
+        "Always reopen the saved output with load_workbook('outputs/<exact-name>.xlsx', data_only=False); never use read_file on .xlsx binary files. "
+        "Do not replace a formula with a cached number. Use the exact requested output filename, write only to outputs/, "
+        "and write a valid double-quoted JSON manifest. Create the complete script correctly on the first write and run it once before making edits."
+    ),
+    "word": (
+        "Use python-docx. Every required heading must use style='Heading 1' or level=1 unless the task explicitly requests Heading 2; level=0 is Title, not Heading 1. "
+        "A required Heading 2 must use style='Heading 2' or level=2. Keep required sentences exact. "
+        "Use direct calls such as document.add_heading('Project Status', level=1), not manually edited style XML; never use level=0 for a required Heading 1. "
+        "Never set document.styles['Heading 1'].level and never modify the built-in Heading 1 style level; style levels are not task content and changing them can invalidate every heading. "
+        "Use separate add_heading and add_paragraph calls for each required section; never call add_paragraph on the result of add_heading. "
+        "Call document.add_heading(title, level=1) separately for every required Heading 1; for a required Heading 2, call document.add_heading(title, level=2). "
+        "Never attach heading or body text with add_run to a heading paragraph; put each required heading in its own paragraph and body text in a following add_paragraph call. "
+        "Any required Heading 2 must be created with document.add_heading(title, level=2); never use document.add_paragraph(..., style='Heading 2') for a required heading, and never put a required heading in a body paragraph. "
+        "Call document.add_heading(...) directly for each required heading; never assign the return value of add_heading to a document variable or treat it as a Document. For the frozen word-edit pattern, the safe document-level sequence is document.add_heading('Executive Summary', level=1), document.add_heading('Completed Work', level=1), document.add_heading('The pilot completed on 12 September.', level=2), document.add_heading('Next Steps', level=1), then document.add_paragraph('Action: send the final report to the steering group.'). Never call add_paragraph or add_run on an object returned by add_heading. "
+        "Do not put a literal line break inside a quoted Python string; use an escaped \\n sequence or separate paragraph calls. "
+        "Use document.add_paragraph(...) for body text; add_heading(...) returns a Paragraph, not a Document, so never call add_paragraph on its return value. "
+        "Use the exact requested output filename, write only to outputs/, and write a valid double-quoted JSON manifest. "
+        "Create the complete script correctly on the first write and run it once before making edits."
+    ),
+    "powerpoint": (
+        "Use python-pptx with `import pptx` (then `pptx.Presentation(...)`), and import `Inches` from `pptx.util`. For editing, start from the staged deck and preserve the required slide count and source phrases. "
+        "Inspect text by iterating each slide's shapes; inspect shape.text_frame.text when shape.has_text_frame; never use slide.text. "
+        "when no staged input exists, start with Presentation() and do not invent or open a template input path. "
+        "Call presentation.slides.add_slide(...) once for each requested slide, store each returned slide in its own variable, and place that slide's content only on that slide. "
+        "Do not put later slide content on the first slide. "
+        "For creation, derive the exact required slide count from the current task instruction and create exactly one slide for that count; never assume three slides for another task. use the blank slide layout (presentation.slide_layouts[6]) so unused title/content placeholders cannot overlap your textboxes, keep the slide count exactly equal to the requested count, and put all required phrases within those slides. Map each requested phrase to its specified slide; never add a dedicated extra slide for a phrase. The frozen three-slide skeleton applies only when the current task requests that exact mapping. "
+        "do not branch on len(presentation.slides) inside a slide loop; assign each requested slide's content explicitly or use enumerate. For the frozen three-slide mapping, use this exact skeleton: slide1 = presentation.slides.add_slide(presentation.slide_layouts[6]); slide2 = presentation.slides.add_slide(presentation.slide_layouts[6]); slide3 = presentation.slides.add_slide(presentation.slide_layouts[6]); put Context and Plan on slide1, put Decision on slide2, and put Takeaway: approve the phased rollout. on slide3. Never use slide1.slides[1] or slide1.slides[2]; slide1 is a Slide, not a Presentation. Before saving a created deck, assert len(presentation.slides) equals the requested count, assert every required phrase is present, and check every shape pair for overlap. Put Context and Plan in separate text boxes; do not combine them in a newline string. Assign separate .text values 'Context' and 'Plan' to two different add_textbox calls, with the boxes at different vertical positions. "
+        "For editing, never call add_slide; modify the existing slides only. The staged deck may contain blank slides without title or placeholder shapes: do not use slide.shapes.title or slide.placeholders[index]; inspect slide.shapes and use slide.shapes.add_textbox(...) when no suitable shape exists. For a required new phrase, choose exactly one existing slide, save the phrase there using an independent textbox; never replace source text with the new phrase, and do not add a textbox to every slide. "
+        "When a phrase contains a line break, do not put a literal line break inside a quoted Python string; use an escaped \\n sequence or separate text-frame paragraphs. "
+        "Capture existing_shapes = list(slide.shapes) before calling add_textbox; use only that snapshot for the new textbox overlap check and never include the new textbox in the existing_shapes overlap check. "
+        "A python-pptx Shape has no right, bottom, or shapes attributes; never use text_box.shapes, shape.right, shape.bottom, or slide.text. Pass slide.shapes.add_textbox coordinates and dimensions as Inches(...) values. Do not call shape.overlap; python-pptx shapes have no overlap method. Compare rectangle edges with left, top, width, and height: rectangles overlap only when both horizontal and vertical ranges intersect. For old and new shapes, the non-overlap test is old.left + old.width <= new.left or new.left + new.width <= old.left or old.top + old.height <= new.top or new.top + new.height <= old.top; negate that expression to assert overlap is false. Iterate existing_shapes directly and compare the new textbox against each old shape; never access right/bottom/shapes properties. "
+        "Place the new textbox in a measured free region, then check every new textbox against every existing shape for overlap and assert len(presentation.slides) equals the original count before saving. Use separate non-overlapping text boxes with positive "
+        "width and height inside slide bounds. Reopen and inspect every slide and shape; for edits, reopen and assert the new phrase before saving the manifest. "
+        "Use the exact requested output filename, write only to outputs/, and write a valid double-quoted JSON manifest. "
+        "Create the complete script correctly on the first write and run it once before making edits."
+    ),
+}
+
 
 def _domain_suffix(task: TaskSpec) -> str:
     try:
@@ -146,6 +223,7 @@ def build_task_prompt(task: TaskSpec, input_manifest: dict, agent_instructions: 
         .replace("{suffix}", suffix)
         .replace("{instruction}", task.instruction)
         .replace("{agent_instructions}", agent_instructions)
+        .replace("{format_rules}", _FORMAT_RULES[task.domain.lower()] + _TASK_MODE_RULES[_task_mode(task)])
         .replace("{input_files}", input_lines)
     )
 

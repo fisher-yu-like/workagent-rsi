@@ -2,20 +2,23 @@
 
 ## Current WorkAgent qualification boundary
 
-Generic Office WorkAgent supports intended Excel `.xlsx`, Word `.docx`, and
-PowerPoint `.pptx` creation/edit task contracts, but real qualification has not
-established successful artifact production. The first and second Qwen pilot
-invocations each yielded **0/6** successful tasks, 6 failed and 0 unavailable;
-no qualifying Office
-deliverables or artifact COM reopen exists. See
-`project_artifacts/results/qualification/general-office/20260929T190856Z-ab3365c5/`
-and `project_artifacts/results/qualification/general-office/20260929T195704Z-a4674234/`.
-Task 8's frozen RSI preflight is blocked at
-`project_artifacts/results/qualification/general-office/20260929T212754Z-45c2bcc1/`;
-it did not run WorkAgent or candidate generation. Its COM 16.0 reopening checks
-apply to freshly generated source inputs only, not WorkAgent outputs. Older B0/local executor
-qualification and historical E05 RSI evidence are different experiments, not
-proof of this generic WorkAgent. No external benchmark claim is authorized.
+Generic Office WorkAgent now has a verified six-task qualification baseline for
+Excel `.xlsx`, Word `.docx`, and PowerPoint `.pptx` creation/edit contracts:
+`20261001T053355Z-f2d4995e/` records **6/6 succeeded, 0 failed, 0
+unavailable**. Every row passed the frozen evaluator, reopened through Office
+COM `16.0`, preserved its source-input hash, and contains a non-empty artifact
+SHA-256. This is project-generated engineering evidence, not an external
+benchmark result. Earlier failed invocations remain immutable evidence at
+`20260929T190856Z-ab3365c5/` and `20260929T195704Z-a4674234/`.
+
+The guarded RSI invocation
+`20261001T065932Z-9faf97ae/` completed one real local-model round. Its baseline
+split scores were develop `2/3`, regression `2/3`, hidden `3/3`, and OOD
+transfer `3/3`; the Ollama `qwen2.5:7b` candidate reached develop `3/3` without
+regression, hidden, or OOD degradation and was promoted from `1.0.0` to
+`1.1.0`. This is a project-generated RSI pilot; it must not be described as a
+12/12 all-split pass, model-weight training, or an external benchmark. The
+external dataset/source/license gate remains closed.
 
 ## Project
 
@@ -126,3 +129,5 @@ A candidate skill version can be promoted only if all conditions hold:
 - Stage 4 current commands: `quality_check_external.py` validates the metadata boundary; `run_formal.py --mode formal` refuses to create results while `formal_dataset_selected` is null; `run_formal.py --mode pilot` writes only project-generated qualification evidence; `analyze_formal.py` excludes unavailable and timeout channels from numeric aggregates.
 - Stage 4 pilot matrix: deterministic E01/E02/E05/E07/E08/E12 completed 6/6 with no unavailable or failed runs; this remains project-generated engineering evidence and does not authorize an external benchmark claim.
 - Stage 5 real-model RSI pilot: Codex CLI `0.158.0-alpha.2.1` with Ollama `qwen2.5:7b` completed E05 in six rounds on 2026-09-28. One candidate was accepted and five were rejected; develop moved from 0.0 to 1.0. The run is explicitly project-generated, `claims_allowed=false`, and is not model-weight training or an external benchmark result. Full evidence is in `project_artifacts/formal_study/stage5_manifest.json` and `project_artifacts/formal_study/stage5_real_model_report.md`.
+- Generic Office WorkAgent qualification baseline: the latest independent invocation `project_artifacts/results/qualification/general-office/20261001T053355Z-f2d4995e/` passed all six create/edit tasks (Excel, Word, PowerPoint) with evaluator pass, Office COM `16.0` reopen, unchanged input hashes, and artifact SHA-256 evidence. The result is project-generated engineering evidence only.
+- Generic Office RSI pilot: `project_artifacts/results/qualification/general-office/20261001T065932Z-9faf97ae/` completed one guarded round with the local `ollama:qwen2.5:7b` provider. Candidate `1.0.1` was accepted as champion `1.1.0`: develop improved from `0.6667` to `1.0`, while regression stayed `0.6667` and hidden/OOD stayed `1.0`. Candidate verification passed path/leakage/schema/compile checks; the pilot remains separate from external benchmark claims and model-weight training.

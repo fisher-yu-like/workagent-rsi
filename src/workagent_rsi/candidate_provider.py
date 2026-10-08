@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import json
 import subprocess
+import urllib.error
+import urllib.request
 from collections.abc import Callable, Sequence
 from datetime import datetime, timezone
 from pathlib import Path
@@ -230,3 +232,101 @@ class WorkAgentCandidateProvider(CodexCandidateProvider):
             f"Parent version: {parent_version}. Edit budget: {edit_budget}. "
             f"Develop diagnoses: {json.dumps(context, sort_keys=True)}"
         )
+
+
+class OllamaWorkAgentCandidateProvider(WorkAgentCandidateProvider):
+    """Generate a bounded WorkAgent skill patch directly through Ollama chat."""
+
+    def __init__(self, schema_path: str | Path, provider_version: str, *, model: str,
+                 base_url: str = "http://localhost:11434", timeout_seconds: int = 180,
+                 before_request: Callable[[list[str]], None] | None = None) -> None:
+        super().__init__(schema_path, provider_version, timeout_seconds=timeout_seconds,
+                         model_identity=f"ollama:{model}")
+        self.model = model
+        self.base_url = base_url.rstrip("/")
+        self.before_request = before_request
+
+    def generate(
+        self,
+        workspace: str | Path,
+        diagnoses: Sequence[FailureDiagnosis],
+        parent_version: str,
+        edit_budget: int,
+        record_root: str | Path,
+    ) -> tuple[CandidatePatch | None, ProviderRecord]:
+        workspace_path = Path(workspace).resolve()
+        records = Path(record_root).resolve()
+        records.mkdir(parents=True, exist_ok=True)
+        prompt = self._prompt(diagnoses, parent_version, edit_budget)
+        payload = {
+            "model": self.model,
+            "stream": False,
+            "format": CandidatePatch.model_json_schema(),
+            "messages": [
+                {"role": "system", "content": "Return one JSON object matching the supplied schema."},
+                {"role": "user", "content": prompt},
+            ],
+        }
+        command = ["POST", f"{self.base_url}/api/chat", "--model", self.model]
+        started = datetime.now(timezone.utc)
+        status = "failed"
+        error: str | None = None
+        exit_code: int | None = None
+        patch: CandidatePatch | None = None
+        output_path = records / "candidate.json"
+        stdout_path = records / "provider.stdout.jsonl"
+        stderr_path = records / "provider.stderr.txt"
+        (records / "prompt.md").write_text(prompt, encoding="utf-8", newline="\n")
+        (records / "command.json").write_text(json.dumps(command, indent=2) + "\n", encoding="utf-8", newline="\n")
+        try:
+            if self.before_request is not None:
+                self.before_request(command)
+            request = urllib.request.Request(
+                f"{self.base_url}/api/chat",
+                data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                headers={"Content-Type": "application/json"},
+                method="POST",
+            )
+            with urllib.request.urlopen(request, timeout=self.timeout_seconds) as response:
+                raw = response.read()
+            stdout_path.write_text(raw.decode("utf-8", errors="replace") + "\n", encoding="utf-8", newline="\n")
+            envelope = json.loads(raw.decode("utf-8"))
+            content = envelope.get("message", {}).get("content")
+            if not isinstance(content, str):
+                raise ValueError("Ollama candidate response is missing message.content")
+            payload = json.loads(content)
+            patch = CandidatePatch.model_validate(payload)
+            if patch.parent_version != parent_version:
+                raise ValueError("candidate parent_version does not match champion")
+            if patch.edit_budget > edit_budget or len(patch.atomic_edits) > edit_budget or patch.new_tests:
+                raise ValueError("candidate exceeds the bounded instruction-only edit budget")
+            patch = patch.model_copy(update={
+                "provider": "ollama-native",
+                "provider_version": self.provider_version,
+                "model_identity": f"ollama:{self.model}",
+            })
+            output_path.write_text(patch.model_dump_json(indent=2) + "\n", encoding="utf-8", newline="\n")
+            status = "completed"
+            exit_code = 0
+        except (TimeoutError, urllib.error.URLError) as exc:
+            status = "timeout" if isinstance(exc, TimeoutError) or isinstance(getattr(exc, "reason", None), TimeoutError) else "unavailable"
+            error = f"Ollama candidate request failed: {exc}"
+        except OSError as exc:
+            status = "unavailable"
+            error = f"Ollama candidate provider unavailable: {exc}"
+        except (UnicodeError, json.JSONDecodeError, ValueError) as exc:
+            error = f"invalid Ollama candidate response: {exc}"
+        stderr_path.write_text(error or "", encoding="utf-8", newline="\n")
+        ended = datetime.now(timezone.utc)
+        record = ProviderRecord(
+            provider="ollama-native", provider_version=self.provider_version,
+            model_identity=f"ollama:{self.model}", command=command,
+            prompt_hash=canonical_json_hash({"prompt": prompt}), workspace_hash=_workspace_hash(workspace_path),
+            started_at=started, ended_at=ended, exit_code=exit_code, status=status,
+            output_ref=sha256_file(output_path) if output_path.is_file() else None, error=error,
+        )
+        (records / "provider_record.json").write_text(
+            json.dumps(record.model_dump(mode="json"), indent=2, sort_keys=True) + "\n",
+            encoding="utf-8", newline="\n",
+        )
+        return patch, record

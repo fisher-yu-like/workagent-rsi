@@ -98,13 +98,15 @@ def test_qualified_baseline_wires_one_bounded_round_with_mocked_run(tmp_path, mo
     class FakeRunner:
         def __init__(self, *, workagent_config, input_base):
             assert workagent_config.model == "qwen2.5:7b"
+            assert workagent_config.backend == "ollama-native"
             assert input_base.name == "inputs"
 
         def run(self, tasks, skill, provider, output_root, *, rounds):
             assert rounds == 1
             assert {key: len(value) for key, value in tasks.items()} == {"develop": 3, "regression": 3, "hidden": 3, "ood_transfer": 3}
             assert skill.instructions
-            assert isinstance(provider, module.WorkAgentCandidateProvider)
+            assert isinstance(provider, module.OllamaWorkAgentCandidateProvider)
+            assert provider.model == "qwen2.5:7b"
             contract = json.loads((output_root.parent / "contract.json").read_text(encoding="utf-8"))
             matrix = output_root.parent / "rsi_tasks.json"
             assert matrix.read_bytes() == module.CONFIG.read_bytes()
@@ -229,29 +231,24 @@ def test_source_com_exception_persists_failed_validation_and_blocked_reports(tmp
 
 
 def test_candidate_launch_permission_error_counts_as_attempt_without_provider_record(tmp_path, monkeypatch, baseline):
-    """A launch exception after reaching the runner boundary must survive aggregate reporting."""
+    """A native request setup exception after the attempt boundary remains visible."""
     module = _module()
     monkeypatch.setattr(module, "validate_baseline", lambda path: ({"success_count": 6, "failure_count": 0, "task_count": 6}, []))
-
-    def denied(*args, **kwargs):
-        raise PermissionError("launch denied")
-
-    monkeypatch.setattr("workagent_rsi.candidate_provider.subprocess.run", denied)
 
     class LaunchingRunner:
         def __init__(self, **kwargs):
             pass
 
         def run(self, tasks, skill, provider, output_root, *, rounds):
-            provider.runner(["codex", "exec"], output_root, 180)
-            raise AssertionError("unreachable")
+            provider.before_request(["POST", "http://localhost:11434/api/chat", "--model", "qwen2.5:7b"])
+            raise PermissionError("request launch denied")
 
     output = tmp_path / "result"
     assert module.run_invocation(baseline, output, runner_factory=LaunchingRunner, source_com_verify=_fake_com) == 1
     summary = json.loads((output / "summary.json").read_text(encoding="utf-8"))
     assert summary["status"] == "failed"
     assert summary["candidate_started"] is True
-    assert json.loads((output / "candidate_launch_attempt.json").read_text(encoding="utf-8"))["command"] == ["codex", "exec"]
+    assert json.loads((output / "candidate_launch_attempt.json").read_text(encoding="utf-8"))["command"] == ["POST", "http://localhost:11434/api/chat", "--model", "qwen2.5:7b"]
     assert not list(output.rglob("provider_record.json"))
     assert json.loads((output / "analysis.json").read_text(encoding="utf-8"))["candidate_started"] is True
 

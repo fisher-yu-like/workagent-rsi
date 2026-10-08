@@ -20,7 +20,7 @@
 - 默认任务执行使用本地 Ollama `qwen2.5:7b`，模型和 CLI 路径可配置；记录身份取自命令配置而非模型自报。
 - 每次运行单独保存 prompt、模型输出、stdout/stderr、输入/输出清单、trace、文件、评估与 Office 重开记录，全部位于 `project_artifacts/results/<run-id>/`。
 - 自动化测试只放在现有顶层 `tests/`；pytest 临时文件显式放到结果目录中的隔离临时位置，保持项目主目录整洁。
-- 本机 Codex CLI `0.157.1`、Ollama `0.34.4`、模型 `qwen2.5:7b` 和三种 Office COM `16.0` 已核实。Docker daemon 不可用；首版仅采用 Codex 的 `workspace-write` 沙箱，不声称容器级或抵抗恶意输入的强隔离。
+- 本机 Codex CLI `0.157.1`、Ollama `0.34.4`、模型 `qwen2.5:7b` 和三种 Office COM `16.0` 已核实。Docker daemon 不可用；首版仅采用 Codex 的 `workspace-write` 沙箱，不声称容器级或抵抗恶意输入的强隔离，也未验证其禁止读取工作区外文件。此限制解除前，真实任务只使用项目生成的非敏感输入。
 
 ## 执行架构
 
@@ -32,13 +32,13 @@
 
 ```text
 codex exec --ignore-user-config --oss --local-provider ollama
-  --model <configured-model> --ephemeral --sandbox workspace-write
+  --model <configured-model> --ephemeral --sandbox workspace-write --skip-git-repo-check
   --json --output-schema <response-schema.json>
-  --output-last-message <run-dir/agent_response.json>
-  --cd <run-dir/agent_workspace> <prompt>
+  --output-last-message <agent_workspace/agent_response-<invocation-id>.json>
+  --cd <run-dir/agent_workspace> -
 ```
 
-如果某个已安装 CLI 版本不接受必需参数，provider 返回 `UNAVAILABLE` 并保存命令/错误证据，不执行无沙箱调用。`runner` 可注入测试桩；生产默认 runner 使用显式 UTF-8、timeout、stdout/stderr 捕获，并在超时时终止该 Codex 子进程。
+任务 prompt 通过 stdin 传入（Codex CLI 的 `-` 模式），避免放入命令行参数。若某个已安装 CLI 版本不接受必需参数，provider 返回 `UNAVAILABLE` 并保存命令/错误证据，不执行无沙箱调用。`runner` 可注入测试桩；生产默认 runner 使用显式 UTF-8、timeout、stdout/stderr 捕获，并在超时时终止该 Codex 子进程。
 
 ## 单轮数据流
 
@@ -54,12 +54,12 @@ TaskSpec
   -> artifact store + OfficeArtifactEvaluator + result.json + trace.db
 ```
 
-每个运行目录至少包含：`task.json`、`input_manifest.json`、`prompt.md`、`provider.stdout.jsonl`、`provider.stderr.txt`、`agent_response.json`、`deliverables.json`、`trace.db`、`artifacts/`、`evaluation.json`、`result.json` 和 `run_report.md`。失败运行也保留同等目录与真实失败证据。
+每个运行目录至少包含：`task.json`、`input_manifest.json`、`prompt.md`、`provider.stdout.jsonl`、`provider.stderr.txt`、`agent_response.json`、`deliverables.json`、`trace.db`、`artifacts/`、`evaluation.json`、`result.json` 和 `run_report.md`。失败运行也保留同等目录与真实失败证据。CLI 的 `--output-last-message` 写入沙箱内具有唯一调用编号的 `agent_workspace/agent_response-<invocation-id>.json`，避免工作区复用时接受过期响应；校验成功后，将本次响应复制为固定名称 `agent_workspace/agent_response.json` 及运行证据 `agent_response.json`，供后续清单验证与审计。
 
 ## 输入文件规则
 
-- `TaskSpec.input_files` 是用户明确提供的文件列表。绝对路径按该项的明确授权读取；相对路径相对于调用方声明的输入基准目录，Harness API 默认为调用工作目录，CLI 以 task YAML 所在目录为基准。
-- 只接受本机普通文件；拒绝目录、符号链接、路径遍历和不匹配任务域的扩展名。UNC/网络路径不在首版支持范围。
+- `TaskSpec.input_files` 是用户明确提供的文件列表。绝对路径是调用方针对该项的明确授权；相对路径相对于调用方声明的输入基准目录，Harness API 默认为调用工作目录，CLI 以 task YAML 所在目录为基准。
+- 只接受本机普通文件；拒绝目录、任何路径段上的符号链接、路径遍历和不匹配任务域的扩展名。UNC/网络路径不在首版支持范围。
 - 输入复制至 `agent_workspace/inputs/<序号>-<安全文件名>`。清单只记录源文件名标签（不写本机绝对路径）、副本相对路径、文件大小、SHA-256 和时间；`task.json` 同样保存去除本机绝对路径后的输入映射。
 - 模型只能收到 `inputs/` 中的副本路径；输出写到 `outputs/`。不得把原始绝对路径或凭据放入模型 prompt。
 - `TaskSpec.expected_constraints` 是评估器侧信息，不传给 WorkAgent；WorkAgent 只看到任务指令和输入副本信息，避免把基准检查答案泄漏给被测执行器。

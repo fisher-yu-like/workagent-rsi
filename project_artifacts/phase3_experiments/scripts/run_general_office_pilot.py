@@ -138,10 +138,11 @@ def _retry_lineage(prior_id: str, parser: argparse.ArgumentParser, new_config_sh
 
 def _report(root: Path, summary: dict) -> None:
     lines = [
-        "# General Office six-task qualification",
+        "# General Office qualification",
         "",
         "This is a project-generated engineering pilot, not an external benchmark.",
         f"Invocation: `{root}`",
+        f"Task filter: `{summary.get('task_filter') or 'all six tasks'}`",
         f"Evaluator source SHA-256: `{summary['evaluator_source_sha256']}`",
         f"Config SHA-256: `{summary['config_sha256']}`",
         f"COM versions: `{json.dumps(summary['com_versions'], sort_keys=True)}`",
@@ -172,6 +173,11 @@ def _report(root: Path, summary: dict) -> None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--retry-of", metavar="INVOCATION_ID", help="record lineage to a prior general-office invocation")
+    parser.add_argument(
+        "--task",
+        choices=("excel-create", "excel-edit", "word-create", "word-edit", "powerpoint-create", "powerpoint-edit"),
+        help="run one frozen task for provider-boundary diagnosis; without this flag run all six tasks",
+    )
     args = parser.parse_args(argv)
     config_sha256 = sha256_file(CONFIG)
     lineage = _retry_lineage(args.retry_of, parser, config_sha256) if args.retry_of is not None else None
@@ -189,6 +195,7 @@ def main(argv: list[str] | None = None) -> int:
         "config_sha256": config_sha256,
         "evaluator_source_sha256": OfficeArtifactEvaluator.evaluator_hash(),
         "com_versions": versions, "source_hashes": {}, "rows": [],
+        "task_filter": args.task,
         "task_count": 0, "success_count": 0, "failure_count": 0,
         "python": sys.version, "platform": platform.platform(),
         "git_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
@@ -210,7 +217,10 @@ def main(argv: list[str] | None = None) -> int:
         source_hashes = _source_inputs(root)
         summary["source_hashes"] = source_hashes
         _write_json(root / "input_provenance.json", {"provenance": "project-generated", "sha256": source_hashes})
-        for item in config["tasks"]:
+        selected_tasks = [item for item in config["tasks"] if args.task is None or item["task_id"] == args.task]
+        if not selected_tasks:
+            raise ValueError(f"unknown pilot task: {args.task}")
+        for item in selected_tasks:
             task_id = item["task_id"]
             run_root = root / task_id
             start = time.perf_counter()
@@ -224,7 +234,13 @@ def main(argv: list[str] | None = None) -> int:
                                 input_files=tuple(item["input_files"]), expected_constraints=item["expected_constraints"])
                 # Qualification owns its explicit artifact COM gate below.
                 outcome = Harness(root, office=True, execution_provider="workagent", input_base=root / "inputs",
-                                  workagent_config=WorkAgentConfig(verify_com=False)).run(task, run_id=task_id, max_attempts=1)
+                                  workagent_config=WorkAgentConfig(
+                                      verify_com=False,
+                                      backend="ollama-native",
+                                      model="qwen2.5:7b",
+                                      timeout_seconds=240,
+                                      max_tool_turns=48,
+                                  )).run(task, run_id=task_id, max_attempts=1)
                 run_root = Path(outcome["result_dir"])
                 after = {name: sha256_file(root / "inputs" / name) for name in item["input_files"] if (root / "inputs" / name).is_file()}
                 hashes_ok = before == after == {name: source_hashes[name] for name in before}
@@ -283,7 +299,7 @@ def main(argv: list[str] | None = None) -> int:
     _write_json(root / "summary.json", summary)
     _report(root, summary)
     print(json.dumps({"invocation": str(root), "task_count": summary["task_count"], "success_count": summary["success_count"], "failure_count": summary["failure_count"], "failure": summary.get("failure")}))
-    return 0 if summary["task_count"] == 6 and summary["failure_count"] == 0 else 1
+    return 0 if summary["task_count"] > 0 and summary["failure_count"] == 0 and "failure" not in summary else 1
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 import json
 import subprocess
+import urllib.request
 from pathlib import Path
 
 import pytest
@@ -21,6 +22,7 @@ from workagent_rsi.workagent_provider import (
     CodexOfficeProvider,
     ProviderOutcome,
     WorkAgentConfig,
+    _execute_native_tool,
     build_agent_response_schema,
 )
 from workagent_rsi.workagent_provider import WorkAgentSkill
@@ -471,6 +473,519 @@ def test_provider_runs_prompt_on_stdin_and_persists_success_evidence(monkeypatch
     assert json.loads((records / "agent_response.json").read_text(encoding="utf-8")) == response
     assert json.loads((records / "command.json").read_text(encoding="utf-8")) == observed["command"]
     assert json.loads((records / "provider_record.json").read_text(encoding="utf-8")) == outcome.record.model_dump(mode="json")
+
+
+def test_native_ollama_provider_executes_tool_calls_in_workspace(monkeypatch, tmp_path: Path):
+    """A native Ollama tool call must cause a real workspace mutation before completion."""
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    records = tmp_path / "records"
+    responses = iter([
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [{"function": {"name": "write_file", "arguments": {"path": "outputs/probe.txt", "content": "TOOL_OK"}}}],
+            },
+            "done": True,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": json.dumps({"status": "completed", "deliverables": ["outputs/probe.txt"], "summary": "created", "input_files_used": []}),
+            },
+            "done": True,
+        },
+    ])
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        payload = json.loads(request.data.decode("utf-8"))
+        assert payload["model"] == "qwen2.5:7b"
+        assert payload["tools"]
+        return FakeResponse(next(responses))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    provider = CodexOfficeProvider(WorkAgentConfig(backend="ollama-native"))
+    outcome = provider.run("create the probe", workspace, records)
+
+    assert outcome.status == "completed"
+    assert (workspace / "outputs/probe.txt").read_text(encoding="utf-8") == "TOOL_OK"
+    assert outcome.response is not None
+    assert (records / "tool_events.jsonl").is_file()
+
+
+def test_native_ollama_surfaces_python_tool_failure_as_repair_instruction(monkeypatch, tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    records = tmp_path / "records"
+    broken_script = "from pptx import Presentation\ntext = 'first line\nsecond line'\n"
+    responses = iter([
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "write_file", "arguments": {"path": "create.py", "content": broken_script}}}
+        ]}},
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "run_python", "arguments": {"path": "create.py"}}}
+        ]}},
+        {"message": {"role": "assistant", "content": json.dumps({
+            "status": "completed", "deliverables": ["outputs/briefing.pptx"],
+            "summary": "created", "input_files_used": []
+        })}},
+        {"message": {"role": "assistant", "content": ""}},
+    ])
+    requests = []
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        requests.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse(next(responses))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    outcome = CodexOfficeProvider(WorkAgentConfig(backend="ollama-native", max_tool_turns=4)).run(
+        "You are creating an Office deliverable for a powerpoint task.\nCreate a deck.",
+        workspace,
+        records,
+    )
+
+    assert outcome.status == "failed"
+    repair_messages = [
+        item["content"] for item in requests[2]["messages"]
+        if item.get("role") == "user" and "tool" in item.get("content", "").lower()
+    ]
+    assert repair_messages
+    assert "run_python" in repair_messages[-1]
+    assert "SyntaxError" in repair_messages[-1]
+    assert "do not claim completion" in repair_messages[-1].lower()
+
+
+def test_native_ollama_provider_executes_batched_tool_calls_in_order(monkeypatch, tmp_path: Path):
+    """A model response containing multiple calls must execute them in order."""
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    records = tmp_path / "records"
+    responses = iter([
+        {
+            "message": {
+                "role": "assistant",
+                "content": "",
+                "tool_calls": [
+                    {"function": {"name": "write_file", "arguments": {"path": "script.py", "content": "from pathlib import Path\nPath('outputs/batched.txt').write_text('OK')"}}},
+                    {"function": {"name": "run_python", "arguments": {"path": "script.py"}}},
+                ],
+            },
+            "done": True,
+        },
+        {
+            "message": {
+                "role": "assistant",
+                "content": json.dumps({"status": "completed", "deliverables": ["outputs/batched.txt"], "summary": "created", "input_files_used": []}),
+            },
+            "done": True,
+        },
+    ])
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode("utf-8")
+
+    monkeypatch.setattr(urllib.request, "urlopen", lambda request, timeout: FakeResponse(next(responses)))
+    provider = CodexOfficeProvider(WorkAgentConfig(backend="ollama-native"))
+    outcome = provider.run("create the batched probe", workspace, records)
+
+    assert outcome.status == "completed"
+    assert (workspace / "outputs/batched.txt").read_text(encoding="utf-8") == "OK"
+    events = [json.loads(line) for line in (records / "tool_events.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [event["name"] for event in events[:2]] == ["write_file", "run_python"]
+
+
+def test_native_ollama_office_prompt_rejects_empty_early_completion(monkeypatch, tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    records = tmp_path / "records"
+    script = (
+        "from openpyxl import Workbook, load_workbook\n"
+        "from pathlib import Path\n"
+        "import json\n"
+        "Path('outputs').mkdir(exist_ok=True)\n"
+        "book = Workbook()\n"
+        "book.active.title = 'Summary'\n"
+        "book.active['B2'] = 42\n"
+        "book.save('outputs/report.xlsx')\n"
+        "check = load_workbook('outputs/report.xlsx', data_only=False)\n"
+        "assert check['Summary']['B2'].value == 42\n"
+        "Path('deliverables.json').write_text(json.dumps({'deliverables': ['outputs/report.xlsx']}))\n"
+    )
+    premature = {
+        "status": "completed", "deliverables": [], "summary": "done", "input_files_used": []
+    }
+    responses = iter([
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "write_file", "arguments": {"path": "create.py", "content": script}}}
+        ]}},
+        {"message": {"role": "assistant", "content": json.dumps(premature)}},
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "run_python", "arguments": {"path": "create.py"}}}
+        ]}},
+        {"message": {"role": "assistant", "content": json.dumps({
+            "status": "completed", "deliverables": ["outputs/report.xlsx"],
+            "summary": "created", "input_files_used": []
+        })}},
+    ])
+    requests = []
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        requests.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse(next(responses))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    prompt = "You are creating an Office deliverable for a excel task.\nCreate Summary!B2=42."
+    outcome = CodexOfficeProvider(WorkAgentConfig(backend="ollama-native")).run(prompt, workspace, records)
+
+    assert outcome.status == "completed"
+    assert outcome.response is not None
+    assert outcome.response.deliverables == ["outputs/report.xlsx"]
+    assert len(requests) == 4
+    system_prompt = requests[0]["messages"][0]["content"]
+    assert "write_file path exactly deliverables.json" in system_prompt
+    assert "do not assert a cached numeric result" in system_prompt
+    assert "assert every requested sheet, cell, and formula" in system_prompt
+    assert "preserve every existing sheet and cell" in system_prompt
+    assert "search all shapes and paragraphs" in system_prompt
+    assert "input deck may contain blank slides" in system_prompt
+    assert "do not use slide.shapes.title" in system_prompt
+    assert "do not use fixed placeholders" in system_prompt
+    assert "slide.shapes.add_textbox" in system_prompt
+    assert "deliverables" in requests[2]["messages"][-1]["content"]
+    assert (workspace / "outputs/report.xlsx").is_file()
+    assert json.loads((workspace / "deliverables.json").read_text(encoding="utf-8")) == {
+        "deliverables": ["outputs/report.xlsx"]
+    }
+
+
+def test_native_ollama_office_requires_manifest_tool_call_after_early_completion(monkeypatch, tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    records = tmp_path / "records"
+    script = (
+        "from openpyxl import Workbook, load_workbook\n"
+        "from pathlib import Path\n"
+        "Path('outputs').mkdir(exist_ok=True)\n"
+        "book = Workbook()\n"
+        "book.active['A1'] = 'verified'\n"
+        "book.save('outputs/report.xlsx')\n"
+        "check = load_workbook('outputs/report.xlsx', data_only=False)\n"
+        "assert check.active['A1'].value == 'verified'\n"
+    )
+    responses = iter([
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "write_file", "arguments": {"path": "create.py", "content": script}}}
+        ]}},
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "run_python", "arguments": {"path": "create.py"}}}
+        ]}},
+        {"message": {"role": "assistant", "content": json.dumps({
+            "status": "completed", "deliverables": [], "summary": "created", "input_files_used": []
+        })}},
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "write_file", "arguments": {
+                "path": "deliverables.json",
+                "content": '{"deliverables":["outputs/report.xlsx"]}'
+            }}}
+        ]}},
+        {"message": {"role": "assistant", "content": json.dumps({
+            "status": "completed", "deliverables": ["outputs/report.xlsx"],
+            "summary": "created and verified", "input_files_used": []
+        })}},
+    ])
+    requests = []
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        requests.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse(next(responses))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    prompt = "You are creating an Office deliverable for a excel task.\nCreate a workbook."
+    outcome = CodexOfficeProvider(WorkAgentConfig(backend="ollama-native")).run(prompt, workspace, records)
+
+    assert outcome.status == "completed"
+    assert outcome.response is not None
+    assert outcome.response.deliverables == ["outputs/report.xlsx"]
+    assert len(requests) == 5
+    assert "must call write_file" in requests[3]["messages"][-1]["content"].lower()
+    assert "read_file" not in {tool["function"]["name"] for tool in requests[0]["tools"]}
+    events = [json.loads(line) for line in (records / "tool_events.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [event["name"] for event in events] == ["write_file", "run_python", "write_file"]
+
+
+def test_native_ollama_tool_rejects_reading_binary_office_file(tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    (workspace / "outputs").mkdir(parents=True)
+    (workspace / "outputs/report.xlsx").write_bytes(b"PK\x03\x04binary")
+
+    result = _execute_native_tool("read_file", {"path": "outputs/report.xlsx"}, workspace)
+
+    assert result["ok"] is False
+    assert "binary Office" in result["error"]
+
+
+def test_native_ollama_manifest_requires_existing_workspace_deliverables(tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    manifest = '{"deliverables":["outputs/report.xlsx"]}'
+
+    premature = _execute_native_tool(
+        "write_file", {"path": "deliverables.json", "content": manifest}, workspace
+    )
+
+    assert premature["ok"] is False
+    assert "outputs/report.xlsx" in premature["error"]
+    assert not (workspace / "deliverables.json").exists()
+
+    output = workspace / "outputs/report.xlsx"
+    output.parent.mkdir()
+    output.write_bytes(b"office artifact")
+    accepted = _execute_native_tool(
+        "write_file", {"path": "deliverables.json", "content": manifest}, workspace
+    )
+
+    assert accepted["ok"] is True
+    assert json.loads((workspace / "deliverables.json").read_text(encoding="utf-8")) == {
+        "deliverables": ["outputs/report.xlsx"]
+    }
+
+
+def test_native_ollama_invalid_intermediate_status_requires_manifest_tool_call(monkeypatch, tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    records = tmp_path / "records"
+    script = (
+        "from openpyxl import Workbook\n"
+        "from pathlib import Path\n"
+        "Path('outputs').mkdir(exist_ok=True)\n"
+        "book = Workbook()\n"
+        "book.active['A1'] = 'verified'\n"
+        "book.save('outputs/report.xlsx')\n"
+    )
+    responses = iter([
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "write_file", "arguments": {"path": "create.py", "content": script}}}
+        ]}},
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "run_python", "arguments": {"path": "create.py"}}}
+        ]}},
+        {"message": {"role": "assistant", "content": json.dumps({
+            "status": "writing_manifest", "input_files_used": []
+        })}},
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "write_file", "arguments": {
+                "path": "deliverables.json",
+                "content": '{"deliverables":["outputs/report.xlsx"]}'
+            }}}
+        ]}},
+        {"message": {"role": "assistant", "content": json.dumps({
+            "status": "completed", "deliverables": ["outputs/report.xlsx"],
+            "summary": "created and verified", "input_files_used": []
+        })}},
+    ])
+    requests = []
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        requests.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse(next(responses))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    outcome = CodexOfficeProvider(WorkAgentConfig(backend="ollama-native")).run(
+        "You are creating an Office deliverable for a excel task.\nCreate a workbook.",
+        workspace,
+        records,
+    )
+
+    assert outcome.status == "completed"
+    assert outcome.response is not None
+    assert outcome.response.deliverables == ["outputs/report.xlsx"]
+    assert len(requests) == 5
+    correction = requests[3]["messages"][-1]["content"].lower()
+    assert "must call write_file" in correction
+    assert "content argument must be a string" in correction
+    assert "do not call tools" not in correction
+    events = [json.loads(line) for line in (records / "tool_events.jsonl").read_text(encoding="utf-8").splitlines()]
+    assert [event["name"] for event in events] == ["write_file", "run_python", "write_file"]
+
+
+def test_native_ollama_retries_completion_with_exact_staged_input_paths(monkeypatch, tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    (workspace / "outputs").mkdir(parents=True)
+    (workspace / "outputs/probe.txt").write_text("ready", encoding="utf-8")
+    (workspace / "inputs").mkdir()
+    (workspace / "inputs/0001-source.txt").write_text("source", encoding="utf-8")
+    (workspace / "input_manifest.json").write_text(
+        json.dumps({"files": [{"copied": "inputs/0001-source.txt"}]}), encoding="utf-8"
+    )
+    (workspace / "deliverables.json").write_text(
+        json.dumps({"deliverables": ["outputs/probe.txt"]}), encoding="utf-8"
+    )
+    records = tmp_path / "records"
+    responses = iter([
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "list_files", "arguments": {}}}
+        ]}},
+        {"message": {"role": "assistant", "content": json.dumps({
+            "status": "completed", "deliverables": ["outputs/probe.txt"],
+            "summary": "created", "input_files_used": [""]
+        })}},
+        {"message": {"role": "assistant", "content": json.dumps({
+            "status": "completed", "deliverables": ["outputs/probe.txt"],
+            "summary": "created", "input_files_used": ["inputs/0001-source.txt"]
+        })}},
+    ])
+    requests = []
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        requests.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse(next(responses))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    outcome = CodexOfficeProvider(WorkAgentConfig(backend="ollama-native")).run(
+        "Create a text probe", workspace, records
+    )
+
+    assert outcome.status == "completed"
+    assert outcome.response is not None
+    assert outcome.response.input_files_used == ["inputs/0001-source.txt"]
+    assert len(requests) == 3
+    correction = requests[2]["messages"][-1]["content"]
+    assert "input_files_used" in correction
+    assert "inputs/0001-source.txt" in correction
+
+
+def test_native_ollama_retries_invalid_final_json_but_fails_closed(monkeypatch, tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    (workspace / "outputs").mkdir(parents=True)
+    artifact = workspace / "outputs/probe.txt"
+    artifact.write_text("ready", encoding="utf-8")
+    records = tmp_path / "records"
+    responses = iter([
+        {"message": {"role": "assistant", "content": "", "tool_calls": [
+            {"function": {"name": "list_files", "arguments": {}}}
+        ]}},
+        {"message": {"role": "assistant", "content": "The task is complete."}},
+        {"message": {"role": "assistant", "content": "Still complete."}},
+        {"message": {"role": "assistant", "content": "Still complete."}},
+    ])
+    requests = []
+
+    class FakeResponse:
+        def __init__(self, payload):
+            self.payload = payload
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(self.payload).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        requests.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse(next(responses))
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    outcome = CodexOfficeProvider(WorkAgentConfig(backend="ollama-native", max_tool_turns=4)).run(
+        "Create a probe", workspace, records
+    )
+
+    assert outcome.status == "failed"
+    assert outcome.response is None
+    assert len(requests) == 4
+    assert "invalid provider response" in (outcome.error or "")
+    assert "valid JSON" in requests[2]["messages"][-1]["content"]
 
 
 def test_provider_timeout_preserves_partial_output(monkeypatch, tmp_path: Path):
@@ -961,6 +1476,82 @@ def test_general_office_runner_refuses_pilot_before_all_com_apps_available(monke
     assert "Retry lineage" not in (invocation / "qualification_report.md").read_text(encoding="utf-8")
 
 
+def test_general_office_runner_task_filter_runs_only_selected_case(monkeypatch, tmp_path: Path):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    monkeypatch.setattr(pilot, "probe_capabilities", CapabilityReport.for_testing)
+    called = []
+    provider_configs = []
+
+    class FailedHarness:
+        def __init__(self, root, **kwargs):
+            self.root = root
+            provider_configs.append(kwargs["workagent_config"])
+
+        def run(self, task, **kwargs):
+            called.append(task.task_id)
+            run_root = self.root / task.task_id
+            run_root.mkdir()
+            return {
+                "run_id": task.task_id,
+                "result_dir": str(run_root),
+                "state": "FAILED",
+                "artifacts": [],
+                "failure": {"message": "controlled provider boundary", "status": "failed"},
+            }
+
+    monkeypatch.setattr(pilot, "Harness", FailedHarness)
+    assert pilot.main(["--task", "excel-create"]) == 1
+    assert called == ["excel-create"]
+    invocation = next(tmp_path.iterdir())
+    summary = json.loads((invocation / "summary.json").read_text(encoding="utf-8"))
+    assert summary["task_filter"] == "excel-create"
+    assert summary["task_count"] == 1
+    assert summary["failure_count"] == 1
+    assert set(summary["rows"][0]) >= {"task_id", "state", "failure"}
+    assert (invocation / "qualification_report.md").read_text(encoding="utf-8").find("excel-create") >= 0
+    assert provider_configs[0].max_tool_turns == 48
+
+
+def test_general_office_runner_returns_success_for_qualified_task_filter(monkeypatch, tmp_path: Path):
+    from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
+    from workagent_rsi.office_capabilities import CapabilityReport
+
+    monkeypatch.setattr(pilot, "RESULT_ROOT", tmp_path)
+    monkeypatch.setattr(pilot, "probe_capabilities", CapabilityReport.for_testing)
+    monkeypatch.setattr(pilot, "verify_stored_office_artifacts", lambda *args, **kwargs: {
+        "ok": True, "status": "verified", "version": "16.0", "artifact_type_ok": True
+    })
+
+    class SuccessfulHarness:
+        def __init__(self, root, **kwargs):
+            self.root = root
+
+        def run(self, task, **kwargs):
+            run_root = self.root / task.task_id
+            artifacts_root = run_root / "artifacts"
+            artifacts_root.mkdir(parents=True)
+            artifact = artifacts_root / "quarterly_revenue.xlsx"
+            Workbook().save(artifact)
+            return {
+                "run_id": task.task_id,
+                "result_dir": str(run_root),
+                "state": "SUCCEEDED",
+                "artifacts": [{"path": str(artifact), "sha256": sha256_file(artifact)}],
+                "evaluation": {"passed": True, "critical_failures": []},
+            }
+
+    monkeypatch.setattr(pilot, "Harness", SuccessfulHarness)
+
+    assert pilot.main(["--task", "excel-create"]) == 0
+    invocation = next(tmp_path.iterdir())
+    summary = json.loads((invocation / "summary.json").read_text(encoding="utf-8"))
+    assert summary["task_count"] == summary["success_count"] == 1
+    assert summary["failure_count"] == 0
+
+
 def test_general_office_runner_retry_help_and_metadata(monkeypatch, tmp_path: Path, capsys):
     from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
     from workagent_rsi.office_capabilities import CapabilityReport
@@ -1165,6 +1756,17 @@ def test_evaluator_accepts_and_rejects_exact_general_office_pilot_constraints(tm
         assert any(failure_part in failure for failure in inspect_office_file(path, task).failures)
 
 
+def test_general_office_edit_tasks_make_required_changes_and_safe_placement_explicit():
+    config_path = Path(__file__).resolve().parents[1] / "project_artifacts/phase3_experiments/configs/general_office_pilot.json"
+    config = json.loads(config_path.read_text(encoding="utf-8"))
+    instructions = {task["task_id"]: task["instruction"] for task in config["tasks"]}
+
+    assert "Do not merely append" in instructions["word-edit"]
+    assert "Heading 1" in instructions["word-edit"]
+    assert "top=2.25" in instructions["powerpoint-edit"]
+    assert "leave all source shape text unchanged" in instructions["powerpoint-edit"]
+
+
 def test_general_office_runner_does_not_com_reopen_failed_evaluation(monkeypatch, tmp_path: Path):
     from project_artifacts.phase3_experiments.scripts import run_general_office_pilot as pilot
     from workagent_rsi.office_capabilities import CapabilityReport
@@ -1224,6 +1826,327 @@ def test_general_office_runner_records_exception_and_continues_all_six(monkeypat
 
 def test_office_prompt_requires_tool_action_before_claiming_completion():
     task = TaskSpec(task_id="prompt", domain="excel", instruction="Create an example workbook")
-    prompt = build_task_prompt(task, {"files": []}, "").lower()
+    prompt = build_task_prompt(task, {"files": []}, "")
+    prompt_lower = prompt.lower()
     for requirement in ("create a Python script", "run the script", "reopen", "deliverables.json", "status to \"failed\""):
-        assert requirement.lower() in prompt
+        assert requirement.lower() in prompt_lower
+
+
+def test_office_prompt_shows_manifest_as_a_json_string_tool_argument():
+    task = TaskSpec(task_id="excel-create", domain="excel", instruction="Create outputs/report.xlsx")
+    prompt = build_task_prompt(task, {"files": []}, "")
+    assert "content` argument must be a string, not a JSON object" in prompt
+    assert '`{"deliverables":["outputs/report.xlsx"]}`' in prompt
+
+
+def test_office_prompt_keeps_manifest_and_response_fields_separate():
+    task = TaskSpec(task_id="excel-edit", domain="excel", instruction="Edit the supplied workbook.", input_files=("source.xlsx",))
+    prompt = build_task_prompt(task, {"files": [{"copied": "inputs/0001-source.xlsx"}]}, "")
+    assert 'exactly one key, `deliverables`' in prompt
+    assert 'do not put `input_files_used` in this manifest' in prompt
+    assert 'final structured response has its own input_files_used field' in prompt
+
+
+def test_word_prompt_uses_document_object_for_body_paragraphs():
+    task = TaskSpec(task_id="word-create", domain="word", instruction="Create a report.")
+    prompt = build_task_prompt(task, {"files": []}, "")
+    assert "Use document.add_paragraph(...) for body text" in prompt
+    assert "add_heading(...) returns a Paragraph, not a Document" in prompt
+
+
+def test_powerpoint_edit_prompt_gives_blank_slide_safe_edit_pattern():
+    task = TaskSpec(
+        task_id="powerpoint-edit",
+        domain="powerpoint",
+        instruction="Edit the supplied deck and preserve its slides.",
+        input_files=("briefing_draft.pptx",),
+    )
+    prompt = build_task_prompt(
+        task,
+        {"files": [{"copied": "inputs/0001-briefing_draft.pptx", "source": "briefing_draft.pptx"}]},
+        "",
+    )
+    assert "blank slides" in prompt
+    assert "slide.shapes.add_textbox" in prompt
+    assert "never call add_slide" in prompt
+    assert "slide.shapes.title" in prompt
+    assert "placeholders" in prompt
+    assert "assert len(presentation.slides)" in prompt
+    assert "save the phrase there" in prompt
+    assert "never replace source text with the new phrase" in prompt
+    assert "independent textbox" in prompt
+    assert "choose exactly one existing slide" in prompt
+    assert "do not add a textbox to every slide" in prompt
+    assert "check every new textbox against every existing shape" in prompt
+
+
+def test_powerpoint_prompt_requires_exact_slide_count_and_nonoverlap_for_creation():
+    task = TaskSpec(
+        task_id="powerpoint-create",
+        domain="powerpoint",
+        instruction="Create exactly three slides with all requested phrases.",
+    )
+    prompt = build_task_prompt(task, {"files": []}, "")
+    assert "keep the slide count exactly equal to the requested count" in prompt
+    assert "put all required phrases within those slides" in prompt
+    assert "check every shape pair for overlap" in prompt
+    assert "when no staged input exists, start with Presentation()" in prompt
+    assert "do not branch on len(presentation.slides) inside a slide loop" in prompt
+    assert "assert every required phrase is present" in prompt
+    assert "use the blank slide layout" in prompt
+    assert "map each requested phrase to its specified slide" in prompt.lower()
+    assert "call presentation.slides.add_slide(...) once for each requested slide" in prompt.lower()
+    assert "store each returned slide in its own variable" in prompt.lower()
+    assert "do not put later slide content on the first slide" in prompt.lower()
+
+
+def test_excel_prompt_gives_exact_cell_and_binary_verification_pattern():
+    task = TaskSpec(
+        task_id="excel-create",
+        domain="excel",
+        instruction="Create the requested workbook with exact cell values.",
+    )
+    prompt = build_task_prompt(task, {"files": []}, "")
+    assert "write only the cells named in this task" in prompt
+    assert "for this edit, write only to the Summary sheet" in prompt
+    assert "load_workbook('outputs/" in prompt
+    assert "never use read_file on .xlsx" in prompt
+    assert "do not instantiate Workbook() for an edit" in prompt
+    assert "wb.create_sheet('Summary')" in prompt
+    assert "for an edit, write every requested summary label and formula cell before saving" in prompt.lower()
+    assert "reopen the edited workbook and assert each requested summary cell" in prompt.lower()
+    assert "for a creation task, start with openpyxl.workbook()" in prompt.lower()
+    assert "write formulas by assigning the formula string to cell.value" in prompt.lower()
+    assert "never use cell.formula" in prompt.lower()
+    assert "use load_workbook only for an existing input or to reopen the saved output" in prompt.lower()
+    assert "assign each requested literal cell value directly from the task" in prompt.lower()
+    assert "do not compute cell values from row numbers, indexes, multiplication, or loops" in prompt.lower()
+    assert "summary_sheet['b2'] = 120" in prompt.lower()
+
+
+def test_excel_create_prompt_covers_total_label_and_formula_cells():
+    task = TaskSpec(
+        task_id="excel-create",
+        domain="excel",
+        instruction="Create the quarterly workbook with the requested total.",
+    )
+    prompt = build_task_prompt(task, {"files": []}, "").lower()
+
+    assert "summary_sheet['a5'] = 'total'" in prompt
+    assert "summary_sheet['b5'] = '=sum(b2:b4)'" in prompt
+    assert "write the total label before writing the total formula" in prompt
+    assert "assert summary_sheet['a5'].value == 'total'" in prompt
+
+
+def test_office_prompt_requires_sequential_tool_execution_and_recovery():
+    task = TaskSpec(task_id="excel-create", domain="excel", instruction="Create a workbook.")
+    prompt = build_task_prompt(task, {"files": []}, "").lower()
+
+    assert "do not call run_python until write_file confirms the script was written" in prompt
+    assert "if a tool call fails, fix the script and run it again" in prompt
+    assert "do not write the manifest until the script runs successfully" in prompt
+    assert "verify the script after its final edit" in prompt
+    assert "the first tool call must be write_file for the complete python script" in prompt
+    assert "never write deliverables.json before the script has run successfully" in prompt
+    assert "if run_python fails, fix or rewrite the script and run it again" in prompt
+    assert "do not move on to a manifest or a completed response" in prompt
+
+
+def test_office_prompt_prioritizes_task_mode_over_cross_domain_examples():
+    edit_task = TaskSpec(
+        task_id="rsi-regression-powerpoint-edit",
+        domain="powerpoint",
+        instruction="Edit the supplied deck and preserve its slides.",
+        input_files=("briefing_draft.pptx",),
+    )
+    edit_prompt = build_task_prompt(
+        edit_task,
+        {"files": [{"copied": "inputs/0001-briefing_draft.pptx"}]},
+        "",
+    ).lower()
+    assert "task mode: edit" in edit_prompt
+    assert "a staged source file is authoritative" in edit_prompt
+    assert "do not use any creation example below" in edit_prompt
+    assert "do not add slides/sheets/sections unless the task explicitly requests it" in edit_prompt
+
+    create_task = TaskSpec(
+        task_id="rsi-develop-powerpoint-create",
+        domain="powerpoint",
+        instruction="Create a deck.",
+    )
+    create_prompt = build_task_prompt(create_task, {"files": []}, "").lower()
+    assert "task mode: create" in create_prompt
+    assert "there is no staged office source to preserve" in create_prompt
+
+
+def test_office_prompt_requires_dynamic_task_constraints_for_general_rsi_tasks():
+    excel_task = TaskSpec(
+        task_id="rsi-hidden-excel-create",
+        domain="excel",
+        instruction="Create an XLSX workbook tracking monthly units on a Metrics worksheet. Set Metrics!A1 to Month.",
+    )
+    excel_prompt = build_task_prompt(excel_task, {"files": []}, "").lower()
+    assert "set the worksheet title exactly to the name requested by the current task" in excel_prompt
+    assert "assert the requested worksheet exists after reopening" in excel_prompt
+    assert "do not assume the frozen summary example applies to another task" in excel_prompt
+
+    ppt_create = TaskSpec(
+        task_id="rsi-ood-powerpoint-create",
+        domain="powerpoint",
+        instruction="Create a PPTX update deck with exactly 4 nonempty slides.",
+    )
+    ppt_prompt = build_task_prompt(ppt_create, {"files": []}, "").lower()
+    assert "derive the exact required slide count from the current task instruction" in ppt_prompt
+    assert "create exactly one slide for that count" in ppt_prompt
+    assert "the frozen three-slide skeleton applies only when the current task requests that exact mapping" in ppt_prompt
+
+    ppt_edit = TaskSpec(
+        task_id="rsi-regression-powerpoint-edit",
+        domain="powerpoint",
+        instruction="Edit the supplied PPTX deck and preserve exactly 2 nonempty slides.",
+        input_files=("briefing_draft.pptx",),
+    )
+    ppt_edit_prompt = build_task_prompt(
+        ppt_edit, {"files": [{"copied": "inputs/0001-briefing_draft.pptx"}]}, ""
+    ).lower()
+    assert "in task mode: edit, do not call presentation.slides.add_slide anywhere" in ppt_edit_prompt
+    assert "the creation examples are not applicable in task mode: edit" in ppt_edit_prompt
+
+
+def test_office_prompt_makes_generic_heading_two_and_single_slide_edit_explicit():
+    word_task = TaskSpec(
+        task_id="rsi-ood-word-create",
+        domain="word",
+        instruction="Create a decision memo with Heading 1 Recommendation and Heading 2 Rationale.",
+    )
+    word_prompt = build_task_prompt(word_task, {"files": []}, "").lower()
+    assert "any required heading 2 must be created with document.add_heading(title, level=2)" in word_prompt
+    assert "never use document.add_paragraph(..., style='heading 2') for a required heading" in word_prompt
+
+    ppt_task = TaskSpec(
+        task_id="rsi-regression-powerpoint-edit",
+        domain="powerpoint",
+        instruction="Edit the supplied deck and preserve exactly two slides; include two phrases.",
+        input_files=("briefing_draft.pptx",),
+    )
+    ppt_prompt = build_task_prompt(
+        ppt_task, {"files": [{"copied": "inputs/0001-briefing_draft.pptx"}]}, ""
+    ).lower()
+    assert "choose exactly one existing slide (slide 1 unless the task names another)" in ppt_prompt
+    assert "do not iterate over every slide to add the new phrase" in ppt_prompt
+    assert "add exactly one new textbox containing all missing phrases" in ppt_prompt
+    assert "scan every existing shape on that slide before placing the textbox" in ppt_prompt
+
+
+def test_word_prompt_has_unambiguous_heading_level_examples():
+    task = TaskSpec(task_id="word-create", domain="word", instruction="Create a report.")
+    prompt = build_task_prompt(task, {"files": []}, "").lower()
+
+    assert "document.add_heading('project status', level=1)" in prompt
+    assert "never use level=0 for a required heading 1" in prompt
+    assert "use separate add_heading and add_paragraph calls for each required section" in prompt
+    assert "do not put a literal line break inside a quoted python string" in prompt
+    assert "call document.add_heading(title, level=1) separately for every required heading 1" in prompt
+    assert "for a required heading 2, call document.add_heading(title, level=2)" in prompt
+    assert "never attach heading or body text with add_run to a heading paragraph" in prompt
+
+
+def test_word_prompt_forbids_mutating_heading_style_levels():
+    task = TaskSpec(task_id="word-edit", domain="word", instruction="Reorganize the supplied report.", input_files=("status_draft.docx",))
+    prompt = build_task_prompt(task, {"files": [{"copied": "inputs/0001-status_draft.docx"}]}, "").lower()
+
+    assert "never set document.styles['heading 1'].level" in prompt
+    assert "never modify the built-in heading 1 style level" in prompt
+    assert "document.add_heading('the pilot completed on 12 september.', level=2)" in prompt
+
+
+def test_word_edit_prompt_uses_document_level_calls_for_restructure():
+    task = TaskSpec(
+        task_id="word-edit",
+        domain="word",
+        instruction="Reorganize the supplied report with the required headings.",
+        input_files=("status_draft.docx",),
+    )
+    prompt = build_task_prompt(
+        task, {"files": [{"copied": "inputs/0001-status_draft.docx"}]}, ""
+    ).lower()
+
+    assert "call document.add_heading(...) directly for each required heading" in prompt
+    assert "never assign the return value of add_heading to a document variable" in prompt
+    assert "document.add_heading('the pilot completed on 12 september.', level=2)" in prompt
+    assert "document.add_paragraph('action: send the final report to the steering group.')" in prompt
+
+
+def test_powerpoint_prompt_uses_shape_text_and_library_import_names():
+    task = TaskSpec(
+        task_id="powerpoint-edit", domain="powerpoint", instruction="Edit the supplied deck.",
+        input_files=("briefing_draft.pptx",),
+    )
+    prompt = build_task_prompt(
+        task, {"files": [{"copied": "inputs/0001-briefing_draft.pptx"}]}, ""
+    ).lower()
+
+    assert "import pptx" in prompt
+    assert "never use slide.text" in prompt
+    assert "inspect shape.text_frame.text" in prompt
+    assert "using an independent textbox; never replace source text with the new phrase" in prompt
+    assert "do not put a literal line break inside a quoted python string" in prompt
+    assert "reopen and assert the new phrase before saving the manifest" in prompt
+    assert "capture existing_shapes = list(slide.shapes) before calling add_textbox" in prompt
+    assert "never include the new textbox in the existing_shapes overlap check" in prompt
+    assert "pass slide.shapes.add_textbox coordinates and dimensions as inches(...) values" in prompt
+    assert "do not call shape.overlap" in prompt
+    assert "compare rectangle edges with left, top, width, and height" in prompt
+    assert "shape has no right, bottom, or shapes attributes" in prompt
+    assert "old.left + old.width <= new.left" in prompt
+    assert "old.top + old.height <= new.top" in prompt
+    create_task = TaskSpec(task_id="powerpoint-create", domain="powerpoint", instruction="Create three slides.")
+    create_prompt = build_task_prompt(create_task, {"files": []}, "").lower()
+    assert "put context and plan in separate text boxes; do not combine them in a newline string" in create_prompt
+    assert "assign separate .text values 'context' and 'plan' to two different add_textbox calls" in create_prompt
+
+
+def test_powerpoint_create_prompt_shows_three_slide_variables():
+    task = TaskSpec(task_id="powerpoint-create", domain="powerpoint", instruction="Create three slides.")
+    prompt = build_task_prompt(task, {"files": []}, "").lower()
+
+    assert "slide1 = presentation.slides.add_slide(presentation.slide_layouts[6])" in prompt
+    assert "slide2 = presentation.slides.add_slide(presentation.slide_layouts[6])" in prompt
+    assert "slide3 = presentation.slides.add_slide(presentation.slide_layouts[6])" in prompt
+    assert "put decision on slide2" in prompt
+    assert "put takeaway: approve the phased rollout. on slide3" in prompt
+
+
+def test_native_ollama_system_prompt_forbids_literal_newlines_in_python_strings(monkeypatch, tmp_path: Path):
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    records = tmp_path / "records"
+    responses = iter([{"message": {"role": "assistant", "content": json.dumps({
+        "status": "failed", "deliverables": [], "summary": "stop", "input_files_used": []
+    })}}])
+    requests = []
+
+    class FakeResponse:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            return False
+
+        def read(self):
+            return json.dumps(next(responses)).encode("utf-8")
+
+    def fake_urlopen(request, timeout):
+        requests.append(json.loads(request.data.decode("utf-8")))
+        return FakeResponse()
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    CodexOfficeProvider(WorkAgentConfig(backend="ollama-native", max_tool_turns=1)).run(
+        "You are creating an Office deliverable for a word task.\nCreate a report.",
+        workspace,
+        records,
+    )
+
+    system_prompt = requests[0]["messages"][0]["content"].lower()
+    assert "do not put a literal line break inside a quoted python string" in system_prompt
+    assert "write_file content for a .py file must be raw python source code, not a json object with a script field" in system_prompt

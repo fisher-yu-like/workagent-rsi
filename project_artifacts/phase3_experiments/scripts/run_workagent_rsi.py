@@ -5,7 +5,6 @@ from __future__ import annotations
 import json
 import argparse
 import re
-import subprocess
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -14,7 +13,7 @@ from uuid import uuid4
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "src"))
 
-from workagent_rsi.candidate_provider import WorkAgentCandidateProvider
+from workagent_rsi.candidate_provider import OllamaWorkAgentCandidateProvider
 from workagent_rsi.contracts import TaskSpec
 from workagent_rsi.evaluator import OfficeArtifactEvaluator
 from workagent_rsi.hashing import canonical_json_hash, sha256_file
@@ -39,7 +38,7 @@ SKILL = WorkAgentSkill(instructions=(
     "with the corresponding Python Office library, and list it in deliverables.json. "
     "Do not report completion until the file and manifest exist."
 ))
-PROVIDER = WorkAgentConfig()
+PROVIDER = WorkAgentConfig(backend="ollama-native")
 THRESHOLDS = {"develop_gain": 0.05, "regression_tolerance": 0.01,
               "hidden_degradation": 0.01, "ood_degradation": 0.01, "max_cost_delta": 1.0}
 IDS = {f"{domain}-{kind}" for domain in ("excel", "word", "powerpoint") for kind in ("create", "edit")}
@@ -81,14 +80,6 @@ def _source_inputs(root: Path) -> dict[str, str]:
 
 def _write_json(path: Path, data: object) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
-
-def _candidate_runner(command: list[str], cwd: Path, timeout: int, attempt_path: Path) -> subprocess.CompletedProcess[str]:
-    """Record launch intent immediately before crossing the subprocess boundary."""
-    _write_json(attempt_path, {"attempted_at": datetime.now(timezone.utc).isoformat(),
-                               "command": command, "cwd": str(cwd), "timeout_seconds": timeout})
-    return subprocess.run(command, cwd=cwd, timeout=timeout, capture_output=True,
-                          text=True, encoding="utf-8", errors="replace", check=False)
 
 
 def _source_office_validation(root: Path, expected_hashes: dict[str, str], com_verify) -> dict:
@@ -211,8 +202,8 @@ def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=Wor
         "task_config_sha256": sha256_file(root / "rsi_tasks.json"), "split_hashes": split_hashes,
         "source_input_hashes": source_hashes, "evaluator_sha256": OfficeArtifactEvaluator.evaluator_hash(),
         "baseline_skill_sha256": canonical_json_hash(SKILL.model_dump()),
-        "provider": "codex-cli/ollama", "model_identity": f"ollama:{PROVIDER.model}",
-        "workagent_executable": PROVIDER.executable, "workagent_timeout_seconds": PROVIDER.timeout_seconds,
+        "provider": PROVIDER.backend, "model_identity": f"ollama:{PROVIDER.model}",
+        "ollama_base_url": PROVIDER.ollama_base_url, "workagent_timeout_seconds": PROVIDER.timeout_seconds,
         "candidate_timeout_seconds": 180, "promotion_thresholds": THRESHOLDS,
         "baseline_invocation": str(Path(baseline_root).resolve()),
         "baseline_summary_sha256": baseline_summary_hash,
@@ -243,10 +234,14 @@ def run_invocation(baseline_root: Path, output_root: Path, *, runner_factory=Wor
     if reason is None:
         try:
             runner = runner_factory(workagent_config=PROVIDER, input_base=root / "inputs")
-            provider = WorkAgentCandidateProvider(SCHEMA, "local-1", executable=PROVIDER.executable,
-                timeout_seconds=180, model_identity=f"ollama:{PROVIDER.model}",
-                extra_args=["--ignore-user-config", "--oss", "--local-provider", "ollama", "--model", PROVIDER.model],
-                runner=lambda command, cwd, timeout: _candidate_runner(command, cwd, timeout, root / "candidate_launch_attempt.json"))
+            provider = OllamaWorkAgentCandidateProvider(
+                SCHEMA, "local-1", model=PROVIDER.model, base_url=PROVIDER.ollama_base_url,
+                timeout_seconds=180,
+                before_request=lambda command: _write_json(root / "candidate_launch_attempt.json", {
+                    "attempted_at": datetime.now(timezone.utc).isoformat(),
+                    "command": command, "timeout_seconds": 180,
+                }),
+            )
             summary["rsi_started"] = True
             summary["rsi_result"] = runner.run(tasks, SKILL, provider, root / "rsi", rounds=1)
             summary["status"] = summary["rsi_result"].get("status", "incomplete")
