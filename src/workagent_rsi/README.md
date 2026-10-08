@@ -26,3 +26,47 @@ result = Harness().run(task)
 ## 运行目录
 
 默认结果目录是 `project_artifacts/results/<run-id>/`。一个目录内包含任务、最终 JSON、SQLite trace、生成文件、内容寻址 artifact 和技能记录，便于查看和归档。
+
+## WorkAgent 与 Office 评估
+
+普通入口仍然是 `Harness.run(task)`。Office 任务默认使用 WorkAgent 生成文件；非 Office smoke 任务继续使用轻量 evaluator。可通过 `execution_provider` 显式选择 `workagent`、`local_office`、`com` 或 `libreoffice`。
+
+Office 成品共用远端 `SharedAssessment`，随后由 `ArtifactEvaluator` 评分、`ArtifactVerifier` 定位问题。结果目录中的 `assessment/` 保存 `assessment.json`、`score.json`、`issues.json` 和可读的 `report.md`；`result.json` 的 evaluation 字段包含身份和报告路径。兼容分数 `evaluation.score` 为 0–1，原始总分保存在 `score.json` 的 0–100 `total_score` 中。未完成的必需检查会得到 `score: null` 和 `UNAVAILABLE` 状态。
+
+默认验收规格由 `expected_constraints` 转换，只检查其中声明的确定性要求。需要语义或视觉检查时，将完整 `acceptance_spec` 放在 `expected_constraints.acceptance_spec`，为每个评分维度声明权重和明确标准，并通过模型配置启用相应通道：
+
+```python
+from workagent_rsi import Harness
+
+task = {
+    "task_id": "quarterly-summary",
+    "domain": "excel",
+    "instruction": "Create the requested quarterly summary workbook.",
+    "expected_constraints": {
+        "acceptance_spec": {
+            "task_id": "quarterly-summary",
+            "version": "v1",
+            "artifacts": {"output": "excel"},
+            "requirements": [
+                {
+                    "requirement_id": "formula-total",
+                    "description": "The total cell uses the required formula.",
+                    "check": "excel.formula",
+                    "location": {"artifact": "output", "sheet": "Summary", "cell": "B4"},
+                    "expected": "=SUM(B2:B3)",
+                    "critical": True,
+                    "dimension": "correctness",
+                    "evidence_source": "task specification",
+                }
+            ],
+            "dimension_weights": {"correctness": 1.0},
+        }
+    },
+}
+
+result = Harness().run(task)
+```
+
+Semantic and visual requirements use `check: "semantic"` or `check: "visual"` and must state the criterion in the requirement. Enable the matching channel with a `ModelReviewConfig`, for example `Harness(model_review_config={"provider": "api", "model": "<model-name>", "semantic_enabled": True, "visual_enabled": True})`; the API key is read from the configured environment variable and is not written to run records. The CLI accepts the same JSON through `--model-review-config`. If a required model or render channel is unavailable, assessment remains incomplete.
+
+For one output, the sole `AcceptanceSpec.artifacts` key maps to that output. For multiple outputs, each key must exactly equal one WorkAgent deliverable path such as `outputs/summary.xlsx`; every generated output must be declared. Missing, duplicate, or extra mappings produce an incomplete assessment rather than an arbitrary file choice.

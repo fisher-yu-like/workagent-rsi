@@ -53,6 +53,7 @@ class ArtifactRef(BaseModel):
     sha256: str
     media_type: str
     size_bytes: int
+    name: str | None = None
 
 
 class ToolCall(BaseModel):
@@ -68,10 +69,12 @@ class ToolResult(BaseModel):
 
 class EvaluationReport(BaseModel):
     passed: bool
-    score: float
+    score: float | None
     critical_failures: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
-    dimensions: dict[str, float] = Field(default_factory=dict)
+    dimensions: dict[str, float | None] = Field(default_factory=dict)
     evidence: list[str] = Field(default_factory=list)
     channel_status: dict[str, str] = Field(default_factory=dict)
+    assessment_identity: str | None = None
+    report_paths: dict[str, str] = Field(default_factory=dict)
 

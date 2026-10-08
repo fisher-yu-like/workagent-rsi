@@ -33,6 +33,8 @@ src/workagent_rsi/             Harness, closed-loop RSI and Office evaluation pa
 
 ## Run locally
 
+`Harness.run(task)` remains the normal entry point. Office tasks default to the WorkAgent provider and the shared `ArtifactEvaluator`/`ArtifactVerifier` chain; non-Office smoke tasks keep the basic evaluator. See [`src/workagent_rsi/README.md`](src/workagent_rsi/README.md) for acceptance specs, model review configuration, and the report files written for each run.
+
 ```powershell
 py -3.12 -m pip install -e .
 py -3.12 -m pytest -q --basetemp="$env:TEMP\workagent-rsi-tests"

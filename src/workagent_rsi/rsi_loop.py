@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Sequence
+
+from pydantic import BaseModel
 
 from .candidate_provider import CandidateProvider
 from .candidate_workspace import CandidateWorkspaceBuilder
@@ -13,7 +14,7 @@ from .contracts import TaskSpec
 from .costs import measure_round_cost
 from .diagnosis import FailureDiagnoser
 from .frozen_evaluator import FrozenEvaluator
-from .hashing import canonical_json_hash
+from .hashing import canonical_json_hash, sha256_file
 from .promotion import PromotionController
 from .registry import SkillRegistry
 from .rsi_contracts import EvaluationContract
@@ -35,6 +36,7 @@ class RSILoop:
         evaluator: FrozenEvaluator,
         promotion: PromotionController,
         feedback_mode: str = "structured",
+        skill_model: type[BaseModel] = PilotSkillConfig,
     ) -> None:
         self.registry = registry
         self.workspace_builder = workspace_builder
@@ -42,6 +44,7 @@ class RSILoop:
         self.verifier = verifier
         self.evaluator = evaluator
         self.promotion = promotion
+        self.skill_model = skill_model
         if feedback_mode not in {"score_only", "brief", "structured"}:
             raise ValueError("invalid artifact feedback mode")
         self.feedback_mode = feedback_mode
@@ -198,7 +201,7 @@ class RSILoop:
         root.mkdir(parents=True, exist_ok=True)
         champion = self.registry.champion(skill_id)
         champion_package = self.registry.package(champion)
-        champion_config = PilotSkillConfig.model_validate(champion_package)
+        champion_config = self.skill_model.model_validate(champion_package)
         rollback_point = {
             "skill_id": skill_id,
             "version": champion.version,
@@ -293,19 +296,24 @@ class RSILoop:
 
         verification = self.verifier.verify(candidate, workspace, verification_policy)
         if artifact_mode and verification.passed:
-            # New mode remains a single JSON configuration; no evaluator files or arbitrary keys.
+            # Artifact feedback may improve a WorkAgent instruction or the legacy
+            # pilot's execution knobs, but it cannot alter evaluator code.
             violations = []
             if candidate.parent_version != champion.version or len(candidate.atomic_edits) > edit_budget:
                 violations.append("artifact candidate parent or edit budget mismatch")
+            if self.skill_model is PilotSkillConfig:
+                editable_fields = {"sales_rows", "sales_chart", "sales_number_format"}
+            else:
+                editable_fields = set(self.skill_model.model_fields) - {"version"}
             for edit in candidate.atomic_edits:
                 patch = json.loads(edit.patch)
-                if edit.target_path != "skill.json" or len(patch) != 1 or not set(patch).issubset({"sales_rows", "sales_chart", "sales_number_format"}):
-                    violations.append("artifact candidate must change one allowlisted execution key per edit")
+                if edit.target_path != "skill.json" or len(patch) != 1 or not set(patch).issubset(editable_fields):
+                    violations.append("artifact candidate must change one allowlisted skill field per edit")
             try:
                 proposed = dict(champion_package)
                 for edit in candidate.atomic_edits:
                     proposed.update(json.loads(edit.patch))
-                PilotSkillConfig.model_validate_json(json.dumps(proposed), strict=True)
+                self.skill_model.model_validate_json(json.dumps(proposed), strict=True)
             except ValueError as exc:
                 violations.append(str(exc))
             verification = verification.model_copy(update={
@@ -318,7 +326,7 @@ class RSILoop:
             candidate_package = dict(champion_package)
             for edit in candidate.atomic_edits:
                 candidate_package.update(json.loads(edit.patch))
-            candidate_config = PilotSkillConfig.model_validate(candidate_package)
+            candidate_config = self.skill_model.model_validate(candidate_package)
             candidate_reports = self._evaluate_all(tasks_by_split, candidate_config, contract, root / "candidate")
         else:
             candidate_package = dict(champion_package)
@@ -386,7 +394,7 @@ class RSILoop:
     def _evaluate_all(
         self,
         tasks_by_split: dict[str, Sequence[TaskSpec]],
-        config: PilotSkillConfig,
+        config: BaseModel,
         contract: EvaluationContract,
         root: Path,
     ) -> dict[str, dict]:
@@ -449,8 +457,19 @@ class RSILoop:
                 "class": f"{self.provider.__class__.__module__}.{self.provider.__class__.__qualname__}",
                 "version": str(getattr(self.provider, "provider_version", "unknown")),
             },
+            "skill_model": f"{self.skill_model.__module__}.{self.skill_model.__qualname__}",
             "model_identity": model_identity or getattr(self.provider, "model_identity", None),
-            "code_hash": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            "code_hash": canonical_json_hash(
+                {
+                    name: sha256_file(Path(__file__).with_name(name))
+                    for name in (
+                        "rsi_loop.py",
+                        "rsi_feedback.py",
+                        "candidate_provider.py",
+                        "workagent_experiment.py",
+                    )
+                }
+            ),
         }
         if contract.assessment_mode == "artifact-v1":
             from .artifact_assessment import SharedAssessment, spec_from_task
@@ -486,7 +505,7 @@ class RSILoop:
 
     @staticmethod
     def _validate_checkpoint(checkpoint: dict, identity: dict) -> None:
-        for key in ("contract_hash", "dataset_hash", "evaluator_hash", "provider_identity", "model_identity", "code_hash"):
+        for key in ("contract_hash", "dataset_hash", "evaluator_hash", "provider_identity", "skill_model", "model_identity", "code_hash"):
             if checkpoint.get(key) != identity.get(key):
                 raise ValueError(f"{key} identity does not match checkpoint")
         if checkpoint.get("split_hashes") != identity.get("split_hashes"):

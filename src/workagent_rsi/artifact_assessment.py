@@ -131,6 +131,9 @@ class SharedAssessment:
         obj, loc = parsed[r.location.artifact], r.location
         if r.check == "file.readable":
             actual = True
+        elif r.check == "file.format":
+            reverse_suffixes = {suffix: domain for domain, suffix in EXPECTED_SUFFIXES.items()}
+            actual = reverse_suffixes.get(paths[loc.artifact].suffix.lower(), "unknown")
         elif r.check == "excel.sheets":
             actual = list(obj.sheetnames)
             return self._fraction(r, [name in actual for name in r.expected], actual, loc)
@@ -279,8 +282,10 @@ def spec_from_task(task) -> AcceptanceSpec:
             raise ValueError("acceptance specification task identity mismatch")
         return spec
     requirements = [Requirement(requirement_id="file", description="Readable required artifact", check="file.readable", location=Location(artifact="output"), expected=True, critical=True, dimension="correctness", evidence_source="OOXML package and library parser")]
-    adapters = {"required_text": "text.contains", "required_sheets": "excel.sheets", "required_cells": "excel.cell", "required_formulas": "excel.formula", "required_formula_values": "excel.cached_value", "required_headings": "word.headings", "required_heading_styles": "word.heading_style", "required_slide_count": "powerpoint.slide_count", "required_slides": "powerpoint.slide_count", "required_shape_text": "powerpoint.texts"}
+    adapters = {"required_text": "text.contains", "marker": "text.contains", "output_format": "file.format", "required_sheets": "excel.sheets", "required_cells": "excel.cell", "required_formulas": "excel.formula", "required_formula_values": "excel.cached_value", "required_headings": "word.headings", "required_heading_styles": "word.heading_style", "required_slide_count": "powerpoint.slide_count", "required_slides": "powerpoint.slide_count", "required_shape_text": "powerpoint.texts"}
     for key, expected in constraints.items():
+        if key == "marker" and constraints.get("required_text") == expected:
+            continue
         check = adapters.get(key, "unsupported." + key)
         entries = expected.items() if key in {"required_cells", "required_formulas", "required_formula_values", "required_heading_styles"} else [("", expected)]
         for target, value in entries:
@@ -292,8 +297,11 @@ def spec_from_task(task) -> AcceptanceSpec:
                 position["heading"] = target
             elif target:
                 position["cell"] = target
+            if key == "output_format":
+                value = str(value).lower()
             requirements.append(Requirement(requirement_id=f"{key}:{target}", description=key, check=check, location=Location(**position), expected=value, critical=True, dimension="correctness", evidence_source="TaskSpec.expected_constraints"))
-    return AcceptanceSpec(task_id=task.task_id, version="legacy-constraints-v1", artifacts={"output": task.domain}, requirements=requirements, dimension_weights={"correctness": 1})
+    domain = task.domain.lower()
+    return AcceptanceSpec(task_id=task.task_id, version="legacy-constraints-v1", artifacts={"output": domain}, requirements=requirements, dimension_weights={"correctness": 1})
 
 
 def assess(spec, artifacts, *, visual=None, semantic=None):

@@ -5,12 +5,16 @@ from __future__ import annotations
 from pathlib import Path
 
 from .contracts import TaskSpec
-from .evaluator import BasicEvaluator, OfficeArtifactEvaluator
+from .artifact_com import persist_com_result, verify_stored_office_artifacts
+from .evaluator import BasicEvaluator
+from .harness_artifact_evaluator import HarnessArtifactEvaluator
 from .executor import ComOfficeAdapter, LocalOfficeAdapter, MockWorkAgentAdapter, UnavailableOfficeAdapter
 from .office_capabilities import CapabilityReport
 from .orchestrator import Orchestrator
 from .skill_runtime import PilotSkillConfig, SkillConfiguredOfficeAdapter
 from .store import Store
+from .workagent_office import WorkAgentOfficeAdapter
+from .workagent_provider import WorkAgentConfig
 
 
 OFFICE_DOMAINS = {"excel", "word", "powerpoint"}
@@ -26,18 +30,28 @@ class Run:
         office: bool | None = None,
         execution_provider: str | None = None,
         capability_report: CapabilityReport | None = None,
+        workagent_config: WorkAgentConfig | None = None,
+        agent_instructions: str = "",
+        input_base: str | Path | None = None,
+        model_review_config: dict | None = None,
+        assessment=None,
     ) -> None:
         self.root = Path(root)
         self.store = Store(self.root)
         self.office = office
         self.execution_provider = execution_provider
         self.capability_report = capability_report
+        self.workagent_config = workagent_config or WorkAgentConfig()
+        self.agent_instructions = agent_instructions
+        self.input_base = Path(input_base) if input_base is not None else Path.cwd()
+        self.model_review_config = model_review_config
+        self.assessment = assessment
 
     def execute(self, task: TaskSpec, skill_id: str | None = None, *, max_attempts: int = 1) -> dict:
         if isinstance(task, dict):
             task = TaskSpec.model_validate(task)
         use_office = self.office if self.office is not None else task.domain.lower() in OFFICE_DOMAINS
-        provider = self.execution_provider or ("local_office" if use_office else "smoke")
+        provider = self.execution_provider or ("workagent" if use_office else "smoke")
         if provider == "smoke":
             adapter = MockWorkAgentAdapter()
             evaluator = BasicEvaluator()
@@ -47,19 +61,44 @@ class Run:
                 self.root / "generated",
                 PilotSkillConfig(marker_source="required_text"),
             )
-            evaluator = OfficeArtifactEvaluator()
+            evaluator = HarnessArtifactEvaluator(
+                self.root,
+                model_review_config=self.model_review_config,
+                assessment=self.assessment,
+            )
             default_skill = "office.normal"
+        elif provider == "workagent":
+            adapter = WorkAgentOfficeAdapter(
+                self.root,
+                self.workagent_config,
+                input_base=self.input_base,
+                agent_instructions=self.agent_instructions,
+            )
+            evaluator = HarnessArtifactEvaluator(
+                self.root,
+                model_review_config=self.model_review_config,
+                assessment=self.assessment,
+            )
+            default_skill = "office.workagent"
         elif provider == "com":
             adapter = ComOfficeAdapter(
                 self.root / "generated",
                 PilotSkillConfig(marker_source="required_text"),
                 self.capability_report,
             )
-            evaluator = OfficeArtifactEvaluator()
+            evaluator = HarnessArtifactEvaluator(
+                self.root,
+                model_review_config=self.model_review_config,
+                assessment=self.assessment,
+            )
             default_skill = "office.com"
         elif provider == "libreoffice":
             adapter = UnavailableOfficeAdapter("libreoffice", "LibreOffice provider is unavailable on this machine")
-            evaluator = OfficeArtifactEvaluator()
+            evaluator = HarnessArtifactEvaluator(
+                self.root,
+                model_review_config=self.model_review_config,
+                assessment=self.assessment,
+            )
             default_skill = "office.libreoffice"
         else:
             raise ValueError(f"unknown execution provider: {provider}")
@@ -67,12 +106,39 @@ class Run:
             raise ValueError("Office task cannot use smoke provider implicitly")
         if provider != "smoke" and not use_office:
             raise ValueError(f"Office provider {provider} requires an Office task domain")
-        return Orchestrator(
+        result = Orchestrator(
             artifact_store=self.store.files,
             trace_store=self.store.logs,
             adapter=adapter,
             evaluator=evaluator,
         ).run(task, skill_id or default_skill, max_attempts=max_attempts)
+        if provider == "workagent":
+            if not self.workagent_config.verify_com:
+                com = {"ok": False, "status": "disabled"}
+            elif result["state"] != "SUCCEEDED":
+                com = {"ok": False, "status": "not_run", "error": "Office evaluation did not pass"}
+            else:
+                com = verify_stored_office_artifacts(result["artifacts"], task.domain.lower(), self.root)
+                if com["ok"] is not True:
+                    result["state"] = "UNAVAILABLE" if com["status"] in {"unavailable", "timeout"} else "FAILED"
+                    result["failure"] = {
+                        "message": com["error"],
+                        "status": com["status"],
+                        "retryable": False,
+                        "provider": "office-com",
+                    }
+                    result["evaluation"]["passed"] = False
+                    result["evaluation"]["critical_failures"].append(
+                        "required COM verification: " + com["error"]
+                    )
+                    self.store.logs.set_state(result["run_id"], result["state"])
+            result["com_reopen"] = com
+            if "evaluation" in result:
+                result["evaluation"].setdefault("channel_status", {})["com"] = com["status"]
+            persist_com_result(self.root, com)
+            if com["status"] != "not_run":
+                self.store.logs.append_event(result["run_id"], "com_reopen", com)
+        return result
 
     def resume(self, run_id: str) -> dict:
         """Read the persisted state and trace for a run in this directory."""

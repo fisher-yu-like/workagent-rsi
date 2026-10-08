@@ -36,12 +36,19 @@ class Orchestrator:
                     if event["kind"] == "artifact":
                         if "artifact_path" in event:
                             artifact_path = Path(event["artifact_path"])
-                            artifacts.append(self.artifact_store.put_bytes(artifact_path.read_bytes(), event.get("media_type", "application/octet-stream")))
+                            stored = self.artifact_store.put_bytes(
+                                artifact_path.read_bytes(), event.get("media_type", "application/octet-stream")
+                            )
+                            name = event.get("artifact_name") or artifact_path.name
+                            artifacts.append(stored.model_copy(update={"name": name}))
                         else:
                             content = event.get("content", b"")
                             if isinstance(content, str):
                                 content = content.encode("utf-8")
-                            artifacts.append(self.artifact_store.put_bytes(content, event.get("media_type", "application/octet-stream")))
+                            stored = self.artifact_store.put_bytes(
+                                content, event.get("media_type", "application/octet-stream")
+                            )
+                            artifacts.append(stored.model_copy(update={"name": event.get("artifact_name")}))
                     elif event["kind"] in {"failure", "unavailable"}:
                         failure = {
                             "message": event["message"],
@@ -57,16 +64,23 @@ class Orchestrator:
             if failure is not None:
                 state = "UNAVAILABLE" if failure.get("status") == "unavailable" else "FAILED"
                 self.trace_store.set_state(run_id, state)
-                return {"run_id": run_id, "state": state, "artifacts": [a.model_dump() for a in artifacts], "failure": failure}
+                return {"run_id": run_id, "state": state, "artifacts": [a.model_dump(exclude_none=True) for a in artifacts], "failure": failure}
             self.trace_store.set_state(run_id, "EVALUATING")
             report = self.evaluator.evaluate(task, artifacts, run_id)
-            state = "SUCCEEDED" if report.passed else "FAILED"
+            if report.score is None or report.channel_status.get("assessment") == "incomplete":
+                state = "UNAVAILABLE"
+            else:
+                state = "SUCCEEDED" if report.passed else "FAILED"
             self.trace_store.set_state(run_id, state)
-            return {"run_id": run_id, "state": state, "artifacts": [a.model_dump() for a in artifacts], "evaluation": report.model_dump()}
+            evaluation = report.model_dump(exclude_none=True)
+            evaluation["score"] = report.score
+            if not report.report_paths:
+                evaluation.pop("report_paths", None)
+            return {"run_id": run_id, "state": state, "artifacts": [a.model_dump(exclude_none=True) for a in artifacts], "evaluation": evaluation}
         except Exception as exc:
             self.trace_store.append_event(run_id, "exception", {"message": str(exc)})
             self.trace_store.set_state(run_id, "FAILED")
-            return {"run_id": run_id, "state": "FAILED", "artifacts": [a.model_dump() for a in artifacts], "failure": {"message": str(exc), "retryable": False}}
+            return {"run_id": run_id, "state": "FAILED", "artifacts": [a.model_dump(exclude_none=True) for a in artifacts], "failure": {"message": str(exc), "retryable": False}}
 
     def resume(self, run_id: str) -> dict:
         return {"run_id": run_id, "state": self.trace_store.get_state(run_id), "events": self.trace_store.events(run_id)}

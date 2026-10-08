@@ -1,0 +1,41 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "status": {
+      "enum": [
+        "completed",
+        "failed"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "deliverables": {
+      "items": {
+        "pattern": "^(?!/)(?!.*[:\\\\])(?!.*(?:^|/)\\.{1,2}(?:/|$))[^/]+(?:/[^/]+)*$",
+        "type": "string"
+      },
+      "title": "Deliverables",
+      "type": "array"
+    },
+    "summary": {
+      "title": "Summary",
+      "type": "string"
+    },
+    "input_files_used": {
+      "items": {
+        "pattern": "^(?!/)(?!.*[:\\\\])(?!.*(?:^|/)\\.{1,2}(?:/|$))[^/]+(?:/[^/]+)*$",
+        "type": "string"
+      },
+      "title": "Input Files Used",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "deliverables",
+    "summary",
+    "input_files_used"
+  ],
+  "title": "AgentResponse",
+  "type": "object"
+}
