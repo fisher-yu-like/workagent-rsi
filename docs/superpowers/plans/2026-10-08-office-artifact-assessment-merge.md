@@ -1,6 +1,6 @@
 # 将远端 ArtifactEvaluator 和 ArtifactVerifier 接入现有 WorkAgent Harness
 
-> 状态：已获用户批准，执行中。工作按下方顺序推进；尚未提交或推送。
+> 状态：已完成。实现提交 `654b3f59cf740f20e83a3c5149030e3e59cbe0ba` 已推送到 `origin/codex/merge-office-artifact-assessment`。
 
 **目标：** 保留当前 WorkAgent Harness 的单入口和任务运行方式，用远端 evaluator 评估 Office 成品，并用远端 verifier 输出可供 RSI 使用的结构化问题报告。
 
@@ -74,7 +74,7 @@
 
 ## 审批边界
 
-用户已批准按此计划执行。接入代码后将人工审阅差异，再提交并推送 `codex/merge-office-artifact-assessment`。
+用户已批准按此计划执行。已人工审阅差异，并提交、推送 `codex/merge-office-artifact-assessment`。
 
 ## 执行进度
 
@@ -82,4 +82,15 @@
 - [x] 第二步：接入远端共享评估链。
 - [x] 第三步：把报告写入当前运行结果。
 - [x] 第四步：保持 RSI 结果可用。
-- [ ] 第五步：审阅、提交和推送。
+- [x] 第五步：审阅、提交和推送。
+
+## 验证与交付记录
+
+- 验证工作目录：`C:\Users\sy\Desktop\workagent-rsi\worktrees\office-artifact-assessment-merge`
+- 验证时间：2026-10-08 19:21:43 至 19:21:46（Asia/Shanghai）
+- 代码基线：`3b1c1840d18a89346319600b250226ebfc822354`
+- Python：`3.12.10`
+- `git diff --check HEAD^ HEAD`：退出码 0，无空白错误。
+- `py -3.12 -m compileall -q src/workagent_rsi`：退出码 0，无输出。
+- 未运行测试、WorkAgent 或 Office 任务；没有生成或声称任何任务评估结果。
+- 实现提交：`654b3f59cf740f20e83a3c5149030e3e59cbe0ba`；推送命令成功，远端分支已创建。
