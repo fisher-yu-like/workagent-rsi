@@ -6,7 +6,8 @@ from pathlib import Path
 import pytest
 
 from workagent_rsi import candidate_provider
-from workagent_rsi.candidate_provider import CodexCandidateProvider, DeterministicCandidateProvider
+from workagent_rsi.candidate_provider import CodexCandidateProvider, DeterministicCandidateProvider, OpenAIChatCandidateProvider
+from workagent_rsi.assessment_contracts import RSIFeedback
 from workagent_rsi.rsi_contracts import FailureDiagnosis
 
 
@@ -166,3 +167,24 @@ def test_codex_provider_records_configured_model_identity(tmp_path: Path):
 
     assert patch is not None
     assert record.model_identity == "ollama:qwen2.5:7b"
+
+
+def test_openai_candidate_provider_parses_bounded_patch(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
+    class Response:
+        def __enter__(self):
+            return self
+        def __exit__(self, *args):
+            return False
+        def read(self):
+            return json.dumps({"choices": [{"message": {"content": json.dumps(candidate_payload())}}]}).encode()
+
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.setattr(candidate_provider.urllib.request, "urlopen", lambda request, timeout: Response())
+    feedback = RSIFeedback(tasks=[{"task_id": "dev", "issues": []}])
+    provider = OpenAIChatCandidateProvider(model="deepseek-v4-flash", api_base_url="https://api.example.test/v1")
+    patch, record = provider.generate_with_feedback(tmp_path, feedback, "0.1.0", 1, tmp_path / "records")
+
+    assert patch is not None
+    assert record.status == "completed"
+    assert record.model_identity == "openai-chat:deepseek-v4-flash"
+    assert "Only skill.json" in (tmp_path / "records" / "prompt.md").read_text()

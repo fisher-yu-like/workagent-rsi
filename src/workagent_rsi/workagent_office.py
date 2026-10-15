@@ -143,7 +143,7 @@ def copy_task_inputs(task: TaskSpec, workspace: Path, input_base: Path) -> dict:
     """Copy explicitly named task-domain Office files and save a private manifest."""
     suffix = _domain_suffix(task)
     base = Path(input_base).absolute()
-    workspace = Path(workspace).absolute()
+    workspace = Path(workspace).resolve()
     _check_existing_segments(base)
     _check_existing_segments(workspace)
     files: list[dict[str, object]] = []
@@ -295,8 +295,8 @@ class WorkAgentOfficeAdapter:
         self.provider = CodexOfficeProvider(config)
 
     def execute(self, task: TaskSpec, skill_id: str):
-        workspace = self.run_root / "agent_workspace"
-        records = self.run_root / "provider_records"
+        workspace = (self.run_root / "agent_workspace").resolve()
+        records = (self.run_root / "provider_records").resolve()
         yield {"kind": "started", "provider": "workagent", "skill_id": skill_id}
         try:
             manifest = copy_task_inputs(task, workspace, self.input_base)

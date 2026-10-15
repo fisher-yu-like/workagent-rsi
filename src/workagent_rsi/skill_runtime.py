@@ -64,7 +64,7 @@ class SkillConfiguredOfficeAdapter:
 
             path = self.output_root / f"{task.task_id}.docx"
             document = Document()
-            document.add_heading("Generated Artifact", level=1)
+            document.add_heading(task.instruction, level=1)
             document.add_paragraph(marker)
             document.save(path)
         else:
@@ -73,7 +73,7 @@ class SkillConfiguredOfficeAdapter:
             path = self.output_root / f"{task.task_id}.pptx"
             presentation = Presentation()
             slide = presentation.slides.add_slide(presentation.slide_layouts[1])
-            slide.shapes.title.text = "Generated Artifact"
+            slide.shapes.title.text = task.instruction
             slide.placeholders[1].text = marker
             presentation.save(path)
         yield {"kind": "artifact", "artifact_path": str(path), "media_type": self.MEDIA_TYPES[domain]}

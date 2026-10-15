@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-10-11T14:25:00+08:00",
+  "branch": "codex/merge-office-artifact-assessment",
+  "commit": "b7b84b2",
+  "provider_policy": "non-ollama",
+  "codex_cli": {
+    "executable": "codex",
+    "version": "0.157.1",
+    "configured_model": "gpt-5.4",
+    "command_contract": {
+      "uses_oss": false,
+      "uses_local_provider": false,
+      "provider_identity": "codex-cli:gpt-5.4"
+    },
+    "live_probe": {
+      "status": "unavailable",
+      "reason": "Codex CLI started but its sampling request repeatedly timed out and then failed to connect; no model response was produced. The configured Responses API endpoint was also reached directly and returned HTTP 429.",
+      "evidence": "project_artifacts/formal_study/capability_probe/stdout_stderr.txt"
+    }
+  },
+  "model_review": {
+    "semantic": "not_run",
+    "visual": "not_run",
+    "reason": "No successful non-Ollama model connection was available for an evidence-producing review run."
+  },
+  "office_runtime": {
+    "word_com": "not_run",
+    "excel_com": "not_run",
+    "powerpoint_com": "not_run",
+    "reason": "The full COM probe did not return within the bounded runner window; existing Office processes were left untouched."
+  },
+  "verification": {
+    "provider_contract_tests": "2 passed",
+    "compileall": "passed",
+    "git_diff_check": "passed"
+  },
+  "next_gate": "Restore a successful Codex/API connection, then rerun the capability probe before claiming a live Office or RSI result."
+}

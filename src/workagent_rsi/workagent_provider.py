@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import shutil
 import stat
@@ -28,14 +29,18 @@ _RELATIVE_POSIX_PATH_PATTERN = r"^(?!/)(?!.*[:\\])(?!.*(?:^|/)\.{1,2}(?:/|$))[^/
 class WorkAgentConfig(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    model: str = "qwen2.5:7b"
+    model: str = "gpt-5.4"
     executable: str = "codex"
-    backend: Literal["codex-cli", "ollama-native"] = "codex-cli"
+    backend: Literal["codex-cli", "ollama-native", "openai-chat"] = "codex-cli"
     ollama_base_url: str = "http://localhost:11434"
+    api_base_url: str = "https://api.openai.com/v1"
+    api_key_env: str = "OPENAI_API_KEY"
     timeout_seconds: int = Field(default=600, ge=1)
     max_output_files: int = Field(default=8, ge=1)
     max_artifact_bytes: int = Field(default=104857600, ge=1)
     max_tool_turns: int = Field(default=32, ge=1, le=64)
+    api_max_retries: int = Field(default=3, ge=0, le=8)
+    api_retry_delay_seconds: float = Field(default=2.0, ge=0.0, le=60.0)
     verify_com: bool = True
 
 
@@ -89,14 +94,19 @@ class CodexOfficeProvider:
         self.config = config
         self.schema_path = (Path(__file__).parent / "schemas" / "agent_response.schema.json").resolve()
 
+    @property
+    def model_identity(self) -> str:
+        if self.config.backend == "ollama-native":
+            return f"ollama:{self.config.model}"
+        if self.config.backend == "openai-chat":
+            return f"openai-chat:{self.config.model}"
+        return f"codex-cli:{self.config.model}"
+
     def command(self, workspace: Path, response_path: Path, schema_path: Path) -> list[str]:
         return [
             self.config.executable,
             "exec",
             "--ignore-user-config",
-            "--oss",
-            "--local-provider",
-            "ollama",
             "--model",
             self.config.model,
             "--ephemeral",
@@ -126,6 +136,10 @@ class CodexOfficeProvider:
         canonical_response_path.unlink(missing_ok=True)
         if self.config.backend == "ollama-native":
             return self._run_native_ollama(
+                prompt, workspace, records, response_path, canonical_response_path, workspace_hash
+            )
+        if self.config.backend == "openai-chat":
+            return self._run_openai_chat(
                 prompt, workspace, records, response_path, canonical_response_path, workspace_hash
             )
         command = self.command(workspace, response_path, self.schema_path)
@@ -184,7 +198,7 @@ class CodexOfficeProvider:
         record = ProviderRecord(
             provider="codex-cli",
             provider_version="local-1",
-            model_identity=f"ollama:{self.config.model}",
+            model_identity=self.model_identity,
             command=command,
             prompt_hash=canonical_json_hash({"prompt": prompt}),
             workspace_hash=workspace_hash,
@@ -200,6 +214,190 @@ class CodexOfficeProvider:
             encoding="utf-8",
             newline="\n",
         )
+        return ProviderOutcome(status=status, response=response, record=record, error=error)
+
+    def _run_openai_chat(
+        self,
+        prompt: str,
+        workspace: Path,
+        records: Path,
+        response_path: Path,
+        canonical_response_path: Path,
+        workspace_hash: str,
+    ) -> ProviderOutcome:
+        """Run the same bounded Office tool loop through an OpenAI-compatible API."""
+        command = [
+            "openai-compatible-chat",
+            self.config.api_base_url.rstrip("/") + "/chat/completions",
+            "--model",
+            self.config.model,
+        ]
+        started = datetime.now(timezone.utc)
+        records.mkdir(parents=True, exist_ok=True)
+        (workspace / "outputs").mkdir(parents=True, exist_ok=True)
+        (records / "prompt.md").write_text(prompt, encoding="utf-8", newline="\n")
+        (records / "command.json").write_text(json.dumps(command, indent=2) + "\n", encoding="utf-8", newline="\n")
+        key = os.environ.get(self.config.api_key_env)
+        if not key:
+            return self._openai_outcome(
+                status="unavailable", response=None, error=f"missing environment variable {self.config.api_key_env}",
+                command=command, prompt=prompt, workspace_hash=workspace_hash, response_path=response_path,
+                records=records, started=started,
+            )
+        system = (
+            "You are an Office WorkAgent in an isolated workspace. Use the provided tools to create the requested "
+            "Office file under outputs/. Work one tool call at a time. Write a complete Python script, run it, reopen "
+            "and verify the file, then write workspace-root deliverables.json with the exact output path. Do not claim "
+            "completion before the file and manifest exist. Return only AgentResponse JSON after the tool work succeeds. "
+            "Input files are read-only and paths must remain workspace-relative."
+        )
+        messages: list[dict[str, object]] = [{"role": "system", "content": system}, {"role": "user", "content": prompt}]
+        deadline = time.monotonic() + self.config.timeout_seconds
+        tool_log = records / "tool_events.jsonl"
+        stdout_lines: list[str] = []
+        stderr_lines: list[str] = []
+        response: AgentResponse | None = None
+        status: Literal["completed", "failed", "unavailable", "timeout"] = "failed"
+        error: str | None = None
+        exit_code: int | None = 0
+        force_finalize = False
+        format_corrections = 0
+        try:
+            for turn in range(self.config.max_tool_turns):
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    status, error = "timeout", f"provider timeout after {self.config.timeout_seconds} seconds"
+                    break
+                payload: dict[str, object] = {"model": self.config.model, "messages": messages, "temperature": 0}
+                if not force_finalize:
+                    payload["tools"] = _native_tool_definitions(include_read_file=not _native_is_office_task(prompt))
+                    payload["tool_choice"] = "auto"
+                request_path = records / f"openai_request_{turn:02d}.json"
+                request_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+                request = urllib.request.Request(
+                    self.config.api_base_url.rstrip("/") + "/chat/completions",
+                    data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                    headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"},
+                    method="POST",
+                )
+                raw = None
+                for api_attempt in range(self.config.api_max_retries + 1):
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise TimeoutError
+                    try:
+                        with urllib.request.urlopen(request, timeout=max(1, int(remaining))) as http_response:
+                            raw = http_response.read()
+                        break
+                    except urllib.error.HTTPError as exc:
+                        if exc.code != 429 or api_attempt >= self.config.api_max_retries:
+                            raise
+                        retry_after = exc.headers.get("Retry-After") if exc.headers else None
+                        try:
+                            delay = float(retry_after) if retry_after else self.config.api_retry_delay_seconds * (2 ** api_attempt)
+                        except ValueError:
+                            delay = self.config.api_retry_delay_seconds * (2 ** api_attempt)
+                        delay = min(delay, max(0.0, deadline - time.monotonic()))
+                        stderr_lines.append(f"HTTP 429 on turn {turn}; retry {api_attempt + 1}/{self.config.api_max_retries} after {delay:.1f}s")
+                        if delay <= 0:
+                            raise
+                        time.sleep(delay)
+                if raw is None:
+                    raise RuntimeError("API retry loop ended without a response")
+                turn_path = records / f"openai_response_{turn:02d}.json"
+                turn_path.write_bytes(raw)
+                parsed = json.loads(raw.decode("utf-8"))
+                stdout_lines.append(json.dumps({"turn": turn, "response": parsed}, ensure_ascii=False))
+                choices = parsed.get("choices") if isinstance(parsed, dict) else None
+                message = choices[0].get("message") if isinstance(choices, list) and choices and isinstance(choices[0], dict) else None
+                if not isinstance(message, dict):
+                    error = "OpenAI-compatible response did not contain a choice message"
+                    break
+                tool_calls = message.get("tool_calls") or []
+                messages.append({"role": "assistant", "content": message.get("content") or "", "tool_calls": tool_calls} if tool_calls else {"role": "assistant", "content": message.get("content") or ""})
+                if tool_calls:
+                    failed = []
+                    for index, call in enumerate(tool_calls):
+                        function = call.get("function") if isinstance(call, dict) else None
+                        function = function if isinstance(function, dict) else {}
+                        name = str(function.get("name") or "unknown")
+                        try:
+                            arguments = json.loads(function.get("arguments") or "{}")
+                        except json.JSONDecodeError:
+                            arguments = {"_raw": function.get("arguments")}
+                        result = _execute_native_tool(name, arguments, workspace, timeout_seconds=max(1, int(remaining)))
+                        event = {"turn": turn, "index": index, "name": name, "arguments": arguments, "result": result}
+                        with tool_log.open("a", encoding="utf-8", newline="\n") as handle:
+                            handle.write(json.dumps(event, ensure_ascii=False) + "\n")
+                        messages.append({"role": "tool", "tool_call_id": str(call.get("id") or f"call-{turn}-{index}"), "content": json.dumps(result, ensure_ascii=False)})
+                        if not result.get("ok"):
+                            failed.append(event)
+                    if failed:
+                        messages.append({"role": "user", "content": "A tool action failed. Inspect the exact tool result, repair the full script or manifest, and continue. Do not claim completion until the output is verified."})
+                    if _native_manifest_ready(workspace):
+                        force_finalize = True
+                        messages.append({"role": "user", "content": "The Office output and manifest are ready. Return only the final JSON object with status, deliverables, summary and input_files_used. Do not call more tools."})
+                    continue
+                content = message.get("content")
+                if not isinstance(content, str) or not content.strip():
+                    messages.append({"role": "user", "content": "Continue the Office task with one tool action. Do not answer empty content."})
+                    continue
+                try:
+                    response = AgentResponse.model_validate_json(content)
+                except ValueError:
+                    if format_corrections >= 2:
+                        error = "invalid provider response after format corrections"
+                        break
+                    format_corrections += 1
+                    messages.append({"role": "user", "content": "Return only one JSON object with exactly status, deliverables, summary and input_files_used. Complete the file and manifest first if needed."})
+                    continue
+                readiness = _native_completion_errors(workspace, response, require_office=_native_is_office_task(prompt))
+                if readiness:
+                    if format_corrections >= 2:
+                        error = "; ".join(readiness)
+                        response = None
+                        break
+                    format_corrections += 1
+                    messages.append({"role": "user", "content": "Completion checks failed: " + "; ".join(readiness) + ". Fix the output or manifest, then return the required JSON."})
+                    response = None
+                    continue
+                response_path.write_text(response.model_dump_json(), encoding="utf-8", newline="\n")
+                shutil.copyfile(response_path, canonical_response_path)
+                shutil.copyfile(response_path, records / "agent_response.json")
+                status = response.status
+                if status == "completed":
+                    break
+                response = None
+                status = "failed"
+                messages.append({"role": "user", "content": "Your previous response reported failure. Use the tools to fix it and only then return completed JSON."})
+            else:
+                error = f"provider exceeded {self.config.max_tool_turns} tool turns"
+        except urllib.error.HTTPError as exc:
+            status = "unavailable" if exc.code in (404, 408, 429, 500, 502, 503, 504) else "failed"
+            error = f"OpenAI-compatible HTTP error {exc.code}: {exc.reason}"
+            stderr_lines.append(error)
+            exit_code = exc.code
+        except urllib.error.URLError as exc:
+            status, error = "unavailable", f"OpenAI-compatible connection failed: {exc.reason}"
+            stderr_lines.append(error)
+        except TimeoutError:
+            status, error = "timeout", f"provider timeout after {self.config.timeout_seconds} seconds"
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            error = str(exc)
+            stderr_lines.append(error)
+        if status == "failed" and error is None:
+            error = "provider did not produce a completed response"
+        (records / "provider.stdout.jsonl").write_text("\n".join(stdout_lines) + ("\n" if stdout_lines else ""), encoding="utf-8", newline="\n")
+        (records / "provider.stderr.txt").write_text("\n".join(stderr_lines) + ("\n" if stderr_lines else ""), encoding="utf-8", newline="\n")
+        return self._openai_outcome(status=status, response=response, error=error, command=command, prompt=prompt, workspace_hash=workspace_hash, response_path=response_path, records=records, started=started, exit_code=exit_code)
+
+    def _openai_outcome(self, *, status, response, error, command, prompt, workspace_hash, response_path, records, started, exit_code=None):
+        ended = datetime.now(timezone.utc)
+        record = ProviderRecord(provider="openai-compatible-api", provider_version="openai-chat-v1", model_identity=self.model_identity,
+            command=command, prompt_hash=canonical_json_hash({"prompt": prompt}), workspace_hash=workspace_hash,
+            started_at=started, ended_at=ended, exit_code=exit_code, status=status,
+            output_ref=sha256_file(response_path) if response is not None and response_path.exists() else None, error=error)
+        (records / "provider_record.json").write_text(json.dumps(record.model_dump(mode="json"), indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
         return ProviderOutcome(status=status, response=response, record=record, error=error)
 
     def _run_native_ollama(

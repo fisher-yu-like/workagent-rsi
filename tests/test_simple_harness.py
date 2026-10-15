@@ -18,7 +18,7 @@ def test_harness_runs_one_normal_office_round_in_one_result_folder(tmp_path: Pat
         expected_constraints={"required_text": "SIMPLE-001"},
     )
 
-    result = Harness(tmp_path / "results").run(task)
+    result = Harness(tmp_path / "results", execution_provider="local_office").run(task)
 
     assert result["state"] == "SUCCEEDED"
     assert result["evaluation"]["passed"] is True
@@ -172,3 +172,20 @@ def test_harness_can_resume_a_saved_run(tmp_path: Path):
     assert resumed["run_id"] == result["run_id"]
     assert resumed["state"] == "SUCCEEDED"
     assert resumed["events"]
+
+
+def test_harness_freezes_full_task_for_replay(tmp_path: Path):
+    task = Task(
+        task_id="replay-smoke",
+        domain="smoke",
+        instruction="hello",
+        expected_constraints={"required_text": "hello"},
+        input_files=["fixtures/input.xlsx"],
+    )
+
+    result = Harness(tmp_path / "results").run(task)
+
+    frozen = json.loads((Path(result["result_dir"]) / "task_full.json").read_text(encoding="utf-8"))
+    assert frozen["task"]["expected_constraints"] == {"required_text": "hello"}
+    assert frozen["task"]["input_files"] == ["fixtures/input.xlsx"]
+    assert len(frozen["task_hash"]) == 64

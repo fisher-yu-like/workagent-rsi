@@ -9,6 +9,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from .contracts import TaskSpec
+from .hashing import canonical_json_hash
 from .office_capabilities import CapabilityReport
 from .run import Run
 from .workagent_provider import WorkAgentConfig
@@ -61,6 +62,15 @@ class Harness:
         (root / "task.json").write_text(
             json.dumps(
                 task.model_dump(mode="json", exclude={"expected_constraints", "input_files"}),
+                indent=2,
+                sort_keys=True,
+            ) + "\n",
+            encoding="utf-8",
+        )
+        frozen_task = task.model_dump(mode="json")
+        (root / "task_full.json").write_text(
+            json.dumps(
+                {"task": frozen_task, "task_hash": canonical_json_hash(frozen_task)},
                 indent=2,
                 sort_keys=True,
             ) + "\n",
