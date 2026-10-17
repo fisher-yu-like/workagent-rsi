@@ -17,7 +17,7 @@ def test_fake_provider_closed_loop_promotes_and_rolls_back(tmp_path: Path):
     task = TaskSpec(
         task_id="word-1",
         domain="word",
-        instruction="Create REQUIRED-001",
+        instruction="Create the document with the required marker",
         expected_constraints={"required_text": "REQUIRED-001"},
     )
     split_hash = canonical_json_hash([task.model_dump(mode="json")])
@@ -63,7 +63,11 @@ def test_fake_provider_closed_loop_promotes_and_rolls_back(tmp_path: Path):
         run_root=tmp_path / "run",
         verification_policy=VerificationPolicy(allowed_targets={"skill.json"}),
     )
+    assert result["baseline"]["develop"]["score"] == 0.0
+    assert result["candidate_reports"]["develop"]["score"] == 1.0
     assert result["decision"]["decision"] == "accept"
     assert registry.champion("office.marker").version == "0.2.0"
+    original_hash = registry.get("office.marker", "0.1.0").content_hash
     RollbackManager(registry).rollback("office.marker", "0.1.0", ["f" * 64])
     assert registry.champion("office.marker").version == "0.1.0"
+    assert registry.champion("office.marker").content_hash == original_hash

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from collections.abc import Callable
 from pathlib import Path
 
@@ -68,7 +69,8 @@ class CandidateVerifier:
             return self._report(candidate, checks, violations, warnings, test_results)
 
         checks.append("compile")
-        completed = self.runner(["py", "-3.12", "-m", "compileall", "-q", str(root)], root, policy.timeout_seconds)
+        completed = self.runner([sys.executable, "-m", "compileall", "-q", str(root)], root, policy.timeout_seconds)
+        test_results["compile_command"] = [sys.executable, "-m", "compileall", "-q", str(root)]
         test_results["compile_exit_code"] = completed.returncode
         if completed.returncode != 0:
             violations.append("candidate workspace compilation failed")
@@ -77,9 +79,9 @@ class CandidateVerifier:
         tests_dir = root / "tests"
         if tests_dir.is_dir():
             checks.append("pytest")
-            completed = self.runner(
-                ["py", "-3.12", "-m", "pytest", "-q", str(tests_dir)], root, policy.timeout_seconds
-            )
+            pytest_command = [sys.executable, "-m", "pytest", "-q", str(tests_dir)]
+            completed = self.runner(pytest_command, root, policy.timeout_seconds)
+            test_results["pytest_command"] = pytest_command
             test_results["pytest_exit_code"] = completed.returncode
             if completed.returncode != 0:
                 violations.append("candidate tests failed")

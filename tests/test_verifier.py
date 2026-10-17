@@ -1,4 +1,5 @@
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -51,6 +52,28 @@ def test_verifier_accepts_schema_valid_skill_patch(tmp_path: Path):
     assert report.critical_violations == []
     assert "compile" in report.executed_checks
     assert report.evidence_refs
+
+
+def test_verifier_uses_active_interpreter_for_compile_and_pytest(tmp_path: Path):
+    (tmp_path / "skill.json").write_text('{"marker_source":"task_id"}', encoding="utf-8")
+    tests_dir = tmp_path / "tests"
+    tests_dir.mkdir()
+    (tests_dir / "test_candidate.py").write_text("def test_candidate(): pass\n", encoding="utf-8")
+    commands = []
+
+    def runner(command, cwd, timeout):
+        commands.append(command)
+        return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+
+    report = CandidateVerifier(runner=runner).verify(
+        candidate(), tmp_path, VerificationPolicy(allowed_targets={"skill.json"})
+    )
+
+    assert report.passed is True
+    assert len(commands) == 2
+    assert all(command[0] == sys.executable for command in commands)
+    assert commands[0][1:4] == ["-m", "compileall", "-q"]
+    assert commands[1][1:4] == ["-m", "pytest", "-q"]
 
 
 def test_verifier_rejects_invalid_json_patch(tmp_path: Path):

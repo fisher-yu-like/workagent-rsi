@@ -168,3 +168,11 @@
 - T00 environment manifest records Git/installed dependencies/tool presence; API connectivity and Office COM were deliberately not probed. The manifest is not evidence of a successful model or COM run.
 - Environment-manifest tests: 2 passed. An initial in-memory Python runner failed before pytest due PowerShell quoting; the failed attempt is recorded in the local progress log. A first implementation of Git status parsing lost a leading space and was corrected after a focused test failed.
 - External formal data work is marked blocked because source/license evidence remains incomplete; no external dataset was downloaded.
+
+### Hardening T02 local failure explanation (2026-10-17)
+
+- On main@43f89d5, raw local full suite: 149 passed, 4 failed. Three failures shared a CandidateVerifier command using unavailable `py -3.12` (compilation exit 103); the fourth was a Word fixture that copied `REQUIRED-001` into the title and incorrectly gave the bad baseline full credit.
+- New independent command/artifact assertions first failed 2/2 for those exact causes; raw stdout/stderr and invocation are retained under `project_artifacts/results/hardening-v2/T02/20261017-red/`.
+- CandidateVerifier now uses `sys.executable` for compile and pytest. The Word fixture excludes the expected token from its instruction; closed-loop tests assert baseline 0, repaired candidate 1, promotion, and rollback content hash.
+- Focused tests: 18 passed. Full local suite: 157 passed in 113.60s, exit 0; raw invocation and output under `project_artifacts/results/hardening-v2/T02/20261017-full/`. Details in `project_artifacts/formal_study/hardening_t02_failure_explanation.md`.
+- T01's independent R01-R12 review corpus is pending. No live API/model, Office COM, rendering, or external formal data was validated in this stage.
