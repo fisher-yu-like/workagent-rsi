@@ -160,3 +160,11 @@
 - 阶段 5 文档与 manifest 已提交：`94ee97c`（`record real-model RSI pilot`）。
 - 已推送到 `origin/codex/closed-loop-rsi`；推送后本地与远程 hash 均为 `94ee97c274bcf637dc485e42e1d8f3a19db2fbc8`。
 - 收尾时工作树干净，结果目录仍保留在 `project_artifacts/results/qualification/real-model/`，并未把被忽略的二进制/运行中间文件混入提交。
+
+### Hardening T00 local baseline (2026-10-17)
+
+- Isolated branch `feat/evaluation-rsi-hardening` starts at `main@43f89d54daed37aba9f0e79a7df79b3288b2f993`; the user's original worktree and untracked notes were not changed.
+- Explicit interpreter: `D:\ws\Projects\WorkAgent-RSI\.venv\Scripts\python.exe`, Python 3.13.6. Raw full suite: 149 passed, 4 failed, exit 1. Exact command, cwd, dependency versions, timestamps, stdout/stderr and hashes are in `project_artifacts/results/hardening-v2/T00/20261017T224647995/baseline/`.
+- T00 environment manifest records Git/installed dependencies/tool presence; API connectivity and Office COM were deliberately not probed. The manifest is not evidence of a successful model or COM run.
+- Environment-manifest tests: 2 passed. An initial in-memory Python runner failed before pytest due PowerShell quoting; the failed attempt is recorded in the local progress log. A first implementation of Git status parsing lost a leading space and was corrected after a focused test failed.
+- External formal data work is marked blocked because source/license evidence remains incomplete; no external dataset was downloaded.
