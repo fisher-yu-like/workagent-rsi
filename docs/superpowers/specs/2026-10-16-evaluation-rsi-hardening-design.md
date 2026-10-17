@@ -1,4 +1,4 @@
-﻿# Evaluation/RSI hardening design constraints (frozen source extract)
+# Evaluation/RSI hardening design constraints (frozen source extract)
 
 Source: local WorkAgent_RSI_Codex_Execution_Plan_20261016.md, section 2; copied on 2026-10-17 for T00. This is a design contract, not a completed implementation report.
 
@@ -66,5 +66,3 @@ Source: local WorkAgent_RSI_Codex_Execution_Plan_20261016.md, section 2; copied 
 T03建立共用 `live_call_policy.json` 模型：`allow_live_calls=false`、`approved_by_user=false`、provider、model、endpoint、max_model_calls、max_tool_calls、max_wall_seconds、max_cost_usd、批准时间/来源。真实调用前所有适用上限必须有具体数值并由用户确认；费用无法观测时以用户认可的调用/token/时间硬上限替代，不默认无限。
 
 只在以下情况请求用户：凭据/账户接入、安装与系统/Officeworker配置、无法判断的任务要求、人工盲标、预算不足或需外部发布/许可决定。用户已有授权且范围未变时不重复询问。受阻task写blocked原因并继续独立离线task，不能以elapsed time当批准。
-
-
