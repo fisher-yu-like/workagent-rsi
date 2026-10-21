@@ -176,3 +176,12 @@
 - CandidateVerifier now uses `sys.executable` for compile and pytest. The Word fixture excludes the expected token from its instruction; closed-loop tests assert baseline 0, repaired candidate 1, promotion, and rollback content hash.
 - Focused tests: 18 passed. Full local suite: 157 passed in 113.60s, exit 0; raw invocation and output under `project_artifacts/results/hardening-v2/T02/20261017-full/`. Details in `project_artifacts/formal_study/hardening_t02_failure_explanation.md`.
 - T01's independent R01-R12 review corpus is pending. No live API/model, Office COM, rendering, or external formal data was validated in this stage.
+
+### Hardening handoff and T01 (2026-10-21)
+
+- Continued existing `feat/evaluation-rsi-hardening@5c727a3`; original `WorkAgent-RSI` checkout, branch and untracked user notes preserved.
+- Fresh unchanged engineering baseline: 157 passed, exit0. Evidence: `results/hardening-v2/handoff-legacy-baseline/20261021T074934481123Z/`. Two earlier runner/environment attempts are retained separately: long-path WinError206 and missing basetemp parent WinError3; neither is T01 functional evidence.
+- T01: 12 independent active red tests, one passing exact-formula control, one passing case-manifest integrity check; 12 failed / 2 passed / 0 errors, exit1. Evidence: `results/hardening-v2/T01/20261021T074951807941Z/`; fixture observations and Office files are preserved in generated.zip.
+- Each R01–R12 has a source-independent truth, minimal input, desired behavior, actual observation and owner task. No xfail, skip or collection suppression was added. These defects remain open.
+- Canonical copy of the supplied plan and a common task ledger are now in this worktree. T03 is the only primary task in_progress.
+- No live model calls or external data. R12 runs only authored probe code against its own temporary parent sentinel, with a sanitized environment and a dummy value; it does not read real credentials or protected data.
