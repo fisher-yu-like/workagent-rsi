@@ -115,3 +115,15 @@ Phase 1B local mock runs are real executions of the repository code. They are no
 Phase 2 artifacts are designs and plans. They contain no executed training, dataset experiment or benchmark score.
 
 Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Microsoft Office COM reopening. It is not an external WorkAgent run, hidden evaluation, candidate-generation run, or E01-E12 RSI experiment.
+
+## 2026-10-21 hardening handoff
+
+| Artifact | Purpose | Evidence boundary |
+|---|---|---|
+| `formal_study/hardening_handoff_baseline.json` | Canonical worktree, commits, baseline and validation records | Local engineering only |
+| `formal_study/hardening_task_ledger.json` | T00–T35 status and R01–R12 repair ownership | T01 defects remain open |
+| `formal_study/hardening_t01_review_baseline.json` | Tracked independent red observations and owner mapping | 12 failures captured, not repaired |
+| `../tests/fixtures/review_cases/manifest.json` | Minimal inputs, independent truths and desired outcomes | Authored fixtures; no real protected data |
+| `../src/workagent_rsi/run_contracts.py`, `evidence_bundle.py` | Additive outcome/usage/protocol and portable evidence contracts | 17 focused tests pass; later pipeline integration pending |
+| `results/hardening-v2/handoff-final-verified/20261021T080224738698Z/` | Raw final invocation, hashes, logs and generated fixture archive | 176 pass / 12 expected-open failures |
+| `results/hardening-v2/T03/20261021T080824087553Z/contracts/` | Exported schemas and actual relocated, hash-verified bundle | Portable engineering evidence, no live service qualification |

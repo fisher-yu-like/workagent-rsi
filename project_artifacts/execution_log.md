@@ -185,3 +185,14 @@
 - Each R01–R12 has a source-independent truth, minimal input, desired behavior, actual observation and owner task. No xfail, skip or collection suppression was added. These defects remain open.
 - Canonical copy of the supplied plan and a common task ledger are now in this worktree. T03 is the only primary task in_progress.
 - No live model calls or external data. R12 runs only authored probe code against its own temporary parent sentinel, with a sanitized environment and a dummy value; it does not read real credentials or protected data.
+
+### Hardening T03 and final handoff validation (2026-10-21)
+
+- Added strict, versioned ExecutionOutcome/AssessmentOutcome/RunUsage/ProtocolCapabilities and explicit legacy adapters. Unknown counts/costs remain null, observed zero requires available telemetry, and ambiguous old failure causes remain null. Old report fields and pipeline decisions are unchanged.
+- Added exclusive evidence bundles with relative paths, SHA-256 and size validation, metadata credential rejection and separately recorded executor/candidate/judge capabilities. Arbitrary evidence file bodies must already be sanitized by the caller.
+- T03 interface red: two expected missing-module collection errors in `results/hardening-v2/T03-red/20261021T075209002525Z/`. Final focused checks: 17 passed in `results/hardening-v2/T03/20261021T075640278743Z/`.
+- Refined R10 to preserve max_attempts as execution retries; the future repair loop must use explicit repair_policy. Latest T01: 12 failed / 2 passed / 0 errors in `results/hardening-v2/T01-final/20261021T075943272086Z/`.
+- Final full suite: 176 passed / 12 failed / 0 errors / 0 skips, exit1, in `results/hardening-v2/handoff-final-verified/20261021T080224738698Z/`. Exactly the twelve expected-open R01–R12 cases fail. All tested source hashes were rechecked after the run.
+- Actual schema export, evidence bundle and successful relocation/integrity check: `results/hardening-v2/T03/20261021T080824087553Z/contracts/`. The bundle includes raw logs, source hashes, independent observations, owner map and generated fixtures.
+- T00/T01/T02/T03 are completed as scoped; later repairs are pending. The original worktree, branch, user notes and historical run evidence are preserved. No live model, external benchmark or three-domain rendering qualification was run.
+- Local commits only; no push, PR, merge or deployment.

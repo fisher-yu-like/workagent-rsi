@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-21T07:58:04.221041+00:00",
+  "updated_at": "2026-10-21T08:08:25.007276+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI-hardening",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -15,8 +15,8 @@
     {
       "task_id": "T01",
       "status": "completed",
-      "evidence": "project_artifacts/results/hardening-v2/T01/20261021T074951807941Z",
-      "note": "Delivered as active red counterexamples; defects remain open."
+      "evidence": "project_artifacts/results/hardening-v2/T01-final/20261021T075943272086Z",
+      "note": "Evidence delivery complete; all twelve defects remain expected-open."
     },
     {
       "task_id": "T02",
@@ -26,9 +26,9 @@
     },
     {
       "task_id": "T03",
-      "status": "in_progress",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts",
+      "note": "Additive outcome/protocol/usage types, compatibility adapters and portable bundle; 17 focused tests pass. No later pipeline repair claimed."
     },
     {
       "task_id": "T04",
@@ -343,5 +343,26 @@
         "src/workagent_rsi/execution_sandbox.py"
       ]
     }
-  }
+  },
+  "implementation_commits": {
+    "T00_T02": "5c727a3",
+    "T01_initial": "9290197",
+    "T03_and_final_handoff": "commit containing this ledger; exact tested sources hashed in final run.json"
+  },
+  "full_validation": {
+    "passed": 176,
+    "expected_open_failed": 12,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/handoff-final-verified/20261021T080224738698Z"
+  },
+  "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
+  "next_recommended_tasks": [
+    "T09",
+    "T10",
+    "T11",
+    "T12",
+    "T17"
+  ]
 }

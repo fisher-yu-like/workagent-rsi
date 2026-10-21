@@ -157,8 +157,8 @@
         "src/workagent_rsi/repair_loop.py"
       ],
       "truth_source": "Authored stub writes wrong first docx and correct second docx if called again.",
-      "minimal_input": "Task required text; max_attempts2; local stub, no real provider.",
-      "expected": "Final assessment failure should enter explicit bounded repair; current max_attempts is execution retry only.",
+      "minimal_input": "Task required text; max_attempts1; explicit repair_policy when supported; authored local adapter, no real provider.",
+      "expected": "Final assessment failure enters explicit bounded repair; max_attempts retains execution-retry semantics.",
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion"
     },

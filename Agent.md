@@ -88,6 +88,15 @@ A candidate skill version can be promoted only if all conditions hold:
 
 ## Current state
 
+For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
+and `hardening_handoff_baseline.json`. As of 2026-10-21, T00/T02 are reused and
+T01/T03 are delivered in the existing `feat/evaluation-rsi-hardening` worktree.
+T01 completion means independent red evidence is captured: R01–R12 remain
+unresolved, active failures, with responsible repair tasks in the manifest.
+Full-suite validation is 176 passed / 12 expected-open failures / 0 errors;
+do not describe it as all-green or as live model/sandbox qualification.
+The entries below preserve historical stage evidence.
+
 - Literature review: completed for the two specified arXiv works.
 - Phase 1A design: completed and approved.
 - Phase 1B local mock pipeline: implemented and validated.

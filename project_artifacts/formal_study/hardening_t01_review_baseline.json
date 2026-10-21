@@ -1,14 +1,15 @@
 {
   "schema_version": "review-red-baseline-v1",
-  "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
+  "baseline_commit": "9290197a60bd4318905056df63efac8a87ce0151",
   "test_exit_code": 1,
   "counts": {
     "failed": 12,
     "passed_controls_and_manifest": 2,
     "errors": 0
   },
-  "evidence": "project_artifacts/results/hardening-v2/T01/20261021T074951807941Z",
-  "claim_boundary": "T01 counterexamples captured, not fixed. No real model, rendering or external benchmark qualification.",
+  "evidence": "project_artifacts/results/hardening-v2/T01-final/20261021T075943272086Z",
+  "initial_red_evidence": "project_artifacts/results/hardening-v2/T01/20261021T074951807941Z",
+  "claim_boundary": "Counterexamples captured, not fixed. R10 preserves max_attempts as execution retry and requests explicit repair policy when supported.",
   "cases": [
     {
       "case_id": "R01",
@@ -27,7 +28,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R01: file readability cannot establish the unmet analysis requirements\nassert not ('PASS' == 'PASS'\n  \n    PASS and 100.0 == 100)\n +  where 100.0 = ScoreReport(task_id='R01', spec_hash='187bd19a3281e3c04c7f123fc618f15f3182b1c6f6241fa997344f877f28faf1', evaluator_ide...f56da11e113b7d7bdd65752a1ec466060c53076a3eef74e1dd3dc1e91'], scope_note='Only the declared requirements are assessed.').total_score"
+      "assertion": "AssertionError: R01: file readability cannot establish the unmet analysis requirements\nassert not ('PASS' == 'PASS'\n  \n    PASS and 100.0 == 100)\n +  where 100.0 = ScoreReport(task_id='R01', spec_hash='187bd19a3281e3c04c7f123fc618f15f3182b1c6f6241fa997344f877f28faf1', evaluator_ide...8f5d7da7eb40f34f5526e14516bca49cabb0804468fd949625e828974'], scope_note='Only the declared requirements are assessed.').total_score"
     },
     {
       "case_id": "R02",
@@ -44,7 +45,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R02: a hit in paragraph 1 does not satisfy paragraph 2\nassert 'PASS' != 'PASS'\n +  where 'PASS' = CheckRecord(requirement_id='required', status='PASS', completion=1.0, location=Location(artifact='output', sheet=None,...='Required conclusion', evidence_refs=['90a64dc8880211d5aa16fa63c2209506c46fc19e991ac41b093e30a9ed239dce'], message='').status"
+      "assertion": "AssertionError: R02: a hit in paragraph 1 does not satisfy paragraph 2\nassert 'PASS' != 'PASS'\n +  where 'PASS' = CheckRecord(requirement_id='required', status='PASS', completion=1.0, location=Location(artifact='output', sheet=None,...='Required conclusion', evidence_refs=['ab2e3da6722e234499f9b08edca4c1e7aeae9899b81d8038aabd4b3a33734d75'], message='').status"
     },
     {
       "case_id": "R03",
@@ -63,7 +64,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R03: text existence alone cannot establish visible delivery\nassert 'PASS' != 'PASS'\n +  where 'PASS' = ScoreReport(task_id='review', spec_hash='de5eccea5adda693472f4f381adc5d7bec727293c777bbea182e9969c0740f6d', evaluator_...b97e42bc6480cb9eeecacfbc3bb28e0343e913fc1dc4111572d83d9d4'], scope_note='Only the declared requirements are assessed.').acceptance_status"
+      "assertion": "AssertionError: R03: text existence alone cannot establish visible delivery\nassert 'PASS' != 'PASS'\n +  where 'PASS' = ScoreReport(task_id='review', spec_hash='de5eccea5adda693472f4f381adc5d7bec727293c777bbea182e9969c0740f6d', evaluator_...4f180ba47a2b0df28d93b5404e724df7029badbf86f2e5e6f1eb1b8db'], scope_note='Only the declared requirements are assessed.').acceptance_status"
     },
     {
       "case_id": "R04",
@@ -80,7 +81,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R04: containment alone is not evidence of an unobscured slide; review is acceptable\nassert 'PASS' != 'PASS'\n +  where 'PASS' = CheckRecord(requirement_id='required', status='PASS', completion=1.0, location=Location(artifact='output', sheet=None,...served=[], expected=[], evidence_refs=['7cdea27987114cc5d4bfae7aff213ec5a7ddddedcb6cbe4dfd26d44b338eaff7'], message='').status"
+      "assertion": "AssertionError: R04: containment alone is not evidence of an unobscured slide; review is acceptable\nassert 'PASS' != 'PASS'\n +  where 'PASS' = CheckRecord(requirement_id='required', status='PASS', completion=1.0, location=Location(artifact='output', sheet=None,...served=[], expected=[], evidence_refs=['3efe92fbe390318030fdb5e8c75a187c68fba17d3ab0c0235cd85a704c7a0b79'], message='').status"
     },
     {
       "case_id": "R05",
@@ -97,7 +98,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R05: allowed equivalence requires semantic validation or an explicit capability/spec gap\nassert 'FAIL' != 'FAIL'\n +  where 'FAIL' = CheckRecord(requirement_id='required', status='FAIL', completion=0.0, location=Location(artifact='output', sheet='Shee...expected='=SUM(B2:B3)', evidence_refs=['7007416b1ef80b9243469f7181b28151f525faf15273a91d608204b6d4566dac'], message='').status"
+      "assertion": "AssertionError: R05: allowed equivalence requires semantic validation or an explicit capability/spec gap\nassert 'FAIL' != 'FAIL'\n +  where 'FAIL' = CheckRecord(requirement_id='required', status='FAIL', completion=0.0, location=Location(artifact='output', sheet='Shee...expected='=SUM(B2:B3)', evidence_refs=['7375f87d0ef42ddeb69b7b080be7fd8ff73a11ecea3f41280d66a23f4c232d1e'], message='').status"
     },
     {
       "case_id": "R06",
@@ -114,7 +115,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R06: compileall on a JSON-only directory does not validate the proposed skill schema\nassert True is False\n +  where True = VerificationReport(candidate_id='review', passed=True, critical_violations=[], warnings=['candidate workspace has no c...xit_code': 0}, artifact_results={}, evidence_refs=['a1e20509f83ba37ac42a3599c36e49657f7f7100acb5cf561d1aa1669607e10a']).passed"
+      "assertion": "AssertionError: R06: compileall on a JSON-only directory does not validate the proposed skill schema\nassert True is False\n +  where True = VerificationReport(candidate_id='review', passed=True, critical_violations=[], warnings=['candidate workspace has no c...xit_code': 0}, artifact_results={}, evidence_refs=['227f6edf2529641a109eb1e0dd51d359cadd523bf7bf6180668c525054b5bb20']).passed"
     },
     {
       "case_id": "R07",
@@ -131,7 +132,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R07: parent version alone does not supply current champion instructions\nassert 'CHAMPION_RULE_read_every_input_row_before_aggregation' in '{\"model\": \"offline-review-stub\", \"temperature\": 0, \"messages\": [{\"role\": \"system\", \"content\": \"Return only one JSON o...p\\\\\",\\\\\"mode\\\\\":\\\\\"structured\\\\\",\\\\\"tasks\\\\\":[],\\\\\"issue_groups\\\\\":{}}\"}], \"response_format\": {\"type\": \"json_object\"}}'\n +  where '{\"model\": \"offline-review-stub\", \"temperature\": 0, \"messages\": [{\"role\": \"system\", \"content\": \"Return only one JSON o...p\\\\\",\\\\\"mode\\\\\":\\\\\"structured\\\\\",\\\\\"tasks\\\\\":[],\\\\\"issue_groups\\\\\":{}}\"}], \"response_format\": {\"type\": \"json_object\"}}' = <function dumps at 0x00000209BE409DA0>({'model': 'offline-review-stub', 'temperature': 0, 'messages': [{'role': 'system', 'content': 'Return only one JSON ob...v1\",\"split\":\"develop\",\"mode\":\"structured\",\"tasks\":[],\"issue_groups\":{}}'}], 'response_format': {'type': 'json_object'}})\n +    where <function dumps at 0x00000209BE409DA0> = json.dumps"
+      "assertion": "AssertionError: R07: parent version alone does not supply current champion instructions\nassert 'CHAMPION_RULE_read_every_input_row_before_aggregation' in '{\"model\": \"offline-review-stub\", \"temperature\": 0, \"messages\": [{\"role\": \"system\", \"content\": \"Return only one JSON o...p\\\\\",\\\\\"mode\\\\\":\\\\\"structured\\\\\",\\\\\"tasks\\\\\":[],\\\\\"issue_groups\\\\\":{}}\"}], \"response_format\": {\"type\": \"json_object\"}}'\n +  where '{\"model\": \"offline-review-stub\", \"temperature\": 0, \"messages\": [{\"role\": \"system\", \"content\": \"Return only one JSON o...p\\\\\",\\\\\"mode\\\\\":\\\\\"structured\\\\\",\\\\\"tasks\\\\\":[],\\\\\"issue_groups\\\\\":{}}\"}], \"response_format\": {\"type\": \"json_object\"}}' = <function dumps at 0x000001C2D6E79DA0>({'model': 'offline-review-stub', 'temperature': 0, 'messages': [{'role': 'system', 'content': 'Return only one JSON ob...v1\",\"split\":\"develop\",\"mode\":\"structured\",\"tasks\":[],\"issue_groups\":{}}'}], 'response_format': {'type': 'json_object'}})\n +    where <function dumps at 0x000001C2D6E79DA0> = json.dumps"
     },
     {
       "case_id": "R08",
@@ -167,7 +168,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R09: synthetic mixed identities must not yield a formal global claim or a combined mean\nassert (True is not True)\n +  where True = <built-in method get of dict object at 0x00000209C1D90980>('claims_allowed')\n +    where <built-in method get of dict object at 0x00000209C1D90980> = {'results_root': 'D:\\\\ws\\\\Projects\\\\WorkAgent-RSI-hardening\\\\.pytest-tmp\\\\h-df7909fa\\\\test_R09_mixed_pilot_formal_ca0', 'source_summary_count': 2, 'completed_experiments': 2, 'unavailable_experiments': 0, ...}.get"
+      "assertion": "AssertionError: R09: synthetic mixed identities must not yield a formal global claim or a combined mean\nassert (True is not True)\n +  where True = <built-in method get of dict object at 0x000001C2DA756B40>('claims_allowed')\n +    where <built-in method get of dict object at 0x000001C2DA756B40> = {'results_root': 'D:\\\\ws\\\\Projects\\\\WorkAgent-RSI-hardening\\\\.pytest-tmp\\\\h-2c8b389c\\\\test_R09_mixed_pilot_formal_ca0', 'source_summary_count': 2, 'completed_experiments': 2, 'unavailable_experiments': 0, ...}.get"
     },
     {
       "case_id": "R10",
@@ -181,12 +182,12 @@
         "src/workagent_rsi/repair_loop.py"
       ],
       "truth_source": "Authored stub writes wrong first docx and correct second docx if called again.",
-      "minimal_input": "Task required text; max_attempts2; local stub, no real provider.",
-      "expected": "Final assessment failure should enter explicit bounded repair; current max_attempts is execution retry only.",
+      "minimal_input": "Task required text; max_attempts1; explicit repair_policy when supported; authored local adapter, no real provider.",
+      "expected": "Final assessment failure enters explicit bounded repair; max_attempts retains execution-retry semantics.",
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R10: final assessment failure does not yet enter a repair loop; max_attempts currently only retries execution failures\nassert (1 == 2)\n +  where 1 = len(['R10'])"
+      "assertion": "AssertionError: R10: final assessment failure needs explicit bounded repair; keep max_attempts as execution retry only\nassert (1 == 2)\n +  where 1 = len(['R10'])"
     },
     {
       "case_id": "R11",
@@ -204,7 +205,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R11: known code failure needs an explicit failed-task denominator and develop feedback, with unobserved quality null\nassert (None == 0)\n +  where None = <built-in method get of dict object at 0x00000209C1DC6480>('execution_success_rate')\n +    where <built-in method get of dict object at 0x00000209C1DC6480> = {'split': 'develop', 'status': 'incomplete', 'task_count': 1, 'completed_count': 0, ...}.get"
+      "assertion": "AssertionError: R11: known code failure needs an explicit failed-task denominator and develop feedback, with unobserved quality null\nassert (None == 0)\n +  where None = <built-in method get of dict object at 0x000001C2DA80E3C0>('execution_success_rate')\n +    where <built-in method get of dict object at 0x000001C2DA80E3C0> = {'split': 'develop', 'status': 'incomplete', 'task_count': 1, 'completed_count': 0, ...}.get"
     },
     {
       "case_id": "R12",
@@ -223,7 +224,7 @@
       "baseline_state": "expected-open",
       "evidence": "observation.json is written before the contract assertion",
       "observed_test_status": "failed",
-      "assertion": "AssertionError: R12: cwd/path validation does not prevent code from reading a parent or inheriting a host environment\nassert {'outside': '...nly-sentinel'} == {'outside': N...'dummy': None}\n  \n  Differing items:\n  {'dummy': 'dummy-only-sentinel'} != {'dummy': None}\n  {'outside': 'authored-parent-sentinel'} != {'outside': None}\n  Use -v to get more diff"
+      "assertion": "AssertionError: R12: cwd/path validation does not prevent code from reading a parent or inheriting a host environment\nassert {'outside': '...nly-sentinel'} == {'outside': N...'dummy': None}\n  \n  Differing items:\n  {'outside': 'authored-parent-sentinel'} != {'outside': None}\n  {'dummy': 'dummy-only-sentinel'} != {'dummy': None}\n  Use -v to get more diff"
     }
   ]
 }

@@ -5,6 +5,7 @@ All artifacts are generated locally. No model, rendering or external data is use
 """
 
 import importlib.util
+import inspect
 import json
 from pathlib import Path
 
@@ -172,10 +173,17 @@ def test_R10_final_assessment_failure_enters_bounded_repair(tmp_path, monkeypatc
     monkeypatch.setattr("workagent_rsi.run.WorkAgentOfficeAdapter", LocalRepairableAdapter)
     task = TaskSpec(task_id="R10", domain="word", instruction="Create the required conclusion.",
                     expected_constraints={"required_text": "Required conclusion"})
-    result = Harness(tmp_path / "results", workagent_config=WorkAgentConfig(verify_com=False)).run(task, max_attempts=2)
-    observe(tmp_path, "R10", result=result, adapter_calls=calls, execution_kind="authored local stub; no model")
+    harness = Harness(tmp_path / "results", workagent_config=WorkAgentConfig(verify_com=False))
+    options = {"max_attempts": 1}
+    repair_supported = "repair_policy" in inspect.signature(harness.run).parameters
+    if repair_supported:
+        from workagent_rsi.repair_loop import RepairPolicy
+        options["repair_policy"] = RepairPolicy(max_repairs=1)
+    result = harness.run(task, **options)
+    observe(tmp_path, "R10", result=result, adapter_calls=calls, repair_policy_supported=repair_supported,
+            execution_kind="authored local stub; no model")
     assert len(calls) == 2 and result["state"] == "SUCCEEDED", (
-        "R10: final assessment failure does not yet enter a repair loop; max_attempts currently only retries execution failures"
+        "R10: final assessment failure needs explicit bounded repair; keep max_attempts as execution retry only"
     )
 
 

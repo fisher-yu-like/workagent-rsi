@@ -1,3 +1,9 @@
+"""Capture offline pytest evidence, including active expected-open regressions.
+
+Usage: <explicit-python> run_hardening_checks.py T01 tests/test_review_regressions.py
+An exit of 1 is preserved, never converted into a successful all-green claim.
+"""
+
 from pathlib import Path
 from datetime import datetime, timezone
 import hashlib
@@ -7,13 +13,19 @@ import sys
 import xml.etree.ElementTree as ET
 import uuid
 import zipfile
+import argparse
+import re
 
 REPO = next(path for path in Path(__file__).resolve().parents if (path / "pyproject.toml").is_file() and (path / "src").is_dir())
 sys.path.insert(0, str(REPO / 'src'))
 from workagent_rsi.environment_manifest import capture_environment
 
-label = sys.argv[1]
-arguments = sys.argv[2:]
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('label', help='Evidence task/run label; letters, digits, hyphen or underscore')
+options, arguments = parser.parse_known_args()
+label = options.label
+if not re.fullmatch(r'[A-Za-z0-9_-]+', label):
+    parser.error('label must use letters, digits, hyphen or underscore')
 stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
 root = REPO / 'project_artifacts/results/hardening-v2' / label / stamp
 root.mkdir(parents=True, exist_ok=False)
