@@ -1,7 +1,7 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-21T08:08:25.007276+00:00",
-  "working_tree": "D:/ws/Projects/WorkAgent-RSI-hardening",
+  "updated_at": "2026-10-23T12:51:08.108819+00:00",
+  "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
   "source_plan": "docs/superpowers/plans/2026-10-16-evaluation-rsi-hardening.md",
@@ -28,7 +28,8 @@
       "task_id": "T03",
       "status": "completed",
       "evidence": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts",
-      "note": "Additive outcome/protocol/usage types, compatibility adapters and portable bundle; 17 focused tests pass. No later pipeline repair claimed."
+      "note": "Outcome/protocol/usage and portable bundle delivered previously. Section 2.7 strict default-off live-call approval contract and JSON template added; 33 focused tests pass. Runtime reservations/counters remain T22/T31, not claimed implemented.",
+      "policy_evidence": "project_artifacts/results/hardening-v2/T03-policy/20261023T125043946935Z"
     },
     {
       "task_id": "T04",
@@ -359,10 +360,11 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T09",
-    "T10",
-    "T11",
-    "T12",
-    "T17"
+    "T04",
+    "T05",
+    "T06",
+    "T07",
+    "T08",
+    "T09"
   ]
 }

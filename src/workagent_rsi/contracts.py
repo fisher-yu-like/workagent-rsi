@@ -5,7 +5,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 # Additive v2 contracts. Existing report schemas and callers are unchanged.
-from .run_contracts import AssessmentOutcome, ExecutionOutcome, FailureOrigin, ProtocolCapabilities, RunUsage
+from .run_contracts import AssessmentOutcome, ExecutionOutcome, FailureOrigin, LiveCallPolicy, ProtocolCapabilities, RunUsage
 
 
 RiskLevel = Literal["low", "medium", "high"]

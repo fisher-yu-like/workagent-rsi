@@ -196,3 +196,7 @@
 - Actual schema export, evidence bundle and successful relocation/integrity check: `results/hardening-v2/T03/20261021T080824087553Z/contracts/`. The bundle includes raw logs, source hashes, independent observations, owner map and generated fixtures.
 - T00/T01/T02/T03 are completed as scoped; later repairs are pending. The original worktree, branch, user notes and historical run evidence are preserved. No live model, external benchmark or three-domain rendering qualification was run.
 - Local commits only; no push, PR, merge or deployment.
+
+## 2026-10-23 ? T03 section 2.7 completion
+
+Current work directory is `D:/ws/Projects/WorkAgent-RSI`, existing branch `feat/evaluation-rsi-hardening`. Added strict `LiveCallPolicy` and default-off JSON configuration: explicit approval, matching provider/model/endpoint, finite call/tool/time caps, optional observed-cost cap, timezone-aware approval source, and credential-free endpoints. It is an additive approval contract; T22/T31 runtime counters and orchestration are still pending. Red: missing interface, 1 collection error (not a behavioral defect); green: 33 passed / 0 failed. Evidence: `project_artifacts/results/hardening-v2/T03-policy-red/20261023T125005764891Z` and `project_artifacts/results/hardening-v2/T03-policy/20261023T125043946935Z`. No live model calls.

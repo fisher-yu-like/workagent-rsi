@@ -7,9 +7,11 @@ existing evaluator decisions.
 
 from __future__ import annotations
 
+from datetime import datetime
+from urllib.parse import unquote, urlsplit
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 
 FailureOrigin = Literal["environment", "agent_execution", "artifact_defect", "assessment_gap", "spec_gap"]
@@ -19,6 +21,67 @@ USAGE_FIELDS = ("tokens", "tool_calls", "steps", "wall_seconds", "cost_usd")
 
 class RunContract(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True, allow_inf_nan=False)
+
+
+class LiveCallPolicy(RunContract):
+    """Approval contract, not a spend counter; T22/T31 own runtime accounting.
+
+    Null cost is allowed only with explicit call/tool/time caps and an approval
+    source recording the user's accepted alternative. No credentials belong here.
+    """
+
+    schema_version: Literal["live-call-policy-v1"] = "live-call-policy-v1"
+    allow_live_calls: bool = False
+    approved_by_user: bool = False
+    provider: str | None = None
+    model: str | None = None
+    endpoint: str | None = None
+    max_model_calls: int | None = Field(default=None, ge=1)
+    max_tool_calls: int | None = Field(default=None, ge=1)
+    max_wall_seconds: int | None = Field(default=None, ge=1)
+    max_cost_usd: float | None = Field(default=None, gt=0)
+    approved_at: datetime | None = None
+    approval_source: str | None = None
+
+    @field_validator("provider", "model", "approval_source")
+    @classmethod
+    def nonblank_metadata(cls, value):
+        if value is not None and (not value.strip() or value != value.strip()):
+            raise ValueError("metadata must be nonblank without surrounding whitespace")
+        return value
+
+    @field_validator("endpoint")
+    @classmethod
+    def credential_free_endpoint(cls, value):
+        if value is None:
+            return value
+        parsed = urlsplit(value)
+        forbidden = {"token", "api_key", "apikey", "password", "secret", "authorization"}
+        segments = set(unquote(parsed.path).lower().split("/"))
+        if (parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username is not None
+                or parsed.password is not None or parsed.query or parsed.fragment or segments & forbidden
+                or any(c.isspace() for c in value)):
+            raise ValueError("endpoint must be HTTP(S) without credentials, query or fragment")
+        return value
+
+    @model_validator(mode="after")
+    def enabled_requires_explicit_approval(self):
+        if self.approved_at is not None and self.approved_at.utcoffset() is None:
+            raise ValueError("approval timestamp must include a timezone")
+        if self.allow_live_calls:
+            required = (self.provider, self.model, self.max_model_calls, self.max_tool_calls,
+                        self.max_wall_seconds, self.approved_at, self.approval_source)
+            if not self.approved_by_user or any(value is None for value in required):
+                raise ValueError("live calls require explicit user approval, identity and hard caps")
+            if self.provider != "codex-cli" and self.endpoint is None:
+                raise ValueError("HTTP providers require an explicit endpoint")
+        return self
+
+    def require_authorized(self, *, provider: str, model: str, endpoint: str | None) -> None:
+        if not self.allow_live_calls or not self.approved_by_user:
+            raise ValueError("live calls disabled")
+        if (provider, model, endpoint) != (self.provider, self.model, self.endpoint):
+            raise ValueError("live call identity differs from approved policy")
 
 
 class RunUsage(RunContract):

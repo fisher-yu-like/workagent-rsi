@@ -1,0 +1,14 @@
+{
+  "schema_version": "live-call-policy-v1",
+  "allow_live_calls": false,
+  "approved_by_user": false,
+  "provider": null,
+  "model": null,
+  "endpoint": null,
+  "max_model_calls": null,
+  "max_tool_calls": null,
+  "max_wall_seconds": null,
+  "max_cost_usd": null,
+  "approved_at": null,
+  "approval_source": null
+}
