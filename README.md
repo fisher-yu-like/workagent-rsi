@@ -44,15 +44,18 @@ py -3.12 project_artifacts/phase3_experiments/scripts/run_b0_office_qualificatio
 
 ## Current gate
 
-The active local development baseline is the `feat/evaluation-rsi-hardening`
-worktree at `D:/ws/Projects/WorkAgent-RSI-hardening`. See the
-[shared task ledger](project_artifacts/formal_study/hardening_task_ledger.json),
-[handoff baseline](project_artifacts/formal_study/hardening_handoff_baseline.json)
-and [test/evidence commands](tests/README.md). T00–T03 are delivered, with T01
-deliberately preserving twelve active, unresolved review regressions. On
-2026-10-21 the full suite reports **176 passed / 12 expected-open failures**;
-this is not an all-green result. Later evaluator, sandbox and repair fixes
-remain pending. The historical gate summary follows.
+The active local directory is `D:/ws/Projects/WorkAgent-RSI` on the existing
+`feat/evaluation-rsi-hardening` branch. See the
+[task ledger](project_artifacts/formal_study/hardening_task_ledger.json),
+[test/evidence commands](tests/README.md), and
+[T04 runtime operations](deploy/agent-runtime/README.md).
+T00?T03 are delivered, including the default-off live-call approval contract.
+T04 adds fail-closed native execution, a default Docker backend and an explicit
+Apptainer SSH alternative. Qualification status and current tests are recorded in
+`project_artifacts/formal_study/hardening_t04_execution_boundary.json`.
+T05 and subsequent evaluator/repair tasks remain pending. Historical T01 red
+observations are retained; their repair status must be read from the latest
+ledger rather than the original red baseline. The historical gate summary follows.
 
 Phase 1 and Phase 2 are accepted. Phase 3 data quality, local Office qualification, candidate generation, and the historical E01-E12 pilot are complete. The historical pilot is mechanism-validation evidence over a project-generated fixture, not an external WorkAgent result or main-study conclusion.
 

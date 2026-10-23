@@ -1,0 +1,109 @@
+{
+  "schema_version": "hardening-t04-boundary-v1",
+  "completed_at": "2026-10-23T13:25:26.799610+00:00",
+  "working_tree": "D:/ws/Projects/WorkAgent-RSI",
+  "branch": "feat/evaluation-rsi-hardening",
+  "base_commit": "9160b4159297d1dc80d8f1b5fcdaf38608ede64f",
+  "implementation_commit": "commit containing this manifest; exact tested sources in evidence",
+  "status": "completed",
+  "scope": "T03 completion and T04; T05 not started",
+  "T03_policy_commit": "9160b41",
+  "offline_focused": {
+    "passed": 78,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T04-current-tests/20261023T132034498773Z"
+  },
+  "full_validation": {
+    "passed": 233,
+    "failed": 11,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "expected_open": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R08",
+      "R09",
+      "R10",
+      "R11"
+    ],
+    "evidence": "project_artifacts/results/hardening-v2/T04-verified/20261023T132132594651Z"
+  },
+  "review_case_R12": {
+    "status": "passed",
+    "evidence": "fail-closed regression plus actual Apptainer boundary probes"
+  },
+  "qualified_backend": "apptainer-ssh",
+  "qualified_policy": {
+    "backend": "apptainer-ssh",
+    "image": null,
+    "network": "none",
+    "uid": 68288,
+    "gid": 68288,
+    "pids_limit": 128,
+    "memory_bytes": 2147483648,
+    "cpus": 2.0,
+    "max_files": 128,
+    "max_file_bytes": 104857600,
+    "max_total_bytes": 33554432,
+    "ssh_host": "cluster_vlab_jump",
+    "remote_image": "/tmp/wrsi-runtime-ixervi9x/rootfs-v3",
+    "remote_image_sha256": "6b7261597fc00dd0ed96e62ad4c9858762b841b8a088185bee0097458cdc9c3a",
+    "apptainer_executable": "/public/app/apptainer/1.4.5/bin/apptainer",
+    "python_executable": "/usr/bin/python3"
+  },
+  "real_probe_evidence": "project_artifacts/results/hardening-v2/T04/20261023T131835002830Z/sandbox",
+  "real_boundary_checks": {
+    "parent_denied": true,
+    "host_env_absent": true,
+    "absolute_parent_denied": true,
+    "root_readonly": true,
+    "no_new_privileges": true,
+    "zero_effective_capabilities": true,
+    "network_denied": true,
+    "input_readonly": true,
+    "nonroot": true,
+    "network_loopback_only": true,
+    "source_hash_unchanged": true,
+    "execution_succeeded": true,
+    "resource_policy_observed": true
+  },
+  "timeout_cleanup": {
+    "status": "timeout",
+    "cleanup": {
+      "confirmed_absent": true,
+      "unit": "wrsi-173e2b4edfbb43baa7029beb7dd74be0.service",
+      "cgroup_empty_or_removed": true
+    },
+    "descendants_gone": true
+  },
+  "docker": {
+    "implemented": true,
+    "unit_tests_passed": true,
+    "real_qualification": "not_run",
+    "reason": "no local Docker CLI; supplied cluster account cannot access Docker daemon"
+  },
+  "server_new_storage_kib": 199672,
+  "server_new_storage_mib": 194.99,
+  "new_container_image_downloads": 0,
+  "official_wheel_bytes": 14168107,
+  "host_packages_installed": false,
+  "model_calls": 0,
+  "system_configuration_changed": false,
+  "portable_bundle": "project_artifacts/results/hardening-v2/T04-handoff/20261023T132138583259Z/bundle/manifest.json",
+  "portable_bundle_sha256": "c336a2471323f86361e56763b38664c10f51aba53f135b6b85308ae375e5c67e",
+  "relocation_check": "project_artifacts/results/hardening-v2/T04-handoff/20261023T132138583259Z/relocation-check.json",
+  "boundaries": [
+    "G1 as a whole is pending T05-T09; only T04 is qualified here",
+    "No Office COM/rendering, live-model loop, research gain or external-benchmark claim",
+    "Runtime under /tmp must be re-provisioned and qualified if removed or changed",
+    "Transfer/export and per-file budgets are not an aggregate disk quota",
+    "T03 approval contract does not implement T22/T31 runtime budget accounting"
+  ],
+  "next_task": "T05"
+}

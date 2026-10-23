@@ -127,3 +127,12 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 | `../src/workagent_rsi/run_contracts.py`, `evidence_bundle.py` | Additive outcome/usage/protocol and portable evidence contracts | 17 focused tests pass; later pipeline integration pending |
 | `results/hardening-v2/handoff-final-verified/20261021T080224738698Z/` | Raw final invocation, hashes, logs and generated fixture archive | 176 pass / 12 expected-open failures |
 | `results/hardening-v2/T03/20261021T080824087553Z/contracts/` | Exported schemas and actual relocated, hash-verified bundle | Portable engineering evidence, no live service qualification |
+
+## 2026-10-23 T03/T04
+
+| Artifact | Purpose | Evidence boundary |
+|---|---|---|
+| `formal_study/hardening_t04_execution_boundary.json` | Current task outcome, qualified policy, tests and raw evidence references | Apptainer SSH T04 only; T05 pending |
+| `../src/workagent_rsi/execution_sandbox.py`, `apptainer_sandbox.py`, `apptainer_worker.py` | Native Docker and remote Apptainer boundary; no host fallback | Docker real probe not run; remote probes passed |
+| `../deploy/agent-runtime/` | Locked Docker recipe, bounded private-runtime provisioner and operations | No host package install; no image download |
+| `project_artifacts/results/hardening-v2/T04-handoff/20261023T132138583259Z/bundle/manifest.json` | Portable, checksummed source/test/runtime evidence | 29 files; relocation verified |

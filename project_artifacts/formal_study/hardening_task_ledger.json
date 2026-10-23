@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-23T12:51:08.108819+00:00",
+  "updated_at": "2026-10-23T13:25:26.799610+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -33,9 +33,9 @@
     },
     {
       "task_id": "T04",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T04/20261023T131835002830Z/sandbox",
+      "note": "Fail-closed Docker and explicit Apptainer SSH implemented. Apptainer real boundary, actual cgroups, three Office formats and detached-child cleanup passed. Docker real qualification not run. T05 remains pending."
     },
     {
       "task_id": "T05",
@@ -348,23 +348,77 @@
   "implementation_commits": {
     "T00_T02": "5c727a3",
     "T01_initial": "9290197",
-    "T03_and_final_handoff": "commit containing this ledger; exact tested sources hashed in final run.json"
+    "T03_and_final_handoff": "commit containing this ledger; exact tested sources hashed in final run.json",
+    "T03_policy_completion": "9160b41",
+    "T04": "commit containing ledger; exact sources in evidence"
   },
   "full_validation": {
-    "passed": 176,
-    "expected_open_failed": 12,
-    "errors": 0,
+    "passed": 233,
+    "failed": 11,
+    "error": 0,
     "skipped": 0,
     "exit_code": 1,
-    "evidence": "project_artifacts/results/hardening-v2/handoff-final-verified/20261021T080224738698Z"
+    "expected_open": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R08",
+      "R09",
+      "R10",
+      "R11"
+    ],
+    "evidence": "project_artifacts/results/hardening-v2/T04-verified/20261023T132132594651Z",
+    "expected_open_failed": 11
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T04",
     "T05",
     "T06",
     "T07",
     "T08",
     "T09"
-  ]
+  ],
+  "review_case_status": {
+    "R12": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T04/20261023T131835002830Z/sandbox"
+    },
+    "R01": {
+      "status": "expected_open"
+    },
+    "R02": {
+      "status": "expected_open"
+    },
+    "R03": {
+      "status": "expected_open"
+    },
+    "R04": {
+      "status": "expected_open"
+    },
+    "R05": {
+      "status": "expected_open"
+    },
+    "R06": {
+      "status": "expected_open"
+    },
+    "R07": {
+      "status": "expected_open"
+    },
+    "R08": {
+      "status": "expected_open"
+    },
+    "R09": {
+      "status": "expected_open"
+    },
+    "R10": {
+      "status": "expected_open"
+    },
+    "R11": {
+      "status": "expected_open"
+    }
+  }
 }
