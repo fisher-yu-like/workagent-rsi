@@ -15,6 +15,7 @@ from pydantic import TypeAdapter
 from .assessment_contracts import AcceptanceSpec, Assessment, CheckRecord, Evidence, Location, Requirement
 from .hashing import canonical_json_hash, sha256_file
 from .office_checks import EXPECTED_SUFFIXES, OOXML_MEMBERS
+from .visibility_checks import inspect_visibility
 from .artifact_locations import (resolve_text_scope, heading_level, resolve_shape,
     AmbiguousScope, ScopeBudgetExceeded, ScopeNotFound)
 
@@ -25,7 +26,7 @@ JSON_VALUE = TypeAdapter(Any)
 
 def assessment_identity(config: dict | None = None) -> str:
     root = Path(__file__).resolve().parents[2]
-    names = ("assessment_contracts.py", "preservation_checks.py", "formula_checks.py", "spreadsheet_recalc.py", "libreoffice_recalc_worker.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
+    names = ("visibility_checks.py", "assessment_contracts.py", "preservation_checks.py", "formula_checks.py", "spreadsheet_recalc.py", "libreoffice_recalc_worker.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
     files = {name: sha256_file(Path(__file__).with_name(name)) for name in names if Path(__file__).with_name(name).exists()}
     for skill in ("office-artifact-evaluator", "office-artifact-verifier"):
         for path in sorted((root / "skills" / skill).rglob("*")):
@@ -223,6 +224,8 @@ class SharedAssessment:
         elif r.check == "text.contains":
             texts = resolve_text_scope(obj,loc,r.options)
             matched = [row for row in texts if r.expected in row['text']]
+            if hasattr(obj, 'slides'):
+                return self._visible_texts(obj, r, texts, [r.expected])
             actual = matched[0]['text'] if matched else 'required content not found in requested scope'
             return ('PASS' if matched else 'FAIL'),(1 if matched else 0),actual,[row['location'] for row in matched]
         elif r.check == "word.headings":
@@ -248,31 +251,23 @@ class SharedAssessment:
             actual = len(obj.slides)
         elif r.check == "powerpoint.texts":
             scoped=resolve_text_scope(obj,loc,r.options)
-            texts=[row['text'] for row in scoped]
-            flags=[any(wanted in text for text in texts) for wanted in r.expected]
-            matched=[row['location'] for row in scoped if any(wanted in row['text'] for wanted in r.expected)]
-            return self._fraction(r,flags,texts,matched)
+            return self._visible_texts(obj, r, scoped, r.expected)
         elif r.check == "powerpoint.chart_values":
             shape = resolve_shape(obj,loc)
             actual = [list(series.values) for series in shape.chart.series] if shape is not None and shape.has_chart else None
         elif r.check in {"powerpoint.bounds", "powerpoint.overlap"}:
             if loc.slide>len(obj.slides):
                 raise ScopeNotFound('requested slide is missing')
-            shapes = list(obj.slides[loc.slide - 1].shapes)
+            findings = inspect_visibility(obj, loc.slide)
             if r.check == "powerpoint.bounds":
-                actual = [s.shape_id for s in shapes if s.left < 0 or s.top < 0 or s.left + s.width > obj.slide_width or s.top + s.height > obj.slide_height]
+                actual = sorted({f.object_id for f in findings if f.kind == 'off_canvas' and f.certainty == 'certain'})
+                if not actual and any(f.kind in {'rotation', 'group_transform', 'off_canvas'} for f in findings):
+                    return 'NEEDS_REVIEW', None, [f.model_dump() for f in findings], loc
             else:
                 actual = []
-                for i, a in enumerate(shapes):
-                    for b in shapes[i + 1:]:
-                        ax, ay, bx, by = a.left + a.width, a.top + a.height, b.left + b.width, b.top + b.height
-                        intersects = max(a.left, b.left) < min(ax, bx) and max(a.top, b.top) < min(ay, by)
-                        contained = (a.left <= b.left and a.top <= b.top and ax >= bx and ay >= by) or (b.left <= a.left and b.top <= a.top and bx >= ax and by >= ay)
-                        # Containment and backgrounds are legal geometric arrangements.
-                        if intersects and not contained:
-                            actual.append([a.shape_id, b.shape_id])
-                if actual:
-                    return "NEEDS_REVIEW", None, {"intersections": actual, "note": "geometry alone cannot establish visual occlusion"}, loc
+                risks = [f.model_dump() for f in findings if f.kind in {'possible_occlusion', 'rotation', 'group_transform'}]
+                if risks:
+                    return "NEEDS_REVIEW", None, {"findings": risks, "note": "geometry alone cannot establish visual occlusion"}, loc
         elif r.check == "facts.consistent":
             actual, flags = [], []
             for payload in r.options["locations"]:
@@ -288,6 +283,34 @@ class SharedAssessment:
             return "UNAVAILABLE", None, "unsupported check: " + r.check, loc
         passed = _equal(actual, r.expected, r.tolerance)
         return ("PASS" if passed else "FAIL"), (1 if passed else 0), actual, loc
+
+    def _visible_texts(self, obj, r, rows, wanted):
+        findings = {slide: inspect_visibility(obj, slide) for slide in {row['location']['slide'] for row in rows}}
+        flags, matched, risks = [], [], []
+        for phrase in wanted:
+            candidates = [row for row in rows if phrase in row['text']]
+            visible, uncertain = [], []
+            for row in candidates:
+                location = row['location']
+                selected = [f for f in findings[location['slide']] if f.object_id == location['object_id']
+                            or f.kind == 'group_transform']
+                if any(f.kind == 'off_canvas' and f.certainty == 'certain' for f in selected):
+                    continue
+                if selected:
+                    uncertain.append(row)
+                    risks.extend(f.model_dump() for f in selected)
+                else:
+                    visible.append(row)
+            flags.append(bool(visible or uncertain))
+            matched.extend(row['location'] for row in visible+uncertain)
+            if visible:
+                # A clear occurrence satisfies this phrase even if a duplicate is risky.
+                continue
+            if uncertain:
+                risks.append({'phrase': phrase, 'requires_review': True})
+        if all(flags) and any(f.get('requires_review') for f in risks):
+            return 'NEEDS_REVIEW', None, {'texts': [row['text'] for row in rows], 'visibility': risks}, matched
+        return self._fraction(r, flags, [row['text'] for row in rows], matched)
 
     @staticmethod
     def _fact(obj, loc):

@@ -11,7 +11,7 @@ ledger is `project_artifacts/formal_study/hardening_task_ledger.json`, and the
 canonical plan is `docs/superpowers/plans/2026-10-16-evaluation-rsi-hardening.md`.
 
 T01 added twelve active regressions. A normal full pytest run must include all
-of them. R12 now passes through fail-closed execution; R01?R11 remain open. Their manifest records independent
+of them. After local T13-T15, R01-R09 and R12 pass; R10/R11 remain open. Their manifest records independent
 truth sources, minimal inputs and the responsible repair tasks. A captured red
 baseline completes T01's evidence-delivery task; it does not fix those defects.
 No xfail, skip, default exclusion or score-threshold change hides them.
@@ -138,4 +138,29 @@ are explicitly unreviewed and have no new task score. T17 consumer migration
 remains separate. Preflight classifies spec_gap and assessment_gap before file
 parsing. Scoped checks preserve requested and observed positions; ambiguity or
 extraction limits never yield a pass based on partial evidence. True formula
-recalculation and visible appearance remain T13/T15 acceptance work.
+recalculation and visible appearance still require real T13/T15 qualification.
+
+
+## T13-T15 local formula, preservation and visibility checks
+
+```powershell
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T14 tests/test_edit_preservation.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T13-local tests/test_formula_semantics.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T15-local tests/test_visibility_checks.py tests/test_visual_assessment.py
+```
+
+T14 checks a frozen source against authorized edit scopes and preserved regions.
+Unsupported structures remain review gaps. T13 distinguishes formula syntax,
+existence, cached values and qualified recalculation; no local fixture qualifies
+an actual engine. R05 passes by recording the missing oracle/capability instead
+of declaring formula equivalence. T15 distinguishes certain bounds violations
+from visibility risks and records every required page across bounded batches.
+Identical page images keep separate page/location cache identities. R03/R04
+pass through rejection or review, not through a claimed visual accuracy score.
+
+These tests make no SSH, Office or model call. T14 is complete within documented
+structural support; T13/T15 remain partial with local work completed and real
+qualification deferred. T08's real behavior probe is also deferred. T16 onward,
+T17's remaining legacy consumer migration and the overall G1 gate remain open.
+See `docs/edit_preservation.md`, `docs/formula_recalculation.md`,
+`docs/visibility_checks.md` and the three task manifests for evidence boundaries.

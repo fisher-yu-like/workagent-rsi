@@ -89,13 +89,13 @@ A candidate skill version can be promoted only if all conditions hold:
 ## Current state
 
 For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
-and `hardening_t12_scoped_content.json`. Work in the existing
+and `hardening_t15_visibility.json`. Work in the existing
 `feat/evaluation-rsi-hardening` branch at `D:/ws/Projects/WorkAgent-RSI`.
 T00-T03 are delivered; T03 includes the strict default-off live-call policy.
 T04's default Docker and explicit Apptainer SSH backends do not execute native
 model scripts on the host. Read the T04 manifest for actual backend qualification;
 CLI-owned sandbox capability must remain separate. R12 now passes; the other
-5 T01 defects remain active (R03-R05, R10, R11); R01/R02 and R06-R09 now pass after local T06-T12. T05 now isolates execution/candidate views and
+2 T01 defects remain active (R10, R11); R01-R09 and R12 pass after local T06-T15. T05 now isolates execution/candidate views and
 hash-verified rendering copies. LibreOffice/Poppler rendering, unrelated-instance
 survival and timeout cleanup passed on the explicit Apptainer worker; dedicated
 Microsoft Office COM remains unavailable. See `deploy/office-worker/README.md`.
@@ -103,14 +103,19 @@ T06 shares verified champion/develop context across API/CLI; public history and
 context budgets are checked offline. See `docs/candidate_generation.md`.
 T07 admits complete raw candidate responses with auditable normalization and
 transport-owned model identity. Both tasks were qualified offline only.
-The latest full suite has 442 passed and 5 expected-open failures. T08 local validation/probe protocol is delivered; actual behavior remains
+The latest full suite has 512 passed, 2 expected-open failures and no errors/skips.
+Counts and evidence are recorded in the T15 manifest and task ledger. T08 local validation/probe protocol is delivered; actual behavior remains
 deferred by user. See `docs/candidate_verification.md`. T09 comparable-cohort
 analysis and reference evaluation are complete offline; see `docs/result_cohorts.md`.
 T10 adds task-bound reviewed requirement coverage, T11 preflights registered checks,
 and T12 enforces scoped positions with separate requested/observed evidence. See
 `docs/requirement_admission.md`, `docs/check_registry.md`, `docs/scoped_content_checks.md`.
 Legacy v1 fields remain declared-check compatibility; full downstream migration
-is T17. Formula recalculation and rendered visibility remain T13/T15. T13-T35 and
+is T17. T14 structural edit preservation is delivered within its documented support.
+T13 formula/recalculation and T15 geometry/page-coverage local work are complete;
+real recalculation and rendered visual qualification remain deferred by user.
+See `docs/edit_preservation.md`, `docs/formula_recalculation.md` and
+`docs/visibility_checks.md`. T08/T13/T15 real qualification, T16-T35 and
 the overall G1 gate remain unfinished. Full-suite evidence is not
 all-green, and isolated authored probes are not live model/RSI qualification.
 The entries below preserve historical stage evidence.

@@ -1,0 +1,40 @@
+{
+  "schema_version": "hardening-t15-v1",
+  "status": "partial",
+  "local_status": "completed",
+  "base_commit": "b9598c4effd4c2e8c3e32306b847bcc70eeeac81",
+  "implementation_commit": "commit containing manifest; exact source hashes in test records",
+  "completed_at": "2026-10-24T07:37:15.802924+00:00",
+  "scope": "local authored engineering tests; no server/model/API calls",
+  "red": {
+    "passed": 1,
+    "failed": 17,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T15-red/20261024T072729925670Z"
+  },
+  "focused": {
+    "passed": 182,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T15-final-focused/20261024T073426154983Z"
+  },
+  "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z",
+  "bundle": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z/bundle/manifest.json",
+  "A1_cleanup": "blocked_by_automatic_policy_no_deletion",
+  "G1": "incomplete",
+  "real_qualification": "deferred_by_user_not_run",
+  "full_validation": {
+    "passed": 512,
+    "failed": 2,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/T15-final-full/20261024T073436079821Z"
+  },
+  "expected_open": [
+    "R10",
+    "R11"
+  ]
+}

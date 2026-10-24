@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T07:26:36.209598+00:00",
+  "updated_at": "2026-10-24T07:37:15.802924+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -134,9 +134,13 @@
     },
     {
       "task_id": "T15",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "partial",
+      "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z",
+      "note": "Local tests/protocol complete. Real qualification deferred by user.",
+      "base_commit": "b9598c4effd4c2e8c3e32306b847bcc70eeeac81",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t15_visibility.json",
+      "bundle": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z/bundle/manifest.json"
     },
     {
       "task_id": "T16",
@@ -395,26 +399,25 @@
     "T11": "425f3b78928a5ae3749f76ee9c01b590d74b1865",
     "T12": "commit containing ledger; exact sources hashed in evidence",
     "T14": "f9730d4607ab3e57f0a091455eeba89e978a53eb",
-    "T13": "commit containing ledger; exact sources in evidence"
+    "T13": "commit containing ledger; exact sources in evidence",
+    "T13_local": "b9598c4effd4c2e8c3e32306b847bcc70eeeac81",
+    "T15": "commit containing ledger; exact sources in evidence"
   },
   "full_validation": {
-    "passed": 442,
-    "failed": 5,
+    "passed": 512,
+    "failed": 2,
     "error": 0,
     "skipped": 0,
     "exit_code": 1,
-    "evidence": "project_artifacts/results/hardening-v2/T12-final-full/20261024T065143066459Z",
+    "evidence": "project_artifacts/results/hardening-v2/T15-final-full/20261024T073436079821Z",
     "expected_open": [
-      "R03",
-      "R04",
-      "R05",
       "R10",
       "R11"
     ]
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T15-local",
+    "T16-local",
     "T08-T13-T15-real-qualification-deferred"
   ],
   "review_case_status": {
@@ -431,10 +434,12 @@
       "evidence": "project_artifacts/results/hardening-v2/T12/20261024T065433339082Z"
     },
     "R03": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z"
     },
     "R04": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z"
     },
     "R05": {
       "status": "passed",
