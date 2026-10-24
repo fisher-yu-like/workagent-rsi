@@ -37,14 +37,14 @@ def setup_loop(root, *, provider=None, config=None, mode="structured", unknown=F
     if unknown:
         from workagent_rsi.assessment_contracts import Requirement, Location
         task = tasks["develop"][0]
-        spec = spec_from_task(task).model_dump()
+        spec = spec_from_task(task,assessment_profile="legacy").model_dump()
         spec["requirements"].append(Requirement(requirement_id="visual", description="legibility", check="visual", location=Location(artifact="output"), dimension="presentation", evidence_source="real render").model_dump())
         tasks["develop"] = [task.model_copy(update={"expected_constraints": {"acceptance_spec": spec}})]
     hashes = {s: canonical_json_hash([t.model_dump(mode="json") for t in rows]) for s, rows in tasks.items()}
     identity = SharedAssessment().identity()
     contract = EvaluationContract(contract_id="artifact-v1-test", dataset_hash=canonical_json_hash(hashes), split_hashes=hashes,
         evaluator_hash=identity, assessment_mode="artifact-v1", assessment_identity=identity,
-        acceptance_hashes={t.task_id: spec_from_task(t).fingerprint() for rows in tasks.values() for t in rows},
+        acceptance_hashes={t.task_id: spec_from_task(t,assessment_profile="legacy").fingerprint() for rows in tasks.values() for t in rows},
         provider_policy="offline-bounded", seeds=[1], repeats=2, timeout_seconds=60,
         thresholds={"quality_gain": .01, "success_tolerance": 0, "protected_quality_tolerance": 0, "max_evaluation_seconds": 60}, git_commit="test")
     registry = SkillRegistry(root / "registry")
@@ -54,7 +54,7 @@ def setup_loop(root, *, provider=None, config=None, mode="structured", unknown=F
     source.mkdir()
     (source / "skill.json").write_text(json.dumps(package), encoding="utf-8")
     loop = RSILoop(registry=registry, workspace_builder=CandidateWorkspaceBuilder(), provider=provider or ArtifactFeedbackProvider(),
-        verifier=CandidateVerifier(runner=portable_verification), evaluator=FrozenEvaluator(identity), promotion=PromotionController(), feedback_mode=mode)
+        verifier=CandidateVerifier(runner=portable_verification), evaluator=FrozenEvaluator(identity,assessment_profile="legacy"), promotion=PromotionController(), feedback_mode=mode)
     arguments = dict(skill_id="office.sales", tasks_by_split=tasks, contract=contract, source_root=source, run_root=root / "run", verification_policy=VerificationPolicy(allowed_targets={"skill.json"}))
     return loop, arguments
 

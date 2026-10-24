@@ -12,6 +12,7 @@ from urllib.parse import unquote, urlsplit
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from .assessment_contracts import SpecAdmissionReport, RequirementCoverage, Coverage
 
 
 FailureOrigin = Literal["environment", "agent_execution", "artifact_defect", "assessment_gap", "spec_gap"]
@@ -142,6 +143,11 @@ class AssessmentOutcome(RunContract):
     score: float | None = Field(default=None, ge=0, le=1)
     coverage: AssessmentCoverage = Field(default_factory=AssessmentCoverage)
     report_refs: list[str] = Field(default_factory=list)
+    task_acceptance: Literal['PASS','FAIL','INCOMPLETE','NOT_ASSESSED'] | None = None
+    quality_score: float | None = Field(default=None, ge=0, le=1)
+    spec_admission: SpecAdmissionReport | None = None
+    task_requirement_coverage: RequirementCoverage | None = None
+    check_completion: Coverage | None = None
 
     @model_validator(mode="after")
     def unknown_quality_remains_null(self):
@@ -151,6 +157,13 @@ class AssessmentOutcome(RunContract):
             raise ValueError("completed quality needs an observed score")
         if self.status == "pass" and self.failure_origin is not None:
             raise ValueError("passed assessment cannot carry a failure origin")
+        if self.task_acceptance is not None:
+            if self.score != self.quality_score:
+                raise ValueError('versioned score must equal the explicit quality score')
+            if self.task_acceptance in {'NOT_ASSESSED','INCOMPLETE'} and self.quality_score is not None:
+                raise ValueError('unassessed task quality must remain null')
+            if (self.status=='pass') != (self.task_acceptance=='PASS'):
+                raise ValueError('assessment status must match task acceptance')
         return self
 
 
@@ -181,6 +194,8 @@ def assessment_from_legacy(result: dict) -> AssessmentOutcome:
     evaluation = result.get("evaluation")
     if not evaluation:
         return AssessmentOutcome(status="not_run")
+    if evaluation.get('assessment_outcome') is not None:
+        return AssessmentOutcome.model_validate(evaluation['assessment_outcome'])
     refs = list((evaluation.get("report_paths") or {}).values())
     score = evaluation.get("score")
     if score is None or evaluation.get("channel_status", {}).get("assessment") == "incomplete":

@@ -30,8 +30,10 @@ class WorkAgentFrozenEvaluator:
         assessment_config=None,
         assessment=None,
         assessment_output_root: str | Path | None = None,
+        assessment_profile: str | None = None,
     ) -> None:
         self.workagent_config = workagent_config or WorkAgentConfig()
+        self.assessment_profile=assessment_profile
         self.input_base = Path(input_base) if input_base is not None else Path.cwd()
         if assessment is None:
             from .model_judgement import configured_assessment
@@ -78,7 +80,7 @@ class WorkAgentFrozenEvaluator:
         )
         if contract.provider_policy != provider_policy:
             raise ValueError("WorkAgent provider configuration does not match contract")
-        specs = {task.task_id: spec_from_task(task) for task in tasks}
+        specs = {task.task_id: spec_from_task(task,assessment_profile=self.assessment_profile) for task in tasks}
         for task_id, spec in specs.items():
             if contract.acceptance_hashes.get(task_id) != spec.fingerprint():
                 raise ValueError("acceptance specification does not match frozen contract")
@@ -100,6 +102,7 @@ class WorkAgentFrozenEvaluator:
                     agent_instructions=config.instructions,
                     input_base=self.input_base,
                     assessment=self.assessment,
+                    assessment_profile=self.assessment_profile,
                 )
                 started = time.perf_counter()
                 result = harness.run(task, run_id="run")
@@ -272,6 +275,11 @@ class WorkAgentFrozenEvaluator:
             and com_check_complete
         )
         compatibility_score = evaluation.get("score")
+        if self.assessment_profile!='legacy' and reports_share_snapshot:
+            if (evaluation.get('task_acceptance') != score_report.get('task_acceptance')
+                    or evaluation.get('passed') != (score_report.get('task_acceptance')=='PASS')):
+                assessment_complete=False
+                score=None
         if assessment_complete and (
             not isinstance(compatibility_score, (int, float))
             or isinstance(compatibility_score, bool)
@@ -287,6 +295,10 @@ class WorkAgentFrozenEvaluator:
             "state": result.get("state"),
             "result_dir": result.get("result_dir", str(attempt_root.resolve())),
             "assessment_identity": (score_report or {}).get("evaluator_identity"),
+            'task_acceptance':(score_report or {}).get('task_acceptance','NOT_ASSESSED'),
+            'spec_admission':(score_report or {}).get('spec_admission'),
+            'task_requirement_coverage':(score_report or {}).get('requirement_coverage'),
+            'check_completion':(score_report or {}).get('coverage'),
             "assessment_complete": assessment_complete,
             "com_reopen": com_reopen,
             "score_report": score_report,
@@ -302,6 +314,7 @@ class WorkAgentFrozenEvaluator:
             "telemetry": (assessment_report or {}).get("telemetry", {}),
             "coverage": (score_report or {}).get("coverage", {}).get("ratio", 0),
             "wall_time_seconds": round(elapsed, 6),
+            'quality_score':score if assessment_complete else None,
         }
         if assessment_complete and score is not None:
             row.update(

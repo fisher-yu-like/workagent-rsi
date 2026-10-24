@@ -84,7 +84,7 @@ def test_response_only_judge_can_disagree_with_artifact_check(tmp_path: Path):
         path, "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     )
 
-    artifact_report = OfficeArtifactEvaluator().evaluate(task, [ref], "test")
+    artifact_report = OfficeArtifactEvaluator(assessment_profile="legacy").evaluate(task, [ref], "test")
     response_report = ResponseJudge().evaluate([task], PilotSkillConfig(marker_source="task_id"))
 
     assert artifact_report.score == 0.0

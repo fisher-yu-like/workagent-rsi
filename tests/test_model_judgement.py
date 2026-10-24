@@ -335,8 +335,8 @@ def test_semantic_rsi_repeat_distinguishes_cache_from_real_calls(tmp_path, monke
     identity = engine.identity()
     split_hash = canonical_json_hash([task.model_dump(mode="json")])
     contract = EvaluationContract(contract_id="semantic", dataset_hash=split_hash, split_hashes={"develop": split_hash}, evaluator_hash=identity,
-                                  assessment_mode="artifact-v1", assessment_identity=identity, acceptance_hashes={task.task_id: spec_from_task(task).fingerprint()},
+                                  assessment_mode="artifact-v1", assessment_identity=identity, acceptance_hashes={task.task_id: spec_from_task(task,assessment_profile="legacy").fingerprint()},
                                   provider_policy="test", seeds=[1], repeats=2, timeout_seconds=60, thresholds={}, git_commit="test")
-    report = FrozenEvaluator(identity, assessment=engine).evaluate_split([task], "develop", PilotSkillConfig(), contract, tmp_path / "results")
+    report = FrozenEvaluator(identity, assessment=engine,assessment_profile="legacy").evaluate_split([task], "develop", PilotSkillConfig(), contract, tmp_path / "results")
     assert len(calls) == (1 if cache_enabled else 2)
     assert report["assessment_complete"] is True and report["repeat_agreement"] is (not cache_enabled)

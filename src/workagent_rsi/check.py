@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from pathlib import Path
+from uuid import uuid4
 
 from .contracts import ArtifactRef, EvaluationReport, TaskSpec
 from .evaluator import BasicEvaluator, OfficeArtifactEvaluator
@@ -30,13 +31,17 @@ class Check:
         office_evaluator: OfficeArtifactEvaluator | None = None,
         frozen: FrozenEvaluator | None = None,
         artifact_assessment: SharedAssessment | None = None,
+        report_root: str | Path | None = None,
+        assessment_profile: str | None = None,
     ) -> None:
         self.verifier = verifier or CandidateVerifier()
         self.promotion = promotion or PromotionController()
         self.evaluator = evaluator or BasicEvaluator()
-        self.office_evaluator = office_evaluator or OfficeArtifactEvaluator()
+        self.office_evaluator = office_evaluator or OfficeArtifactEvaluator(assessment_profile='legacy')
         self.frozen = frozen
         self.artifact_assessment = artifact_assessment or SharedAssessment()
+        self.report_root=Path(report_root) if report_root is not None else Path.cwd()/'project_artifacts/results/check'
+        self.assessment_profile=assessment_profile
 
     def verify(
         self,
@@ -54,8 +59,19 @@ class Check:
         trace_id: str,
         *,
         office: bool | None = None,
+        assessment_profile: str | None = None,
     ) -> EvaluationReport:
-        use_office = office if office is not None else task.domain.lower() in {"excel", "word", "powerpoint"}
+        profile=assessment_profile if assessment_profile is not None else self.assessment_profile
+        office_domain=task.domain.lower() in {'excel','word','powerpoint'}
+        if office_domain and office is False and profile!='legacy':
+            raise ValueError('Office tasks require the versioned chain; use an explicit legacy profile for historical checks')
+        use_office = office if office is not None else office_domain
+        if use_office and profile!='legacy':
+            from .harness_artifact_evaluator import HarnessArtifactEvaluator
+            return HarnessArtifactEvaluator(self.report_root/uuid4().hex,assessment=self.artifact_assessment,
+                assessment_profile=profile).evaluate(task,artifacts,trace_id)
+        if use_office:
+            return self.office_evaluator.evaluate(task,artifacts,trace_id)
         evaluator = self.office_evaluator if use_office else self.evaluator
         return evaluator.evaluate(task, artifacts, trace_id)
 

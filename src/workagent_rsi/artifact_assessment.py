@@ -26,7 +26,7 @@ JSON_VALUE = TypeAdapter(Any)
 
 def assessment_identity(config: dict | None = None) -> str:
     root = Path(__file__).resolve().parents[2]
-    names = ("evidence_partition.py", "visibility_checks.py", "assessment_contracts.py", "preservation_checks.py", "formula_checks.py", "spreadsheet_recalc.py", "libreoffice_recalc_worker.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
+    names = ("orchestrator.py", "cli.py", "contracts.py", "run_contracts.py", "check.py", "harness_artifact_evaluator.py", "harness.py", "run.py", "evidence_partition.py", "visibility_checks.py", "assessment_contracts.py", "preservation_checks.py", "formula_checks.py", "spreadsheet_recalc.py", "libreoffice_recalc_worker.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
     files = {name: sha256_file(Path(__file__).with_name(name)) for name in names if Path(__file__).with_name(name).exists()}
     for skill in ("office-artifact-evaluator", "office-artifact-verifier"):
         for path in sorted((root / "skills" / skill).rglob("*")):
@@ -336,7 +336,16 @@ class SharedAssessment:
                 for row in resolve_text_scope(obj,Location(artifact='output'))]
 
 
-def spec_from_task(task) -> AcceptanceSpec:
+def spec_from_task(task, *, assessment_profile=None) -> AcceptanceSpec:
+    """Default public task admission; legacy declared checks require opt-in."""
+    if assessment_profile not in {None,'legacy','structural_only','task_acceptance','research'}:
+        raise ValueError('unknown assessment profile')
+    spec=_spec_from_task(task)
+    profile=None if assessment_profile=='legacy' else assessment_profile or spec.evaluation_profile or 'task_acceptance'
+    return AcceptanceSpec.model_validate({**spec.model_dump(mode='json'),'evaluation_profile':profile})
+
+
+def _spec_from_task(task) -> AcceptanceSpec:
     """Adapt existing constraints explicitly; unsupported constraints stay visible."""
     constraints = task.expected_constraints
     if constraints.get("sales_summary"):

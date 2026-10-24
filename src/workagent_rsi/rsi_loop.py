@@ -485,7 +485,9 @@ class RSILoop:
         if contract.assessment_mode == "artifact-v1":
             from .artifact_assessment import SharedAssessment, spec_from_task
             identity["assessment_identity"] = (self.evaluator.assessment or SharedAssessment()).identity()
-            identity["acceptance_hashes"] = {task.task_id: spec_from_task(task).fingerprint() for tasks in tasks_by_split.values() for task in tasks}
+            profile=getattr(self.evaluator,'assessment_profile',None)
+            identity['assessment_profile']=profile or 'default'
+            identity["acceptance_hashes"] = {task.task_id: spec_from_task(task,assessment_profile=profile).fingerprint() for tasks in tasks_by_split.values() for task in tasks}
             identity["feedback_mode"] = self.feedback_mode
             if identity["assessment_identity"] != contract.assessment_identity or identity["acceptance_hashes"] != contract.acceptance_hashes:
                 raise ValueError("artifact assessment or input identity changed")

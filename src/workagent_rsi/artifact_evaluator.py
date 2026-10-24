@@ -6,7 +6,7 @@ from .assessment_contracts import Assessment, Coverage, ScoreReport
 
 
 class ArtifactEvaluator:
-    VERSION = "office-artifact-evaluator-v1"
+    VERSION = "office-artifact-evaluator-v2"
 
     def evaluate(self, assessment: Assessment) -> ScoreReport:
         # Revalidate nested containers even if a caller mutated a frozen model's dict.
@@ -31,6 +31,11 @@ class ArtifactEvaluator:
         counts = Counter(c.status for c in assessment.checks)
         applicable = len(assessment.checks) - counts["NOT_APPLICABLE"]
         completed = sum(counts[s] for s in ("PASS", "PARTIAL", "FAIL"))
+        # An unscored missing channel still leaves required evidence unknown.
+        if completed != applicable:
+            total = None
+            if status != 'FAIL':
+                status = 'INCOMPLETE'
         from .requirement_coverage import admission_for_spec
         admission = admission_for_spec(spec)
         if assessment.spec_admission is not None and assessment.spec_admission != admission:
@@ -44,7 +49,7 @@ class ArtifactEvaluator:
             if spec.evaluation_profile == 'structural_only':
                 status = 'INCOMPLETE'
             else:
-                task_status = status = 'INCOMPLETE'
+                task_status = status = 'FAIL' if status=='FAIL' else 'INCOMPLETE'
         return ScoreReport(
             task_id=spec.task_id, spec_hash=assessment.spec_hash,
             evaluator_identity=assessment.evaluator_identity, artifact_hashes=assessment.artifact_hashes,
@@ -54,4 +59,26 @@ class ArtifactEvaluator:
             scope_note=spec.scope_note + (' Declared-check score only; task acceptance is NOT_ASSESSED.' if spec.evaluation_profile is None else ''),
             spec_admission=admission, requirement_coverage=admission.requirement_coverage,
             check_score=check_score, task_score=task_score, task_acceptance=task_status,
+            quality_score=task_score,
+            score_semantics='declared-check-v1' if spec.evaluation_profile is None else 'task-assessment-v2',
         )
+
+
+def outcome_from_score(score: ScoreReport):
+    """Public task outcome, distinct from explicit legacy declared-check scores."""
+    from .run_contracts import AssessmentOutcome,AssessmentCoverage
+    task=score.task_acceptance
+    if task=='PASS':
+        status,origin='pass',None
+    elif task=='FAIL':
+        status,origin='fail','artifact_defect'
+    elif score.spec_admission.status=='SPEC_INCOMPLETE':
+        status,origin='spec_incomplete','spec_gap'
+    else:
+        status,origin='incomplete',None if task=='NOT_ASSESSED' else 'assessment_gap'
+    quality=None if score.quality_score is None else score.quality_score/100
+    return AssessmentOutcome(status=status,failure_origin=origin,score=quality,quality_score=quality,
+        task_acceptance=task,spec_admission=score.spec_admission,
+        task_requirement_coverage=score.requirement_coverage,check_completion=score.coverage,
+        coverage=AssessmentCoverage(check_completion=score.coverage.ratio,
+            task_requirement_coverage=score.requirement_coverage.ratio),report_refs=score.evidence_refs)

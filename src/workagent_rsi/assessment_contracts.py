@@ -245,6 +245,7 @@ class Coverage(AssessmentModel):
 
 
 class ScoreReport(AssessmentModel):
+    score_semantics: Literal['declared-check-v1','task-assessment-v2'] = 'declared-check-v1'
     task_id: str
     spec_hash: str
     evaluator_identity: str
@@ -261,6 +262,7 @@ class ScoreReport(AssessmentModel):
     task_score: float | None = Field(default=None, ge=0, le=100)
     task_acceptance: Literal['PASS', 'FAIL', 'INCOMPLETE', 'NOT_ASSESSED'] = 'NOT_ASSESSED'
     check_score: float | None = Field(default=None, ge=0, le=100)
+    quality_score: float | None = Field(default=None, ge=0, le=100)
 
 
 class ArtifactIssue(AssessmentModel):

@@ -35,10 +35,15 @@ class BasicEvaluator:
 
 
 class OfficeArtifactEvaluator:
-    """Reopen genuine Office packages and run deterministic file-level checks."""
+    """Versioned public Office chain with an explicit historical legacy mode."""
 
     VERSION = "office-evaluator-v2"
     MEDIA_TYPES = MEDIA_TYPES
+
+    def __init__(self, *, assessment_profile=None, report_root=None, assessment=None):
+        self.assessment_profile=assessment_profile
+        self.report_root=Path(report_root) if report_root is not None else None
+        self.assessment=assessment
 
     @classmethod
     def evaluator_hash(cls) -> str:
@@ -52,6 +57,15 @@ class OfficeArtifactEvaluator:
         return digest.hexdigest()
 
     def evaluate(self, task: TaskSpec, artifacts: Sequence[ArtifactRef], trace_id: str) -> EvaluationReport:
+        if self.assessment_profile != 'legacy':
+            from uuid import uuid4
+            from .harness_artifact_evaluator import HarnessArtifactEvaluator
+            root=(self.report_root or Path.cwd()/'project_artifacts/results/office-check')/uuid4().hex
+            return HarnessArtifactEvaluator(root,assessment=self.assessment,
+                assessment_profile=self.assessment_profile).evaluate(task,artifacts,trace_id)
+        return self._evaluate_legacy(task,artifacts,trace_id)
+
+    def _evaluate_legacy(self, task, artifacts, trace_id):
         failures: list[str] = []
         warnings: list[str] = []
         evidence: list[str] = []
@@ -98,6 +112,7 @@ class OfficeArtifactEvaluator:
         return EvaluationReport(
             passed=passed,
             score=1.0 if passed else 0.0,
+            task_acceptance='NOT_ASSESSED',score_semantics='legacy',
             critical_failures=failures,
             warnings=warnings,
             dimensions=dimensions,

@@ -19,7 +19,7 @@ def test_office_evaluator_reopens_generated_workbook(tmp_path: Path):
     events = list(adapter.execute(task, "b0.office.local"))
     ref_store = ArtifactStore(tmp_path / "artifacts")
     ref = ref_store.put_file(Path(events[-1]["artifact_path"]), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml")
-    report = OfficeArtifactEvaluator().evaluate(task, [ref], "trace-1")
+    report = OfficeArtifactEvaluator(assessment_profile="legacy").evaluate(task, [ref], "trace-1")
     assert report.passed is True
     assert report.dimensions["format_validity"] == 1.0
 
@@ -30,6 +30,6 @@ def test_orchestrator_accepts_binary_office_artifact(tmp_path: Path):
         artifact_store=ArtifactStore(tmp_path / "artifacts"),
         trace_store=TraceStore(tmp_path / "trace.db"),
         adapter=LocalOfficeAdapter(tmp_path / "generated"),
-        evaluator=OfficeArtifactEvaluator(),
+        evaluator=OfficeArtifactEvaluator(assessment_profile="legacy"),
     ).run(task, "b0.office.local")
     assert result["state"] == "SUCCEEDED"

@@ -35,6 +35,7 @@ class Run:
         input_base: str | Path | None = None,
         model_review_config: dict | None = None,
         assessment=None,
+        assessment_profile: str | None = None,
     ) -> None:
         self.root = Path(root)
         self.store = Store(self.root)
@@ -46,6 +47,7 @@ class Run:
         self.input_base = Path(input_base) if input_base is not None else Path.cwd()
         self.model_review_config = model_review_config
         self.assessment = assessment
+        self.assessment_profile=assessment_profile
 
     def execute(self, task: TaskSpec, skill_id: str | None = None, *, max_attempts: int = 1) -> dict:
         if isinstance(task, dict):
@@ -65,6 +67,7 @@ class Run:
                 self.root,
                 model_review_config=self.model_review_config,
                 assessment=self.assessment,
+                assessment_profile=self.assessment_profile,
             )
             default_skill = "office.normal"
         elif provider == "workagent":
@@ -78,6 +81,7 @@ class Run:
                 self.root,
                 model_review_config=self.model_review_config,
                 assessment=self.assessment,
+                assessment_profile=self.assessment_profile,
             )
             default_skill = "office.workagent"
         elif provider == "com":
@@ -90,6 +94,7 @@ class Run:
                 self.root,
                 model_review_config=self.model_review_config,
                 assessment=self.assessment,
+                assessment_profile=self.assessment_profile,
             )
             default_skill = "office.com"
         elif provider == "libreoffice":
@@ -98,6 +103,7 @@ class Run:
                 self.root,
                 model_review_config=self.model_review_config,
                 assessment=self.assessment,
+                assessment_profile=self.assessment_profile,
             )
             default_skill = "office.libreoffice"
         else:
@@ -128,6 +134,14 @@ class Run:
                         "provider": "office-com",
                     }
                     result["evaluation"]["passed"] = False
+                    if result['evaluation'].get('score_semantics')=='task-v2':
+                        # Shared artifact facts remain in their immutable reports;
+                        # an additional required reopening channel is unqualified.
+                        evaluation=result['evaluation']
+                        evaluation.update(score=None,quality_score=None,task_acceptance='INCOMPLETE')
+                        evaluation['assessment_outcome'].update(status='incomplete',score=None,quality_score=None,
+                            task_acceptance='INCOMPLETE',failure_origin='assessment_gap')
+                        evaluation.setdefault('channel_status',{})['assessment']='incomplete'
                     result["evaluation"]["critical_failures"].append(
                         "required COM verification: " + com["error"]
                     )
@@ -138,6 +152,7 @@ class Run:
             persist_com_result(self.root, com)
             if com["status"] != "not_run":
                 self.store.logs.append_event(result["run_id"], "com_reopen", com)
+        result['assessment_profile']=self.assessment_profile or 'default'
         return result
 
     def resume(self, run_id: str) -> dict:

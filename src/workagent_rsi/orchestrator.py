@@ -72,7 +72,7 @@ class Orchestrator:
             else:
                 state = "SUCCEEDED" if report.passed else "FAILED"
             self.trace_store.set_state(run_id, state)
-            evaluation = report.model_dump(exclude_none=True)
+            evaluation = report.model_dump(mode='json',exclude_none=report.score_semantics!='task-v2')
             evaluation["score"] = report.score
             if not report.report_paths:
                 evaluation.pop("report_paths", None)

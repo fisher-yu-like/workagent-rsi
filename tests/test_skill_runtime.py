@@ -17,7 +17,7 @@ def evaluate(tmp_path: Path, marker_source: str):
     artifact = events[-1]
     store = ArtifactStore(tmp_path / "store" / marker_source)
     ref = store.put_file(artifact["artifact_path"], artifact["media_type"])
-    return OfficeArtifactEvaluator().evaluate(task, [ref], "trace")
+    return OfficeArtifactEvaluator(assessment_profile="legacy").evaluate(task, [ref], "trace")
 
 
 def test_skill_marker_policy_changes_real_office_result(tmp_path: Path):

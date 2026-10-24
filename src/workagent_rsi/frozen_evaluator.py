@@ -15,9 +15,10 @@ from .storage import ArtifactStore
 
 
 class FrozenEvaluator:
-    def __init__(self, evaluator_hash: str, *, assessment=None) -> None:
+    def __init__(self, evaluator_hash: str, *, assessment=None, assessment_profile=None) -> None:
         self.evaluator_hash = evaluator_hash
         self.assessment = assessment
+        self.assessment_profile=assessment_profile
 
     def evaluate_split(
         self,
@@ -49,7 +50,7 @@ class FrozenEvaluator:
                 continue
             store = ArtifactStore(task_root / "artifacts")
             ref = store.put_file(final["artifact_path"], final["media_type"])
-            report = OfficeArtifactEvaluator().evaluate(task, [ref], f"eval-{task.task_id}")
+            report = OfficeArtifactEvaluator(assessment_profile="legacy").evaluate(task, [ref], f"eval-{task.task_id}")
             rows.append(
                 {
                     "task_id": task.task_id,
@@ -89,7 +90,7 @@ class FrozenEvaluator:
         inspector = self.assessment or SharedAssessment()
         if contract.assessment_identity != inspector.identity():
             raise ValueError("artifact assessment identity does not match contract")
-        specs = {task.task_id: spec_from_task(task) for task in tasks}
+        specs = {task.task_id: spec_from_task(task,assessment_profile=self.assessment_profile) for task in tasks}
         for task_id, spec in specs.items():
             if contract.acceptance_hashes.get(task_id) != spec.fingerprint():
                 raise ValueError("acceptance specification does not match frozen contract")
@@ -116,8 +117,12 @@ class FrozenEvaluator:
                 issues = ArtifactVerifier().verify(shared)
                 save_reports(attempt / "assessment", shared, score, issues)
                 row = {"task_id": task.task_id, "domain": task.domain, "hidden_test": task.hidden_test,
-                    "passed": score.acceptance_status == "PASS", "score": None if score.total_score is None else score.total_score / 100,
-                    "assessment_complete": all(c.status in {"PASS", "PARTIAL", "FAIL", "NOT_APPLICABLE"} for c in shared.checks),
+                    "passed": score.acceptance_status=='PASS' if self.assessment_profile=='legacy' else score.task_acceptance=='PASS',
+                    "score": None if score.total_score is None else score.total_score/100,
+                    'task_acceptance':score.task_acceptance,'spec_admission':score.spec_admission.model_dump(mode='json'),
+                    'task_requirement_coverage':score.requirement_coverage.model_dump(mode='json'),
+                    'check_completion':score.coverage.model_dump(mode='json'),
+                    "assessment_complete": score.total_score is not None and all(c.status in {"PASS", "PARTIAL", "FAIL", "NOT_APPLICABLE"} for c in shared.checks),
                     "score_report": score.model_dump(mode="json"), "issue_report": issues.model_dump(mode="json"),
                     "critical_requirements": [r.requirement_id for r in shared.spec.requirements if r.critical and r.applicable],
                     "failure": failure, "evidence_path": str((attempt / "assessment").resolve()), "telemetry": shared.telemetry}

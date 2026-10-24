@@ -307,3 +307,10 @@ No server/model calls; A1 deletion automatically rejected, no files removed. Ear
 {"schema_version": "hardening-t16-v1", "status": "partial", "local_status": "completed", "base_commit": "d5239444a9ccebaf1496aec39b55670eaa42d695", "implementation_commit": "commit containing manifest; exact sources in test records", "completed_at": "2026-10-24T10:15:08.905534+00:00", "scope": "local authored engineering tests; no remote server/model/API calls", "red": {"passed": 0, "failed": 18, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T16-red/20261024T085207852225Z"}, "focused": {"passed": 99, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T16-final-focused/20261024T090751092963Z"}, "evidence": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z", "bundle": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z/bundle/manifest.json", "G1": "incomplete", "real_qualification": "deferred_by_user_not_run"}
 
 Real server/model capability remains unqualified by these authored tests.
+
+
+### T17 local delivery (2026-10-24)
+
+{"schema_version": "hardening-t17-v1", "status": "completed", "local_status": "completed", "base_commit": "571f14fe37760fb5517718699ff3117718792fbc", "implementation_commit": "commit containing manifest; exact sources in test records", "completed_at": "2026-10-24T10:27:35.912540+00:00", "scope": "local authored engineering tests; no remote server/model/API calls", "red": {"passed": 0, "failed": 11, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T17-red/20261024T101750510688Z"}, "focused": {"passed": 141, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T17-final-focused/20261024T102403860937Z"}, "evidence": "project_artifacts/results/hardening-v2/T17/20261024T102734939310Z", "bundle": "project_artifacts/results/hardening-v2/T17/20261024T102734939310Z/bundle/manifest.json", "G1": "incomplete"}
+
+Real server/model capability remains unqualified by these authored tests.

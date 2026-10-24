@@ -100,7 +100,7 @@ def test_office_evaluator_exposes_file_quality_dimensions(tmp_path: Path):
         size_bytes=path.stat().st_size,
     )
 
-    report = OfficeArtifactEvaluator().evaluate(task, [artifact], "trace-quality")
+    report = OfficeArtifactEvaluator(assessment_profile="legacy").evaluate(task, [artifact], "trace-quality")
 
     assert report.passed is True
     assert report.dimensions["format_validity"] == 1.0

@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Sequence
 
 from .artifact_assessment import SharedAssessment, save_reports, spec_from_task
-from .artifact_evaluator import ArtifactEvaluator
+from .artifact_evaluator import ArtifactEvaluator, outcome_from_score
 from .artifact_verifier import ArtifactVerifier
 from .assessment_contracts import AcceptanceSpec, Assessment, ScoreReport
 from .contracts import ArtifactRef, EvaluationReport, TaskSpec
@@ -25,6 +25,7 @@ class HarnessArtifactEvaluator:
         *,
         model_review_config=None,
         assessment: SharedAssessment | None = None,
+        assessment_profile: str | None = None,
     ) -> None:
         self.run_root = Path(run_root)
         self.run_root.mkdir(parents=True, exist_ok=True)
@@ -35,11 +36,12 @@ class HarnessArtifactEvaluator:
                 model_review_config or {}, self.run_root / "model_evidence"
             )
         self.assessment = assessment
+        self.assessment_profile = assessment_profile
 
     def evaluate(
         self, task: TaskSpec, artifacts: Sequence[ArtifactRef], trace_id: str
     ) -> EvaluationReport:
-        spec = spec_from_task(task)
+        spec = spec_from_task(task,assessment_profile=self.assessment_profile)
         mapping, mapping_error = self._resolve_mapping(spec, artifacts)
         shared = None
         if mapping_error is None:
@@ -70,6 +72,7 @@ class HarnessArtifactEvaluator:
         assert shared is not None
 
         score = ArtifactEvaluator().evaluate(shared)
+        outcome = outcome_from_score(score)
         issues = ArtifactVerifier().verify(shared)
         report_root = self.run_root / "assessment"
         save_reports(report_root, shared, score, issues)
@@ -89,6 +92,8 @@ class HarnessArtifactEvaluator:
             for issue in issues.issues
             if issue.severity in {"minor", "advisory"}
         ]
+        if score.spec_admission.status!='PASS':
+            warnings.extend('Requirement admission: '+reason for reason in score.spec_admission.reasons)
         dimensions = {
             name: None if value is None else round(value / 100, 6)
             for name, value in score.dimension_scores.items()
@@ -112,8 +117,10 @@ class HarnessArtifactEvaluator:
             f"issue_report:{report_paths['issues']}",
         ]
         return EvaluationReport(
-            passed=score.acceptance_status == "PASS",
-            score=None if score.total_score is None else score.total_score / 100,
+            passed=score.acceptance_status == 'PASS' if self.assessment_profile=='legacy' else score.task_acceptance=='PASS',
+            score=(None if score.total_score is None else score.total_score/100) if self.assessment_profile=='legacy' else outcome.quality_score,
+            score_semantics='legacy' if self.assessment_profile=='legacy' else 'task-v2',
+            task_acceptance=score.task_acceptance,quality_score=outcome.quality_score,assessment_outcome=outcome,
             critical_failures=critical_failures,
             warnings=warnings,
             dimensions=dimensions,
@@ -196,6 +203,7 @@ class HarnessArtifactEvaluator:
                     "observed": observed,
                     "evidence_refs": [evidence_id],
                     "message": reason,
+                    'failure_origin':'assessment_gap',
                 }
             )
         payload["checks"] = checks

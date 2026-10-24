@@ -30,6 +30,8 @@ def main(argv: Sequence[str] | None = None) -> int:
         type=Path,
         help="optional JSON ModelReviewConfig for semantic or visual assessment",
     )
+    parser.add_argument('--assessment-profile',choices=('task_acceptance','structural_only','research','legacy'),
+                        help='versioned Office assessment profile; legacy is explicit historical compatibility')
     args = parser.parse_args(argv)
     payload = yaml.safe_load(args.task.read_text(encoding="utf-8"))
     model_review_config = (
@@ -41,6 +43,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         args.results_dir,
         execution_provider=args.execution_provider,
         model_review_config=model_review_config,
+        assessment_profile=args.assessment_profile,
     ).run(payload, result_path=args.output)
     if args.output is None:
         print(json.dumps(result, indent=2, sort_keys=True))
