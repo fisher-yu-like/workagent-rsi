@@ -20,6 +20,7 @@ class PilotSkillConfig(BaseModel):
 
 
 class SkillConfiguredOfficeAdapter:
+    qualification_only = True
     MEDIA_TYPES = {
         "excel": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "word": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",

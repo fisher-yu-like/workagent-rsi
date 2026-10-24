@@ -374,3 +374,7 @@ Explicitly approved three-request recheck passed: pages1-8 PASS,9-16 PASS,17 FAI
 - Final focused: 121 passed. Full: 663 passed, 0 failed/errors/skips. R01-R12 pass. Original and relocated bundles verified; exact hashes/counts are in T21/T22 manifests.
 - No real model or server calls. Native transport and CLI boundary tests are authored offline qualification. Live repair, active recovery, matched experiment arms and research validation remain later work.
 - Ledger recommendations, R10/R11 states, validation and bundle indexes reconciled; older indexes retained as history.
+
+## T23 production prompt independence
+
+Removed fixed answer rules and task-ID strategy selection; retained generic Office knowledge and authorized template inputs. Added explicit execution mode and task binding. Qualification-only fixed implementations are rejected by formal entry points. Red12 failures; focused92 passes. See hardening_t23_prompt_independence.json. No model/server calls.

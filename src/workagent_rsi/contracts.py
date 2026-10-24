@@ -18,6 +18,7 @@ class TaskSpec(BaseModel):
     domain: str
     instruction: str
     input_files: tuple[str, ...] = ()
+    execution_mode: Literal['create','edit'] | None = None
     expected_constraints: dict[str, Any] = Field(default_factory=dict)
     risk_level: RiskLevel = "low"
     hidden_test: bool = False

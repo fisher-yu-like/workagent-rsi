@@ -12,7 +12,10 @@ from .view_safety import ordinary_file
 
 def task_context(task):
     task = TaskSpec.model_validate(task)
-    return {name:getattr(task, name) for name in ['task_id','domain','instruction','input_files']}
+    context = {name:getattr(task, name) for name in ['task_id','domain','instruction','input_files']}
+    if task.execution_mode is not None:
+        context['execution_mode']=task.execution_mode
+    return context
 
 
 def task_fingerprint(task):

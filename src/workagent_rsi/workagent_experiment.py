@@ -46,7 +46,12 @@ class WorkAgentExperimentRunner:
         output_root: str | Path,
         *,
         rounds: int = 1,
+        mode: str = 'qualification',
     ) -> dict:
+        from .execution_policy import require_production
+        if mode not in {'qualification','formal'}:
+            raise ValueError('unknown experiment mode')
+        if mode=='formal': require_production(provider)
         from .repair_loop import RunBudget, RepairPolicy
         if self.repair_policy is not None and self.run_budget is None:
             policy=RepairPolicy.model_validate(self.repair_policy)

@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T16:12:08.882284+00:00",
+  "updated_at": "2026-10-24T16:44:17.689749+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -207,9 +207,10 @@
     },
     {
       "task_id": "T23",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T23/20261024T164416983527Z",
+      "note": "Generic prompt composition, explicit/input-derived task mode, qualification-only markers and formal guards. Focused92 pass; no live calls.",
+      "manifest": "project_artifacts/formal_study/hardening_t23_prompt_independence.json"
     },
     {
       "task_id": "T24",
@@ -443,7 +444,6 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T22/20261024T161057802548Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "T23",
     "T24"
   ],
   "review_case_status": {

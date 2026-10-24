@@ -392,6 +392,7 @@ class OpenAIChatCandidateProvider:
 
 
 class DeterministicCandidateProvider:
+    qualification_only = True
     provider_version = "deterministic-1"
 
     def generate(

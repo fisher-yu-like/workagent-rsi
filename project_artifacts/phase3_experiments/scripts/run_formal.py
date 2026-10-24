@@ -172,6 +172,8 @@ def run_matrix(
     if mode == "formal":
         gate = validate_formal_gate(manifest_path, quality_report_path, data_root or ROOT / matrix["dataset"]["formal_data_root"])
         selected_data_root = Path(data_root or ROOT / matrix["dataset"]["formal_data_root"])
+        from workagent_rsi.execution_policy import require_production
+        require_production(ExperimentRunner)
     else:
         selected_data_root = Path(data_root or ROOT / matrix["pilot"]["data_root"])
 

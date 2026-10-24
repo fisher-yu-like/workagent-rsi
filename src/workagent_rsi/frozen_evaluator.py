@@ -15,6 +15,7 @@ from .storage import ArtifactStore
 
 
 class FrozenEvaluator:
+    qualification_only = True
     def __init__(self, evaluator_hash: str, *, assessment=None, assessment_profile=None) -> None:
         self.evaluator_hash = evaluator_hash
         self.assessment = assessment
