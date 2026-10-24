@@ -31,3 +31,14 @@
 | Hardening A | T02 interpreter portability and legacy failure fixtures | completed | Existing failures have reproduced causes and relevant tests pass under the active interpreter | T00; four existing red failures (T01 review corpus pending) | `src/workagent_rsi/verifier.py`, affected tests, `formal_study/hardening_t02_failure_explanation.md` | 2026-10-17: focused 18 passed; full suite 157 passed. The report separates launcher failure from Word fixture false positive. No live provider or Office COM test was run. |
 | Hardening A | T03 run outcomes and portable evidence contracts | completed | Typed failure/usage/protocol records and portable checksummed bundles; legacy results unchanged | T02 | `run_contracts.py`, `evidence_bundle.py`, focused tests | 2026-10-21: 17 focused tests passed; real portable bundle relocated and hash-verified. Full suite: 176 passed / 12 expected-open T01 failures / 0 errors. Contracts are additive; later pipeline fixes remain pending. 2026-10-23: section 2.7 live-call approval model and disabled template added; 33 focused tests pass, runtime accounting remains T22/T31. |
 | Hardening B | T04 native generated-code execution boundary | completed | Real isolation, observed resource caps, owned timeout cleanup, no host fallback | T03 | `execution_sandbox.py`, `apptainer_sandbox.py`, runtime deployment and T04 manifest | 2026-10-23: Apptainer SSH real probes passed; Docker implementation unit-tested, real Docker not run. 78 focused pass; full 233 pass / 11 expected-open fail / 0 errors / 0 skipped. R12 passes. T05 not started. |
+
+
+Current hardening progress is tracked in `formal_study/hardening_task_ledger.json`; T08 real behavior remains user-deferred.
+
+| Local evaluator task | Status | Actual acceptance |
+|---|---|---|
+| T10 requirement coverage admission | completed | Independent red17; final focused49 passed. New task profiles require reviewed task/spec/input-bound mandatory coverage; R01 passes. Legacy declared-check compatibility remains explicit. |
+| T11 check registry/preflight | completed | Independent red24; final focused120 passed. Invalid specs and missing capabilities have separate gap origins; generated support registry and per-key legacy adapter records. |
+| T12 scoped content | completed | Independent red25 failed/4 controls passed; final combined focused156 passed. Full442 passed/5 expected-open, no errors/skips. Exact Word/Excel/PPT scopes, ambiguity/limits explicit, requested/observed locations distinct; R02 passes. |
+
+No server/model call or rendering/recalculation qualification was performed in T10-T12. G1 remains incomplete, and T13/T15/T17 keep their own acceptance requirements.

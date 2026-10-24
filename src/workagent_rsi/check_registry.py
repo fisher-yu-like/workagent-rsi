@@ -87,6 +87,8 @@ def validate_location(location, domain, *, fact=False):
         raise ValueError('table cell needs an explicit table/object location')
     if loc.object_id is not None and loc.slide is None:
         raise ValueError('object scope requires slide')
+    if loc.group_path is not None and (domain!='powerpoint' or loc.slide is None):
+        raise ValueError('group path requires an explicit PowerPoint slide')
     if domain=='word' and loc.table is not None and (loc.paragraph is not None or loc.heading is not None):
         raise ValueError('paragraph/heading and table selectors are conflicting')
     if fact:
@@ -140,6 +142,8 @@ def validate_acceptance_spec(spec, capabilities) -> SpecAdmissionReport:
             if domain not in definition.domains:
                 raise ValueError('registered check is not supported in '+domain)
             validate_location(r.location,domain)
+            if r.location.region is not None and r.check not in {'visual','semantic'}:
+                raise ValueError('region selector is unsupported by deterministic text/geometry checks')
             if any(getattr(r.location,field) is None or getattr(r.location,field)=='' for field in definition.required_location_fields):
                 raise ValueError('missing required location fields: '+','.join(definition.required_location_fields))
             if r.location.cell and ':' in r.location.cell and r.check in {'excel.cell','excel.formula','excel.cached_value','excel.recalculated_value','excel.number_format'}:

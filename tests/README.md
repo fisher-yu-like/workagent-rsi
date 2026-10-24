@@ -122,3 +122,20 @@ No real model, external dataset or server is used. See
 `docs/candidate_verification.md` and `docs/result_cohorts.md` for protocol details
 and remaining gates. Old summaries without verifiable identities are excluded
 instead of being granted inferred scores or formal claim permission.
+
+## T10-T12 requirement admission, preflight and scoped content
+
+```powershell
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T10 tests/test_requirement_coverage.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T11 tests/test_check_registry.py tests/test_artifact_assessment_contracts.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T12 tests/test_scoped_content_checks.py tests/test_artifact_assessment_documents.py
+```
+
+All cases use trusted locally authored fixtures and genuine OOXML files. They
+do not invoke server execution, Office, rendering or real model APIs. Task
+coverage requires independent task-bound review; legacy declared-check scores
+are explicitly unreviewed and have no new task score. T17 consumer migration
+remains separate. Preflight classifies spec_gap and assessment_gap before file
+parsing. Scoped checks preserve requested and observed positions; ambiguity or
+extraction limits never yield a pass based on partial evidence. True formula
+recalculation and visible appearance remain T13/T15 acceptance work.

@@ -29,6 +29,14 @@ class Location(AssessmentModel):
     slide: int | None = Field(default=None, ge=1, strict=True)
     object_id: int | None = Field(default=None, ge=0, strict=True)
     region: str | None = None
+    group_path: list[int] | None = None
+
+    @field_validator('group_path',mode='before')
+    @classmethod
+    def explicit_group_ids(cls,value):
+        if value is not None and (not isinstance(value,list) or not value or any(type(v) is not int or v<1 for v in value)):
+            raise ValueError('group_path requires a nonempty list of positive integer group IDs')
+        return value
 
 
 class Requirement(AssessmentModel):
@@ -159,6 +167,8 @@ class Evidence(AssessmentModel):
     observed: Any = None
     artifact_sha256: str | None = None
     artifact_hashes: dict[str, str | None] = Field(default_factory=dict)
+    requested_location: Location | None = None
+    observed_locations: list[Location] = Field(default_factory=list)
 
 
 class CheckRecord(AssessmentModel):
@@ -171,6 +181,8 @@ class CheckRecord(AssessmentModel):
     evidence_refs: list[str] = Field(min_length=1)
     message: str = ""
     failure_origin: Literal['artifact_defect', 'spec_gap', 'assessment_gap'] | None = None
+    requested_location: Location | None = None
+    observed_locations: list[Location] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def status_matches_completion(self):
@@ -208,12 +220,20 @@ class Assessment(AssessmentModel):
             raise ValueError("duplicate evidence id")
         for c in self.checks:
             r = expected[c.requirement_id]
+            if c.requested_location is not None and (c.requested_location!=r.location or c.location!=r.location):
+                raise ValueError('check changed the requested location')
             if (c.status == "NOT_APPLICABLE") != (not r.applicable):
                 raise ValueError("applicability must be fixed before assessment")
             if c.expected != r.expected:
                 raise ValueError("check changed the expected value")
             if any(ref not in evidence or evidence[ref].requirement_id != c.requirement_id for ref in c.evidence_refs):
                 raise ValueError("evidence must refer to this requirement")
+            for ref in c.evidence_refs:
+                item=evidence[ref]
+                if item.requested_location is not None and item.requested_location!=r.location:
+                    raise ValueError('evidence changed the requested location')
+                if any(loc.artifact not in self.spec.artifacts for loc in item.observed_locations+c.observed_locations):
+                    raise ValueError('observed location references an undeclared artifact')
         return self
 
 
@@ -257,6 +277,8 @@ class ArtifactIssue(AssessmentModel):
     skill_improvement_hint: str | None = None
     recheck_ids: list[str]
     feedback_visibility: Visibility
+    requested_location: Location | None = None
+    observed_locations: list[Location] = Field(default_factory=list)
 
 
 class IssueReport(AssessmentModel):

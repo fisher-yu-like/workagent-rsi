@@ -19,7 +19,8 @@ class ArtifactVerifier:
             issues.append(ArtifactIssue(
                 issue_id=canonical_json_hash({"task": assessment.spec.task_id, "spec": assessment.spec_hash, "requirement": r.requirement_id})[:24],
                 requirement_id=r.requirement_id, kind=(check.failure_origin or 'assessment_gap') if gap else "artifact_defect",
-                location=check.location, observed=check.observed, expected=check.expected,
+                location=(check.observed_locations[0] if check.observed_locations else check.location), observed=check.observed, expected=check.expected,
+                requested_location=check.requested_location or check.location,observed_locations=check.observed_locations,
                 evidence_refs=check.evidence_refs, severity="advisory" if gap else ("blocking" if r.critical else "minor"),
                 cause_hypothesis=None,
                 repair_hint=(('Correct the frozen acceptance specification: ' if check.failure_origin=='spec_gap' else 'Restore assessment capability or review the evidence: ') + check.message) if gap else r.repair_hint,

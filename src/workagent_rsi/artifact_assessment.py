@@ -15,6 +15,8 @@ from pydantic import TypeAdapter
 from .assessment_contracts import AcceptanceSpec, Assessment, CheckRecord, Evidence, Location, Requirement
 from .hashing import canonical_json_hash, sha256_file
 from .office_checks import EXPECTED_SUFFIXES, OOXML_MEMBERS
+from .artifact_locations import (resolve_text_scope, heading_level, resolve_shape,
+    AmbiguousScope, ScopeBudgetExceeded, ScopeNotFound)
 
 
 KNOWN = {"PASS", "PARTIAL", "FAIL"}
@@ -23,7 +25,7 @@ JSON_VALUE = TypeAdapter(Any)
 
 def assessment_identity(config: dict | None = None) -> str:
     root = Path(__file__).resolve().parents[2]
-    names = ("assessment_contracts.py", "requirement_coverage.py", "check_registry.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
+    names = ("assessment_contracts.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
     files = {name: sha256_file(Path(__file__).with_name(name)) for name in names if Path(__file__).with_name(name).exists()}
     for skill in ("office-artifact-evaluator", "office-artifact-verifier"):
         for path in sorted((root / "skills" / skill).rglob("*")):
@@ -98,6 +100,7 @@ class SharedAssessment:
         try:
             for r in spec.requirements:
                 location = r.location
+                observed_locations = []
                 message = ""
                 origin = None
                 if not r.applicable:
@@ -120,9 +123,18 @@ class SharedAssessment:
                                 status, completion, observed = result["status"], result.get("completion"), result.get("observed")
                                 if result.get("location"):
                                     location = Location.model_validate(result["location"])
+                                    observed_locations = [location]
                                 telemetry[r.check].append(result.get("telemetry", {}))
                         else:
                             status, completion, observed, location = self._check(r, parsed, paths)
+                            if isinstance(location,list):
+                                observed_locations = [Location.model_validate(p) for p in location]
+                            elif status in KNOWN:
+                                observed_locations = [location]
+                    except (AmbiguousScope,ScopeBudgetExceeded) as exc:
+                        status, completion, observed = 'NEEDS_REVIEW',None,str(exc)
+                    except ScopeNotFound as exc:
+                        status, completion, observed = 'FAIL',0,str(exc)
                     except ImportError as exc:
                         status, completion, observed = "UNAVAILABLE", None, str(exc)
                     except Exception as exc:
@@ -135,12 +147,14 @@ class SharedAssessment:
                     origin = 'artifact_defect'
                 json_observed = JSON_VALUE.dump_python(observed, mode="json")
                 item = Evidence(evidence_id=canonical_json_hash({"spec": spec.fingerprint(), "requirement": r.requirement_id, "hashes": hashes, "status": status, "observed": json_observed}),
-                                requirement_id=r.requirement_id, location=location, source=r.evidence_source,
-                                observed=observed, artifact_sha256=hashes[r.location.artifact], artifact_hashes=hashes)
+                                requirement_id=r.requirement_id, location=observed_locations[0] if observed_locations else r.location, source=r.evidence_source,
+                                observed=observed, artifact_sha256=hashes[r.location.artifact], artifact_hashes=hashes,
+                                requested_location=r.location,observed_locations=observed_locations)
                 evidence.append(item)
                 checks.append(CheckRecord(requirement_id=r.requirement_id, status=status, completion=completion,
-                                          location=location, observed=observed, expected=r.expected,
-                                          evidence_refs=[item.evidence_id], message=message,failure_origin=origin))
+                                          location=r.location, observed=observed, expected=r.expected,
+                                          evidence_refs=[item.evidence_id], message=message,failure_origin=origin,
+                                          requested_location=r.location,observed_locations=observed_locations))
         finally:
             for obj in parsed.values():
                 if hasattr(obj, "close"):
@@ -198,20 +212,24 @@ class SharedAssessment:
             else:
                 return "UNAVAILABLE", None, "unsupported check: " + r.check, loc
         elif r.check == "text.contains":
-            texts = self._texts(obj)
-            matched = [(text, position) for text, position in texts if str(r.expected) in text]
-            actual = matched[0][0] if matched else "required content not found"
-            if matched:
-                loc = loc.model_copy(update=matched[0][1])
-            return ("PASS", 1, actual, loc) if matched else ("FAIL", 0, actual, loc)
+            texts = resolve_text_scope(obj,loc,r.options)
+            matched = [row for row in texts if r.expected in row['text']]
+            actual = matched[0]['text'] if matched else 'required content not found in requested scope'
+            return ('PASS' if matched else 'FAIL'),(1 if matched else 0),actual,[row['location'] for row in matched]
         elif r.check == "word.headings":
-            actual = [p.text for p in obj.paragraphs if p.style and p.style.name.startswith("Heading")]
+            scoped = resolve_text_scope(obj,loc,r.options)
+            positions = {row['location'].get('paragraph') for row in scoped}
+            actual = [p.text for i,p in enumerate(obj.paragraphs,1) if i in positions and heading_level(p) is not None]
             return self._fraction(r, [item in actual for item in r.expected], actual, loc)
         elif r.check == "word.heading_style":
-            matches = [(i, p) for i, p in enumerate(obj.paragraphs, 1) if p.text == loc.heading]
-            actual = matches[0][1].style.name if matches else None
-            if matches:
-                loc = loc.model_copy(update={"paragraph": matches[0][0]})
+            scoped=resolve_text_scope(obj,loc,r.options)
+            if not scoped:
+                raise ScopeNotFound('requested heading is missing')
+            index=scoped[0]['location']['paragraph']
+            paragraph=obj.paragraphs[index-1]
+            actual=paragraph.style.name
+            passed=_equal(actual,r.expected,r.tolerance) or paragraph.style.style_id==r.expected.replace(' ','')
+            return ('PASS' if passed else 'FAIL'),(1 if passed else 0),actual,[scoped[0]['location']]
         elif r.check == "word.references":
             actual = [rel.target_ref for rel in obj.part.rels.values() if rel.reltype.endswith("/hyperlink") and rel.is_external]
             return self._fraction(r, [ref in actual for ref in r.expected], actual, loc)
@@ -220,12 +238,17 @@ class SharedAssessment:
         elif r.check == "powerpoint.slide_count":
             actual = len(obj.slides)
         elif r.check == "powerpoint.texts":
-            texts = [text for text, _ in self._texts(obj)]
-            return self._fraction(r, [any(str(wanted) in text for text in texts) for wanted in r.expected], texts, loc)
+            scoped=resolve_text_scope(obj,loc,r.options)
+            texts=[row['text'] for row in scoped]
+            flags=[any(wanted in text for text in texts) for wanted in r.expected]
+            matched=[row['location'] for row in scoped if any(wanted in row['text'] for wanted in r.expected)]
+            return self._fraction(r,flags,texts,matched)
         elif r.check == "powerpoint.chart_values":
-            shape = next((s for s in obj.slides[loc.slide - 1].shapes if s.shape_id == loc.object_id), None)
+            shape = resolve_shape(obj,loc)
             actual = [list(series.values) for series in shape.chart.series] if shape is not None and shape.has_chart else None
         elif r.check in {"powerpoint.bounds", "powerpoint.overlap"}:
+            if loc.slide>len(obj.slides):
+                raise ScopeNotFound('requested slide is missing')
             shapes = list(obj.slides[loc.slide - 1].shapes)
             if r.check == "powerpoint.bounds":
                 actual = [s.shape_id for s in shapes if s.left < 0 or s.top < 0 or s.left + s.width > obj.slide_width or s.top + s.height > obj.slide_height]
@@ -260,20 +283,13 @@ class SharedAssessment:
     @staticmethod
     def _fact(obj, loc):
         if loc.sheet:
-            return obj[loc.sheet][loc.cell].value if loc.sheet in obj.sheetnames else None
-        if loc.paragraph:
-            return obj.paragraphs[loc.paragraph - 1].text if loc.paragraph <= len(obj.paragraphs) else None
-        if loc.table:
-            if loc.table > len(obj.tables):
-                return None
-            table = obj.tables[loc.table - 1]
-            return table.cell(loc.row - 1, loc.column - 1).text if loc.row <= len(table.rows) and loc.column <= len(table.columns) else None
-        if loc.slide:
-            if loc.slide > len(obj.slides):
-                return None
-            shape = next((s for s in obj.slides[loc.slide - 1].shapes if s.shape_id == loc.object_id), None)
-            return shape.text if shape is not None and hasattr(shape, "text") else None
-        raise ValueError("fact location needs sheet/cell, paragraph, table coordinates, or slide/object")
+            if loc.sheet not in obj.sheetnames:
+                raise ScopeNotFound('requested worksheet is missing')
+            return obj[loc.sheet][loc.cell].value
+        scoped=resolve_text_scope(obj,loc)
+        if not scoped:
+            raise ScopeNotFound('requested paragraph/table cell/slide object is missing')
+        return '\n'.join(row['text'] for row in scoped)
 
     @staticmethod
     def _fraction(r, flags, actual, loc):
@@ -284,17 +300,8 @@ class SharedAssessment:
 
     @staticmethod
     def _texts(obj):
-        if hasattr(obj, "worksheets"):
-            return [(str(c.value), {"sheet": sheet.title, "cell": c.coordinate}) for sheet in obj.worksheets for row in sheet for c in row if c.value is not None]
-        if hasattr(obj, "paragraphs"):
-            items, heading = [], None
-            for i, p in enumerate(obj.paragraphs, 1):
-                if p.style and p.style.name.startswith("Heading"):
-                    heading = p.text
-                items.append((p.text, {"paragraph": i, "heading": heading}))
-            items.extend((c.text, {"table": t, "row": i, "column": j}) for t, table in enumerate(obj.tables, 1) for i, row in enumerate(table.rows, 1) for j, c in enumerate(row.cells, 1))
-            return items
-        return [(shape.text, {"slide": i, "object_id": shape.shape_id}) for i, slide in enumerate(obj.slides, 1) for shape in slide.shapes if hasattr(shape, "text")]
+        return [(row['text'],{k:v for k,v in row['location'].items() if k!='artifact'})
+                for row in resolve_text_scope(obj,Location(artifact='output'))]
 
 
 def spec_from_task(task) -> AcceptanceSpec:

@@ -1,0 +1,49 @@
+{
+  "schema_version": "hardening-t12-v1",
+  "status": "completed",
+  "base_commit": "425f3b78928a5ae3749f76ee9c01b590d74b1865",
+  "implementation_commit": "commit containing manifest; exact tested sources hashed in evidence",
+  "completed_at": "2026-10-24T06:54:36.108089+00:00",
+  "scope": "offline authored engineering cases; no server/model/API/external benchmark",
+  "red": {
+    "passed": 4,
+    "failed": 25,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T12-red/20261024T064651892281Z"
+  },
+  "focused": {
+    "passed": 156,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T12-final-focused/20261024T065032351708Z"
+  },
+  "new_tests": 35,
+  "tested_source_hashes_match": true,
+  "evidence": "project_artifacts/results/hardening-v2/T12/20261024T065433339082Z",
+  "bundle": "project_artifacts/results/hardening-v2/T12/20261024T065433339082Z/bundle/manifest.json",
+  "T08_real_behavior": "deferred_by_user",
+  "G1": "incomplete",
+  "full_validation": {
+    "passed": 442,
+    "failed": 5,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/T12-final-full/20261024T065143066459Z"
+  },
+  "expected_open": [
+    "R03",
+    "R04",
+    "R05",
+    "R10",
+    "R11"
+  ],
+  "limits": [
+    "Legacy v1 total/acceptance fields are declared-check compatibility; task score requires reviewed coverage. T17 consumer migration remains pending.",
+    "Text extraction does not prove rendered visibility (T15) or formula recalculation (T13).",
+    "Scope limits and ambiguous identities produce explicit NEEDS_REVIEW; no truncated pass.",
+    "No real model, renderer, external benchmark or server qualification is claimed."
+  ]
+}
