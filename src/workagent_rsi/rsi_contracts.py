@@ -60,6 +60,15 @@ class CandidateNormalizationRecord(StrictModel):
     error: str | None = None
 
 
+class DiagnosisEvidence(StrictModel):
+    ref: str
+    kind: Literal['script','stderr','input_manifest','file_events']
+    quote: str
+    source_sha256: str = Field(pattern=r'^[0-9a-f]{64}$')
+    line_start: int | None = Field(default=None, ge=1)
+    line_end: int | None = Field(default=None, ge=1)
+
+
 class FailureDiagnosis(StrictModel):
     diagnosis_id: str
     run_ids: list[str] = Field(min_length=1)
@@ -68,6 +77,11 @@ class FailureDiagnosis(StrictModel):
     causal_hypothesis: str = Field(min_length=1)
     recommended_component: Component
     confidence: float = Field(ge=0.0, le=1.0)
+    confidence_basis: str = 'uncalibrated_legacy_rule_strength'
+    recommended_action: str | None = None
+    falsification_check: str | None = None
+    evidence_details: list[DiagnosisEvidence] = Field(default_factory=list)
+    feedback_visibility: Literal['develop','evaluation_only'] = 'develop'
 
 
 class VerificationReport(StrictModel):

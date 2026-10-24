@@ -7,6 +7,20 @@ from .assessment_contracts import RSIFeedback
 from .artifact_feedback import public_issue_advice
 
 
+def candidate_diagnoses(diagnoses, *, split='develop', hidden_test=False):
+    """Project typed develop hypotheses; private evidence never enters context."""
+    from .rsi_contracts import FailureDiagnosis
+    if split!='develop' or hidden_test:return []
+    result=[]
+    for item in diagnoses:
+        diagnosis=FailureDiagnosis.model_validate(item.model_dump() if hasattr(item,'model_dump') else item)
+        if diagnosis.feedback_visibility!='develop':continue
+        if any(d.ref not in diagnosis.evidence_refs for d in diagnosis.evidence_details):
+            raise ValueError('diagnosis details must cite an authorized diagnosis reference')
+        result.append(diagnosis)
+    return result
+
+
 def candidate_feedback(feedback: RSIFeedback) -> RSIFeedback:
     """Allowlisted projection of developer data; unknown side channels are dropped.
 

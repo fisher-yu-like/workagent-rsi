@@ -11,7 +11,7 @@ from .assessment_contracts import RSIFeedback
 from .hashing import canonical_json_hash, sha256_file
 from .rsi_contracts import FailureDiagnosis
 from .run_contracts import RunContract
-from .rsi_feedback import candidate_feedback
+from .rsi_feedback import candidate_feedback,candidate_diagnoses
 from .view_safety import ordinary_file
 
 
@@ -46,6 +46,8 @@ class CandidateContext(RunContract):
         safe = candidate_feedback(self.develop_feedback)
         if safe.model_dump(mode='json') != self.develop_feedback.model_dump(mode='json'):
             raise ValueError('candidate feedback contains unapproved data')
+        if [d.model_dump(mode='json') for d in candidate_diagnoses(self.diagnoses)] != [d.model_dump(mode='json') for d in self.diagnoses]:
+            raise ValueError('candidate diagnoses contain private evidence')
         size = len(json.dumps(self.model_dump(mode='json'), ensure_ascii=False, sort_keys=True, allow_nan=False).encode('utf-8'))
         if size > self.max_context_bytes:
             raise ValueError(f'candidate context budget exceeded: {size} bytes > {self.max_context_bytes}; no content truncated')
@@ -80,7 +82,7 @@ def build_candidate_context(workspace, parent_version, edit_budget, *, feedback=
         raise ValueError('champion changed during context preparation')
     return CandidateContext(parent_version=parent_version, champion_package=package, champion_hash=content_hash,
                             champion_file_sha256=digest, champion_hash_source='registry' if expected_champion_hash else 'export',
-                            develop_feedback=safe, public_lessons=lessons, diagnoses=list(diagnoses),
+                            develop_feedback=safe, public_lessons=lessons, diagnoses=candidate_diagnoses(diagnoses),
                             edit_budget=edit_budget, max_context_bytes=max_context_bytes)
 
 
