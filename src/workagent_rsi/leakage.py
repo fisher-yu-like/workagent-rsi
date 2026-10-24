@@ -28,4 +28,9 @@ class LeakageCritic:
                 findings.append("unapproved execution or network capability")
             if re.search(r"p3-task-\d+\s*[\"']?\s*:", patch_lower):
                 findings.append("task-specific answer mapping")
+            if re.search(r"\b(?:task_id|taskid)\b\s*(?:==|!=|\bin\b|\bis\b|\bequals\b)", patch_lower):
+                findings.append('task-specific behavior branch')
+            # JSON string escapes must not hide instruction line boundaries.
+            if re.search(r"(?:^|\\n)\s*(?:ignore|disable|bypass|remove)\b[^\n]*(?:restrictions|safety|checks|rules|policy)", patch_lower):
+                findings.append('instruction attempts to weaken safety rules')
         return sorted(set(findings))

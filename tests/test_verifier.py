@@ -50,11 +50,12 @@ def test_verifier_accepts_schema_valid_skill_patch(tmp_path: Path):
     )
     assert report.passed is True
     assert report.critical_violations == []
-    assert "compile" in report.executed_checks
+    assert report.compile_status == 'not_applicable'
+    assert report.behavior_status == 'not_run' and report.quality_verified is False
     assert report.evidence_refs
 
 
-def test_verifier_uses_active_interpreter_for_compile_and_pytest(tmp_path: Path):
+def test_json_verifier_does_not_execute_candidate_authored_tests_on_host(tmp_path: Path):
     (tmp_path / "skill.json").write_text('{"marker_source":"task_id"}', encoding="utf-8")
     tests_dir = tmp_path / "tests"
     tests_dir.mkdir()
@@ -70,10 +71,9 @@ def test_verifier_uses_active_interpreter_for_compile_and_pytest(tmp_path: Path)
     )
 
     assert report.passed is True
-    assert len(commands) == 2
-    assert all(command[0] == sys.executable for command in commands)
-    assert commands[0][1:4] == ["-m", "compileall", "-q"]
-    assert commands[1][1:4] == ["-m", "pytest", "-q"]
+    assert commands == []
+    assert report.compile_status == 'not_applicable'
+    assert report.test_results['candidate_authored_tests'] == 'not_run'
 
 
 def test_verifier_rejects_invalid_json_patch(tmp_path: Path):

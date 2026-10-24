@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T05:29:36.641101+00:00",
+  "updated_at": "2026-10-24T05:58:24.999808+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -67,9 +67,13 @@
     },
     {
       "task_id": "T08",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "partial",
+      "evidence": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z",
+      "note": "Local schema/safety/parent/budget and fixed sandbox-probe protocol complete. Actual isolated behavior acceptance deliberately deferred per user; quality remains unverified.",
+      "local_status": "completed",
+      "behavior_status": "deferred_by_user",
+      "manifest": "project_artifacts/formal_study/hardening_t08_candidate_validation.json",
+      "bundle": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z/bundle/manifest.json"
     },
     {
       "task_id": "T09",
@@ -363,22 +367,22 @@
     "T04": "commit containing ledger; exact sources in evidence",
     "T05": "commit containing ledger; exact sources hashed in evidence",
     "T06": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
-    "T07": "commit containing ledger; exact tested sources in evidence"
+    "T07": "commit containing ledger; exact tested sources in evidence",
+    "T08_local": "commit containing ledger; actual behavior qualification pending"
   },
   "full_validation": {
-    "passed": 295,
-    "failed": 9,
+    "passed": 318,
+    "failed": 8,
     "error": 0,
     "skipped": 0,
     "exit_code": 1,
-    "evidence": "project_artifacts/results/hardening-v2/T07-full/20261024T052501756344Z",
+    "evidence": "project_artifacts/results/hardening-v2/T08-local-verified-full/20261024T055419368460Z",
     "expected_open": [
       "R01",
       "R02",
       "R03",
       "R04",
       "R05",
-      "R06",
       "R09",
       "R10",
       "R11"
@@ -386,8 +390,8 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T08",
-    "T09"
+    "T09",
+    "T08-real-behavior-deferred"
   ],
   "review_case_status": {
     "R12": {
@@ -410,7 +414,8 @@
       "status": "expected_open"
     },
     "R06": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z"
     },
     "R07": {
       "status": "passed",

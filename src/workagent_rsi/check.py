@@ -43,8 +43,9 @@ class Check:
         candidate: CandidatePatch,
         workspace: str | Path,
         policy: VerificationPolicy,
+        **validation_context,
     ) -> VerificationReport:
-        return self.verifier.verify(candidate, workspace, policy)
+        return self.verifier.verify(candidate, workspace, policy, **validation_context)
 
     def evaluate(
         self,

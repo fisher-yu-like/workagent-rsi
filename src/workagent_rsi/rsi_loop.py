@@ -74,6 +74,11 @@ class RSILoop:
         root = Path(resume_root if resume_root is not None else run_root)
         checkpoint_path = root / "checkpoint.json"
         identity = self._identity(contract, tasks_by_split, model_identity)
+        policy_identity = verification_policy.model_dump(mode='json')
+        for key in ['allowed_targets', 'protected_paths']:
+            policy_identity[key] = sorted(policy_identity[key])
+        identity['verification_policy_hash'] = canonical_json_hash(policy_identity)
+        identity['verification_identity'] = self.verifier.identity_config()
         resumed = resume_root is not None
         rounds_data: list[dict] = []
         attempts: dict[str, int] = {}
@@ -318,34 +323,9 @@ class RSILoop:
             self._write_round_summary(root, result)
             return result
 
-        verification = self.verifier.verify(candidate, workspace, verification_policy)
-        if artifact_mode and verification.passed:
-            # Artifact feedback may improve a WorkAgent instruction or the legacy
-            # pilot's execution knobs, but it cannot alter evaluator code.
-            violations = []
-            if candidate.parent_version != champion.version or len(candidate.atomic_edits) > edit_budget:
-                violations.append("artifact candidate parent or edit budget mismatch")
-            if self.skill_model is PilotSkillConfig:
-                editable_fields = {"sales_rows", "sales_chart", "sales_number_format"}
-            else:
-                editable_fields = set(self.skill_model.model_fields) - {"version"}
-            for edit in candidate.atomic_edits:
-                patch = json.loads(edit.patch)
-                if edit.target_path != "skill.json" or len(patch) != 1 or not set(patch).issubset(editable_fields):
-                    violations.append("artifact candidate must change one allowlisted skill field per edit")
-            try:
-                proposed = dict(champion_package)
-                for edit in candidate.atomic_edits:
-                    proposed.update(json.loads(edit.patch))
-                self.skill_model.model_validate_json(json.dumps(proposed), strict=True)
-            except ValueError as exc:
-                violations.append(str(exc))
-            verification = verification.model_copy(update={
-                "passed": not violations,
-                "critical_violations": [*verification.critical_violations, *violations],
-                "executed_checks": [*verification.executed_checks, "artifact_execution_config"],
-            })
-            verification = verification.model_copy(update={"evidence_refs": [canonical_json_hash(verification.model_dump(mode="json", exclude={"evidence_refs"}))]})
+        verification = self.verifier.verify(candidate, workspace, verification_policy,
+            skill_model=self.skill_model, parent_package=champion_package,
+            parent_version=champion.version, edit_budget=edit_budget)
         if verification.passed:
             candidate_package = dict(champion_package)
             for edit in candidate.atomic_edits:
@@ -493,6 +473,9 @@ class RSILoop:
                         "candidate_provider.py",
                         "candidate_context.py",
                         "candidate_normalization.py",
+                        "verifier.py",
+                        "leakage.py",
+                        "behavior_probe.py",
                         "rsi_contracts.py",
                         "workagent_experiment.py",
                     )
@@ -533,7 +516,7 @@ class RSILoop:
 
     @staticmethod
     def _validate_checkpoint(checkpoint: dict, identity: dict) -> None:
-        for key in ("contract_hash", "dataset_hash", "evaluator_hash", "provider_identity", "skill_model", "model_identity", "context_max_bytes", "code_hash"):
+        for key in ("contract_hash", "dataset_hash", "evaluator_hash", "provider_identity", "skill_model", "model_identity", "context_max_bytes", "verification_policy_hash", "verification_identity", "code_hash"):
             if checkpoint.get(key) != identity.get(key):
                 raise ValueError(f"{key} identity does not match checkpoint")
         if checkpoint.get("split_hashes") != identity.get("split_hashes"):

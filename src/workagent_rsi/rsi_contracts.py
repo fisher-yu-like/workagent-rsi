@@ -79,6 +79,28 @@ class VerificationReport(StrictModel):
     test_results: dict[str, Any] = Field(default_factory=dict)
     artifact_results: dict[str, Any] = Field(default_factory=dict)
     evidence_refs: list[str] = Field(min_length=1)
+    schema_status: Literal['passed', 'failed', 'not_run'] = 'not_run'
+    safety_status: Literal['passed', 'failed', 'not_run'] = 'not_run'
+    behavior_status: Literal['passed', 'failed', 'not_run', 'unavailable', 'error'] = 'not_run'
+    compile_status: Literal['passed', 'failed', 'not_run', 'not_applicable'] = 'not_run'
+    quality_verified: bool = False
+    behavior_required: bool = False
+
+
+class BehaviorProbeResult(StrictModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
+    status: Literal['passed', 'failed', 'not_run', 'unavailable', 'error']
+    evidence_kind: Literal['unverified', 'unit_fixture', 'isolated_run'] = 'unverified'
+    backend: Literal['docker', 'apptainer-ssh'] | None = None
+    taskset_hash: str | None = Field(default=None, pattern=r'^[0-9a-f]{64}$')
+    parent_package_hash: str | None = Field(default=None, pattern=r'^[0-9a-f]{64}$')
+    candidate_package_hash: str | None = Field(default=None, pattern=r'^[0-9a-f]{64}$')
+    isolation_verified: bool = False
+    independent_tasks_verified: bool = False
+    cleanup_confirmed: bool = False
+    protected_regressions: int = Field(default=0, ge=0)
+    failed_checks: list[str] = Field(default_factory=list)
+    evidence_refs: list[str] = Field(default_factory=list)
 
 
 class SkillVersion(StrictModel):
