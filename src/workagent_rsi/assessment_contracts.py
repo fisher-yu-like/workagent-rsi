@@ -265,6 +265,19 @@ class ScoreReport(AssessmentModel):
     quality_score: float | None = Field(default=None, ge=0, le=100)
 
 
+class RepairAction(AssessmentModel):
+    target: Literal['artifact','assessment_capability','acceptance_spec']
+    description: str = Field(min_length=1)
+    locations: list[Location] = Field(default_factory=list)
+    evidence_refs: list[str] = Field(min_length=1)
+
+    @model_validator(mode='after')
+    def action_scope(self):
+        if (self.target=='artifact') != bool(self.locations):
+            raise ValueError('only artifact repair actions name artifact edit locations')
+        return self
+
+
 class ArtifactIssue(AssessmentModel):
     issue_id: str
     requirement_id: str
@@ -281,6 +294,24 @@ class ArtifactIssue(AssessmentModel):
     feedback_visibility: Visibility
     requested_location: Location | None = None
     observed_locations: list[Location] = Field(default_factory=list)
+    failure_origin: Literal['artifact_defect','spec_gap','assessment_gap'] | None = None
+    affected_requirements: list[str] = Field(default_factory=list)
+    repair_action: RepairAction | None = None
+    verification_steps: list[str] = Field(default_factory=list)
+    impact: str | None = None
+    qualification_only: bool = Field(default=False,strict=True)
+
+    @model_validator(mode='after')
+    def actionable_issue(self):
+        if self.repair_action is not None:
+            target={'artifact_defect':'artifact','assessment_gap':'assessment_capability','spec_gap':'acceptance_spec'}[self.kind]
+            if self.failure_origin!=self.kind or self.repair_action.target!=target:
+                raise ValueError('repair action must target the observed failure origin')
+            if not self.affected_requirements or not self.verification_steps:
+                raise ValueError('actionable issue requires affected requirements and verification steps')
+            if self.repair_action.evidence_refs!=self.evidence_refs:
+                raise ValueError('repair action must cite the same frozen evidence as the issue')
+        return self
 
 
 class IssueReport(AssessmentModel):

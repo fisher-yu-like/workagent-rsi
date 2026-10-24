@@ -57,9 +57,9 @@ Apptainer SSH alternative. Qualification status and current tests are recorded i
 T05 adds allowlisted execution/candidate views, source-link checks and verified
 copies rendered inside an explicit LibreOffice/Poppler Apptainer worker. Real
 XLSX/DOCX/PPTX rendering and owned process cleanup passed; dedicated Microsoft
-Office COM remains unavailable. The latest full suite has 512 passed, 2
-expected-open failures (R10/R11) and no errors/skips. Evidence is recorded in
-`project_artifacts/formal_study/hardening_t15_visibility.json`.
+Office COM remains unavailable. The latest full suite has 569 passed, 2 expected-open failures (R10/R11)
+and no errors/skips. Evidence is recorded in
+`project_artifacts/formal_study/hardening_t18_issue_evidence.json`.
 T06 now supplies verified champion and controlled develop history to both candidate
 providers; T07 validates complete responses and records every normalization
 mapping and transport-owned identity. See [candidate contracts](docs/candidate_generation.md). T08 local validation is delivered with actual behavior acceptance deferred;
@@ -68,14 +68,18 @@ boundaries, and writes separate paired reference runs. See [result cohorts](docs
 T10 adds [reviewed task requirement coverage](docs/requirement_admission.md);
 T11 adds [registered check preflight](docs/check_registry.md); T12 adds
 [scoped Office content checks](docs/scoped_content_checks.md). Legacy v1 scores
-remain declared-check compatibility, with no reviewed task score; T17 migration
-is pending. T14 adds [authorized edit preservation](docs/edit_preservation.md).
+remain declared-check compatibility, with no reviewed task score. T17 now
+unifies normal task entrypoints and requires explicit legacy selection for historical checks.
+T14 adds [authorized edit preservation](docs/edit_preservation.md).
 T13 adds [formula/recalculation evidence](docs/formula_recalculation.md), and
 T15 adds [visibility risks and page coverage](docs/visibility_checks.md). Their
 local work is complete; real T13/T15 qualification remains deferred. R01-R09
 and R12 pass, including conservative gap/review outcomes for R03-R05; R10/R11
-remain open. T16 onward and the overall G1 gate remain pending, along with
-T08 real behavior acceptance. Historical T01 red
+remain open. T16 local [judge evidence management](docs/judge_evidence_scope.md),
+T17 [public score semantics](docs/score_semantics_v2.md) and T18
+[actionable issue evidence](docs/issue_evidence_quality.md) are delivered.
+T16 real capability probes, T19 onward and the overall G1 gate remain pending,
+along with T08 real behavior acceptance. Historical T01 red
 observations are retained; their repair status must be read from the latest
 ledger rather than the original red baseline. The historical gate summary follows.
 

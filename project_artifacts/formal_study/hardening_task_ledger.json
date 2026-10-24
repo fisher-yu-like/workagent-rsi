@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T10:27:35.912540+00:00",
+  "updated_at": "2026-10-24T10:59:55.949425+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -162,9 +162,12 @@
     },
     {
       "task_id": "T18",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T18/20261024T105955004559Z",
+      "note": "Local engineering tests complete; see task manifest for supported scope.",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t18_issue_evidence.json",
+      "bundle": "project_artifacts/results/hardening-v2/T18/20261024T105955004559Z/bundle/manifest.json"
     },
     {
       "task_id": "T19",
@@ -410,15 +413,16 @@
     "T15": "commit containing ledger; exact sources in evidence",
     "T16": "commit containing ledger; exact source hashes in evidence",
     "T16_local": "571f14f",
-    "T17": "commit containing ledger; exact source hashes in evidence"
+    "T17": "67c75cb",
+    "T18": "commit containing ledger; exact source hashes in evidence"
   },
   "full_validation": {
-    "passed": 512,
+    "passed": 569,
     "failed": 2,
     "error": 0,
     "skipped": 0,
     "exit_code": 1,
-    "evidence": "project_artifacts/results/hardening-v2/T15-final-full/20261024T073436079821Z",
+    "evidence": "project_artifacts/results/hardening-v2/T18-final-full/20261024T105610295802Z",
     "expected_open": [
       "R10",
       "R11"
@@ -426,7 +430,7 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T18-local",
+    "T19-local",
     "T08-T13-T15-T16-real-qualification-deferred"
   ],
   "review_case_status": {

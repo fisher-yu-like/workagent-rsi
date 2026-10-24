@@ -134,8 +134,8 @@ instead of being granted inferred scores or formal claim permission.
 All cases use trusted locally authored fixtures and genuine OOXML files. They
 do not invoke server execution, Office, rendering or real model APIs. Task
 coverage requires independent task-bound review; legacy declared-check scores
-are explicitly unreviewed and have no new task score. T17 consumer migration
-remains separate. Preflight classifies spec_gap and assessment_gap before file
+are explicitly unreviewed and have no new task score. T17 now provides versioned public task outcomes; explicit legacy compatibility
+remains available. Preflight classifies spec_gap and assessment_gap before file
 parsing. Scoped checks preserve requested and observed positions; ambiguity or
 extraction limits never yield a pass based on partial evidence. True formula
 recalculation and visible appearance still require real T13/T15 qualification.
@@ -160,7 +160,37 @@ pass through rejection or review, not through a claimed visual accuracy score.
 
 These tests make no SSH, Office or model call. T14 is complete within documented
 structural support; T13/T15 remain partial with local work completed and real
-qualification deferred. T08's real behavior probe is also deferred. T16 onward,
-T17's remaining legacy consumer migration and the overall G1 gate remain open.
+qualification deferred. T08's real behavior probe is also deferred. T16 real
+capability probes, T19 onward and the overall G1 gate remain open.
 See `docs/edit_preservation.md`, `docs/formula_recalculation.md`,
 `docs/visibility_checks.md` and the three task manifests for evidence boundaries.
+
+
+## T16-T18 evidence, public outcomes and actionable issues
+
+```powershell
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T16-local tests/test_judge_evidence_scope.py tests/test_model_judgement.py tests/test_visual_assessment.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T17 tests/test_assessment_entrypoint_parity.py tests/test_artifact_assessment_contracts.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T18 tests/test_issue_evidence_quality.py tests/test_artifact_assessment_excel.py
+```
+
+T16 validates source hashes/citations, requirement-scoped partitions, complete
+coverage, bounded consistency review and independent invocation accounting.
+These authored transport fixtures do not qualify a real model; capability
+probes remain not_run and confidence remains uncalibrated.
+
+T17 compares Check, Harness and WorkAgent RSI on the same genuine bytes and
+reviewed authored task. Default task entrypoints require reviewed admission;
+unreviewed constraints cannot establish task success. Historical qualification
+mechanism tests explicitly select assessment_profile="legacy". Their declared
+scores do not establish reviewed task acceptance. A missing COM/channel cannot
+leave a successful complete public result.
+
+T18 checks actual/expected values, scopes, action targets, stable IDs, capability
+and spec gaps, frozen evidence reuse and protected feedback projection. Fixture
+answer knobs are absent from general feedback. ArtifactFeedbackProvider is an
+explicitly labelled offline qualification policy. All tests are local; no remote
+server or real model call is part of this delivery.
+
+See `docs/judge_evidence_scope.md`, `docs/score_semantics_v2.md`,
+`docs/issue_evidence_quality.md` and the task manifests for scope and evidence.

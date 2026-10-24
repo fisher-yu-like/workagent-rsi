@@ -36,7 +36,8 @@ def test_correct_partial_and_wrong_real_workbooks(tmp_path):
     issue = next(i for i in reports[-1][2].issues if i.requirement_id == "total.East")
     assert (issue.location.sheet, issue.location.cell, issue.observed, issue.expected) == ("Summary", "B2", 10, 15)
     assert issue.cause_hypothesis is None
-    assert "sales_rows=all" in issue.skill_improvement_hint
+    assert issue.skill_improvement_hint is None
+    assert issue.repair_action.target=='artifact'
 
 
 def test_cached_value_is_not_recalculation_and_incomplete_keeps_known_dimensions(tmp_path):

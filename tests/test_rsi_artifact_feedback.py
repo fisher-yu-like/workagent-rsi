@@ -75,7 +75,8 @@ def test_feedback_changes_execution_and_both_sides_have_two_reports(tmp_path):
             assert (round_root / side / "develop/dev/repeat-1/assessment" / report).exists()
     context = (round_root / "candidate_workspace/artifact_feedback.json").read_text()
     assert "PRIVATE_REGION" not in context and "4321" not in context and "secret" not in context
-    assert "Summary" in context and "sales_rows=all" in context
+    assert "Summary" in context and "sales_rows=all" not in context
+    assert loop.provider.qualification_only is True
     assert "rows" not in result["rounds"][0]["baseline"]["hidden"]
 
 

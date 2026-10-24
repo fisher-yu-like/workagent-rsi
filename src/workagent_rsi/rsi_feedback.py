@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from .assessment_contracts import RSIFeedback
+from .artifact_feedback import public_issue_advice
 
 
 def candidate_feedback(feedback: RSIFeedback) -> RSIFeedback:
@@ -14,9 +15,11 @@ def candidate_feedback(feedback: RSIFeedback) -> RSIFeedback:
     """
     feedback = RSIFeedback.model_validate(feedback.model_dump())
     task_fields = {'task_id', 'acceptance_status', 'quality_score', 'dimension_scores', 'coverage',
-                   'errors', 'requirement_refs', 'trace_summary'}
+                   'errors', 'requirement_refs', 'trace_summary','task_acceptance','score_semantics'}
     issue_fields = {'issue_id', 'requirement_id', 'kind', 'location', 'observed', 'expected', 'evidence_refs',
-                    'severity', 'cause_hypothesis', 'repair_hint', 'skill_improvement_hint', 'recheck_ids', 'feedback_visibility'}
+                    'severity', 'cause_hypothesis', 'repair_hint', 'skill_improvement_hint', 'recheck_ids', 'feedback_visibility',
+                    'requested_location','observed_locations','failure_origin','affected_requirements','repair_action',
+                    'verification_steps','impact','qualification_only'}
     protected = {'hidden', 'regression', 'ood', 'ood_transfer', 'final_test', 'promotion_validation',
                  'path', 'file_path', 'evidence_path', 'private_history', 'credentials'}
     def public(value):
@@ -42,10 +45,11 @@ def candidate_feedback(feedback: RSIFeedback) -> RSIFeedback:
                     continue
                 clean = public({k: v for k,v in issue.items() if k in issue_fields})
                 if clean is not None:
+                    clean=public_issue_advice(clean)
                     issues.append(clean)
                     if clean.get('issue_id') and clean.get('requirement_id'):
                         # Original issue_groups can carry unapproved metadata.
-                        key = clean.get('skill_improvement_hint') or clean['requirement_id']
+                        key = clean['requirement_id']
                         groups.setdefault(key, []).append(f"{row['task_id']}:{clean['issue_id']}")
             entry['issues'] = issues
         tasks.append(entry)
@@ -61,13 +65,15 @@ def build_feedback(develop, *, mode="structured") -> RSIFeedback:
             continue
         score = row["score_report"]
         entry = {"task_id": row["task_id"], "acceptance_status": score["acceptance_status"], "quality_score": score["total_score"], "dimension_scores": score["dimension_scores"], "coverage": score["coverage"]}
+        entry.update(task_acceptance=score.get('task_acceptance','NOT_ASSESSED'),
+            score_semantics=score.get('score_semantics','declared-check-v1'))
         issues = [i for i in row["issue_report"]["issues"] if i["feedback_visibility"] == "develop" and i["kind"] == "artifact_defect"]
         if mode == "brief":
             entry["errors"] = [i["requirement_id"] + ": requirement unmet" for i in issues]
         elif mode == "structured":
             entry["issues"] = issues
             for issue in issues:
-                key = issue["skill_improvement_hint"] or issue["requirement_id"]
+                key = issue["requirement_id"]
                 groups.setdefault(key, []).append(f"{row['task_id']}:{issue['issue_id']}")
         tasks.append(entry)
     return candidate_feedback(RSIFeedback(mode=mode, tasks=tasks, issue_groups=groups))

@@ -89,7 +89,7 @@ A candidate skill version can be promoted only if all conditions hold:
 ## Current state
 
 For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
-and `hardening_t15_visibility.json`. Work in the existing
+and `hardening_t18_issue_evidence.json`. Work in the existing
 `feat/evaluation-rsi-hardening` branch at `D:/ws/Projects/WorkAgent-RSI`.
 T00-T03 are delivered; T03 includes the strict default-off live-call policy.
 T04's default Docker and explicit Apptainer SSH backends do not execute native
@@ -103,19 +103,26 @@ T06 shares verified champion/develop context across API/CLI; public history and
 context budgets are checked offline. See `docs/candidate_generation.md`.
 T07 admits complete raw candidate responses with auditable normalization and
 transport-owned model identity. Both tasks were qualified offline only.
-The latest full suite has 512 passed, 2 expected-open failures and no errors/skips.
-Counts and evidence are recorded in the T15 manifest and task ledger. T08 local validation/probe protocol is delivered; actual behavior remains
+The latest full suite has 569 passed, 2 expected-open failures and no errors/skips.
+Counts and evidence are recorded in the T18 manifest and task ledger. T08 local validation/probe protocol is delivered; actual behavior remains
 deferred by user. See `docs/candidate_verification.md`. T09 comparable-cohort
 analysis and reference evaluation are complete offline; see `docs/result_cohorts.md`.
 T10 adds task-bound reviewed requirement coverage, T11 preflights registered checks,
 and T12 enforces scoped positions with separate requested/observed evidence. See
 `docs/requirement_admission.md`, `docs/check_registry.md`, `docs/scoped_content_checks.md`.
-Legacy v1 fields remain declared-check compatibility; full downstream migration
-is T17. T14 structural edit preservation is delivered within its documented support.
+T17 now unifies normal Check/Harness/RSI task evaluation with reviewed admission
+and explicit task/quality/coverage outcomes. Legacy v1 fields remain declared-check
+compatibility only; historical task entrypoints require an explicit legacy profile.
+T14 structural edit preservation is delivered within its documented support.
 T13 formula/recalculation and T15 geometry/page-coverage local work are complete;
 real recalculation and rendered visual qualification remain deferred by user.
 See `docs/edit_preservation.md`, `docs/formula_recalculation.md` and
-`docs/visibility_checks.md`. T08/T13/T15 real qualification, T16-T35 and
+`docs/visibility_checks.md`. T16 adds scoped/source-bound evidence partitions and
+independent review records. Its real capability probes remain deferred. T18 adds
+grounded issue facts, repair targets and verification steps; general feedback no
+longer contains internal fixture knobs. See `docs/judge_evidence_scope.md`,
+`docs/score_semantics_v2.md` and `docs/issue_evidence_quality.md`.
+T08/T13/T15/T16 real qualification, T19-T35 and
 the overall G1 gate remain unfinished. Full-suite evidence is not
 all-green, and isolated authored probes are not live model/RSI qualification.
 The entries below preserve historical stage evidence.

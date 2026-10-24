@@ -42,3 +42,15 @@ Current hardening progress is tracked in `formal_study/hardening_task_ledger.jso
 | T12 scoped content | completed | Independent red25 failed/4 controls passed; final combined focused156 passed. Full442 passed/5 expected-open, no errors/skips. Exact Word/Excel/PPT scopes, ambiguity/limits explicit, requested/observed locations distinct; R02 passes. |
 
 No server/model call or rendering/recalculation qualification was performed in T10-T12. G1 remains incomplete, and T13/T15/T17 keep their own acceptance requirements.
+
+
+| Local hardening task | Status | Actual acceptance |
+|---|---|---|
+| T16 judge evidence scope | partial, local completed | Red18; final focused99 passed. Scoped partitions, source hash/citation contracts, independent review records and bounded joint-image groups. Real judge capability probes remain deferred; no accuracy claim. |
+| T17 public outcome parity | completed | Red11; final focused141 passed. Check, Harness and WorkAgent RSI share task admission and explicit quality/coverage outcomes. Historical qualification uses explicit legacy profiles. |
+| T18 issue evidence quality | completed | Red13 failures/1 control; final focused207 passed. Grounded repair actions, stable IDs, spec/capability gaps, safe develop projection and historical feedback provenance controls. See latest manifest for full-suite counts. |
+
+These local deliveries make no remote server or real model calls. T08/T13/T15/T16
+real qualification, R10/R11, T19 onward and G1 remain open. Original historical
+results above are retained. Exact source hashes, manifests and portable evidence
+are indexed by `formal_study/hardening_task_ledger.json`.
