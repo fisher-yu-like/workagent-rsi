@@ -25,7 +25,7 @@ JSON_VALUE = TypeAdapter(Any)
 
 def assessment_identity(config: dict | None = None) -> str:
     root = Path(__file__).resolve().parents[2]
-    names = ("assessment_contracts.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
+    names = ("assessment_contracts.py", "preservation_checks.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
     files = {name: sha256_file(Path(__file__).with_name(name)) for name in names if Path(__file__).with_name(name).exists()}
     for skill in ("office-artifact-evaluator", "office-artifact-verifier"):
         for path in sorted((root / "skills" / skill).rglob("*")):
@@ -168,6 +168,11 @@ class SharedAssessment:
 
     def _check(self, r, parsed, paths):
         obj, loc = parsed[r.location.artifact], r.location
+        if r.check=='preservation':
+            from .preservation_checks import compare_preservation
+            rows=compare_preservation(r.options['source_path'],paths[loc.artifact],r.options['preservation_spec'])
+            status='FAIL' if any(row.status=='FAIL' for row in rows) else 'NEEDS_REVIEW' if any(row.completion is None for row in rows) else 'PASS'
+            return status,(0 if status=='FAIL' else 1 if status=='PASS' else None),[row.model_dump(mode='json') for row in rows],loc
         if r.check == "file.readable":
             actual = True
         elif r.check == "file.format":

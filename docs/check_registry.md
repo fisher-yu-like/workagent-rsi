@@ -23,6 +23,7 @@ Preflight runs before artifact parsing. Unknown checks, invalid types/locations 
 | powerpoint.overlap | powerpoint | slide | list | parser |
 | powerpoint.slide_count | powerpoint | optional scope | count | parser |
 | powerpoint.texts | powerpoint | optional scope | texts | parser |
+| preservation | excel, word, powerpoint | optional scope | boolean | parser |
 | semantic | excel, word, powerpoint | optional scope | any | semantic_judge |
 | text.contains | excel, word, powerpoint | optional scope | text | parser |
 | visual | excel, word, powerpoint | optional scope | any | renderer, visual_judge |

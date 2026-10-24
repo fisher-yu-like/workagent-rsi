@@ -45,6 +45,7 @@ _definitions = [
     ('facts.consistent',ALL,[],'scalar',[]),
     ('visual',ALL,[],'any',['renderer','visual_judge']),
     ('semantic',ALL,[],'any',['semantic_judge']),
+    ('preservation',ALL,[],'boolean',[]),
 ]
 REGISTRY = {name:CheckDefinition(name=name,domains=domains,required_location_fields=fields,
     expected_schema=schema,capabilities=caps) for name,domains,fields,schema,caps in _definitions}
@@ -167,6 +168,12 @@ def validate_acceptance_spec(spec, capabilities) -> SpecAdmissionReport:
                 pages=r.options['pages']
                 if not isinstance(pages,list) or not pages or any(type(p) is not int or p<1 for p in pages) or len(set(pages))!=len(pages):
                     raise ValueError('visual pages must be unique positive integer page numbers')
+            if r.check=='preservation':
+                from .preservation_checks import PreservationSpec
+                policy=PreservationSpec.model_validate(r.options.get('preservation_spec'))
+                source=r.options.get('source_path')
+                if not isinstance(source,str) or spec.input_hashes.get(source)!=policy.source_hash:
+                    raise ValueError('preservation source must be bound in frozen input_hashes')
         except (ValueError,TypeError,KeyError,IndexError) as exc:
             gap(r.requirement_id,'spec_gap',str(exc))
             continue
