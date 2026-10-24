@@ -101,3 +101,24 @@ rejection, exact instruction preservation and transport-owned identity. Raw
 response and normalization evidence are checked for accepted and rejected cases.
 Current counts and remaining regressions are recorded in the task ledger and
 the T06/T07 manifests; future-task failures remain included in full pytest.
+
+## T08 local validation and T09 cohorts
+
+```powershell
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T08-local tests/test_candidate_skill_validation.py tests/test_verifier.py tests/test_rsi_artifact_feedback.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T09 tests/test_result_cohorts.py tests/test_formal_runner.py
+```
+
+T08 JSON skills use strict in-memory validation and never execute candidate
+tests on the host. WorkAgent behavior remains required/not_run without qualified
+isolated evidence; authored pilot static passes never imply skill quality.
+Probe adapter unit fixtures are not real server acceptance. T08 remains partial
+until the explicitly deferred behavior qualification is performed.
+
+T09 tests author local identity/result/admission receipts, check each cohort's
+means/denominators, deduplication, latest-attempt policy and exclusion reasons,
+and create a fresh paired reference evaluation without rewriting history.
+No real model, external dataset or server is used. See
+`docs/candidate_verification.md` and `docs/result_cohorts.md` for protocol details
+and remaining gates. Old summaries without verifiable identities are excluded
+instead of being granted inferred scores or formal claim permission.

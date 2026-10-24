@@ -89,13 +89,13 @@ A candidate skill version can be promoted only if all conditions hold:
 ## Current state
 
 For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
-and `hardening_t07_candidate_normalization.json`. Work in the existing
+and `hardening_t09_result_cohorts.json`. Work in the existing
 `feat/evaluation-rsi-hardening` branch at `D:/ws/Projects/WorkAgent-RSI`.
 T00-T03 are delivered; T03 includes the strict default-off live-call policy.
 T04's default Docker and explicit Apptainer SSH backends do not execute native
 model scripts on the host. Read the T04 manifest for actual backend qualification;
 CLI-owned sandbox capability must remain separate. R12 now passes; the other
-8 T01 defects remain active; R07 and R08 now pass after T06/T07. T05 now isolates execution/candidate views and
+7 T01 defects remain active (R01-R05, R10, R11); R06-R09 now pass after local T06-T09. T05 now isolates execution/candidate views and
 hash-verified rendering copies. LibreOffice/Poppler rendering, unrelated-instance
 survival and timeout cleanup passed on the explicit Apptainer worker; dedicated
 Microsoft Office COM remains unavailable. See `deploy/office-worker/README.md`.
@@ -103,8 +103,9 @@ T06 shares verified champion/develop context across API/CLI; public history and
 context budgets are checked offline. See `docs/candidate_generation.md`.
 T07 admits complete raw candidate responses with auditable normalization and
 transport-owned model identity. Both tasks were qualified offline only.
-The latest full suite has 318 passed and 8 expected-open failures. T08 local validation/probe protocol is delivered; actual behavior remains
-deferred by user. See `docs/candidate_verification.md`. T09-T35 and
+The latest full suite has 352 passed and 7 expected-open failures. T08 local validation/probe protocol is delivered; actual behavior remains
+deferred by user. See `docs/candidate_verification.md`. T09 comparable-cohort
+analysis and reference evaluation are complete offline; see `docs/result_cohorts.md`. T10-T35 and
 the overall G1 gate remain unfinished. Full-suite evidence is not
 all-green, and isolated authored probes are not live model/RSI qualification.
 The entries below preserve historical stage evidence.

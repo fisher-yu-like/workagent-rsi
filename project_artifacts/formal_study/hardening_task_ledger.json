@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T05:58:24.999808+00:00",
+  "updated_at": "2026-10-24T06:10:42.300225+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -73,13 +73,17 @@
       "local_status": "completed",
       "behavior_status": "deferred_by_user",
       "manifest": "project_artifacts/formal_study/hardening_t08_candidate_validation.json",
-      "bundle": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z/bundle/manifest.json"
+      "bundle": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z/bundle/manifest.json",
+      "implementation_commit": "7b839c8773f521c9f41a55fd966f04d7446dc271"
     },
     {
       "task_id": "T09",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z",
+      "note": "Comparable cohort/evidence/retry/claim boundaries and exclusive paired reference evaluation verified offline. R09 passes. T08 genuine behavior remains deferred; G1 incomplete.",
+      "base_commit": "7b839c8773f521c9f41a55fd966f04d7446dc271",
+      "manifest": "project_artifacts/formal_study/hardening_t09_result_cohorts.json",
+      "bundle": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z/bundle/manifest.json"
     },
     {
       "task_id": "T10",
@@ -367,30 +371,30 @@
     "T04": "commit containing ledger; exact sources in evidence",
     "T05": "commit containing ledger; exact sources hashed in evidence",
     "T06": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
-    "T07": "commit containing ledger; exact tested sources in evidence",
-    "T08_local": "commit containing ledger; actual behavior qualification pending"
+    "T07": "a34c4edd82cf1449a758e517e3e357cb3a615249",
+    "T08_local": "7b839c8773f521c9f41a55fd966f04d7446dc271",
+    "T09": "commit containing ledger; exact sources in final evidence"
   },
   "full_validation": {
-    "passed": 318,
-    "failed": 8,
+    "passed": 352,
+    "failed": 7,
     "error": 0,
     "skipped": 0,
     "exit_code": 1,
-    "evidence": "project_artifacts/results/hardening-v2/T08-local-verified-full/20261024T055419368460Z",
+    "evidence": "project_artifacts/results/hardening-v2/T09-verified-full/20261024T060710840484Z",
     "expected_open": [
       "R01",
       "R02",
       "R03",
       "R04",
       "R05",
-      "R09",
       "R10",
       "R11"
     ]
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T09",
+    "T10-local",
     "T08-real-behavior-deferred"
   ],
   "review_case_status": {
@@ -426,7 +430,8 @@
       "evidence": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z"
     },
     "R09": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z"
     },
     "R10": {
       "status": "expected_open"

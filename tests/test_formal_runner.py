@@ -90,7 +90,7 @@ def test_formal_matrix_and_baselines_are_explicit_about_claim_boundary():
     assert all("metrics" not in arm for arm in baselines["arms"])
 
 
-def test_analysis_excludes_unavailable_experiment_from_numeric_aggregates(tmp_path: Path):
+def test_legacy_analysis_reports_unavailable_and_excludes_unverifiable_identity(tmp_path: Path):
     analysis = _load_analysis()
     (tmp_path / "pilot" / "summary.json").parent.mkdir(parents=True)
     (tmp_path / "pilot" / "summary.json").write_text(
@@ -107,9 +107,11 @@ def test_analysis_excludes_unavailable_experiment_from_numeric_aggregates(tmp_pa
         encoding="utf-8",
     )
     result = analysis.analyze_results(tmp_path)
-    assert result["completed_experiments"] == 1
+    assert result["completed_experiments"] == 0
     assert result["unavailable_experiments"] == 1
-    assert result["numeric_means"] == {"score": 1.0}
+    assert result["numeric_means"] == {}
+    assert result['observed_status_counts']['completed'] == 1
+    assert len(result['excluded_records']) == 2
     assert result["claims_allowed"] is False
 
 
