@@ -1,12 +1,12 @@
 {
   "schema_version": "hardening-t08-local-v1",
-  "status": "partial",
+  "status": "completed",
   "local_status": "completed",
-  "behavior_qualification": "deferred_by_user_not_run",
+  "behavior_qualification": "isolated_run_passed",
   "base_commit": "a34c4edd82cf1449a758e517e3e357cb3a615249",
   "implementation_commit": "commit containing manifest; exact sources in test evidence",
   "completed_at": "2026-10-24T05:58:24.999808+00:00",
-  "scope": "T08 locally implementable checks and probe protocol only; no server/model calls",
+  "scope": "local engineering plus actual authored CLI-generated Office behavior and registry rejection probes",
   "red": {
     "failed": 17,
     "error": 0,
@@ -38,13 +38,21 @@
   ],
   "review_case_R06": "passed",
   "behavior_probe_adapter": "implemented; unit fixtures only, no actual environment qualification",
-  "pending": [
-    "independently freeze real behavior taskset/program",
-    "reconnect and verify T04/T05 runtime",
-    "run genuine isolated parent/candidate and protected-regression probes",
-    "retain OS/resource/cleanup/coverage proof and qualify T08"
-  ],
+  "pending": [],
   "evidence": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z",
   "bundle": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z/bundle/manifest.json",
-  "G1": "incomplete"
+  "G1": "incomplete",
+  "server_qualification": {
+    "evidence": "project_artifacts/results/hardening-v2/T08-real/20261024T123719407816Z",
+    "rsi_evidence": "project_artifacts/results/hardening-v2/T08-rsi-real/20261024T123929807716Z",
+    "preserving_candidate_tasks_passed": 3,
+    "protected_regressions_detected": 2,
+    "champion_unchanged": true,
+    "model": "gpt-6.1-sol",
+    "provider": "codex-cli",
+    "accepted_frozen_generations": 3,
+    "scope": "frozen real model-generation snapshots; authored arithmetic tasks; not a full live RSI benchmark",
+    "focused_evidence": "project_artifacts/results/hardening-v2/T08-real-focused/20261024T124028141265Z",
+    "bundle": "project_artifacts/results/hardening-v2/T08-real/20261024T123719407816Z/bundle/manifest.json"
+  }
 }

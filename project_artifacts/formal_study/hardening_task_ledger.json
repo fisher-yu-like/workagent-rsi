@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T12:31:35.068952+00:00",
+  "updated_at": "2026-10-24T12:41:42.247423+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -67,14 +67,16 @@
     },
     {
       "task_id": "T08",
-      "status": "partial",
+      "status": "completed",
       "evidence": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z",
-      "note": "Local schema/safety/parent/budget and fixed sandbox-probe protocol complete. Actual isolated behavior acceptance deliberately deferred per user; quality remains unverified.",
+      "note": "Actual CLI gpt-6.1-sol frozen Office programs passed preserving control and exposed two protected regressions. Standalone verifier and actual RSI rejection route agree; champion unchanged. No full live RSI benchmark or general skill-quality claim.",
       "local_status": "completed",
       "behavior_status": "deferred_by_user",
       "manifest": "project_artifacts/formal_study/hardening_t08_candidate_validation.json",
       "bundle": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z/bundle/manifest.json",
-      "implementation_commit": "7b839c8773f521c9f41a55fd966f04d7446dc271"
+      "implementation_commit": "7b839c8773f521c9f41a55fd966f04d7446dc271",
+      "real_qualification": "isolated_run_passed",
+      "server_evidence": "project_artifacts/results/hardening-v2/T08-real/20261024T123719407816Z"
     },
     {
       "task_id": "T09",

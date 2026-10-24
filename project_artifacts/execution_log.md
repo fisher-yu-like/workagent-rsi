@@ -326,3 +326,8 @@ Real server/model capability remains unqualified by these authored tests.
 ### T13 actual server qualification (2026-10-24)
 
 14 actual isolated LibreOffice runs passed with independent arithmetic oracles, five input variants, negative controls and unchanged originals. No model calls or new runtime installation. Evidence: `project_artifacts/results/hardening-v2/T13-real/20261024T122504362212Z`. Scope is the frozen engine and authored cases, not general equivalence.
+
+
+### T08 actual behavior qualification (2026-10-24)
+
+Preserving candidate passed three authored tasks; first-two-entries control regressed on two protected cases and was rejected. Actual RSI route reran behavior and preserved champion. Three accepted model generations used codex-cli gpt-6.1-sol; no generated code ran on the host. Frozen generation snapshots and cached real parent baseline do not constitute a full live RSI benchmark. Evidence: `project_artifacts/results/hardening-v2/T08-real/20261024T123719407816Z`, `project_artifacts/results/hardening-v2/T08-rsi-real/20261024T123929807716Z`. Earlier CLI startup/configuration and warning-classification failures are retained separately and charged against the same budget.

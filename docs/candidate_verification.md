@@ -52,11 +52,10 @@ Probe program/taskset hashes, qualification kind and sandbox policy contribute
 to checkpoint identity. Verification policy changes also invalidate resume.
 There is no implicit host execution or remote connection.
 
-## Work intentionally deferred until server access returns
+## Actual server acceptance
 
-The user requested local work first. T08 is **partially delivered**, not fully
-qualified. Local static checks, probe adapter/protocol and fixture tests are
-implemented. The remaining acceptance requires:
+Local static checks, probe adapter/protocol and fixture tests were delivered
+first. Real acceptance uses the following procedure:
 
 1. Freeze independently reviewed fixed behavior tasks and a trusted worker
    program suitable for the real Office skill execution path. Include a
@@ -68,5 +67,23 @@ implemented. The remaining acceptance requires:
 4. Qualify `evidence_kind=isolated_run` only from those actual runs. Verify a bad
    candidate is blocked without changing champion, then update the T08 ledger.
 
-No server, Docker/Apptainer process or live model is used by the local fixture
-tests. G1 remains incomplete until this deferred acceptance is done.
+The 2026-10-24 real probe passed. Codex CLI `gpt-6.1-sol` generated one frozen
+Office program for each of three instruction packages. The task cases and
+arithmetic oracles were authored before generation; models received the generic
+task and instruction package, without those oracle cases. The independent fixed
+program ran the resulting scripts only inside the frozen no-network Apptainer
+worker and opened genuine XLSX artifacts. Package, generated-program, taskset,
+artifact, runtime and cleanup evidence is retained.
+
+The preserving candidate passed three tasks. The first-two-entries control
+regressed on both protected cases and was rejected. An additional actual
+`RSILoop.run_round` invocation reused the real frozen parent results, reran the
+bad candidate behavior remotely, rejected it and preserved the registry champion
+hash. This establishes verifier/registry integration on authored tasks. It is
+not an end-to-end live model RSI benchmark or a general skill-quality claim.
+
+Reproduction uses `run_t08_behavior_probe.py` with explicit frozen sandbox and
+approved live-call policies, then `run_t08_rsi_probe.py --behavior-root PATH`.
+The latter makes no new model calls. See `hardening_t08_candidate_validation.json`
+for exact attempts, failures and portable evidence. Local fixture tests still
+make no remote/model calls. The overall G1 gate remains unfinished.
