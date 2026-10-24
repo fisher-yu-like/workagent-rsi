@@ -55,6 +55,7 @@ class Harness:
         run_id: str | None = None,
         result_path: str | Path | None = None,
         max_attempts: int = 1,
+        repair_policy=None,
     ) -> dict:
         task = task if isinstance(task, TaskSpec) else TaskSpec.model_validate(task)
         root, output = self._paths(task, run_id=run_id, result_path=result_path)
@@ -89,7 +90,7 @@ class Harness:
             model_review_config=self.model_review_config,
             assessment=self.assessment,
             assessment_profile=self.assessment_profile,
-        ).execute(task, max_attempts=max_attempts)
+        ).execute(task, max_attempts=max_attempts, repair_policy=repair_policy)
         result["result_path"] = str(output.resolve())
         result["result_dir"] = str(root.resolve())
         output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")

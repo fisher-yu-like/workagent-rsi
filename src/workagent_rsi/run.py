@@ -49,7 +49,41 @@ class Run:
         self.assessment = assessment
         self.assessment_profile=assessment_profile
 
-    def execute(self, task: TaskSpec, skill_id: str | None = None, *, max_attempts: int = 1) -> dict:
+    def execute(self, task: TaskSpec, skill_id: str | None = None, *, max_attempts: int = 1, repair_policy=None) -> dict:
+        if repair_policy is None:
+            return self._execute_once(task, skill_id, max_attempts=max_attempts)
+        from .repair_loop import RepairLoop, RepairPolicy, repair_feedback
+        if not isinstance(repair_policy, RepairPolicy):
+            repair_policy = RepairPolicy.model_validate(repair_policy)
+        task = TaskSpec.model_validate(task) if isinstance(task, dict) else task.model_copy(deep=True)
+        owners = {}
+        initial = self._execute_once(task, skill_id, max_attempts=max_attempts, defer_assessment=True)
+        initial_id = initial['run_id']
+        owners[initial_id] = self
+        def execute_repair(request, root):
+            child = Run(root, office=self.office, execution_provider=self.execution_provider,
+                capability_report=self.capability_report, workagent_config=self.workagent_config,
+                agent_instructions=self.agent_instructions, input_base=self.input_base,
+                model_review_config=self.model_review_config, assessment=self.assessment,
+                assessment_profile=self.assessment_profile)
+            result = child._execute_once(task, skill_id, max_attempts=max_attempts,
+                defer_assessment=True, repair_request=request)
+            owners[result['run_id']] = child
+            return result
+        def assess(result):
+            return owners[result['run_id']]._assess_execution(task, result)
+        result = RepairLoop(self.root/'repair-loop', repair_policy).run(
+            task, initial, repair_feedback, execute_repair, assess)
+        result['selected_attempt_run_id'] = result['run_id']
+        result['run_id'] = initial_id
+        self.store.logs.set_state(initial_id, result['state'])
+        self.store.logs.append_event(initial_id, 'repair_completed', {
+            'repairs':result['repair_loop']['repairs'], 'stop_reason':result['repair_loop']['stop_reason'],
+            'selected_attempt_run_id':result['selected_attempt_run_id']})
+        return result
+
+    def _execute_once(self, task: TaskSpec, skill_id: str | None = None, *, max_attempts: int = 1,
+                      defer_assessment=False, repair_request=None) -> dict:
         if isinstance(task, dict):
             task = TaskSpec.model_validate(task)
         use_office = self.office if self.office is not None else task.domain.lower() in OFFICE_DOMAINS
@@ -83,6 +117,8 @@ class Run:
                 assessment=self.assessment,
                 assessment_profile=self.assessment_profile,
             )
+            if repair_request is not None:
+                adapter.repair_request = repair_request
             default_skill = "office.workagent"
         elif provider == "com":
             adapter = ComOfficeAdapter(
@@ -112,13 +148,25 @@ class Run:
             raise ValueError("Office task cannot use smoke provider implicitly")
         if provider != "smoke" and not use_office:
             raise ValueError(f"Office provider {provider} requires an Office task domain")
-        result = Orchestrator(
+        self._orchestrator = Orchestrator(
             artifact_store=self.store.files,
             trace_store=self.store.logs,
             adapter=adapter,
             evaluator=evaluator,
-        ).run(task, skill_id or default_skill, max_attempts=max_attempts)
-        if provider == "workagent":
+        )
+        self._provider = provider
+        result = self._orchestrator.run(task, skill_id or default_skill, max_attempts=max_attempts,
+                                        defer_assessment=defer_assessment)
+        if defer_assessment:
+            result['_attempt_root'] = str(self.root.resolve())
+            return result
+        return self._finish(task, result)
+
+    def _assess_execution(self, task, result):
+        return self._finish(task, self._orchestrator.assess_result(task, result))
+
+    def _finish(self, task, result):
+        if self._provider == "workagent":
             if not self.workagent_config.verify_com:
                 com = {"ok": False, "status": "disabled"}
             elif result["state"] != "SUCCEEDED":
@@ -152,6 +200,7 @@ class Run:
             persist_com_result(self.root, com)
             if com["status"] != "not_run":
                 self.store.logs.append_event(result["run_id"], "com_reopen", com)
+        result['_attempt_root'] = str(self.root.resolve())
         result['assessment_profile']=self.assessment_profile or 'default'
         return result
 

@@ -173,7 +173,10 @@ def test_R10_final_assessment_failure_enters_bounded_repair(tmp_path, monkeypatc
     monkeypatch.setattr("workagent_rsi.run.WorkAgentOfficeAdapter", LocalRepairableAdapter)
     task = TaskSpec(task_id="R10", domain="word", instruction="Create the required conclusion.",
                     expected_constraints={"required_text": "Required conclusion"})
-    harness = Harness(tmp_path / "results", workagent_config=WorkAgentConfig(verify_com=False))
+    # R10 isolates repair plumbing for a legacy declared-text check. T17 now
+    # requires a reviewed inventory for full task acceptance; keep this fixture
+    # explicit rather than weakening admission to make repair reachable.
+    harness = Harness(tmp_path / "results", workagent_config=WorkAgentConfig(verify_com=False), assessment_profile='legacy')
     options = {"max_attempts": 1}
     repair_supported = "repair_policy" in inspect.signature(harness.run).parameters
     if repair_supported:

@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T13:31:50.220302+00:00",
+  "updated_at": "2026-10-24T15:35:13.527734+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -193,9 +193,10 @@
     },
     {
       "task_id": "T21",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T21-delivery-focused/20261024T153359636610Z",
+      "note": "Task-local repair through Harness, fresh full assessment, unchanged retry semantics and registry; 55 focused passes, authored provider substitutes only.",
+      "manifest": "project_artifacts/formal_study/hardening_t21_repair_loop.json"
     },
     {
       "task_id": "T22",
@@ -440,8 +441,7 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T19-local",
-    "T08-T13-T15-T16-real-qualification-deferred"
+    "T22"
   ],
   "review_case_status": {
     "R12": {
@@ -485,10 +485,12 @@
       "evidence": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z"
     },
     "R10": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T21-delivery-focused/20261024T153359636610Z"
     },
     "R11": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T20-delivery-focused/20261024T132432449518Z"
     }
   },
   "latest_full_validation": {
@@ -499,7 +501,5 @@
     "exit_code": 1,
     "evidence": "project_artifacts/results/hardening-v2/T20-delivery-full/20261024T132432256612Z"
   },
-  "expected_open": [
-    "R10"
-  ]
+  "expected_open": []
 }

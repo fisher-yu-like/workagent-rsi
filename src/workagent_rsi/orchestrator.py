@@ -16,7 +16,7 @@ class Orchestrator:
         self.adapter = adapter
         self.evaluator = evaluator
 
-    def run(self, task: TaskSpec, skill_id: str, max_attempts: int = 1) -> dict:
+    def run(self, task: TaskSpec, skill_id: str, max_attempts: int = 1, *, defer_assessment: bool = False) -> dict:
         if max_attempts < 1:
             raise ValueError("max_attempts must be >= 1")
         run_id = f"run-{uuid4().hex[:12]}"
@@ -31,6 +31,7 @@ class Orchestrator:
             while attempts < max_attempts:
                 attempts += 1
                 failure = None
+                artifacts = []  # Each execution retry has its own current outputs.
                 for event in self.adapter.execute(task, skill_id):
                     self.trace_store.append_event(run_id, event["kind"], {**event, "attempt": attempts})
                     if event["kind"] == "artifact":
@@ -66,22 +67,34 @@ class Orchestrator:
                 state = "UNAVAILABLE" if failure.get("status") == "unavailable" else "FAILED"
                 self.trace_store.set_state(run_id, state)
                 return {"run_id": run_id, "state": state, "artifacts": [a.model_dump(exclude_none=True) for a in artifacts], "failure": failure}
-            self.trace_store.set_state(run_id, "EVALUATING")
-            report = self.evaluator.evaluate(task, artifacts, run_id)
-            if report.score is None or report.channel_status.get("assessment") == "incomplete":
-                state = "UNAVAILABLE"
-            else:
-                state = "SUCCEEDED" if report.passed else "FAILED"
-            self.trace_store.set_state(run_id, state)
-            evaluation = report.model_dump(mode='json',exclude_none=report.score_semantics!='task-v2')
-            evaluation["score"] = report.score
-            if not report.report_paths:
-                evaluation.pop("report_paths", None)
-            return {"run_id": run_id, "state": state, "artifacts": [a.model_dump(exclude_none=True) for a in artifacts], "evaluation": evaluation}
+            result = {"run_id":run_id, "state":"EXECUTED", "artifacts":[a.model_dump(exclude_none=True) for a in artifacts]}
+            return result if defer_assessment else self.assess_result(task, result)
         except Exception as exc:
             self.trace_store.append_event(run_id, "exception", {"message": str(exc)})
             self.trace_store.set_state(run_id, "FAILED")
             return {"run_id": run_id, "state": "FAILED", "artifacts": [a.model_dump(exclude_none=True) for a in artifacts], "failure": {"message": str(exc), "retryable": False}}
+
+    def assess_result(self, task: TaskSpec, result: dict) -> dict:
+        if result.get("failure"):
+            return result
+        from .contracts import ArtifactRef
+        run_id = result["run_id"]
+        self.trace_store.set_state(run_id, "EVALUATING")
+        try:
+            report = self.evaluator.evaluate(task, [ArtifactRef.model_validate(a) for a in result["artifacts"]], run_id)
+            state = ("UNAVAILABLE" if report.score is None or report.channel_status.get("assessment") == "incomplete"
+                     else "SUCCEEDED" if report.passed else "FAILED")
+            evaluation = report.model_dump(mode='json', exclude_none=report.score_semantics!='task-v2')
+            evaluation["score"] = report.score
+            if not report.report_paths:
+                evaluation.pop("report_paths", None)
+            self.trace_store.set_state(run_id, state)
+            return {**result, "state":state, "evaluation":evaluation}
+        except Exception as exc:
+            self.trace_store.set_state(run_id, "UNAVAILABLE")
+            self.trace_store.append_event(run_id, "assessment_exception", {"type":type(exc).__name__})
+            return {**result, "state":"UNAVAILABLE", "failure":{"message":str(exc), "retryable":False,
+                    "failure_origin":"assessment_gap"}}
 
     def resume(self, run_id: str) -> dict:
         return {"run_id": run_id, "state": self.trace_store.get_state(run_id), "events": self.trace_store.events(run_id)}
