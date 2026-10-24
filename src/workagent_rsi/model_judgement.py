@@ -21,6 +21,7 @@ from pydantic import Field, model_validator
 
 from .assessment_contracts import AssessmentModel
 from .hashing import canonical_json_hash, sha256_file
+from .run_budget import BudgetExceeded, budgeted_call
 from .judgement_provider import VisualAssessmentChannel, VisualJudgement
 from .semantic_assessment import SemanticAssessmentChannel, SemanticJudgement, validate_semantic_evidence, source_coverage_complete
 from .evidence_partition import JudgeResult, ReviewRecord
@@ -195,7 +196,11 @@ class ModelJudgementProvider:
                 _write(work / "request.json", request)
                 attempt_start = time.perf_counter()
                 try:
-                    raw, extra = self._cli(request, model, work) if config.provider == "codex-cli" else self._api(request, model, work)
+                    meta['model_call_started'] = False
+                    with budgeted_call('model') as remaining:
+                        meta['model_call_started'] = True
+                        timeout = min(config.timeout_seconds, remaining)
+                        raw, extra = self._cli(request, model, work, timeout=timeout) if config.provider == "codex-cli" else self._api(request, model, work, timeout=timeout)
                     meta.update(extra)
                     decision = model.model_validate_json(raw)
                     _write(work / 'raw_decision.json', decision.model_dump(mode='json'))
@@ -214,6 +219,9 @@ class ModelJudgementProvider:
                             decision = decision.model_copy(update={"status": "NEEDS_REVIEW", "completion": None, "observed": "Not every selected page was cited: " + decision.observed})
                     _write(work / "decision.json", decision.model_dump(mode="json"))
                     meta["status"] = "completed"
+                except BudgetExceeded:
+                    meta.update(status='unavailable', error='shared run budget exhausted')
+                    decision = None
                 except (subprocess.TimeoutExpired, TimeoutError):
                     meta.update(status="timeout", error="model call timed out")
                     decision = None
@@ -236,7 +244,7 @@ class ModelJudgementProvider:
                 telemetry = self._telemetry(attempts, started, root)
                 telemetry.update(status=attempts[-1]["status"], error=attempts[-1].get("error"))
                 telemetry['judge_result'] = JudgeResult(decision=None,reviews=reviews,
-                    model_identity=self.identity_config(),actual_model_calls=len(attempts),disagreement=False).model_dump(mode='json')
+                    model_identity=self.identity_config(),actual_model_calls=sum(a.get("model_call_started",True) for a in attempts),disagreement=False).model_dump(mode='json')
                 return None, telemetry
             decisions.append(decision)
             reviews.append(ReviewRecord(review_id=root.name+f':repeat-{repeat+1}',decision=decision.model_dump(mode='json'),
@@ -251,16 +259,16 @@ class ModelJudgementProvider:
         telemetry = self._telemetry(attempts, started, root)
         telemetry.update(status="completed", independent_reviews=len(decisions), agreement=not bool(disagreement))
         telemetry['judge_result'] = JudgeResult(decision=result.model_dump(mode='json'),reviews=reviews,
-            model_identity=self.identity_config(),actual_model_calls=len(attempts),disagreement=bool(disagreement)).model_dump(mode='json')
+            model_identity=self.identity_config(),actual_model_calls=sum(a.get("model_call_started",True) for a in attempts),disagreement=bool(disagreement)).model_dump(mode='json')
         _write(root / "result.json", {"decision": result.model_dump(mode="json"), "telemetry": telemetry})
         return result, telemetry
 
     @staticmethod
     def _telemetry(attempts, started, root):
-        return {"model_calls": len(attempts), "elapsed_seconds": time.perf_counter() - started,
+        return {"model_calls": sum(a.get("model_call_started", True) for a in attempts), "elapsed_seconds": time.perf_counter() - started,
                 "cost": None, "cost_status": "unavailable", "attempts": attempts, "evidence_directory": str(root.resolve())}
 
-    def _cli(self, request, model, work):
+    def _cli(self, request, model, work, *, timeout=None):
         schema_path, output = (work / "schema.json").resolve(), (work / "output.json").resolve()
         _write(schema_path, strict_schema(model))
         # Outside the repository so project instructions and hidden evaluation files are
@@ -282,7 +290,7 @@ class ModelJudgementProvider:
             (work / "prompt.txt").write_text(prompt, encoding="utf-8")
             _write(work / "command.json", {"argv": command, "cwd": sandbox})
             try:
-                completed = self.runner(command, Path(sandbox), self.config.timeout_seconds, prompt)
+                completed = self.runner(command, Path(sandbox), self.config.timeout_seconds if timeout is None else timeout, prompt)
             except subprocess.TimeoutExpired as exc:
                 (work / "stdout.jsonl").write_text(exc.stdout or "", encoding="utf-8")
                 (work / "stderr.txt").write_text(exc.stderr or "", encoding="utf-8")
@@ -306,7 +314,7 @@ class ModelJudgementProvider:
                 raise ValueError("reviewer attempted out-of-scope tool use")
         return output.read_text(encoding="utf-8"), {"exit_code": completed.returncode, "usage": usage, "model": self.config.model}
 
-    def _api(self, request, model, work):
+    def _api(self, request, model, work, *, timeout=None):
         content = [{"type": "input_text", "text": json.dumps(request, ensure_ascii=False)}]
         for item in request.get("images", []):
             encoded = base64.b64encode(Path(item["path"]).read_bytes()).decode("ascii")
@@ -317,7 +325,7 @@ class ModelJudgementProvider:
         # Image bytes already exist in render evidence; record their hashes without duplication.
         _write(work / "api_request.json", {**payload, "input": [{"role": "user", "content": [content[0], *[{"type": "input_image", "sha256": i["sha256"]} for i in request.get("images", [])]]}]})
         headers = {"Authorization": "Bearer " + os.environ[self.config.api_key_env], "Content-Type": "application/json"}
-        response = self.transport(self.config.api_base_url.rstrip("/") + "/responses", headers, payload, self.config.timeout_seconds)
+        response = self.transport(self.config.api_base_url.rstrip("/") + "/responses", headers, payload, self.config.timeout_seconds if timeout is None else timeout)
         _write(work / "api_response.json", response)
         if response.get("status") != "completed":
             raise ValueError("API response incomplete or failed")

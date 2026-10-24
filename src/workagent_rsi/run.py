@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from pathlib import Path
+from contextlib import nullcontext
+import time
+from .hashing import canonical_json_hash
 
 from .contracts import TaskSpec
 from .artifact_com import persist_com_result, verify_stored_office_artifacts
@@ -49,7 +52,26 @@ class Run:
         self.assessment = assessment
         self.assessment_profile=assessment_profile
 
-    def execute(self, task: TaskSpec, skill_id: str | None = None, *, max_attempts: int = 1, repair_policy=None) -> dict:
+    def execute(self, task: TaskSpec, skill_id: str | None = None, *, max_attempts: int = 1, repair_policy=None,
+                run_budget=None, split_name='develop') -> dict:
+        from .repair_loop import FeedbackVisibilityPolicy, RepairPolicy, RunBudget
+        FeedbackVisibilityPolicy().permits(split_name)
+        if repair_policy is not None:
+            repair_policy = RepairPolicy.model_validate(repair_policy) if not isinstance(repair_policy, RepairPolicy) else repair_policy
+            from .artifact_assessment import spec_from_task
+            typed = TaskSpec.model_validate(task) if isinstance(task, dict) else task
+            if not set(repair_policy.allowed_artifacts)<=set(spec_from_task(typed).artifacts):
+                raise ValueError('allowed_artifacts must name declared task artifacts')
+            if run_budget is None:
+                run_budget = RunBudget(max_repairs=repair_policy.max_repairs, max_wall_seconds=repair_policy.total_deadline_seconds)
+        if run_budget is not None and not isinstance(run_budget, RunBudget):
+            raise TypeError('run_budget must be a shared RunBudget instance')
+        context = run_budget.activate(self.root/'run-budget.json', wall_seconds=repair_policy.total_deadline_seconds if repair_policy else None) if run_budget else nullcontext()
+        with context:
+            return self._execute(task, skill_id, max_attempts=max_attempts, repair_policy=repair_policy, split_name=split_name)
+
+    def _execute(self, task, skill_id, *, max_attempts, repair_policy, split_name):
+        started=time.monotonic()
         if repair_policy is None:
             return self._execute_once(task, skill_id, max_attempts=max_attempts)
         from .repair_loop import RepairLoop, RepairPolicy, repair_feedback
@@ -72,7 +94,8 @@ class Run:
             return result
         def assess(result):
             return owners[result['run_id']]._assess_execution(task, result)
-        result = RepairLoop(self.root/'repair-loop', repair_policy).run(
+        result = RepairLoop(self.root/'repair-loop', repair_policy, split_name=split_name, started=started,
+                            skill_hash=canonical_json_hash({'instructions':self.agent_instructions})).run(
             task, initial, repair_feedback, execute_repair, assess)
         result['selected_attempt_run_id'] = result['run_id']
         result['run_id'] = initial_id

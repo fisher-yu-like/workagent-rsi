@@ -89,13 +89,12 @@ A candidate skill version can be promoted only if all conditions hold:
 ## Current state
 
 For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
-and `hardening_t20_execution_feedback.json`. Work in the existing
+and `hardening_t22_budget_visibility.json`. Work in the existing
 `feat/evaluation-rsi-hardening` branch at `D:/ws/Projects/WorkAgent-RSI`.
 T00-T03 are delivered; T03 includes the strict default-off live-call policy.
 T04's default Docker and explicit Apptainer SSH backends do not execute native
 model scripts on the host. Read the T04 manifest for actual backend qualification;
-CLI-owned sandbox capability must remain separate. R01-R09, R11 and R12 pass;
-only R10 remains active, owned by T21/T22. T05 now isolates execution/candidate views and
+CLI-owned sandbox capability must remain separate. R01-R12 pass; T21/T22 now close the task-local repair gap. T05 now isolates execution/candidate views and
 hash-verified rendering copies. LibreOffice/Poppler rendering, unrelated-instance
 survival and timeout cleanup passed on the explicit Apptainer worker; dedicated
 Microsoft Office COM remains unavailable. See `deploy/office-worker/README.md`.
@@ -103,7 +102,8 @@ T06 shares verified champion/develop context across API/CLI; public history and
 context budgets are checked offline. See `docs/candidate_generation.md`.
 T07 admits complete raw candidate responses with auditable normalization and
 transport-owned model identity. Both tasks were qualified offline only.
-The latest full suite has 620 passed, one expected-open R10 failure and no errors/skips.
+The latest full suite has 663 passed with no failures, errors or skips.
+The final T21/T22 focused suite has 121 passes.
 T20's focused suite has 114 passes; the real-probe visual scope repair has 84.
 Counts and evidence are recorded in the task ledger. T08 actual isolated behavior and
 RSI rejection passed on frozen CLI-generated Office programs; champion was unchanged.
@@ -135,9 +135,16 @@ failures learnable, retains null unobserved artifact quality, preserves fixed
 task denominators and distinguishes transport/environment/input gaps. R11 now
 passes and actual RSI capture receives syntax-failure feedback. See
 `docs/trace_diagnosis.md` and `docs/execution_failure_feedback.md`.
-T21-T35 and
-the overall G1 gate remain unfinished. Full-suite evidence is not
-all-green, and isolated authored probes are not live model/RSI qualification.
+T21 adds opt-in task-local repair with fresh full assessment and frozen task/skill.
+T22 adds shared reservations for native model/tool calls, retries, judge calls and
+API candidate generation, best-result retention, scoped output edits and protected
+split isolation. Failed and interrupted requests stay charged. Environment gaps
+retain earlier files while keeping outcomes incomplete. Execution/candidate CLI
+loops are unavailable under a bounded runtime budget because their internal calls
+cannot be reserved; the read-only judge CLI remains metered per invocation.
+See `docs/artifact_repair.md`. T00-T22 are locally delivered; T23-T35 and later
+live/research qualification remain unfinished. All-green local tests and authored
+probes do not establish live model repair or RSI improvement.
 The entries below preserve historical stage evidence.
 
 - Literature review: completed for the two specified arXiv works.

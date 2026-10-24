@@ -364,3 +364,13 @@ Explicitly approved three-request recheck passed: pages1-8 PASS,9-16 PASS,17 FAI
 - Red: 9 passed/11 failed/0 errors. Delivery: 55 passed/0 failures/errors/skips. See hardening_t21_repair_loop.json.
 - R10 compatibility fixture now explicitly selects legacy declared checks after T17 admission changes. Reviewed acceptance tests independently cover task repair.
 - One mistyped test path caused a collection exit4 and was corrected; that attempt is retained. No real model or server calls.
+
+## 2026-10-24 T22 budget and protected repair
+
+- Added shared pre-call reservations for native execution, API retries, tools, judges and API candidate generation. Failed/interrupted requests stay charged; opaque execution/candidate CLI loops are unavailable in bounded mode.
+- Bound repair and budget limits to evaluator identity; propagated real split names through Harness. Protected splits and hidden tasks never receive assessment-driven repair requests.
+- Retained the best assessed artifacts and rejected attempts; a later environment/transport gap stays incomplete. Added allowed-output checks, no-progress stopping, atomic best-result history and interruption accounting.
+- Fixed trace-root binding and preserved exact LF/CRLF source hashes in repair context. Corrected R10 compatibility fixture without relaxing task admission.
+- Final focused: 121 passed. Full: 663 passed, 0 failed/errors/skips. R01-R12 pass. Original and relocated bundles verified; exact hashes/counts are in T21/T22 manifests.
+- No real model or server calls. Native transport and CLI boundary tests are authored offline qualification. Live repair, active recovery, matched experiment arms and research validation remain later work.
+- Ledger recommendations, R10/R11 states, validation and bundle indexes reconciled; older indexes retained as history.

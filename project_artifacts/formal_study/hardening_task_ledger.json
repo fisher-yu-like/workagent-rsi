@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T15:35:13.527734+00:00",
+  "updated_at": "2026-10-24T16:12:08.882284+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -194,15 +194,16 @@
     {
       "task_id": "T21",
       "status": "completed",
-      "evidence": "project_artifacts/results/hardening-v2/T21-delivery-focused/20261024T153359636610Z",
+      "evidence": "project_artifacts/results/hardening-v2/T21/20261024T161041483329Z",
       "note": "Task-local repair through Harness, fresh full assessment, unchanged retry semantics and registry; 55 focused passes, authored provider substitutes only.",
       "manifest": "project_artifacts/formal_study/hardening_t21_repair_loop.json"
     },
     {
       "task_id": "T22",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T22/20261024T161057802548Z",
+      "note": "Shared call/tool/repair/time/cost reservations, protected feedback isolation, frozen identity, scoped edits, best result and interruption history. Final 121 focused/663 full passes; no live model/server calls.",
+      "manifest": "project_artifacts/formal_study/hardening_t22_budget_visibility.json"
     },
     {
       "task_id": "T23",
@@ -425,81 +426,106 @@
     "T16": "commit containing ledger; exact source hashes in evidence",
     "T16_local": "571f14f",
     "T17": "67c75cb",
-    "T18": "commit containing ledger; exact source hashes in evidence"
+    "T18": "commit containing ledger; exact source hashes in evidence",
+    "T21": "7d8613c7b66eec5b46ef32fadd483a0ef0a76863",
+    "T22": "commit containing this ledger; exact sources hashed by final evidence",
+    "T19": "6057b4304407846e2150c3f78077b167a1886354",
+    "T20": "96ad8b11d9aaa3a5ead5a96c2e1ae8fb99fa66cb"
   },
   "full_validation": {
-    "passed": 569,
-    "failed": 2,
+    "passed": 663,
+    "failed": 0,
     "error": 0,
     "skipped": 0,
-    "exit_code": 1,
-    "evidence": "project_artifacts/results/hardening-v2/T18-final-full/20261024T105610295802Z",
-    "expected_open": [
-      "R10",
-      "R11"
-    ]
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z",
+    "expected_open": []
   },
-  "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
+  "bundle": "project_artifacts/results/hardening-v2/T22/20261024T161057802548Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "T22"
+    "T23",
+    "T24"
   ],
   "review_case_status": {
     "R12": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T04/20261023T131835002830Z/sandbox"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R01": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T10/20261024T063905253104Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R02": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T12/20261024T065433339082Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R03": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R04": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R05": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R06": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R07": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R08": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R09": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R10": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T21-delivery-focused/20261024T153359636610Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     },
     "R11": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T20-delivery-focused/20261024T132432449518Z"
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
     }
   },
   "latest_full_validation": {
-    "passed": 620,
-    "failed": 1,
+    "passed": 663,
+    "failed": 0,
     "error": 0,
     "skipped": 0,
-    "exit_code": 1,
-    "evidence": "project_artifacts/results/hardening-v2/T20-delivery-full/20261024T132432256612Z"
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
   },
-  "expected_open": []
+  "expected_open": [],
+  "historical_full_validation_indexes": [
+    {
+      "passed": 569,
+      "failed": 2,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 1,
+      "evidence": "project_artifacts/results/hardening-v2/T18-final-full/20261024T105610295802Z",
+      "expected_open": [
+        "R10",
+        "R11"
+      ]
+    },
+    {
+      "passed": 620,
+      "failed": 1,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 1,
+      "evidence": "project_artifacts/results/hardening-v2/T20-delivery-full/20261024T132432256612Z"
+    }
+  ],
+  "historical_contract_example_bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json"
 }

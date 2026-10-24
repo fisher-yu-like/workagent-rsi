@@ -7,6 +7,7 @@ from uuid import uuid4
 from .contracts import TaskSpec
 from .evaluator import BasicEvaluator
 from .storage import ArtifactStore, TraceStore
+from .hashing import canonical_json_hash
 
 
 class Orchestrator:
@@ -32,7 +33,8 @@ class Orchestrator:
                 attempts += 1
                 failure = None
                 artifacts = []  # Each execution retry has its own current outputs.
-                for event in self.adapter.execute(task, skill_id):
+                execution_task = task.model_copy(deep=True)
+                for event in self.adapter.execute(execution_task, skill_id):
                     self.trace_store.append_event(run_id, event["kind"], {**event, "attempt": attempts})
                     if event["kind"] == "artifact":
                         if "artifact_path" in event:
@@ -60,6 +62,9 @@ class Orchestrator:
                             'failure_origin':event.get('failure_origin'),
                         }
                         break
+                if canonical_json_hash(execution_task.model_dump(mode='json')) != canonical_json_hash(task.model_dump(mode='json')):
+                    failure = {'message':'execution attempted to change the frozen task/spec', 'retryable':False,
+                               'failure_origin':'agent_execution'}
                 if failure is None or not failure["retryable"] or attempts >= max_attempts:
                     break
                 self.trace_store.append_event(run_id, "retrying", {"attempt": attempts, "next_attempt": attempts + 1})

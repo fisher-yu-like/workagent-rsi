@@ -27,12 +27,13 @@ def executor(monkeypatch, tmp_path, values):
             index = len(calls)
             calls.append((task.model_dump(mode='json'), skill_id))
             value = values[min(index, len(values)-1)]
+            value, kept = value if isinstance(value,tuple) else (value,'preserved')
             if isinstance(value, str):
                 yield {'kind': 'failure', 'message': value, 'failure_origin': 'agent_execution'}
                 return
             self.root.mkdir(parents=True, exist_ok=True)
             path = self.root/'authored.xlsx'
-            wb = Workbook(); wb.active['A1'] = value; wb.active['B1'] = 'preserved'; wb.save(path); wb.close()
+            wb = Workbook(); wb.active['A1'] = value; wb.active['B1'] = kept; wb.save(path); wb.close()
             yield {'kind': 'artifact', 'artifact_path': str(path), 'artifact_name': 'output',
                    'media_type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
     monkeypatch.setattr('workagent_rsi.run.WorkAgentOfficeAdapter', AuthoredExecutor)
@@ -80,10 +81,12 @@ def test_new_regression_is_detected_by_all_requirements(tmp_path, monkeypatch):
         Requirement(requirement_id='keep', description='Keep B1 unchanged', check='excel.cell',
                     location=Location(artifact='output', sheet='Sheet', cell='B1'), expected='original',
                     critical=True, dimension='content', evidence_source='independent authored oracle')]})
-    calls = executor(monkeypatch, tmp_path, [7, 42])
+    calls = executor(monkeypatch, tmp_path, [(7,'original'), (42,'destroyed')])
     result = harness(tmp_path).run(reviewed_task(spec), repair_policy=policy(max_repairs=1))
     assert len(calls) == 2 and result['state'] == 'FAILED'
     last = result['repair_loop']['attempts'][-1]
+    first_score = json.loads(Path(result['repair_loop']['attempts'][0]['evaluation']['report_paths']['score']).read_text())
+    assert {c['requirement_id']: c['status'] for c in first_score['criterion_results']} == {'answer':'FAIL','keep':'PASS'}
     score = json.loads(Path(last['evaluation']['report_paths']['score']).read_text())
     assert {c['requirement_id']: c['status'] for c in score['criterion_results']} == {'answer':'PASS', 'keep':'FAIL'}
 
@@ -148,6 +151,50 @@ def test_real_adapter_receives_repair_data_in_a_fresh_workspace(tmp_path, monkey
     assert (workspace/'previous_artifacts/artifact-0.xlsx').is_file()
 
 
+@pytest.mark.parametrize('newline', ['\n','\r\n'])
+def test_execution_repair_request_keeps_trace_grounded_diagnosis(tmp_path,monkeypatch,newline):
+    import hashlib
+    import traceback
+    from workagent_rsi.run import Run
+    calls=executor(monkeypatch,tmp_path,['SyntaxError: missing colon',42])
+    original=Run._execute_once
+    def with_trace(self,*args,**kwargs):
+        result=original(self,*args,**kwargs)
+        if result.get('failure'):
+            source=('for value in [1,2]\n    print(value)\n').replace('\n',newline)
+            try:compile(source,'agent.py','exec')
+            except SyntaxError as error:stderr=''.join(traceback.format_exception_only(type(error),error))
+            digest=hashlib.sha256(source.encode()).hexdigest()
+            records=self.root/'provider_records';(records/'executed-scripts').mkdir(parents=True)
+            (records/'executed-scripts'/f'{digest}.py').write_bytes(source.encode('utf-8'))
+            event={'name':'run_python','arguments':{'path':'agent.py'},'result':{'script_sha256':digest,
+                'script_snapshot_ref':f'executed-scripts/{digest}.py','stderr':stderr,
+                'execution':{'status':'failed','failure_origin':'agent_execution'}}}
+            (records/'tool_events.jsonl').write_text(json.dumps(event)+'\n')
+        return result
+    monkeypatch.setattr(Run,'_execute_once',with_trace)
+    result=harness(tmp_path).run(reviewed_task(authored_spec()),repair_policy=policy(max_repairs=1))
+    request=json.loads((Path(result['result_dir'])/'repair-loop/attempt-001/request.json').read_text())
+    assert len(calls)==2 and result['state']=='SUCCEEDED'
+    diagnoses=request['feedback']['diagnoses']
+    assert diagnoses and diagnoses[0]['confidence']>0
+    assert hashlib.sha256(request['current_code'][0]['text'].encode('utf-8')).hexdigest()==request['current_code'][0]['sha256']
+
+
 @pytest.mark.parametrize('kwargs', [{'max_repairs':-1}, {'total_deadline_seconds':0}, {'visibility':'hidden'}])
 def test_invalid_repair_policy_is_rejected(kwargs):
     with pytest.raises(ValueError): policy(**kwargs)
+
+
+def test_current_code_uses_latest_execution_instead_of_all_old_versions(tmp_path):
+    import hashlib
+    from workagent_rsi.repair_loop import _sources
+    records=tmp_path/'provider_records';(records/'executed-scripts').mkdir(parents=True)
+    events=[]
+    for text in ['# old program\n','# current executed program\n']:
+        digest=hashlib.sha256(text.encode()).hexdigest()
+        (records/'executed-scripts'/f'{digest}.py').write_bytes(text.encode())
+        events.append({'name':'run_python','result':{'script_sha256':digest,'script_snapshot_ref':f'executed-scripts/{digest}.py'}})
+    (records/'tool_events.jsonl').write_text(''.join(json.dumps(e)+'\n' for e in events))
+    sources=_sources({'_attempt_root':str(tmp_path)})
+    assert len(sources)==1 and sources[0]['text']=='# current executed program\n'

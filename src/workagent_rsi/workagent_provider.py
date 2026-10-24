@@ -23,6 +23,7 @@ from .execution_sandbox import SandboxExecutor, SandboxPolicy
 from .apptainer_sandbox import ApptainerPolicy, ApptainerSSHExecutor
 from .rsi_contracts import ProviderRecord
 from .run_contracts import FailureOrigin
+from .run_budget import BudgetExceeded, active_budget, budgeted_urlopen, budgeted_tool
 
 
 _RELATIVE_POSIX_PATH_PATTERN = r"^(?!/)(?!.*[:\\])(?!.*(?:^|/)\.{1,2}(?:/|$))[^/]+(?:/[^/]+)*$"
@@ -135,6 +136,11 @@ class CodexOfficeProvider:
         ]
 
     def run(self, prompt: str, workspace: Path, record_root: Path) -> ProviderOutcome:
+        if active_budget() is not None and self.config.backend == 'codex-cli':
+            # This CLI owns an opaque internal tool loop. Reject before launch;
+            # post-hoc event counting cannot enforce a hard call/tool budget.
+            return ProviderOutcome(status='unavailable', failure_origin='environment',
+                error='run budget cannot bound this CLI execution tool loop; use a native metered backend')
         workspace = Path(workspace).resolve()
         records = Path(record_root).resolve()
         workspace_hash = canonical_json_hash({
@@ -308,7 +314,7 @@ class CodexOfficeProvider:
                     if remaining <= 0:
                         raise TimeoutError
                     try:
-                        with urllib.request.urlopen(request, timeout=max(1, int(remaining))) as http_response:
+                        with budgeted_urlopen(urllib.request.urlopen, request, timeout=max(1, int(remaining))) as http_response:
                             raw = http_response.read()
                         break
                     except urllib.error.HTTPError as exc:
@@ -321,6 +327,8 @@ class CodexOfficeProvider:
                             delay = self.config.api_retry_delay_seconds * (2 ** api_attempt)
                         delay = min(delay, max(0.0, deadline - time.monotonic()))
                         stderr_lines.append(f"HTTP 429 on turn {turn}; retry {api_attempt + 1}/{self.config.api_max_retries} after {delay:.1f}s")
+                        if active_budget() is not None:
+                            delay=min(delay,active_budget().remaining_seconds())
                         if delay <= 0:
                             raise
                         time.sleep(delay)
@@ -398,6 +406,8 @@ class CodexOfficeProvider:
                 messages.append({"role": "user", "content": "Your previous response reported failure. Use the tools to fix it and only then return completed JSON."})
             else:
                 error = f"provider exceeded {self.config.max_tool_turns} tool turns"
+        except BudgetExceeded as exc:
+            status, failure_origin, error = 'unavailable', 'environment', str(exc)
         except urllib.error.HTTPError as exc:
             failure_origin='model_transport'
             status = "unavailable" if exc.code in (404, 408, 429, 500, 502, 503, 504) else "failed"
@@ -523,7 +533,7 @@ class CodexOfficeProvider:
                     headers={"Content-Type": "application/json"},
                     method="POST",
                 )
-                with urllib.request.urlopen(request, timeout=max(1, int(remaining))) as http_response:
+                with budgeted_urlopen(urllib.request.urlopen, request, timeout=max(1, int(remaining))) as http_response:
                     raw = http_response.read()
                 response_path_for_turn = records / f"ollama_response_{turn:02d}.json"
                 response_path_for_turn.write_bytes(raw)
@@ -541,7 +551,7 @@ class CodexOfficeProvider:
                     failed_tools: list[dict[str, object]] = []
                     for index, call in enumerate(tool_calls):
                         if not isinstance(call, dict):
-                            result = {"ok": False, "error": "malformed tool call"}
+                            result = _execute_native_tool('unknown', {}, workspace, timeout_seconds=max(1,int(remaining)), records=records)
                             name = "unknown"
                             arguments: object = {}
                         else:
@@ -762,6 +772,8 @@ class CodexOfficeProvider:
                 break
             else:
                 error = f"provider exceeded {self.config.max_tool_turns} tool turns"
+        except BudgetExceeded as exc:
+            status, failure_origin, error = 'unavailable', 'environment', str(exc)
         except urllib.error.HTTPError as exc:
             status = "unavailable" if exc.code in (404, 408, 429, 500, 502, 503, 504) else "failed"
             error = f"Ollama HTTP error {exc.code}: {exc.reason}"
@@ -1014,6 +1026,7 @@ def _native_tool_path(workspace: Path, value: object, *, write: bool = False) ->
     return candidate
 
 
+@budgeted_tool
 def _execute_native_tool(
     name: str,
     arguments: object,

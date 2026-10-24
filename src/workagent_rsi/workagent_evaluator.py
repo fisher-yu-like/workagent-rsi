@@ -33,7 +33,14 @@ class WorkAgentFrozenEvaluator:
         assessment=None,
         assessment_output_root: str | Path | None = None,
         assessment_profile: str | None = None,
+        repair_policy=None,
+        run_budget=None,
     ) -> None:
+        from .repair_loop import RepairPolicy, RunBudget
+        self.repair_policy=RepairPolicy.model_validate(repair_policy) if repair_policy is not None else None
+        self.run_budget=run_budget
+        if self.repair_policy is not None and self.run_budget is None:
+            self.run_budget=RunBudget(max_repairs=self.repair_policy.max_repairs,max_wall_seconds=self.repair_policy.total_deadline_seconds)
         self.workagent_config = workagent_config or WorkAgentConfig()
         self.assessment_profile=assessment_profile
         self.input_base = Path(input_base) if input_base is not None else Path.cwd()
@@ -47,7 +54,7 @@ class WorkAgentFrozenEvaluator:
             assessment = configured_assessment(assessment_config or {}, output_root)
         self.assessment = assessment
         self.assessment_identity = self.assessment.identity()
-        self.evaluator_hash = self._identity(self.assessment_identity)
+        self.evaluator_hash = self._configured_identity()
         self._task_outcomes: dict[Path, dict[str, bool]] = {}
 
     def critical_regressions(self, baseline_root: Path, candidate_root: Path) -> int:
@@ -70,7 +77,7 @@ class WorkAgentFrozenEvaluator:
         split_hash = canonical_json_hash([task.model_dump(mode="json") for task in tasks])
         if contract.split_hashes.get(split_name) != split_hash:
             raise ValueError("split hash does not match frozen evaluation contract")
-        live_evaluator_hash = self._identity(self.assessment.identity())
+        live_evaluator_hash = self._configured_identity()
         if contract.evaluator_hash != self.evaluator_hash or self.evaluator_hash != live_evaluator_hash:
             raise ValueError("evaluator identity does not match frozen evaluation contract")
         if contract.assessment_mode != "artifact-v1":
@@ -107,7 +114,8 @@ class WorkAgentFrozenEvaluator:
                     assessment_profile=self.assessment_profile,
                 )
                 started = time.perf_counter()
-                result = harness.run(task, run_id="run")
+                result = harness.run(task, run_id="run", repair_policy=self.repair_policy,
+                                     run_budget=self.run_budget, split_name=split_name)
                 elapsed = time.perf_counter() - started
                 repeated.append(
                     self._evaluation_row(
@@ -196,6 +204,7 @@ class WorkAgentFrozenEvaluator:
         task_rate=sum(row['task_success'] is True for row in rows)/len(tasks) if outcomes_complete else None
         execution_rate=sum(row['execution_success'] is True for row in rows)/len(tasks) if execution_complete else None
         report = {
+            'budget_usage': self.run_budget.snapshot() if self.run_budget is not None else None,
             "split": split_name,
             "status": "completed" if complete else 'completed_with_execution_failures' if outcomes_complete else "incomplete",
             "task_count": len(tasks),
@@ -329,6 +338,8 @@ class WorkAgentFrozenEvaluator:
             score_report=issue_report=assessment_report=None
 
         row = {
+            'repair_summary': {key:result['repair_loop'].get(key) for key in (
+                'repairs','selected_attempt','stop_reason','cohort_valid')} if result.get('repair_loop') else None,
             "task_id": task.task_id,
             "domain": task.domain,
             "hidden_test": task.hidden_test,
@@ -446,11 +457,19 @@ class WorkAgentFrozenEvaluator:
             ],
         }
 
+    def _configured_identity(self):
+        return canonical_json_hash({'implementation':self._identity(self.assessment.identity()),
+            'repair_policy':self.repair_policy.model_dump(mode='json') if self.repair_policy is not None else None,
+            'budget_limits':self.run_budget.limits.model_dump(mode='json') if self.run_budget is not None else None,
+            'feedback_visibility':'develop-only-v1'})
+
     @classmethod
     def _identity(cls, assessment_identity: str) -> str:
         package = Path(__file__).resolve().parent
         names = (
             "workagent_evaluator.py",
+            "repair_loop.py",
+            "run_budget.py",
             "harness_artifact_evaluator.py",
             "harness.py",
             "run.py",

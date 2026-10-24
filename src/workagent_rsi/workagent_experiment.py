@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import subprocess
 from pathlib import Path
+from contextlib import nullcontext
 from typing import Sequence
 
 from .artifact_assessment import spec_from_task
@@ -28,7 +29,11 @@ class WorkAgentExperimentRunner:
         workagent_config: WorkAgentConfig | None = None,
         input_base: str | Path | None = None,
         assessment_config=None,
+        repair_policy=None,
+        run_budget=None,
     ) -> None:
+        self.repair_policy=repair_policy
+        self.run_budget=run_budget
         self.workagent_config = workagent_config
         self.input_base = input_base
         self.assessment_config = assessment_config
@@ -42,12 +47,22 @@ class WorkAgentExperimentRunner:
         *,
         rounds: int = 1,
     ) -> dict:
+        from .repair_loop import RunBudget, RepairPolicy
+        if self.repair_policy is not None and self.run_budget is None:
+            policy=RepairPolicy.model_validate(self.repair_policy)
+            self.run_budget=RunBudget(max_repairs=policy.max_repairs,max_wall_seconds=policy.total_deadline_seconds)
+        context=self.run_budget.activate(Path(output_root)/'budget-ledger.json') if self.run_budget else nullcontext()
+        # Preserve the existing nonempty-root guard before creating the ledger.
+        if Path(output_root).exists() and any(Path(output_root).iterdir()):
+            raise FileExistsError(output_root)
+        with context:
+            return self._run(tasks_by_split,initial_skill,provider,output_root,rounds=rounds)
+
+    def _run(self,tasks_by_split,initial_skill,provider,output_root,*,rounds):
         required = {"develop", "regression", "hidden", "ood_transfer"}
         if set(tasks_by_split) != required or any(not tasks_by_split[split] for split in required):
             raise ValueError("WorkAgent RSI requires nonempty develop, regression, hidden, and ood_transfer splits")
         root = Path(output_root)
-        if root.exists() and any(root.iterdir()):
-            raise FileExistsError(root)
         root.mkdir(parents=True, exist_ok=True)
         workagent_config = self.workagent_config or WorkAgentConfig()
         evaluator = WorkAgentFrozenEvaluator(
@@ -55,6 +70,8 @@ class WorkAgentExperimentRunner:
             input_base=self.input_base,
             assessment_config=self.assessment_config,
             assessment_output_root=root / "model_evidence",
+            repair_policy=self.repair_policy,
+            run_budget=self.run_budget,
         )
         split_hashes = {split: canonical_json_hash([task.model_dump(mode="json") for task in tasks])
                         for split, tasks in tasks_by_split.items()}
@@ -91,6 +108,8 @@ class WorkAgentExperimentRunner:
             assessment_identity=evaluator.assessment_identity,
             acceptance_hashes=acceptance_hashes,
         )
+        if self.run_budget is not None:
+            (root/'budget-policy.json').write_text(json.dumps(self.run_budget.limits.model_dump(mode='json'),indent=2)+'\n',encoding='utf-8')
         (root / "contract.json").write_text(json.dumps(contract.model_dump(mode="json"), indent=2, sort_keys=True) + "\n", encoding="utf-8")
         registry = SkillRegistry(root / "registry")
         champion = registry.register(

@@ -136,3 +136,11 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 | `../src/workagent_rsi/execution_sandbox.py`, `apptainer_sandbox.py`, `apptainer_worker.py` | Native Docker and remote Apptainer boundary; no host fallback | Docker real probe not run; remote probes passed |
 | `../deploy/agent-runtime/` | Locked Docker recipe, bounded private-runtime provisioner and operations | No host package install; no image download |
 | `project_artifacts/results/hardening-v2/T04-handoff/20261023T132138583259Z/bundle/manifest.json` | Portable, checksummed source/test/runtime evidence | 29 files; relocation verified |
+
+## T21 and T22 task repair
+
+- `src/workagent_rsi/repair_loop.py`: bounded task repair, frozen feedback boundary and best-result selection.
+- `src/workagent_rsi/run_budget.py`: shared reservations and persisted model/tool/repair/time/cost accounting.
+- `docs/artifact_repair.md`: public options, protected split rules, supported transports and qualification limits.
+- `project_artifacts/formal_study/hardening_t21_repair_loop.json` and `hardening_t22_budget_visibility.json`: current evidence indexes.
+- Portable bundles and relocated verification are indexed in the manifests. This batch uses genuine Office library files and authored transport substitutes; it makes no live model or server qualification claim.

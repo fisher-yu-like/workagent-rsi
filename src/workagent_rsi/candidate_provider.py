@@ -11,6 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Protocol
 
+from .run_budget import BudgetExceeded, active_budget, budgeted_urlopen
 from .hashing import canonical_json_hash, sha256_file, sha256_bytes
 from .rsi_contracts import AtomicEdit, CandidatePatch, CandidateNormalizationRecord, FailureDiagnosis, ProviderRecord
 from .assessment_contracts import RSIFeedback
@@ -171,6 +172,8 @@ class CodexCandidateProvider:
         exit_code: int | None = None
         patch: CandidatePatch | None = None
         try:
+            if active_budget() is not None:
+                raise BudgetExceeded('run budget cannot bound this candidate CLI tool loop; use the metered API provider')
             completed = self.runner(command, workspace_path, self.timeout_seconds)
             exit_code = completed.returncode
             stdout_path.write_text(completed.stdout or "", encoding="utf-8", newline="\n")
@@ -187,6 +190,9 @@ class CodexCandidateProvider:
                     status = "completed"
                 except (json.JSONDecodeError, ValueError) as exc:
                     error = f"invalid provider JSON: {exc}"
+        except BudgetExceeded as exc:
+            status, error = 'unavailable', str(exc)
+            stderr_path.write_text(error,encoding='utf-8')
         except subprocess.TimeoutExpired as exc:
             status = "timeout"
             error = f"provider timeout after {exc.timeout} seconds"
@@ -308,7 +314,7 @@ class OpenAIChatCandidateProvider:
                 raw = None
                 for attempt in range(self.max_retries + 1):
                     try:
-                        with urllib.request.urlopen(request, timeout=self.timeout_seconds) as response:
+                        with budgeted_urlopen(urllib.request.urlopen, request, timeout=self.timeout_seconds) as response:
                             raw = response.read()
                         break
                     except urllib.error.HTTPError as exc:
@@ -317,6 +323,7 @@ class OpenAIChatCandidateProvider:
                         delay = self.retry_delay_seconds * (2 ** attempt)
                         with (records / "provider.stderr.txt").open("a", encoding="utf-8") as handle:
                             handle.write(f"HTTP 429; retry {attempt + 1}/{self.max_retries} after {delay:.1f}s\n")
+                        if active_budget() is not None:delay=min(delay,active_budget().remaining_seconds())
                         time.sleep(delay)
                 if raw is None:
                     raise RuntimeError("candidate API retry loop ended without a response")
@@ -330,6 +337,8 @@ class OpenAIChatCandidateProvider:
                     {'provider': 'openai-compatible-api', 'provider_version': self.provider_version,
                      'model_identity': self.model_identity, 'created_at': started})
                 status = "completed"
+            except BudgetExceeded as exc:
+                status,error,exit_code='unavailable',str(exc),None
             except urllib.error.HTTPError as exc:
                 status = "unavailable" if exc.code in (408, 429, 500, 502, 503, 504) else "failed"
                 error, exit_code = f"OpenAI-compatible HTTP error {exc.code}: {exc.reason}", exc.code

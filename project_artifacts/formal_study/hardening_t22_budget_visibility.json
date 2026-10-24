@@ -1,0 +1,57 @@
+{
+  "schema_version": "hardening-t22-v1",
+  "status": "completed",
+  "base_commit": "7d8613c7b66eec5b46ef32fadd483a0ef0a76863",
+  "implementation_commit": "commit containing this manifest; exact source bytes bound by focused/full evidence",
+  "scope": "local engineering with genuine Office library artifacts and authored transport substitutes; no live model or SSH calls",
+  "red": {
+    "evidence": "project_artifacts/results/hardening-v2/T22-red/20261024T153618542380Z",
+    "passed": 0,
+    "failed": 18,
+    "error": 0
+  },
+  "trace_integration_red": {
+    "evidence": "project_artifacts/results/hardening-v2/T22-trace-review-red/20261024T155047384079Z",
+    "failed": 1,
+    "error": 0
+  },
+  "focused": {
+    "passed": 121,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T22-frozen-focused/20261024T160615307083Z"
+  },
+  "full_validation": {
+    "passed": 663,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
+  },
+  "review_cases": "R01-R12 passed",
+  "expected_open": [],
+  "source_file_count": 150,
+  "controls": [
+    "pre-call reserve and post-call reconcile for native execution requests, HTTP retries, tools, judges and API candidates",
+    "shared evaluator/experiment budget and repair-policy identity",
+    "failed and interrupted calls remain charged; started and completed repairs are distinct",
+    "no adaptive repair on protected splits or hidden tasks; visibility violations invalidate cohort",
+    "best assessed artifact retained with all rejected attempts; later environment gaps remain incomplete",
+    "allowed artifact scope, frozen task/spec/skill, complete reassessment and exact LF/CRLF script hashes"
+  ],
+  "limitations": [
+    "no new live model repair or RSI improvement qualification",
+    "opaque execution/candidate CLI tool loops refused before launch under bounded budget; native metered backend is tested offline only",
+    "optional monetary caps require known pre-call cost upper bounds, which current providers do not supply",
+    "blocking injected transports and OS cleanup may exceed a timeout; late results are incomplete",
+    "active resume remains T30; matched experiment arms/live qualification remain later tasks"
+  ],
+  "evidence": "project_artifacts/results/hardening-v2/T22/20261024T161057802548Z",
+  "bundle": "project_artifacts/results/hardening-v2/T22/20261024T161057802548Z/bundle/manifest.json",
+  "relocated_bundle": "project_artifacts/results/hardening-v2/T22/20261024T161057802548Z/relocated/manifest.json",
+  "verified_files": 450,
+  "probe_directories": 12
+}
