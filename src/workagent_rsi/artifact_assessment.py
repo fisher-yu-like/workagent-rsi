@@ -23,7 +23,7 @@ JSON_VALUE = TypeAdapter(Any)
 
 def assessment_identity(config: dict | None = None) -> str:
     root = Path(__file__).resolve().parents[2]
-    names = ("assessment_contracts.py", "requirement_coverage.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
+    names = ("assessment_contracts.py", "requirement_coverage.py", "check_registry.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
     files = {name: sha256_file(Path(__file__).with_name(name)) for name in names if Path(__file__).with_name(name).exists()}
     for skill in ("office-artifact-evaluator", "office-artifact-verifier"):
         for path in sorted((root / "skills" / skill).rglob("*")):
@@ -52,6 +52,13 @@ class SharedAssessment:
         spec = AcceptanceSpec.model_validate(spec.model_dump(mode="json"))
         from .requirement_coverage import admission_for_spec
         admission = admission_for_spec(spec)
+        from .check_registry import validate_acceptance_spec
+        preflight = validate_acceptance_spec(spec, {
+            'renderer': self.visual is not None and getattr(self.visual,'renderer',None) is not None,
+            'visual_judge': self.visual is not None,
+            'semantic_judge': self.semantic is not None,
+            'spreadsheet_recalc': False})
+        gaps = {f.requirement_id:f for f in preflight.findings}
         paths = {key: Path(value) for key, value in artifacts.items() if key in spec.artifacts}
         hashes = {key: sha256_file(paths[key]) if key in paths and paths[key].is_file() else None for key in spec.artifacts}
         for raw_path, digest in spec.input_hashes.items():
@@ -59,7 +66,13 @@ class SharedAssessment:
                 raise ValueError("frozen assessment input changed: " + raw_path)
         parsed = {}
         parse_errors = {}
+        needed = {r.location.artifact for r in spec.requirements if r.applicable and r.requirement_id not in gaps}
+        for r in spec.requirements:
+            if r.applicable and r.requirement_id not in gaps and r.check=='facts.consistent':
+                needed.update(p['artifact'] for p in r.options['locations'])
         for key, domain in spec.artifacts.items():
+            if key not in needed:
+                continue
             path = paths.get(key)
             if path is None or not path.is_file():
                 parse_errors[key] = "artifact missing"
@@ -81,13 +94,18 @@ class SharedAssessment:
                     parsed[key] = Presentation(path)
             except Exception as exc:
                 parse_errors[key] = f"artifact cannot be parsed: {type(exc).__name__}: {exc}"
-        checks, evidence, telemetry = [], [], {"visual": [], "semantic": []}
+        checks, evidence, telemetry = [], [], {"visual": [], "semantic": [], 'check_preflight':preflight.model_dump(mode='json')}
         try:
             for r in spec.requirements:
                 location = r.location
                 message = ""
+                origin = None
                 if not r.applicable:
                     status, completion, observed = "NOT_APPLICABLE", None, r.applicability_reason
+                elif r.requirement_id in gaps:
+                    finding = gaps[r.requirement_id]
+                    status, completion, observed = 'UNAVAILABLE', None, finding.message
+                    origin = finding.origin
                 elif r.location.artifact in parse_errors:
                     status, completion, observed = "FAIL", 0, parse_errors[r.location.artifact]
                 else:
@@ -111,6 +129,10 @@ class SharedAssessment:
                         status, completion, observed = "ERROR", None, f"{type(exc).__name__}: {exc}"
                 if status not in KNOWN:
                     message = str(observed)
+                    if status != 'NOT_APPLICABLE' and origin is None:
+                        origin = 'assessment_gap'
+                elif status != 'PASS':
+                    origin = 'artifact_defect'
                 json_observed = JSON_VALUE.dump_python(observed, mode="json")
                 item = Evidence(evidence_id=canonical_json_hash({"spec": spec.fingerprint(), "requirement": r.requirement_id, "hashes": hashes, "status": status, "observed": json_observed}),
                                 requirement_id=r.requirement_id, location=location, source=r.evidence_source,
@@ -118,7 +140,7 @@ class SharedAssessment:
                 evidence.append(item)
                 checks.append(CheckRecord(requirement_id=r.requirement_id, status=status, completion=completion,
                                           location=location, observed=observed, expected=r.expected,
-                                          evidence_refs=[item.evidence_id], message=message))
+                                          evidence_refs=[item.evidence_id], message=message,failure_origin=origin))
         finally:
             for obj in parsed.values():
                 if hasattr(obj, "close"):
@@ -148,7 +170,9 @@ class SharedAssessment:
                 cell = sheet[loc.cell]
                 actual = cell.number_format if r.check == "excel.number_format" else cell.value
             elif r.check == "excel.range":
-                actual = [[cell.value for cell in row] for row in sheet[loc.cell]]
+                from openpyxl.utils.cell import range_boundaries
+                a,b,c,d=range_boundaries(loc.cell)
+                actual = [[cell.value for cell in row] for row in sheet.iter_rows(min_row=b,max_row=d,min_col=a,max_col=c)]
                 flags = [i < len(actual) and j < len(actual[i]) and _equal(actual[i][j], value, r.tolerance) for i, row in enumerate(r.expected) for j, value in enumerate(row)]
                 return self._fraction(r, flags, actual, loc)
             elif r.check == "excel.cached_value":
@@ -285,14 +309,22 @@ def spec_from_task(task) -> AcceptanceSpec:
             raise ValueError("acceptance specification task identity mismatch")
         return _bind_task_admission(task, spec)
     requirements = [Requirement(requirement_id="file", description="Readable required artifact", check="file.readable", location=Location(artifact="output"), expected=True, critical=True, dimension="correctness", evidence_source="OOXML package and library parser")]
-    adapters = {"required_text": "text.contains", "marker": "text.contains", "output_format": "file.format", "required_sheets": "excel.sheets", "required_cells": "excel.cell", "required_formulas": "excel.formula", "required_formula_values": "excel.cached_value", "required_headings": "word.headings", "required_heading_styles": "word.heading_style", "required_slide_count": "powerpoint.slide_count", "required_slides": "powerpoint.slide_count", "required_shape_text": "powerpoint.texts"}
+    from .check_registry import LEGACY_ADAPTERS
+    adapters, records = LEGACY_ADAPTERS, []
     for key, expected in constraints.items():
         if key in {'evaluation_profile','requirement_inventory'}:
+            records.append({'key':key,'status':'converted','check_ids':[], 'reason':'task admission configuration'})
             continue
         if key == "marker" and constraints.get("required_text") == expected:
+            records.append({'key':key,'status':'alias','check_ids':['required_text:'], 'reason':'same obligation as required_text'})
             continue
         check = adapters.get(key, "unsupported." + key)
-        entries = expected.items() if key in {"required_cells", "required_formulas", "required_formula_values", "required_heading_styles"} else [("", expected)]
+        mapping = key in {'required_cells','required_formulas','required_formula_values','required_heading_styles'}
+        malformed = mapping and (not isinstance(expected,dict) or not expected or any(not isinstance(k,str) for k in expected))
+        if malformed:
+            check='unsupported.'+key
+        entries = expected.items() if mapping and not malformed else [("", expected)]
+        check_ids=[]
         for target, value in entries:
             position = {"artifact": "output"}
             if "!" in target:
@@ -304,12 +336,16 @@ def spec_from_task(task) -> AcceptanceSpec:
                 position["cell"] = target
             if key == "output_format":
                 value = str(value).lower()
-            requirements.append(Requirement(requirement_id=f"{key}:{target}", description=key, check=check, location=Location(**position), expected=value, critical=True, dimension="correctness", evidence_source="TaskSpec.expected_constraints"))
+            rid=f'{key}:{target}';check_ids.append(rid)
+            requirements.append(Requirement(requirement_id=rid, description=key, check=check, location=Location(**position), expected=value, critical=True, dimension="correctness", evidence_source="TaskSpec.expected_constraints"))
+        records.append({'key':key,'status':'unsupported' if check.startswith('unsupported.') else 'converted',
+            'check_ids':check_ids,'reason':'malformed mapping or unregistered legacy key' if check.startswith('unsupported.') else 'registered adapter; check syntax is separately preflighted'})
     domain = task.domain.lower()
     from .requirement_coverage import task_context
     return AcceptanceSpec(task_id=task.task_id, version="legacy-constraints-v1", artifacts={"output": domain}, requirements=requirements, dimension_weights={"correctness": 1},
         evaluation_profile=constraints.get('evaluation_profile', 'task_acceptance' if not constraints or 'requirement_inventory' in constraints else None),
         task_context=task_context(task),requirement_inventory=constraints.get('requirement_inventory'),
+        legacy_adapter_records=records,
         scope_note='Legacy declared checks only; task requirements are not assumed complete without reviewed admission.')
 
 
@@ -319,6 +355,21 @@ def _bind_task_admission(task, spec):
     payload = spec.model_dump(mode='json')
     # The actual caller task owns context; a nested acceptance spec cannot replace it.
     payload['task_context'] = task_context(task)
+    existing = {row['key'] for row in payload['legacy_adapter_records']}
+    for key,value in constraints.items():
+        if key in existing:
+            continue
+        if key in {'acceptance_spec','sales_summary','evaluation_profile','requirement_inventory'}:
+            ids = [r.requirement_id for r in spec.requirements] if key in {'acceptance_spec','sales_summary'} else []
+            payload['legacy_adapter_records'].append({'key':key,'status':'converted','check_ids':ids,
+                'reason':'explicit specification/template or admission configuration'})
+        else:
+            rid='unsupported-wrapper:'+key
+            payload['requirements'].append(Requirement(requirement_id=rid,description=key,
+                check='unsupported.'+key,expected=value,location=Location(artifact=next(iter(spec.artifacts))),
+                critical=True,dimension=next(iter(spec.dimension_weights)),evidence_source='TaskSpec.expected_constraints').model_dump(mode='json'))
+            payload['legacy_adapter_records'].append({'key':key,'status':'unsupported','check_ids':[rid],
+                'reason':'extra constraint is not mapped by this explicit specification/template'})
     if 'evaluation_profile' in constraints:
         payload['evaluation_profile'] = constraints['evaluation_profile']
     if 'requirement_inventory' in constraints:

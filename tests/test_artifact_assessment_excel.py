@@ -84,7 +84,8 @@ def test_checker_exception_not_artifact_failure_and_nonapplicable_is_explicit(tm
         Requirement(requirement_id="na", description="task does not require PDF", check="pdf", location=Location(artifact="output"), applicable=False, dimension="correctness", evidence_source="fixture").model_dump(),
     ])
     shared, score, _ = assess(AcceptanceSpec.model_validate(data), {"output": path})
-    assert shared.checks[-2].status == "ERROR"
+    assert shared.checks[-2].status == "UNAVAILABLE"
+    assert shared.checks[-2].failure_origin == "spec_gap"
     assert shared.checks[-1].status == "NOT_APPLICABLE"
     assert score.total_score is None
     assert score.coverage.applicable == len(shared.checks) - 1

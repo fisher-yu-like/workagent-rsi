@@ -25,7 +25,7 @@ def spec_coverage_fingerprint(spec):
     payload = spec.model_dump(mode='json')
     # Review binds all check/expected/weight/input semantics, without recursively
     # hashing the receipt that contains that binding. Profiles use the same spec.
-    for key in ['evaluation_profile','task_context','requirement_inventory']:
+    for key in ['evaluation_profile','task_context','requirement_inventory','legacy_adapter_records']:
         payload.pop(key, None)
     return canonical_json_hash(payload)
 

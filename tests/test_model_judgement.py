@@ -307,6 +307,7 @@ def test_cli_timeout_logs_partial_output(tmp_path):
 
 @pytest.mark.parametrize("cache_enabled", [True, False])
 def test_semantic_rsi_repeat_distinguishes_cache_from_real_calls(tmp_path, monkeypatch, cache_enabled):
+    from workagent_rsi.artifact_assessment import spec_from_task
     from workagent_rsi.contracts import TaskSpec
     from workagent_rsi.frozen_evaluator import FrozenEvaluator
     from workagent_rsi.hashing import canonical_json_hash
@@ -334,7 +335,7 @@ def test_semantic_rsi_repeat_distinguishes_cache_from_real_calls(tmp_path, monke
     identity = engine.identity()
     split_hash = canonical_json_hash([task.model_dump(mode="json")])
     contract = EvaluationContract(contract_id="semantic", dataset_hash=split_hash, split_hashes={"develop": split_hash}, evaluator_hash=identity,
-                                  assessment_mode="artifact-v1", assessment_identity=identity, acceptance_hashes={task.task_id: acceptance.fingerprint()},
+                                  assessment_mode="artifact-v1", assessment_identity=identity, acceptance_hashes={task.task_id: spec_from_task(task).fingerprint()},
                                   provider_policy="test", seeds=[1], repeats=2, timeout_seconds=60, thresholds={}, git_commit="test")
     report = FrozenEvaluator(identity, assessment=engine).evaluate_split([task], "develop", PilotSkillConfig(), contract, tmp_path / "results")
     assert len(calls) == (1 if cache_enabled else 2)

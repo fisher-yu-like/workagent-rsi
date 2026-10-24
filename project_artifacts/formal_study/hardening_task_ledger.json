@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T06:39:06.523995+00:00",
+  "updated_at": "2026-10-24T06:44:59.420276+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -96,9 +96,12 @@
     },
     {
       "task_id": "T11",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T11/20261024T064458800796Z",
+      "note": "Local implementation and authored cases verified; no server/model calls. See task manifest for scope.",
+      "base_commit": "2eb3938b064987f44a48b0755beb151dc3e8ba78",
+      "manifest": "project_artifacts/formal_study/hardening_t11_check_registry.json",
+      "bundle": "project_artifacts/results/hardening-v2/T11/20261024T064458800796Z/bundle/manifest.json"
     },
     {
       "task_id": "T12",
@@ -377,7 +380,8 @@
     "T07": "a34c4edd82cf1449a758e517e3e357cb3a615249",
     "T08_local": "7b839c8773f521c9f41a55fd966f04d7446dc271",
     "T09": "commit containing ledger; exact sources in final evidence",
-    "T10": "commit containing ledger; exact sources hashed in evidence"
+    "T10": "2eb3938b064987f44a48b0755beb151dc3e8ba78",
+    "T11": "commit containing ledger; exact sources hashed in evidence"
   },
   "full_validation": {
     "passed": 352,
@@ -398,7 +402,7 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T11-local",
+    "T12-local",
     "T08-real-behavior-deferred"
   ],
   "review_case_status": {

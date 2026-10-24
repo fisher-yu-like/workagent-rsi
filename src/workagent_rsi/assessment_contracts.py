@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from .hashing import canonical_json_hash
 
@@ -21,13 +21,13 @@ class Location(AssessmentModel):
     artifact: str = Field(min_length=1)
     sheet: str | None = None
     cell: str | None = None
-    paragraph: int | None = Field(default=None, ge=1)
+    paragraph: int | None = Field(default=None, ge=1, strict=True)
     heading: str | None = None
-    table: int | None = Field(default=None, ge=1)
-    row: int | None = Field(default=None, ge=1)
-    column: int | None = Field(default=None, ge=1)
-    slide: int | None = Field(default=None, ge=1)
-    object_id: int | None = Field(default=None, ge=0)
+    table: int | None = Field(default=None, ge=1, strict=True)
+    row: int | None = Field(default=None, ge=1, strict=True)
+    column: int | None = Field(default=None, ge=1, strict=True)
+    slide: int | None = Field(default=None, ge=1, strict=True)
+    object_id: int | None = Field(default=None, ge=0, strict=True)
     region: str | None = None
 
 
@@ -38,11 +38,11 @@ class Requirement(AssessmentModel):
     location: Location
     expected: Any = None
     options: dict[str, Any] = Field(default_factory=dict)
-    critical: bool = False
+    critical: bool = Field(default=False, strict=True)
     dimension: str = Field(min_length=1)
-    weight: float = Field(default=1, ge=0)
-    tolerance: float = Field(default=0, ge=0)
-    applicable: bool = True
+    weight: float = Field(default=1, ge=0, strict=True)
+    tolerance: float = Field(default=0, ge=0, strict=True)
+    applicable: bool = Field(default=True, strict=True)
     applicability_reason: str = Field(default="declared by task specification", min_length=1)
     evidence_source: str = Field(min_length=1)
     feedback_visibility: Visibility = "develop"
@@ -60,7 +60,7 @@ class TaskRequirement(AssessmentModel):
     source_quote: str = Field(min_length=1)
     source_ref: str = Field(min_length=1)
     obligation: str = Field(min_length=1)
-    mandatory: bool = True
+    mandatory: bool = Field(default=True, strict=True)
     validation_method: Literal['deterministic', 'semantic', 'visual', 'human', 'uncovered']
     check_ids: list[str] = Field(default_factory=list)
 
@@ -68,7 +68,7 @@ class TaskRequirement(AssessmentModel):
 class RequirementInventory(AssessmentModel):
     task_id: str = Field(min_length=1)
     requirements: list[TaskRequirement]
-    reviewed: bool = False
+    reviewed: bool = Field(default=False, strict=True)
     provenance: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -79,7 +79,7 @@ class RequirementCoverage(AssessmentModel):
 
 
 class SpecAdmissionReport(AssessmentModel):
-    status: Literal['PASS', 'SPEC_INCOMPLETE', 'NOT_ASSESSED', 'LEGACY_UNREVIEWED']
+    status: Literal['PASS', 'SPEC_INCOMPLETE', 'ASSESSMENT_INCOMPLETE', 'NOT_ASSESSED', 'LEGACY_UNREVIEWED']
     evaluation_profile: EvaluationProfile | None = None
     requirement_coverage: RequirementCoverage
     uncovered_requirement_ids: list[str] = Field(default_factory=list)
@@ -87,6 +87,20 @@ class SpecAdmissionReport(AssessmentModel):
     mappings: dict[str, list[str]] = Field(default_factory=dict)
     task_hash: str | None = None
     spec_binding_hash: str | None = None
+    findings: list['SpecFinding'] = Field(default_factory=list)
+
+
+class SpecFinding(AssessmentModel):
+    requirement_id: str
+    origin: Literal['spec_gap', 'assessment_gap']
+    message: str
+
+
+class LegacyAdapterRecord(AssessmentModel):
+    key: str
+    status: Literal['converted', 'unsupported', 'alias']
+    check_ids: list[str] = Field(default_factory=list)
+    reason: str
 
 
 class AcceptanceSpec(AssessmentModel):
@@ -104,6 +118,14 @@ class AcceptanceSpec(AssessmentModel):
     evaluation_profile: EvaluationProfile | None = None
     task_context: dict[str, Any] | None = None
     requirement_inventory: RequirementInventory | None = None
+    legacy_adapter_records: list[LegacyAdapterRecord] = Field(default_factory=list)
+
+    @field_validator('dimension_weights', mode='before')
+    @classmethod
+    def numeric_dimension_weights(cls, value):
+        if isinstance(value,dict) and any(type(w) not in {int,float} for w in value.values()):
+            raise ValueError('dimension weights must be numeric, never bool or text')
+        return value
 
     @model_validator(mode="after")
     def consistent(self):
@@ -148,6 +170,7 @@ class CheckRecord(AssessmentModel):
     expected: Any = None
     evidence_refs: list[str] = Field(min_length=1)
     message: str = ""
+    failure_origin: Literal['artifact_defect', 'spec_gap', 'assessment_gap'] | None = None
 
     @model_validator(mode="after")
     def status_matches_completion(self):
@@ -223,7 +246,7 @@ class ScoreReport(AssessmentModel):
 class ArtifactIssue(AssessmentModel):
     issue_id: str
     requirement_id: str
-    kind: Literal["artifact_defect", "assessment_gap"]
+    kind: Literal["artifact_defect", "assessment_gap", "spec_gap"]
     location: Location
     observed: Any = None
     expected: Any = None

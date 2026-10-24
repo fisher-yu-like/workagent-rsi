@@ -33,7 +33,7 @@ def test_unknown_check_keeps_null_score_and_gap(tmp_path):
     assert score.total_score is None
     assert score.acceptance_status == "INCOMPLETE"
     assert score.coverage.ratio == 0
-    assert issues.issues[0].kind == "assessment_gap"
+    assert issues.issues[0].kind == "spec_gap"
     assert issues.issues[0].skill_improvement_hint is None
 
 
