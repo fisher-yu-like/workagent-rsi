@@ -321,3 +321,8 @@ Real server/model capability remains unqualified by these authored tests.
 {"schema_version": "hardening-t18-v1", "status": "completed", "local_status": "completed", "base_commit": "67c75cb20b213352774c40dfb231507ff711b8f5", "implementation_commit": "commit containing manifest; exact sources in test records", "completed_at": "2026-10-24T10:59:55.949425+00:00", "scope": "local authored engineering tests; no remote server/model/API calls", "red": {"passed": 1, "failed": 13, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T18-red/20261024T102841289200Z"}, "focused": {"passed": 207, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T18-final-focused/20261024T105559998584Z"}, "evidence": "project_artifacts/results/hardening-v2/T18/20261024T105955004559Z", "bundle": "project_artifacts/results/hardening-v2/T18/20261024T105955004559Z/bundle/manifest.json", "G1": "incomplete", "full_validation": {"passed": 569, "failed": 2, "error": 0, "skipped": 0, "exit_code": 1, "evidence": "project_artifacts/results/hardening-v2/T18-final-full/20261024T105610295802Z"}, "expected_open": ["R10", "R11"]}
 
 Real server/model capability remains unqualified by these authored tests.
+
+
+### T13 actual server qualification (2026-10-24)
+
+14 actual isolated LibreOffice runs passed with independent arithmetic oracles, five input variants, negative controls and unchanged originals. No model calls or new runtime installation. Evidence: `project_artifacts/results/hardening-v2/T13-real/20261024T122504362212Z`. Scope is the frozen engine and authored cases, not general equivalence.

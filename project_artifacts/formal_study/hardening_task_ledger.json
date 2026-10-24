@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T10:59:55.949425+00:00",
+  "updated_at": "2026-10-24T12:31:35.068952+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -114,13 +114,15 @@
     },
     {
       "task_id": "T13",
-      "status": "partial",
+      "status": "completed",
       "evidence": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z",
-      "note": "Local tests/protocol complete. Real qualification deferred by user.",
+      "note": "Local formula contracts plus 14 actual frozen Apptainer/LibreOffice runs passed. Independent engine probe, five variants, exact/literal/constant controls, changed-input recomputation, original hashes, resource/image and cleanup proof retained. External/dynamic formulas and general equivalence remain unsupported.",
       "base_commit": "f9730d4607ab3e57f0a091455eeba89e978a53eb",
       "local_status": "completed",
       "manifest": "project_artifacts/formal_study/hardening_t13_formula_semantics.json",
-      "bundle": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z/bundle/manifest.json"
+      "bundle": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z/bundle/manifest.json",
+      "real_qualification": "isolated_run_passed",
+      "server_evidence": "project_artifacts/results/hardening-v2/T13-real/20261024T122504362212Z"
     },
     {
       "task_id": "T14",

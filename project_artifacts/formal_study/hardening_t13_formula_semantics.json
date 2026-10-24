@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-t13-v1",
-  "status": "partial",
+  "status": "completed",
   "local_status": "completed",
   "base_commit": "f9730d4607ab3e57f0a091455eeba89e978a53eb",
   "implementation_commit": "commit containing manifest; exact source hashes in test records",
@@ -24,5 +24,13 @@
   "bundle": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z/bundle/manifest.json",
   "A1_cleanup": "blocked_by_automatic_policy_no_deletion",
   "G1": "incomplete",
-  "real_qualification": "deferred_by_user_not_run"
+  "real_qualification": "isolated_run_passed",
+  "server_qualification": {
+    "evidence": "project_artifacts/results/hardening-v2/T13-real/20261024T122504362212Z",
+    "actual_worker_runs": 14,
+    "scope": "authored numeric formulas and variants; no general equivalence or agent accuracy claim",
+    "source_hashes_unchanged": true,
+    "all_runtime_traces_qualified": true,
+    "bundle": "project_artifacts/results/hardening-v2/T13-real/20261024T122504362212Z/bundle/manifest.json"
+  }
 }

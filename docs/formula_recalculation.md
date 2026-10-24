@@ -30,7 +30,7 @@ the configuration must only be qualified after an independent real-engine probe.
 Trusted injected engines are test seams, not a substitute for that probe.
 Local tests copy genuine XLSX bytes and explicitly do not invent formula caches.
 
-## Deferred server acceptance
+## Server acceptance procedure
 
 1. Restore the existing T04/T05 Apptainer Office worker and verify runtime identity
    and remaining disk space. Do not install or download a new runtime by default.
@@ -40,5 +40,23 @@ Local tests copy genuine XLSX bytes and explicitly do not invent formula caches.
 3. Retain fresh XLSX output, version/binary/worker/input/output hashes, full logs,
    actual cgroup/resource observations and owned-cleanup traces. Recheck originals.
 4. Qualify the actual engine only after those probes pass, then run the equivalent
-   formula acceptance cases. Until then T13 is partial/local complete, real engine
-   qualification is deferred and no general formula-equivalence claim is made.
+   formula acceptance cases. This does not establish general formula equivalence.
+
+The 2026-10-24 actual Apptainer/LibreOffice probe passed 14 worker runs. The
+independent numeric probe preceded qualified use of the same frozen engine.
+Equivalent SUM passed base and all five variants; exact-expression mismatch,
+literal answer and constant-formula controls failed as expected. Changed input
+recomputed to 115. Originals were unchanged and every run retained observed
+resource, image identity and owned-cleanup proof. The worker used LibreOffice
+7.4.7.2. See `hardening_t13_formula_semantics.json` for the exact evidence.
+
+Reproduce with an existing frozen Office policy:
+
+```powershell
+.\.venv\Scripts\python.exe project_artifacts/phase3_experiments/scripts/run_t13_recalc_probe.py --policy PATH_TO_FROZEN_POLICY
+```
+
+The command makes no model calls, downloads or host Office invocations. Each
+attempt creates a fresh evidence directory, including failures. Qualification
+applies only to the recorded worker hash, engine binary, runtime fingerprint
+and supported numeric cases; external/dynamic formulas remain unavailable.
