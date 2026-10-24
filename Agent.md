@@ -95,11 +95,13 @@ T00-T03 are delivered; T03 includes the strict default-off live-call policy.
 T04's default Docker and explicit Apptainer SSH backends do not execute native
 model scripts on the host. Read the T04 manifest for actual backend qualification;
 CLI-owned sandbox capability must remain separate. R12 now passes; the other
-11 T01 defects remain active. T05 now isolates execution/candidate views and
+10 T01 defects remain active; R07 now passes after T06. T05 now isolates execution/candidate views and
 hash-verified rendering copies. LibreOffice/Poppler rendering, unrelated-instance
 survival and timeout cleanup passed on the explicit Apptainer worker; dedicated
 Microsoft Office COM remains unavailable. See `deploy/office-worker/README.md`.
-The latest full suite has 250 passed and 11 expected-open failures. T06-T35 and
+T06 shares verified champion/develop context across API/CLI; public history and
+context budgets are checked offline. See `docs/candidate_generation.md`.
+The latest full suite has 265 passed and 10 expected-open failures. T07-T35 and
 the overall G1 gate remain unfinished. Full-suite evidence is not
 all-green, and isolated authored probes are not live model/RSI qualification.
 The entries below preserve historical stage evidence.

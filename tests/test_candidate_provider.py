@@ -11,6 +11,12 @@ from workagent_rsi.assessment_contracts import RSIFeedback
 from workagent_rsi.rsi_contracts import FailureDiagnosis
 
 
+@pytest.fixture(autouse=True)
+def exported_pilot_champion(tmp_path):
+    # Candidate generation now requires the actual exported parent package.
+    (tmp_path / 'skill.json').write_text('{"marker_source":"task_id"}', encoding='utf-8')
+
+
 def diagnosis() -> FailureDiagnosis:
     return FailureDiagnosis(
         diagnosis_id="d1",
@@ -130,6 +136,7 @@ def test_default_runner_decodes_codex_output_as_utf8(monkeypatch: pytest.MonkeyP
 def test_codex_provider_resolves_relative_record_root_for_child_process(monkeypatch: pytest.MonkeyPatch, tmp_path: Path):
     workspace = tmp_path / "workspace"
     workspace.mkdir()
+    (workspace / 'skill.json').write_text('{"marker_source":"task_id"}', encoding='utf-8')
     schema = tmp_path / "schema.json"
     schema.write_text("{}", encoding="utf-8")
 

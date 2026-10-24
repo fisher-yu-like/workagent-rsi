@@ -6,6 +6,52 @@ from pathlib import Path
 from .assessment_contracts import RSIFeedback
 
 
+def candidate_feedback(feedback: RSIFeedback) -> RSIFeedback:
+    """Allowlisted projection of developer data; unknown side channels are dropped.
+
+    Split/visibility provenance is authoritative. Text inside approved develop
+    observations remains untrusted data, never executable instructions.
+    """
+    feedback = RSIFeedback.model_validate(feedback.model_dump())
+    task_fields = {'task_id', 'acceptance_status', 'quality_score', 'dimension_scores', 'coverage',
+                   'errors', 'requirement_refs', 'trace_summary'}
+    issue_fields = {'issue_id', 'requirement_id', 'kind', 'location', 'observed', 'expected', 'evidence_refs',
+                    'severity', 'cause_hypothesis', 'repair_hint', 'skill_improvement_hint', 'recheck_ids', 'feedback_visibility'}
+    protected = {'hidden', 'regression', 'ood', 'ood_transfer', 'final_test', 'promotion_validation',
+                 'path', 'file_path', 'evidence_path', 'private_history', 'credentials'}
+    def public(value):
+        if isinstance(value, dict):
+            if (value.get('hidden_test') or value.get('split', 'develop') != 'develop'
+                    or value.get('feedback_visibility', 'develop') != 'develop'):
+                return None
+            return {k: public(v) for k,v in value.items() if k not in protected}
+        if isinstance(value, list):
+            return [item for v in value if (item := public(v)) is not None]
+        return value
+    tasks, groups = [], {}
+    for row in feedback.tasks:
+        if row.get('hidden_test') or row.get('split', 'develop') != 'develop':
+            continue
+        entry = {k: public(v) for k,v in row.items() if k in task_fields}
+        if 'issues' in row:
+            issues = []
+            for issue in row['issues']:
+                if (issue.get('hidden_test') or issue.get('split', 'develop') != 'develop'
+                        or issue.get('feedback_visibility', 'develop') != 'develop'
+                        or issue.get('kind', 'artifact_defect') != 'artifact_defect'):
+                    continue
+                clean = public({k: v for k,v in issue.items() if k in issue_fields})
+                if clean is not None:
+                    issues.append(clean)
+                    if clean.get('issue_id') and clean.get('requirement_id'):
+                        # Original issue_groups can carry unapproved metadata.
+                        key = clean.get('skill_improvement_hint') or clean['requirement_id']
+                        groups.setdefault(key, []).append(f"{row['task_id']}:{clean['issue_id']}")
+            entry['issues'] = issues
+        tasks.append(entry)
+    return RSIFeedback(mode=feedback.mode, tasks=tasks, issue_groups=groups)
+
+
 def build_feedback(develop, *, mode="structured") -> RSIFeedback:
     if develop.get("split") != "develop":
         raise ValueError("only develop feedback can enter candidate context")
@@ -24,7 +70,26 @@ def build_feedback(develop, *, mode="structured") -> RSIFeedback:
                 key = issue["skill_improvement_hint"] or issue["requirement_id"]
                 groups.setdefault(key, []).append(f"{row['task_id']}:{issue['issue_id']}")
         tasks.append(entry)
-    return RSIFeedback(mode=mode, tasks=tasks, issue_groups=groups)
+    return candidate_feedback(RSIFeedback(mode=mode, tasks=tasks, issue_groups=groups))
+
+
+def feedback_with_requirements(feedback, develop_tasks):
+    """Attach logical task/requirement references, never input or report paths."""
+    from .artifact_assessment import spec_from_task
+    public_tasks = {task.task_id: task for task in develop_tasks if not task.hidden_test}
+    rows = []
+    for row in candidate_feedback(feedback).tasks:
+        if row['task_id'] not in public_tasks:
+            continue
+        task = public_tasks[row['task_id']]
+        spec = spec_from_task(task)
+        refs = [{'requirement_id': req.requirement_id, 'description': req.description,
+                 'source_ref': f'task:{task.task_id}/requirement:{req.requirement_id}'}
+                for req in spec.requirements if req.feedback_visibility == 'develop']
+        rows.append({**row, 'requirement_refs': refs,
+                     'trace_summary': {'acceptance_status': row.get('acceptance_status'),
+                                       'visible_issue_count': len(row.get('issues', row.get('errors', [])))}})
+    return candidate_feedback(feedback.model_copy(update={'tasks': rows}))
 
 
 def comparison_metrics(baseline, candidate, root, contract):

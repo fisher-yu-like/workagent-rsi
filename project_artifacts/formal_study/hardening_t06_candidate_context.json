@@ -1,0 +1,65 @@
+{
+  "schema_version": "hardening-t06-context-v1",
+  "status": "completed",
+  "completed_at": "2026-10-24T05:17:29.957518+00:00",
+  "base_commit": "c9a3d3dd84262be893dde31a37fb2696eb2d016f",
+  "implementation_commit": "commit containing this manifest; exact source hashes in full test evidence",
+  "branch": "feat/evaluation-rsi-hardening",
+  "scope": "T06 offline context/data flow only; no server or live model calls",
+  "red": {
+    "failed": 9,
+    "error": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T06-red/20261024T050740407218Z"
+  },
+  "focused": {
+    "passed": 36,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T06-focused/20261024T051330151350Z"
+  },
+  "new_context_tests": 14,
+  "full_validation": {
+    "passed": 265,
+    "failed": 10,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/T06-full/20261024T051339680336Z"
+  },
+  "review_cases": {
+    "R07": "passed",
+    "R08": "expected_open until T07",
+    "R06": "expected_open until T08"
+  },
+  "expected_open": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R08",
+    "R09",
+    "R10",
+    "R11"
+  ],
+  "evidence": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z",
+  "bundle": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z/bundle/manifest.json",
+  "verified_behaviors": [
+    "API and CLI share exact prompt/context hash",
+    "champion package/byte/parent checks before transport",
+    "promoted champion in second round",
+    "provenance-backed abstract develop lessons persist",
+    "protected promotion evidence never enters workspace",
+    "feedback allowlist excludes protected rows/issues/side channels",
+    "logical requirement refs and minimal public trace",
+    "history source hashes checked on resume",
+    "explicit context overflow without truncation"
+  ],
+  "limits": [
+    "offline injected transports only; no live provider quality claim",
+    "legacy authored providers retain adapter",
+    "public lessons deliberately conservative fixed abstract statement",
+    "T07 response validation unchanged in this commit",
+    "G1 remains unfinished"
+  ]
+}

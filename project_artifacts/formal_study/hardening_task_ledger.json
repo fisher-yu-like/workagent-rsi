@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T04:25:09.636358+00:00",
+  "updated_at": "2026-10-24T05:17:29.957518+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -48,9 +48,12 @@
     },
     {
       "task_id": "T06",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z",
+      "note": "Verified champion/develop context shared by API/CLI; public-history provenance, overflow and multi-round inheritance passed offline. No server/model calls.",
+      "base_commit": "c9a3d3dd84262be893dde31a37fb2696eb2d016f",
+      "manifest": "project_artifacts/formal_study/hardening_t06_candidate_context.json",
+      "bundle": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z/bundle/manifest.json"
     },
     {
       "task_id": "T07",
@@ -354,14 +357,16 @@
     "T03_and_final_handoff": "commit containing this ledger; exact tested sources hashed in final run.json",
     "T03_policy_completion": "9160b41",
     "T04": "commit containing ledger; exact sources in evidence",
-    "T05": "commit containing ledger; exact sources hashed in evidence"
+    "T05": "commit containing ledger; exact sources hashed in evidence",
+    "T06": "commit containing ledger; exact sources in evidence"
   },
   "full_validation": {
-    "passed": 250,
-    "failed": 11,
+    "passed": 265,
+    "failed": 10,
     "error": 0,
     "skipped": 0,
     "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/T06-full/20261024T051339680336Z",
     "expected_open": [
       "R01",
       "R02",
@@ -369,17 +374,14 @@
       "R04",
       "R05",
       "R06",
-      "R07",
       "R08",
       "R09",
       "R10",
       "R11"
-    ],
-    "evidence": "project_artifacts/results/hardening-v2/T05-final-full/20261024T041854561992Z"
+    ]
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T06",
     "T07",
     "T08",
     "T09"
@@ -408,7 +410,8 @@
       "status": "expected_open"
     },
     "R07": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z"
     },
     "R08": {
       "status": "expected_open"

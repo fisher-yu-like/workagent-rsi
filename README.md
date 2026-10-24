@@ -57,10 +57,12 @@ Apptainer SSH alternative. Qualification status and current tests are recorded i
 T05 adds allowlisted execution/candidate views, source-link checks and verified
 copies rendered inside an explicit LibreOffice/Poppler Apptainer worker. Real
 XLSX/DOCX/PPTX rendering and owned process cleanup passed; dedicated Microsoft
-Office COM remains unavailable. Current validation is 250 passed and 11
+Office COM remains unavailable. Current validation after T06 is 265 passed and 10
 expected-open failures, detailed in
 `project_artifacts/formal_study/hardening_t05_evaluation_boundary.json`.
-T06 and subsequent evaluator/repair tasks and the overall G1 gate remain pending. Historical T01 red
+T06 now supplies verified champion and controlled develop history to both candidate
+providers; see [candidate contracts](docs/candidate_generation.md). T07 and
+subsequent evaluator/repair tasks and the overall G1 gate remain pending. Historical T01 red
 observations are retained; their repair status must be read from the latest
 ledger rather than the original red baseline. The historical gate summary follows.
 
