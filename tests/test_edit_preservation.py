@@ -160,3 +160,9 @@ def test_equivalent_word_run_splitting_is_serialization_only(tmp_path):
 def test_unknown_preserved_scope_is_explicit_error(tmp_path):
     source,output=excel_pair(tmp_path)
     with pytest.raises(ValueError,match='does not resolve'):compare(source,output,preserved=['excel/sheet/Missing'])
+
+
+def test_excel_date_value_has_stable_json_identity(tmp_path):
+    from datetime import datetime
+    source,output=excel_pair(tmp_path);book=load_workbook(source);book.active['D1']=datetime(2026,10,24);book.save(source);book.save(output);book.close()
+    assert passed(compare(source,output))

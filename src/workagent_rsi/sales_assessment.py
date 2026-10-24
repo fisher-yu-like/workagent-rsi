@@ -39,7 +39,7 @@ def sales_spec(task) -> AcceptanceSpec:
     add("headers", "excel.range", [["Region", "Sales", "Formula (recalculate in Office)"]], "structure", cell="A1:C1")
     for row, region in enumerate(regions, 2):
         add(f"total.{region}", "excel.cell", float(totals[region]), "correctness", cell=f"B{row}", critical=True, hint="sales_rows=all: derive the aggregation boundary from the complete input length")
-        add(f"formula.{region}", "excel.formula", f'=SUMIF(Data!A2:A{len(records)+1},A{row},Data!B2:B{len(records)+1})', "correctness", cell=f"C{row}", critical=True, weight=0, hint="sales_rows=all: derive the aggregation boundary from the complete input length")
+        add(f"formula.{region}", "excel.formula_exact", f'=SUMIF(Data!A2:A{len(records)+1},A{row},Data!B2:B{len(records)+1})', "correctness", cell=f"C{row}", critical=True, weight=0, hint="sales_rows=all: derive the aggregation boundary from the complete input length")
         add(f"format.{region}", "excel.number_format", '#,##0.00', "presentation", cell=f"B{row}", hint="sales_number_format=true: format sales totals to two decimal places")
     add("chart", "excel.chart", [{"values": f"'Summary'!$B$2:$B${len(regions)+1}", "categories": f"'Summary'!$A$2:$A${len(regions)+1}"}], "completeness", hint="sales_chart=true: chart the entire region summary")
     return AcceptanceSpec(task_id=task.task_id, version="sales-summary-v1", artifacts={"output": "excel"}, requirements=requirements,

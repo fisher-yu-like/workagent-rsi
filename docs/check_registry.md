@@ -10,6 +10,8 @@ Preflight runs before artifact parsing. Unknown checks, invalid types/locations 
 | excel.cell | excel | sheet, cell | scalar | parser |
 | excel.chart | excel | sheet | chart_refs | parser |
 | excel.formula | excel | sheet, cell | formula | parser |
+| excel.formula_exact | excel | sheet, cell | formula | parser |
+| excel.formula_present | excel | sheet, cell | boolean | parser |
 | excel.number_format | excel | sheet, cell | text | parser |
 | excel.range | excel | sheet, cell | matrix | parser |
 | excel.recalculated_value | excel | sheet, cell | scalar | spreadsheet_recalc |

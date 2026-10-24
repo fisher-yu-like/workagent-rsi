@@ -25,7 +25,7 @@ JSON_VALUE = TypeAdapter(Any)
 
 def assessment_identity(config: dict | None = None) -> str:
     root = Path(__file__).resolve().parents[2]
-    names = ("assessment_contracts.py", "preservation_checks.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
+    names = ("assessment_contracts.py", "preservation_checks.py", "formula_checks.py", "spreadsheet_recalc.py", "libreoffice_recalc_worker.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
     files = {name: sha256_file(Path(__file__).with_name(name)) for name in names if Path(__file__).with_name(name).exists()}
     for skill in ("office-artifact-evaluator", "office-artifact-verifier"):
         for path in sorted((root / "skills" / skill).rglob("*")):
@@ -43,12 +43,13 @@ def _equal(actual: Any, expected: Any, tolerance: float) -> bool:
 
 
 class SharedAssessment:
-    def __init__(self, *, visual=None, semantic=None):
-        self.visual, self.semantic = visual, semantic
+    def __init__(self, *, visual=None, semantic=None, recalculation=None):
+        self.visual, self.semantic, self.recalculation = visual, semantic, recalculation
 
     def identity(self) -> str:
         return assessment_identity({"visual": self.visual.identity_config() if self.visual else "disabled",
-                                    "semantic": self.semantic.identity_config() if self.semantic else "disabled"})
+                                    "semantic": self.semantic.identity_config() if self.semantic else "disabled",
+                                    'recalculation':self.recalculation.identity_config() if self.recalculation else 'disabled'})
 
     def inspect(self, spec: AcceptanceSpec, artifacts: dict[str, str | Path]) -> Assessment:
         spec = AcceptanceSpec.model_validate(spec.model_dump(mode="json"))
@@ -59,7 +60,7 @@ class SharedAssessment:
             'renderer': self.visual is not None and getattr(self.visual,'renderer',None) is not None,
             'visual_judge': self.visual is not None,
             'semantic_judge': self.semantic is not None,
-            'spreadsheet_recalc': False})
+            'spreadsheet_recalc': self.recalculation is not None})
         gaps = {f.requirement_id:f for f in preflight.findings}
         paths = {key: Path(value) for key, value in artifacts.items() if key in spec.artifacts}
         hashes = {key: sha256_file(paths[key]) if key in paths and paths[key].is_file() else None for key in spec.artifacts}
@@ -185,7 +186,10 @@ class SharedAssessment:
             if loc.sheet not in obj.sheetnames:
                 return "FAIL", 0, "worksheet missing", loc
             sheet = obj[loc.sheet]
-            if r.check in {"excel.cell", "excel.formula", "excel.number_format"}:
+            if r.check in {'excel.formula','excel.formula_exact','excel.formula_present','excel.recalculated_value'}:
+                from .formula_checks import inspect_formula
+                return inspect_formula(r,obj,paths[loc.artifact],self.recalculation)
+            if r.check in {"excel.cell", "excel.number_format"}:
                 cell = sheet[loc.cell]
                 actual = cell.number_format if r.check == "excel.number_format" else cell.value
             elif r.check == "excel.range":
@@ -391,10 +395,10 @@ def _bind_task_admission(task, spec):
     return AcceptanceSpec.model_validate(payload)
 
 
-def assess(spec, artifacts, *, visual=None, semantic=None):
+def assess(spec, artifacts, *, visual=None, semantic=None, recalculation=None):
     from .artifact_evaluator import ArtifactEvaluator
     from .artifact_verifier import ArtifactVerifier
-    shared = SharedAssessment(visual=visual, semantic=semantic).inspect(spec, artifacts)
+    shared = SharedAssessment(visual=visual, semantic=semantic,recalculation=recalculation).inspect(spec, artifacts)
     return shared, ArtifactEvaluator().evaluate(shared), ArtifactVerifier().verify(shared)
 
 

@@ -26,6 +26,8 @@ _definitions = [
     ('excel.sheets',['excel'],[],'texts',[]),
     ('excel.cell',['excel'],['sheet','cell'],'scalar',[]),
     ('excel.formula',['excel'],['sheet','cell'],'formula',[]),
+    ('excel.formula_exact',['excel'],['sheet','cell'],'formula',[]),
+    ('excel.formula_present',['excel'],['sheet','cell'],'boolean',[]),
     ('excel.number_format',['excel'],['sheet','cell'],'text',[]),
     ('excel.range',['excel'],['sheet','cell'],'matrix',[]),
     ('excel.cached_value',['excel'],['sheet','cell'],'scalar',[]),
@@ -147,9 +149,12 @@ def validate_acceptance_spec(spec, capabilities) -> SpecAdmissionReport:
                 raise ValueError('region selector is unsupported by deterministic text/geometry checks')
             if any(getattr(r.location,field) is None or getattr(r.location,field)=='' for field in definition.required_location_fields):
                 raise ValueError('missing required location fields: '+','.join(definition.required_location_fields))
-            if r.location.cell and ':' in r.location.cell and r.check in {'excel.cell','excel.formula','excel.cached_value','excel.recalculated_value','excel.number_format'}:
+            if r.location.cell and ':' in r.location.cell and r.check in {'excel.cell','excel.formula','excel.formula_exact','excel.formula_present','excel.cached_value','excel.recalculated_value','excel.number_format'}:
                 raise ValueError('single-cell check cannot use a range')
             _expected(r.expected,definition.expected_schema)
+            if r.check in {'excel.formula','excel.formula_exact','excel.formula_present','excel.recalculated_value'}:
+                from .formula_checks import validate_formula_options
+                validate_formula_options(r)
             if r.check=='excel.range':
                 from openpyxl.utils.cell import range_boundaries
                 a,b,c,d=range_boundaries(r.location.cell)

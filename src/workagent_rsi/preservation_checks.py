@@ -8,7 +8,8 @@ from typing import Literal
 import hashlib
 from urllib.parse import quote
 
-from pydantic import Field,field_validator
+from pydantic import Field,field_validator,TypeAdapter
+from typing import Any
 
 from .assessment_contracts import AssessmentModel,CheckRecord,Location
 from .hashing import canonical_json_hash,sha256_file
@@ -115,7 +116,7 @@ def _snapshot(path):
             shapes(slide.shapes,base)
     else:raise ValueError('unsupported preservation format')
     if len(facts)>50000 or any(isinstance(v,list) and len(v)>5000 for v in facts.values()):raise ValueError('preservation object budget exceeded')
-    return facts,gaps
+    return TypeAdapter(Any).dump_python(facts,mode='json'),gaps
 
 
 def compare_preservation(source,output,spec) -> list[CheckRecord]:
