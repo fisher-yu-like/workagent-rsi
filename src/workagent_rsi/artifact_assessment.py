@@ -23,7 +23,7 @@ JSON_VALUE = TypeAdapter(Any)
 
 def assessment_identity(config: dict | None = None) -> str:
     root = Path(__file__).resolve().parents[2]
-    names = ("assessment_contracts.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
+    names = ("assessment_contracts.py", "requirement_coverage.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
     files = {name: sha256_file(Path(__file__).with_name(name)) for name in names if Path(__file__).with_name(name).exists()}
     for skill in ("office-artifact-evaluator", "office-artifact-verifier"):
         for path in sorted((root / "skills" / skill).rglob("*")):
@@ -50,6 +50,8 @@ class SharedAssessment:
 
     def inspect(self, spec: AcceptanceSpec, artifacts: dict[str, str | Path]) -> Assessment:
         spec = AcceptanceSpec.model_validate(spec.model_dump(mode="json"))
+        from .requirement_coverage import admission_for_spec
+        admission = admission_for_spec(spec)
         paths = {key: Path(value) for key, value in artifacts.items() if key in spec.artifacts}
         hashes = {key: sha256_file(paths[key]) if key in paths and paths[key].is_file() else None for key in spec.artifacts}
         for raw_path, digest in spec.input_hashes.items():
@@ -125,7 +127,8 @@ class SharedAssessment:
         if any(sha256_file(paths[k]) != h for k, h in hashes.items() if h is not None):
             raise ValueError("artifact changed during inspection")
         return Assessment(spec=spec, spec_hash=spec.fingerprint(), evaluator_identity=self.identity(),
-                          artifact_hashes=hashes, checks=checks, evidence=evidence, telemetry=telemetry)
+                          artifact_hashes=hashes, checks=checks, evidence=evidence, telemetry=telemetry,
+                          spec_admission=admission)
 
     def _check(self, r, parsed, paths):
         obj, loc = parsed[r.location.artifact], r.location
@@ -275,15 +278,17 @@ def spec_from_task(task) -> AcceptanceSpec:
     constraints = task.expected_constraints
     if constraints.get("sales_summary"):
         from .sales_assessment import sales_spec
-        return sales_spec(task)
+        return _bind_task_admission(task, sales_spec(task))
     if "acceptance_spec" in constraints:
         spec = AcceptanceSpec.model_validate(constraints["acceptance_spec"])
         if spec.task_id != task.task_id:
             raise ValueError("acceptance specification task identity mismatch")
-        return spec
+        return _bind_task_admission(task, spec)
     requirements = [Requirement(requirement_id="file", description="Readable required artifact", check="file.readable", location=Location(artifact="output"), expected=True, critical=True, dimension="correctness", evidence_source="OOXML package and library parser")]
     adapters = {"required_text": "text.contains", "marker": "text.contains", "output_format": "file.format", "required_sheets": "excel.sheets", "required_cells": "excel.cell", "required_formulas": "excel.formula", "required_formula_values": "excel.cached_value", "required_headings": "word.headings", "required_heading_styles": "word.heading_style", "required_slide_count": "powerpoint.slide_count", "required_slides": "powerpoint.slide_count", "required_shape_text": "powerpoint.texts"}
     for key, expected in constraints.items():
+        if key in {'evaluation_profile','requirement_inventory'}:
+            continue
         if key == "marker" and constraints.get("required_text") == expected:
             continue
         check = adapters.get(key, "unsupported." + key)
@@ -301,7 +306,26 @@ def spec_from_task(task) -> AcceptanceSpec:
                 value = str(value).lower()
             requirements.append(Requirement(requirement_id=f"{key}:{target}", description=key, check=check, location=Location(**position), expected=value, critical=True, dimension="correctness", evidence_source="TaskSpec.expected_constraints"))
     domain = task.domain.lower()
-    return AcceptanceSpec(task_id=task.task_id, version="legacy-constraints-v1", artifacts={"output": domain}, requirements=requirements, dimension_weights={"correctness": 1})
+    from .requirement_coverage import task_context
+    return AcceptanceSpec(task_id=task.task_id, version="legacy-constraints-v1", artifacts={"output": domain}, requirements=requirements, dimension_weights={"correctness": 1},
+        evaluation_profile=constraints.get('evaluation_profile', 'task_acceptance' if not constraints or 'requirement_inventory' in constraints else None),
+        task_context=task_context(task),requirement_inventory=constraints.get('requirement_inventory'),
+        scope_note='Legacy declared checks only; task requirements are not assumed complete without reviewed admission.')
+
+
+def _bind_task_admission(task, spec):
+    from .requirement_coverage import task_context
+    constraints = task.expected_constraints
+    payload = spec.model_dump(mode='json')
+    # The actual caller task owns context; a nested acceptance spec cannot replace it.
+    payload['task_context'] = task_context(task)
+    if 'evaluation_profile' in constraints:
+        payload['evaluation_profile'] = constraints['evaluation_profile']
+    if 'requirement_inventory' in constraints:
+        payload['requirement_inventory'] = constraints['requirement_inventory']
+        if payload['evaluation_profile'] is None:
+            payload['evaluation_profile'] = 'task_acceptance'
+    return AcceptanceSpec.model_validate(payload)
 
 
 def assess(spec, artifacts, *, visual=None, semantic=None):
@@ -318,7 +342,7 @@ def save_reports(output, shared, score, issues):
         target = root / f"{name}.json"
         with target.open("x", encoding="utf-8") as stream:
             stream.write(report.model_dump_json(indent=2))
-    text = f"# Artifact assessment: {score.task_id}\n\nAcceptance: {score.acceptance_status}\n\nQuality: {score.total_score} / 100\n\nCoverage: {score.coverage.completed}/{score.coverage.applicable}\n\n{score.scope_note}\n\n"
+    text = f"# Artifact assessment: {score.task_id}\n\nDeclared-check acceptance: {score.acceptance_status}\n\nTask acceptance: {score.task_acceptance}\n\nTask quality: {score.task_score}\n\nDeclared-check quality: {score.check_score}\n\nCheck completion: {score.coverage.completed}/{score.coverage.applicable}\n\nRequirement admission: {score.spec_admission.status if score.spec_admission else 'unavailable'}\n\nRequirement coverage: {score.requirement_coverage}\n\n{score.scope_note}\n\n"
     for issue in issues.issues:
         text += f"- {issue.requirement_id}: {issue.kind}; {issue.location.model_dump(exclude_none=True)}; observed={issue.observed!r}; expected={issue.expected!r}. {issue.repair_hint}\n"
     (root / "report.md").write_text(text, encoding="utf-8")

@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T06:10:42.300225+00:00",
+  "updated_at": "2026-10-24T06:39:06.523995+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -87,9 +87,12 @@
     },
     {
       "task_id": "T10",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T10/20261024T063905253104Z",
+      "note": "Local implementation and authored cases verified; no server/model calls. See task manifest for scope.",
+      "base_commit": "5c9253ad4cc5920f42ec9d08286ce0546ca77c79",
+      "manifest": "project_artifacts/formal_study/hardening_t10_requirement_admission.json",
+      "bundle": "project_artifacts/results/hardening-v2/T10/20261024T063905253104Z/bundle/manifest.json"
     },
     {
       "task_id": "T11",
@@ -373,7 +376,8 @@
     "T06": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
     "T07": "a34c4edd82cf1449a758e517e3e357cb3a615249",
     "T08_local": "7b839c8773f521c9f41a55fd966f04d7446dc271",
-    "T09": "commit containing ledger; exact sources in final evidence"
+    "T09": "commit containing ledger; exact sources in final evidence",
+    "T10": "commit containing ledger; exact sources hashed in evidence"
   },
   "full_validation": {
     "passed": 352,
@@ -394,7 +398,7 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T10-local",
+    "T11-local",
     "T08-real-behavior-deferred"
   ],
   "review_case_status": {
@@ -403,7 +407,8 @@
       "evidence": "project_artifacts/results/hardening-v2/T04/20261023T131835002830Z/sandbox"
     },
     "R01": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T10/20261024T063905253104Z"
     },
     "R02": {
       "status": "expected_open"

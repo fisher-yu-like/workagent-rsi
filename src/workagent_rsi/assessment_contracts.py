@@ -52,6 +52,43 @@ class Requirement(AssessmentModel):
     scoring_key: str | None = None
 
 
+EvaluationProfile = Literal['structural_only', 'task_acceptance', 'research']
+
+
+class TaskRequirement(AssessmentModel):
+    requirement_id: str = Field(min_length=1)
+    source_quote: str = Field(min_length=1)
+    source_ref: str = Field(min_length=1)
+    obligation: str = Field(min_length=1)
+    mandatory: bool = True
+    validation_method: Literal['deterministic', 'semantic', 'visual', 'human', 'uncovered']
+    check_ids: list[str] = Field(default_factory=list)
+
+
+class RequirementInventory(AssessmentModel):
+    task_id: str = Field(min_length=1)
+    requirements: list[TaskRequirement]
+    reviewed: bool = False
+    provenance: dict[str, Any] = Field(default_factory=dict)
+
+
+class RequirementCoverage(AssessmentModel):
+    mandatory: int = Field(ge=0)
+    covered: int = Field(ge=0)
+    ratio: float = Field(ge=0, le=1)
+
+
+class SpecAdmissionReport(AssessmentModel):
+    status: Literal['PASS', 'SPEC_INCOMPLETE', 'NOT_ASSESSED', 'LEGACY_UNREVIEWED']
+    evaluation_profile: EvaluationProfile | None = None
+    requirement_coverage: RequirementCoverage
+    uncovered_requirement_ids: list[str] = Field(default_factory=list)
+    reasons: list[str] = Field(default_factory=list)
+    mappings: dict[str, list[str]] = Field(default_factory=dict)
+    task_hash: str | None = None
+    spec_binding_hash: str | None = None
+
+
 class AcceptanceSpec(AssessmentModel):
     schema_version: Literal["artifact-assessment-v1"] = "artifact-assessment-v1"
     task_id: str = Field(min_length=1)
@@ -62,6 +99,11 @@ class AcceptanceSpec(AssessmentModel):
     quality_threshold: float = Field(default=80, ge=0, le=100)
     input_hashes: dict[str, str] = Field(default_factory=dict)
     scope_note: str = "Only the declared requirements are assessed."
+    # None is explicit v1 compatibility: declared-check scores only, never
+    # evidence of reviewed whole-task coverage. New profiles use admission.
+    evaluation_profile: EvaluationProfile | None = None
+    task_context: dict[str, Any] | None = None
+    requirement_inventory: RequirementInventory | None = None
 
     @model_validator(mode="after")
     def consistent(self):
@@ -129,6 +171,7 @@ class Assessment(AssessmentModel):
     checks: list[CheckRecord]
     evidence: list[Evidence]
     telemetry: dict[str, Any] = Field(default_factory=dict)
+    spec_admission: SpecAdmissionReport | None = None
 
     @model_validator(mode="after")
     def bound_to_spec(self):
@@ -170,6 +213,11 @@ class ScoreReport(AssessmentModel):
     criterion_results: list[CheckRecord]
     evidence_refs: list[str]
     scope_note: str
+    spec_admission: SpecAdmissionReport | None = None
+    requirement_coverage: RequirementCoverage | None = None
+    task_score: float | None = Field(default=None, ge=0, le=100)
+    task_acceptance: Literal['PASS', 'FAIL', 'INCOMPLETE', 'NOT_ASSESSED'] = 'NOT_ASSESSED'
+    check_score: float | None = Field(default=None, ge=0, le=100)
 
 
 class ArtifactIssue(AssessmentModel):
