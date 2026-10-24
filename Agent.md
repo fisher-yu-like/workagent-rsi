@@ -89,19 +89,21 @@ A candidate skill version can be promoted only if all conditions hold:
 ## Current state
 
 For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
-and `hardening_t05_evaluation_boundary.json`. Work in the existing
+and `hardening_t07_candidate_normalization.json`. Work in the existing
 `feat/evaluation-rsi-hardening` branch at `D:/ws/Projects/WorkAgent-RSI`.
 T00-T03 are delivered; T03 includes the strict default-off live-call policy.
 T04's default Docker and explicit Apptainer SSH backends do not execute native
 model scripts on the host. Read the T04 manifest for actual backend qualification;
 CLI-owned sandbox capability must remain separate. R12 now passes; the other
-10 T01 defects remain active; R07 now passes after T06. T05 now isolates execution/candidate views and
+9 T01 defects remain active; R07 and R08 now pass after T06/T07. T05 now isolates execution/candidate views and
 hash-verified rendering copies. LibreOffice/Poppler rendering, unrelated-instance
 survival and timeout cleanup passed on the explicit Apptainer worker; dedicated
 Microsoft Office COM remains unavailable. See `deploy/office-worker/README.md`.
 T06 shares verified champion/develop context across API/CLI; public history and
 context budgets are checked offline. See `docs/candidate_generation.md`.
-The latest full suite has 265 passed and 10 expected-open failures. T07-T35 and
+T07 admits complete raw candidate responses with auditable normalization and
+transport-owned model identity. Both tasks were qualified offline only.
+The latest full suite has 295 passed and 9 expected-open failures. T08-T35 and
 the overall G1 gate remain unfinished. Full-suite evidence is not
 all-green, and isolated authored probes are not live model/RSI qualification.
 The entries below preserve historical stage evidence.

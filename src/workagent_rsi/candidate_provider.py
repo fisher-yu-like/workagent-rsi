@@ -11,13 +11,47 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Protocol
 
-from .hashing import canonical_json_hash, sha256_file
-from .rsi_contracts import AtomicEdit, CandidatePatch, FailureDiagnosis, ProviderRecord
+from .hashing import canonical_json_hash, sha256_file, sha256_bytes
+from .rsi_contracts import AtomicEdit, CandidatePatch, CandidateNormalizationRecord, FailureDiagnosis, ProviderRecord
 from .assessment_contracts import RSIFeedback
 from .candidate_context import (CandidateContext, build_candidate_context, validate_candidate_context, persist_candidate_context)
+from .candidate_normalization import normalize_candidate, parse_candidate_json
+from .view_safety import checked_path, ordinary_file
 
 
 Runner = Callable[[list[str], Path, int], subprocess.CompletedProcess[str]]
+
+
+def _fresh_candidate_records(record_root):
+    root = checked_path(record_root)
+    for name in ['candidate.json', 'candidate-response.json', 'candidate-response.txt', 'candidate-raw.json',
+                 'normalization_record.json', 'openai_response.json']:
+        path = checked_path(root/name)
+        if path.exists():
+            raise ValueError('candidate response already exists; use a fresh record root: ' + name)
+    return root
+
+
+def _normalize_response(body, context, records, metadata):
+    """Retain exact response text and admission evidence on success AND rejection."""
+    (records/'candidate-response.txt').write_text(body, encoding='utf-8', newline='')
+    byte_hash = sha256_bytes(body.encode('utf-8'))
+    audit = {}
+    try:
+        payload = parse_candidate_json(body)
+        (records/'candidate-raw.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+        patch = normalize_candidate(payload, context, provider_metadata=metadata, normalization_record=audit)
+        (records/'candidate.json').write_text(patch.model_dump_json(indent=2)+'\n', encoding='utf-8')
+        return patch
+    except (ValueError, TypeError) as exc:
+        if not audit:
+            audit = {'status': 'rejected', 'context_hash': context.fingerprint(), 'raw_sha256': byte_hash,
+                     'raw_hash_kind': 'raw_bytes', 'error': str(exc)}
+        raise
+    finally:
+        audit['response_bytes_sha256'] = byte_hash
+        (records/'normalization_record.json').write_text(
+            CandidateNormalizationRecord.model_validate(audit).model_dump_json(indent=2)+'\n', encoding='utf-8')
 
 
 class CandidateProvider(Protocol):
@@ -107,9 +141,10 @@ class CodexCandidateProvider:
     def generate_with_context(self, context: CandidateContext, workspace, record_root):
         context = validate_candidate_context(context, workspace)
         workspace_path = Path(workspace).resolve()
-        records = Path(record_root).resolve()
+        records = _fresh_candidate_records(record_root)
         records.mkdir(parents=True, exist_ok=True)
-        output_path = records / "candidate.json"
+        output_path = records / "candidate-response.json"
+        normalized_path = records / 'candidate.json'
         stdout_path = records / "provider.stdout.jsonl"
         stderr_path = records / "provider.stderr.txt"
         prompt = candidate_context_prompt(context)
@@ -146,8 +181,9 @@ class CodexCandidateProvider:
                 error = "provider did not write structured output"
             else:
                 try:
-                    payload = json.loads(output_path.read_text(encoding="utf-8"))
-                    patch = CandidatePatch.model_validate(payload)
+                    patch = _normalize_response(ordinary_file(output_path).read_text(encoding="utf-8"), context, records,
+                        {'provider': 'codex-cli', 'provider_version': self.provider_version,
+                         'model_identity': self.model_identity, 'created_at': started})
                     status = "completed"
                 except (json.JSONDecodeError, ValueError) as exc:
                     error = f"invalid provider JSON: {exc}"
@@ -160,11 +196,11 @@ class CodexCandidateProvider:
             error = str(exc)
             stderr_path.write_text(error, encoding="utf-8", newline="\n")
         ended = datetime.now(timezone.utc)
-        output_ref = sha256_file(output_path) if output_path.exists() else None
+        output_ref = sha256_file(normalized_path) if normalized_path.exists() else None
         record = ProviderRecord(
             provider="codex-cli",
             provider_version=self.provider_version,
-            model_identity=self.model_identity or (patch.model_identity if patch else None),
+            model_identity=self.model_identity,
             command=command[:-1] + ["<prompt:redacted>"],
             prompt_hash=canonical_json_hash({"prompt": prompt}),
             workspace_hash=_workspace_hash(workspace_path),
@@ -244,7 +280,7 @@ class OpenAIChatCandidateProvider:
         context = validate_candidate_context(context, workspace)
         feedback, parent_version, edit_budget = context.develop_feedback, context.parent_version, context.edit_budget
         workspace_path = Path(workspace).resolve()
-        records = Path(record_root).resolve()
+        records = _fresh_candidate_records(record_root)
         records.mkdir(parents=True, exist_ok=True)
         started = datetime.now(timezone.utc)
         prompt = candidate_context_prompt(context)
@@ -290,11 +326,9 @@ class OpenAIChatCandidateProvider:
                 content = choices[0].get("message", {}).get("content") if choices else None
                 if not isinstance(content, str):
                     raise ValueError("candidate API response did not contain message content")
-                patch_payload = json.loads(content)
-                try:
-                    patch = CandidatePatch.model_validate(patch_payload)
-                except ValueError:
-                    patch = self._normalize_model_patch(patch_payload, feedback, parent_version, edit_budget)
+                patch = _normalize_response(content, context, records,
+                    {'provider': 'openai-compatible-api', 'provider_version': self.provider_version,
+                     'model_identity': self.model_identity, 'created_at': started})
                 status = "completed"
             except urllib.error.HTTPError as exc:
                 status = "unavailable" if exc.code in (408, 429, 500, 502, 503, 504) else "failed"
@@ -334,51 +368,18 @@ class OpenAIChatCandidateProvider:
             f"Parent version={parent_version}; edit budget={edit_budget}. Develop feedback JSON: {feedback.model_dump_json()}")
 
     @staticmethod
-    def _normalize_model_patch(payload: dict, feedback, parent_version: str, edit_budget: int) -> CandidatePatch:
-        """Normalize the model's common candidate-patch envelope into our strict contract."""
-        if isinstance(payload.get("atomic_edits"), list):
-            refs = [item.get("ref", "") if isinstance(item, dict) else str(item) for item in payload.get("diagnosis_refs", [])]
-            refs = [ref for ref in refs if ref]
-            edits = []
-            for item in payload["atomic_edits"][:edit_budget]:
-                if not isinstance(item, dict) or item.get("target_path") != "skill.json":
-                    raise ValueError("candidate edit must target skill.json")
-                patch_value = item.get("patch")
-                if not isinstance(patch_value, dict) or len(patch_value) != 1:
-                    raise ValueError("candidate edit patch must be one-key object")
-                edits.append(AtomicEdit(component="prompt", target_path="skill.json",
-                    hypothesis=str(item.get("hypothesis") or "apply a reusable instruction correction"),
-                    expected_metric=str(item.get("expected_metric") or "artifact-v1.quality_score"),
-                    patch=json.dumps(patch_value, ensure_ascii=False)))
-            if not edits:
-                raise ValueError("candidate patch contains no edits")
-            return CandidatePatch(candidate_id=str(payload.get("candidate_id") or canonical_json_hash(payload)[:20]),
-                parent_version=str(payload.get("parent_version") or parent_version),
-                provider=str(payload.get("provider") or "openai-compatible-api"),
-                provider_version=str(payload.get("provider_version") or "openai-chat-candidate-v1"),
-                model_identity=payload.get("model_identity"), diagnosis_refs=refs or [canonical_json_hash(payload)],
-                atomic_edits=edits, new_tests=[str(item) for item in payload.get("new_tests", []) if isinstance(item, str)],
-                edit_budget=int(payload.get("edit_budget") or edit_budget), created_at=datetime.now(timezone.utc))
-        if payload.get("schema_version") != "candidate-patch-v1" or not isinstance(payload.get("edits"), list):
-            raise ValueError("unsupported candidate patch envelope")
-        feedback_hash = canonical_json_hash(feedback.model_dump(mode="json"))
-        atomic_edits = []
-        for item in payload["edits"][:edit_budget]:
-            if not isinstance(item, dict) or item.get("file") != "skill.json":
-                raise ValueError("candidate edit must target skill.json")
-            target = item.get("target")
-            value = item.get("value")
-            if not isinstance(target, str) or not isinstance(value, str):
-                raise ValueError("candidate edit target and value must be strings")
-            atomic_edits.append(AtomicEdit(component="prompt", target_path="skill.json",
-                hypothesis="apply the model-proposed reusable instruction correction",
-                expected_metric="artifact-v1.quality_score", patch=json.dumps({target: value}, ensure_ascii=False)))
-        if not atomic_edits:
-            raise ValueError("candidate patch contains no edits")
-        return CandidatePatch(candidate_id=canonical_json_hash({"parent": parent_version, "edits": [item.model_dump() for item in atomic_edits]})[:20],
-            parent_version=parent_version, provider="openai-compatible-api", provider_version="openai-chat-candidate-v1",
-            model_identity=None, diagnosis_refs=[feedback_hash], atomic_edits=atomic_edits,
-            edit_budget=edit_budget, created_at=datetime.now(timezone.utc))
+    def _normalize_model_patch(payload: dict, feedback, parent_version: str, edit_budget: int, *, context=None):
+        """Legacy entry point: full validation requires a verified exported context."""
+        if not isinstance(payload, dict):
+            raise ValueError('candidate response must be an object')
+        edits = payload.get('atomic_edits', payload.get('edits'))
+        if isinstance(edits, list) and len(edits) > edit_budget:
+            raise ValueError('candidate edit budget exceeded; whole response rejected')
+        if context is None:
+            raise ValueError('verified candidate context is required for response normalization')
+        if context.parent_version != parent_version or context.edit_budget != edit_budget:
+            raise ValueError('legacy normalization metadata differs from verified context')
+        return normalize_candidate(payload, context)
 
 
 class DeterministicCandidateProvider:

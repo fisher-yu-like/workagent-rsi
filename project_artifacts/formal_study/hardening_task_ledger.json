@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T05:17:29.957518+00:00",
+  "updated_at": "2026-10-24T05:29:36.641101+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -53,13 +53,17 @@
       "note": "Verified champion/develop context shared by API/CLI; public-history provenance, overflow and multi-round inheritance passed offline. No server/model calls.",
       "base_commit": "c9a3d3dd84262be893dde31a37fb2696eb2d016f",
       "manifest": "project_artifacts/formal_study/hardening_t06_candidate_context.json",
-      "bundle": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z/bundle/manifest.json"
+      "bundle": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z/bundle/manifest.json",
+      "implementation_commit": "8bb3e04f0760362ba2f1b94143ef95faf043034b"
     },
     {
       "task_id": "T07",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z",
+      "note": "Complete API/CLI raw response admission with registered deterministic normalization, exact text/raw evidence and provider-owned identity passed offline. No server/model calls.",
+      "base_commit": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
+      "manifest": "project_artifacts/formal_study/hardening_t07_candidate_normalization.json",
+      "bundle": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z/bundle/manifest.json"
     },
     {
       "task_id": "T08",
@@ -358,15 +362,16 @@
     "T03_policy_completion": "9160b41",
     "T04": "commit containing ledger; exact sources in evidence",
     "T05": "commit containing ledger; exact sources hashed in evidence",
-    "T06": "commit containing ledger; exact sources in evidence"
+    "T06": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
+    "T07": "commit containing ledger; exact tested sources in evidence"
   },
   "full_validation": {
-    "passed": 265,
-    "failed": 10,
+    "passed": 295,
+    "failed": 9,
     "error": 0,
     "skipped": 0,
     "exit_code": 1,
-    "evidence": "project_artifacts/results/hardening-v2/T06-full/20261024T051339680336Z",
+    "evidence": "project_artifacts/results/hardening-v2/T07-full/20261024T052501756344Z",
     "expected_open": [
       "R01",
       "R02",
@@ -374,7 +379,6 @@
       "R04",
       "R05",
       "R06",
-      "R08",
       "R09",
       "R10",
       "R11"
@@ -382,7 +386,6 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T07",
     "T08",
     "T09"
   ],
@@ -414,7 +417,8 @@
       "evidence": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z"
     },
     "R08": {
-      "status": "expected_open"
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z"
     },
     "R09": {
       "status": "expected_open"

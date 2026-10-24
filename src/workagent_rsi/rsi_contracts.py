@@ -42,8 +42,22 @@ class CandidatePatch(StrictModel):
     diagnosis_refs: list[str] = Field(min_length=1)
     atomic_edits: list[AtomicEdit] = Field(min_length=1)
     new_tests: list[str] = Field(default_factory=list)
-    edit_budget: int = Field(ge=1)
+    edit_budget: int = Field(ge=1, strict=True)
     created_at: datetime
+
+
+class CandidateNormalizationRecord(StrictModel):
+    schema_version: Literal['candidate-normalization-v1'] = 'candidate-normalization-v1'
+    status: Literal['accepted', 'rejected']
+    context_hash: str
+    raw_sha256: str | None = None
+    response_bytes_sha256: str | None = None
+    raw_hash_kind: Literal['canonical_json', 'raw_bytes'] = 'canonical_json'
+    normalized_sha256: str | None = None
+    envelope: str | None = None
+    mappings: list[dict[str, str]] = Field(default_factory=list)
+    metadata_provenance: dict[str, str] = Field(default_factory=dict)
+    error: str | None = None
 
 
 class FailureDiagnosis(StrictModel):

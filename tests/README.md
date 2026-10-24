@@ -83,5 +83,21 @@ normal rendering, and detached-process timeout cleanup. It never connects to
 a model or user Office instance. Operations and current temporary runtime
 identity are in `deploy/office-worker/README.md`; actual results and limits are
 in `project_artifacts/formal_study/hardening_t05_evaluation_boundary.json`.
-The latest full suite is 250 passed and 11 active R01-R11 failures, with no
+T05's full suite was 250 passed and 11 active R01-R11 failures, with no
 errors/skips; T05 does not repair those future-task defects or complete G1.
+
+## T06 and T07 local candidate contracts
+
+```powershell
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T06 tests/test_candidate_context.py tests/test_candidate_provider.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T07 tests/test_candidate_normalization.py tests/test_candidate_provider.py
+```
+
+These tests use authored workspaces, captured dummy HTTP requests and injected
+CLI runners. Multi-round context tests use offline authored policies. Neither
+task requires the server or a live model. They check actual champion inheritance,
+history provenance, protected visibility, explicit budgets, whole-response
+rejection, exact instruction preservation and transport-owned identity. Raw
+response and normalization evidence are checked for accepted and rejected cases.
+Current counts and remaining regressions are recorded in the task ledger and
+the T06/T07 manifests; future-task failures remain included in full pytest.

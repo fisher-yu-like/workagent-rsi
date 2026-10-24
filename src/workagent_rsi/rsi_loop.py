@@ -492,6 +492,7 @@ class RSILoop:
                         "rsi_feedback.py",
                         "candidate_provider.py",
                         "candidate_context.py",
+                        "candidate_normalization.py",
                         "rsi_contracts.py",
                         "workagent_experiment.py",
                     )
