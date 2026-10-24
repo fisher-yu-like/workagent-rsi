@@ -18,6 +18,12 @@ from .workagent_provider import CodexOfficeProvider
 
 _SUFFIXES = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}
 
+
+class InputIntegrityError(ValueError):
+    def __init__(self,message,origin):
+        super().__init__(message)
+        self.failure_origin=origin
+
 _TASK_MODE_RULES = {
     "create": (
         "TASK MODE: CREATE. There is no staged Office source to preserve. Follow the creation path only, "
@@ -220,8 +226,10 @@ def verify_task_input_hashes(task: TaskSpec, workspace: Path, input_base: Path, 
         for path in (source, copied):
             if not path.is_file() or not stat.S_ISREG(path.lstat().st_mode):
                 raise ValueError("source or staged input is no longer an ordinary file")
-        if sha256_file(source) != item.get("source_sha256") or sha256_file(copied) != item.get("copy_sha256"):
-            raise ValueError("source or staged input changed after copy")
+        if sha256_file(source) != item.get("source_sha256"):
+            raise InputIntegrityError("original source input changed after copy",'environment')
+        if sha256_file(copied) != item.get("copy_sha256"):
+            raise InputIntegrityError("staged input changed after copy",'agent_execution')
 
 
 def build_task_prompt(task: TaskSpec, input_manifest: dict, agent_instructions: str | WorkAgentSkill) -> str:
@@ -316,7 +324,7 @@ class WorkAgentOfficeAdapter:
             checked_path(records)
             manifest = prepare_execution_view(task, self.input_base, workspace)
         except (OSError, ValueError) as exc:
-            yield {"kind": "failure", "message": f"input staging failed: {exc}", "provider": "workagent"}
+            yield {"kind": "unavailable", "message": f"input staging failed: {exc}", "provider": "workagent",'failure_origin':'user_input'}
             return
         yield {"kind": "input_manifest", "manifest": manifest}
 
@@ -328,10 +336,17 @@ class WorkAgentOfficeAdapter:
                 "status": outcome.status,
                 "record": outcome.record.model_dump(mode="json") if outcome.record else None,
                 "error": outcome.error,
+                'failure_origin':outcome.failure_origin,
             }
             # No response or artifact is trusted until both original and staged
             # inputs have been checked after every provider exit.
-            verify_task_input_hashes(task, workspace, self.input_base, manifest)
+            try:
+                verify_task_input_hashes(task, workspace, self.input_base, manifest)
+            except (OSError,ValueError) as exc:
+                origin=getattr(exc,'failure_origin','environment')
+                yield {'kind':'failure' if origin=='agent_execution' else 'unavailable','message':str(exc),
+                    'provider':'workagent','failure_origin':origin,'retryable':False}
+                return
             if outcome.status != "completed" or outcome.response is None:
                 kind = "unavailable" if outcome.status == "unavailable" else "failure"
                 yield {
@@ -340,11 +355,13 @@ class WorkAgentOfficeAdapter:
                     "provider": "workagent",
                     "status": outcome.status,
                     "retryable": False,
+                    'failure_origin':outcome.failure_origin,
                 }
                 return
             paths = validate_deliverables(task, workspace, outcome.response, self.config)
         except (OSError, ValueError) as exc:
-            yield {"kind": "failure", "message": str(exc), "provider": "workagent", "retryable": False}
+            yield {"kind": "failure", "message": str(exc), "provider": "workagent", "retryable": False,
+                   'failure_origin':'environment' if isinstance(exc,OSError) else 'agent_execution'}
             return
         for path in paths:
             yield {

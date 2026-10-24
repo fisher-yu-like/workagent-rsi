@@ -49,11 +49,14 @@ No server/model call or rendering/recalculation qualification was performed in T
 | T16 judge evidence scope | completed for configured CLI | Red18; initial focused99 passed. Actual CLI source/injection/cache/independent/partition/joint-image probes passed. Corrected real visual batch scope passed3 calls after4 red/84 focused green cases. No calibrated accuracy or direct API claim. |
 | T17 public outcome parity | completed | Red11; final focused141 passed. Check, Harness and WorkAgent RSI share task admission and explicit quality/coverage outcomes. Historical qualification uses explicit legacy profiles. |
 | T18 issue evidence quality | completed | Red13 failures/1 control; final focused207 passed. Grounded repair actions, stable IDs, spec/capability gaps, safe develop projection and historical feedback provenance controls. See latest manifest for full-suite counts. |
+| T19 trace diagnosis | completed locally | 51 focused passes and five genuine trusted authored failure/artifact probes; exact source/log/count/write citations, falsification checks and private-trace protection. No model/server calls. |
+| T20 execution feedback | completed locally | 114 focused passes; full 620 passed / one expected-open R10 / zero errors/skips. R11 passes. Valid execution failures reach the actual RSI candidate-context path, quality remains null without artifacts, denominators and observed runtime stay intact. |
 
 The local deliveries above made no remote server or real model calls. Subsequent
 T08 real isolated behavior/RSI rejection and T13 real recalculation passed.
 T15 real rendering, T16 CLI controls and the separately approved3-request
-corrected real batch-scope recheck passed. R10/R11, T19 onward and G1
+corrected real batch-scope recheck passed. T19/T20 local delivery followed;
+R10, T21 onward and G1
 remain open. Original historical
 results above are retained. Exact source hashes, manifests and portable evidence
 are indexed by `formal_study/hardening_task_ledger.json`.

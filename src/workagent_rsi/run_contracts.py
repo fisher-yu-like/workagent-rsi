@@ -15,7 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 from .assessment_contracts import SpecAdmissionReport, RequirementCoverage, Coverage
 
 
-FailureOrigin = Literal["environment", "agent_execution", "artifact_defect", "assessment_gap", "spec_gap"]
+FailureOrigin = Literal["environment", "model_transport", "user_input", "agent_execution", "artifact_defect", "assessment_gap", "spec_gap"]
 CapabilityStatus = Literal["not_probed", "available", "unavailable", "not_supported"]
 USAGE_FIELDS = ("tokens", "tool_calls", "steps", "wall_seconds", "cost_usd")
 
@@ -181,7 +181,7 @@ def execution_from_legacy(result: dict) -> ExecutionOutcome:
         return ExecutionOutcome(status="succeeded", artifact_refs=refs)
     if state == "UNAVAILABLE" or failure.get("status") in {"timeout", "unavailable"}:
         status = "timeout" if failure.get("status") == "timeout" else "unavailable"
-        return ExecutionOutcome(status=status, failure_origin="environment", artifact_refs=refs)
+        return ExecutionOutcome(status=status, failure_origin=failure.get('failure_origin') or failure.get('origin') or "environment", artifact_refs=refs)
     if state == "FAILED":
         # Generic legacy exceptions do not identify whether execution or a
         # checker failed. Retain null rather than infer a cause from prose.

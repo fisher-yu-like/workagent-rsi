@@ -89,13 +89,13 @@ A candidate skill version can be promoted only if all conditions hold:
 ## Current state
 
 For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
-and `hardening_t18_issue_evidence.json`. Work in the existing
+and `hardening_t20_execution_feedback.json`. Work in the existing
 `feat/evaluation-rsi-hardening` branch at `D:/ws/Projects/WorkAgent-RSI`.
 T00-T03 are delivered; T03 includes the strict default-off live-call policy.
 T04's default Docker and explicit Apptainer SSH backends do not execute native
 model scripts on the host. Read the T04 manifest for actual backend qualification;
-CLI-owned sandbox capability must remain separate. R12 now passes; the other
-2 T01 defects remain active (R10, R11); R01-R09 and R12 pass after local T06-T15. T05 now isolates execution/candidate views and
+CLI-owned sandbox capability must remain separate. R01-R09, R11 and R12 pass;
+only R10 remains active, owned by T21/T22. T05 now isolates execution/candidate views and
 hash-verified rendering copies. LibreOffice/Poppler rendering, unrelated-instance
 survival and timeout cleanup passed on the explicit Apptainer worker; dedicated
 Microsoft Office COM remains unavailable. See `deploy/office-worker/README.md`.
@@ -103,8 +103,8 @@ T06 shares verified champion/develop context across API/CLI; public history and
 context budgets are checked offline. See `docs/candidate_generation.md`.
 T07 admits complete raw candidate responses with auditable normalization and
 transport-owned model identity. Both tasks were qualified offline only.
-The latest pre-scope-fix full suite has 574 passed, 2 expected-open failures and no errors/skips.
-The subsequent visual scope repair has84 focused passes, including4 new regressions.
+The latest full suite has 620 passed, one expected-open R10 failure and no errors/skips.
+T20's focused suite has 114 passes; the real-probe visual scope repair has 84.
 Counts and evidence are recorded in the task ledger. T08 actual isolated behavior and
 RSI rejection passed on frozen CLI-generated Office programs; champion was unchanged.
 This is authored qualification, not a full live RSI benchmark. See `docs/candidate_verification.md`. T09 comparable-cohort
@@ -129,7 +129,13 @@ unqualified; the configured CLI and corrected real batch-scope probes passed. T1
 grounded issue facts, repair targets and verification steps; general feedback no
 longer contains internal fixture knobs. See `docs/judge_evidence_scope.md`,
 `docs/score_semantics_v2.md` and `docs/issue_evidence_quality.md`.
-T19-T35 and
+T19 trace-grounded hypotheses, private-trace protection and five genuine authored
+local failure probes passed, with 51 focused tests. T20 makes valid execution
+failures learnable, retains null unobserved artifact quality, preserves fixed
+task denominators and distinguishes transport/environment/input gaps. R11 now
+passes and actual RSI capture receives syntax-failure feedback. See
+`docs/trace_diagnosis.md` and `docs/execution_failure_feedback.md`.
+T21-T35 and
 the overall G1 gate remain unfinished. Full-suite evidence is not
 all-green, and isolated authored probes are not live model/RSI qualification.
 The entries below preserve historical stage evidence.

@@ -1,5 +1,8 @@
 # Public Office score semantics (T17)
 
+T20 adds separate execution/task success denominators while preserving null
+unobserved artifact quality. See [execution failure feedback](execution_failure_feedback.md).
+
 Normal Office evaluation through Check, Harness, OfficeArtifactEvaluator and the
 artifact RSI evaluators uses the shared evidence snapshot and versioned task
 admission. `spec_from_task` now defaults unprofiled task constraints to

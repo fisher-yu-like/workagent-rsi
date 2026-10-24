@@ -54,8 +54,9 @@ class Orchestrator:
                             "message": event["message"],
                             "retryable": event.get("retryable", False),
                             "attempts": attempts,
-                            "status": event["kind"],
+                            "status": event.get('status',event["kind"]),
                             "provider": event.get("provider"),
+                            'failure_origin':event.get('failure_origin'),
                         }
                         break
                 if failure is None or not failure["retryable"] or attempts >= max_attempts:

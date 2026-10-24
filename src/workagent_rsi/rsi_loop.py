@@ -232,7 +232,7 @@ class RSILoop:
             from .rsi_feedback import build_feedback
             if any(task.hidden_test for task in tasks_by_split.get("develop", [])):
                 raise ValueError("hidden tasks cannot be used as develop feedback")
-            if not baseline or any(not report.get("assessment_complete") for report in baseline.values()):
+            if not baseline or any(not report.get('task_outcomes_complete',report.get("assessment_complete")) for report in baseline.values()):
                 result = {"status": "unavailable", "reason": "required artifact assessment incomplete", "round_index": round_index,
                     "champion_before": champion.model_dump(mode="json"), "champion_after": champion.model_dump(mode="json"),
                     "baseline": baseline, "candidate_reports": {}, "actual_edit_count": 0, "rollback_point": rollback_point}
@@ -250,7 +250,11 @@ class RSILoop:
             }
             for row in public_rows
         ]
-        diagnoses = [] if artifact_mode else FailureDiagnoser().diagnose(diagnosis_input)
+        if artifact_mode:
+            from .rsi_feedback import candidate_diagnoses
+            diagnoses=candidate_diagnoses([d for row in feedback.tasks for d in row.get('diagnoses',[])])
+        else:
+            diagnoses=FailureDiagnoser().diagnose(diagnosis_input)
         if feedback is None:
             feedback = RSIFeedback(tasks=[{'task_id': row['task_id'],
                 'acceptance_status': 'PASS' if row.get('passed') else 'FAIL',
@@ -414,6 +418,8 @@ class RSILoop:
                 root / split,
                 reveal_per_task=split != "hidden",
             )
+            if reports[split].get('task_outcomes_complete') is False:
+                break
         return reports
 
     @staticmethod

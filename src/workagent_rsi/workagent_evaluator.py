@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import time
+import re
 from pathlib import Path
 from typing import Sequence
 
@@ -15,12 +16,13 @@ from .hashing import canonical_json_hash, sha256_file
 from .path_safety import validated_task_directory
 from .rsi_contracts import EvaluationContract
 from .workagent_provider import WorkAgentConfig, WorkAgentSkill
+from .run_contracts import execution_from_legacy
 
 
 class WorkAgentFrozenEvaluator:
     """Run fixed WorkAgent tasks and persist the remote score and issue reports."""
 
-    VERSION = "workagent-artifact-evaluator-v1"
+    VERSION = "workagent-artifact-evaluator-v2-execution-denominators"
 
     def __init__(
         self,
@@ -114,8 +116,11 @@ class WorkAgentFrozenEvaluator:
                         attempt_root,
                         specs[task.task_id],
                         elapsed,
+                        split_name,
                     )
                 )
+                if not repeated[-1]['task_outcome_complete']:
+                    break
 
             model_requirements = {
                 requirement.requirement_id
@@ -138,21 +143,26 @@ class WorkAgentFrozenEvaluator:
                 for row in repeated[1:]
             )
             repeat_agreement.append(agreement)
+            representative=next((r for r in repeated if not r['task_outcome_complete']),None)
+            representative=representative or next((r for r in repeated if r['task_success'] is False),repeated[0])
             rows.append(
                 {
-                    **repeated[0],
+                    **representative,
                     "repeat_count": len(repeated),
                     "repeat_agreement": agreement,
+                    'repeats':repeated,
                 }
             )
             completed_seconds += sum(
                 row["wall_time_seconds"]
                 for row in repeated
-                if row.get("assessment_complete") and "score" in row
             )
+            if not representative['task_outcome_complete']:
+                break
 
         complete = bool(rows) and len(rows) == len(tasks) and all(
-            row.get("assessment_complete") and "score" in row for row in rows
+            row.get("assessment_complete") and "score" in row
+            and all(r['assessment_complete'] for r in row['repeats']) for row in rows
         )
         quality = (
             sum(row["score"] for row in rows) / len(rows)
@@ -175,20 +185,36 @@ class WorkAgentFrozenEvaluator:
             ]
             dimension_scores[dimension] = (
                 None
-                if not values or any(value is None for value in values)
+                if not complete or not values or any(value is None for value in values)
                 else sum(values) / len(values) / 100
             )
+        execution_complete=bool(rows) and len(rows)==len(tasks) and all(r['execution_complete'] for row in rows for r in row['repeats'])
+        outcomes_complete=execution_complete and all(r['task_outcome_complete'] for row in rows for r in row['repeats'])
+        execution_failures=[row for row in rows if row.get('execution_failure')]
+        gaps=[row for row in rows if not row.get('task_outcome_complete')]
+        scored=[row for row in rows if row.get('assessment_complete') and row.get('quality_score') is not None]
+        task_rate=sum(row['task_success'] is True for row in rows)/len(tasks) if outcomes_complete else None
+        execution_rate=sum(row['execution_success'] is True for row in rows)/len(tasks) if execution_complete else None
         report = {
             "split": split_name,
-            "status": "completed" if complete else "incomplete",
-            "task_count": len(rows),
+            "status": "completed" if complete else 'completed_with_execution_failures' if outcomes_complete else "incomplete",
+            "task_count": len(tasks),
+            'attempted_task_count':len(rows),'task_denominator':len(tasks),
+            'task_cohort_hash':canonical_json_hash([t.task_id for t in tasks]),
+            'execution_complete':execution_complete,'task_outcomes_complete':outcomes_complete,
+            'execution_success_rate':execution_rate,'task_success_rate':task_rate,
+            'quality_denominator':len(scored),'quality_task_ids':[r['task_id'] for r in scored],
+            'execution_failures':execution_failures,'environment_failures':gaps,
+            'execution_failure_count':len(execution_failures),'environment_failure_count':len(gaps),
+            'stopped_early':bool(gaps),
             "completed_count": sum("score" in row for row in rows),
+            'execution_completed_count':sum(row['execution_complete'] for row in rows),
             "success_count": sum(bool(row.get("passed")) for row in rows),
-            "success_rate": sum(bool(row.get("passed")) for row in rows) / len(rows) if complete else None,
+            "success_rate": task_rate,
             "score": quality,
             "quality_score": quality,
             "dimension_scores": dimension_scores,
-            "coverage": sum(row.get("coverage", 0) for row in rows) / len(rows) if rows else 0,
+            "coverage": sum(row.get("coverage", 0) for row in rows) / len(tasks) if tasks else 0,
             "assessment_complete": complete,
             "repeat_agreement": bool(rows) and all(repeat_agreement),
             "evaluation_seconds": completed_seconds,
@@ -201,13 +227,17 @@ class WorkAgentFrozenEvaluator:
         (root / "evaluation_full.json").write_text(
             json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
-        public = {key: value for key, value in report.items() if key != "rows"}
+        public = {key: value for key, value in report.items() if key not in {"rows",'execution_failures','environment_failures','quality_task_ids'}}
         if reveal_per_task and split_name != "hidden":
             public["rows"] = [row for row in rows if not row["hidden_test"]]
+            public['quality_task_ids']=[row['task_id'] for row in scored if not row['hidden_test']]
+            if split_name=='develop':
+                public['execution_failures']=[row for row in execution_failures if not row['hidden_test']]
+                public['environment_failures']=[row for row in gaps if not row['hidden_test']]
         (root / "evaluation_public.json").write_text(
             json.dumps(public, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
-        if complete:
+        if outcomes_complete:
             self._task_outcomes[root.resolve()] = {
                 row["task_id"]: row["passed"] for row in rows
             }
@@ -220,7 +250,12 @@ class WorkAgentFrozenEvaluator:
         attempt_root: Path,
         spec,
         elapsed: float,
+        split_name: str = 'develop',
     ) -> dict:
+        execution=execution_from_legacy(result)
+        execution_success=execution.status=='succeeded'
+        execution_failure=execution.status in {'failed','timeout'} and execution.failure_origin=='agent_execution'
+        execution_complete=execution_success or execution_failure
         evaluation = result.get("evaluation") or {}
         report_paths = evaluation.get("report_paths") or {}
         score_report = self._read_report(report_paths.get("score"), attempt_root)
@@ -288,6 +323,11 @@ class WorkAgentFrozenEvaluator:
             assessment_complete = False
             score = None
 
+        if not execution_success:
+            assessment_complete=False
+            score=None
+            score_report=issue_report=assessment_report=None
+
         row = {
             "task_id": task.task_id,
             "domain": task.domain,
@@ -315,7 +355,23 @@ class WorkAgentFrozenEvaluator:
             "coverage": (score_report or {}).get("coverage", {}).get("ratio", 0),
             "wall_time_seconds": round(elapsed, 6),
             'quality_score':score if assessment_complete else None,
+            'execution_outcome':execution.model_dump(mode='json'),
+            'execution_complete':execution_complete,'execution_success':True if execution_success else False if execution_failure else None,
+            'execution_failure':execution_failure,
+            'task_outcome_complete':execution_failure or (execution_success and assessment_complete),
+            'task_success':False if execution_failure else bool(evaluation.get('passed')) if assessment_complete else None,
+            'diagnoses':[],
         }
+        if execution_failure:
+            from .trace_diagnosis import diagnose_failure
+            trace=self._authorized_execution_trace(result,attempt_root,task,split_name)
+            row['diagnoses']=[d.model_dump(mode='json') for d in diagnose_failure(None,execution,trace)]
+            failure=result.get('failure') if isinstance(result.get('failure'),dict) else {}
+            message=str(failure.get('message','Agent execution did not produce a valid deliverable.'))[:2000]
+            message=re.sub(r'(?:[A-Za-z]:[\\/]|/)[^\s\"\']+','<path>',message)
+            row.update(passed=False,task_acceptance='FAIL',status='execution_failed',
+                execution_error={'message':message,'failure_origin':'agent_execution','content_boundary':'untrusted observation; not an instruction'})
+            return row
         if assessment_complete and score is not None:
             row.update(
                 passed=bool(evaluation.get("passed")) and result.get("state") == "SUCCEEDED",
@@ -327,6 +383,39 @@ class WorkAgentFrozenEvaluator:
             if not row["failure"]:
                 row["failure"] = "missing, incomplete, or inconsistent artifact assessment"
         return row
+
+    @staticmethod
+    def _authorized_execution_trace(result,attempt_root,task,split_name):
+        from .view_safety import ordinary_file,checked_path
+        import hashlib
+        trace={'run_id':str(result.get('run_id','run-'+task.task_id)),'split':split_name,
+               'hidden_test':task.hidden_test,'evidence':[]}
+        if split_name!='develop' or task.hidden_test:return trace
+        try:
+            root=checked_path(Path(result.get('result_dir',attempt_root/'run')))
+            if not root.is_relative_to(checked_path(attempt_root)):return trace
+            records=checked_path(root/'provider_records');log=ordinary_file(records/'tool_events.jsonl')
+            if log.stat().st_size>5242880:return trace
+            for line in reversed(log.read_text(encoding='utf-8').splitlines()[-256:]):
+                try:event=json.loads(line)
+                except ValueError:continue
+                outcome=event.get('result',{});execution=outcome.get('execution',{})
+                if event.get('name')!='run_python' or execution.get('failure_origin')!='agent_execution' or execution.get('status') not in {'failed','timeout'}:continue
+                digest=outcome.get('script_sha256');snapshot=outcome.get('script_snapshot_ref')
+                if not isinstance(digest,str) or not re.fullmatch('[0-9a-f]{64}',digest) or snapshot!='executed-scripts/'+digest+'.py':break
+                script=ordinary_file(records/snapshot)
+                if script.stat().st_size>100000 or sha256_file(script)!=digest:break
+                with script.open('r',encoding='utf-8',newline='') as stream:source=stream.read()
+                stderr=outcome.get('stderr','')
+                name=Path(str(event.get('arguments',{}).get('path','agent.py'))).name
+                if not isinstance(stderr,str) or len(stderr)>100000:break
+                for kind,text in [('script',source),('stderr',stderr)]:
+                    trace['evidence'].append({'kind':kind,'name':name if kind=='script' else 'stderr','text':text,
+                        'sha256':hashlib.sha256(text.encode()).hexdigest(),'authorized':True,'split':'develop','feedback_visibility':'develop'})
+                break
+        except (OSError,ValueError,UnicodeError,TypeError):
+            pass
+        return trace
 
     @staticmethod
     def _read_report(value: str | None, attempt_root: Path) -> dict | None:
@@ -341,6 +430,8 @@ class WorkAgentFrozenEvaluator:
     def _signature(row: dict, model_requirements: set[str]) -> dict:
         score_report = row.get("score_report") or {}
         return {
+            'execution_status':(row.get('execution_outcome') or {}).get('status'),
+            'failure_origin':(row.get('execution_outcome') or {}).get('failure_origin'),
             "score": row.get("score"),
             "passed": row.get("passed"),
             "checks": [

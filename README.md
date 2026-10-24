@@ -57,9 +57,9 @@ Apptainer SSH alternative. Qualification status and current tests are recorded i
 T05 adds allowlisted execution/candidate views, source-link checks and verified
 copies rendered inside an explicit LibreOffice/Poppler Apptainer worker. Real
 XLSX/DOCX/PPTX rendering and owned process cleanup passed; dedicated Microsoft
-Office COM remains unavailable. The latest pre-scope-fix full suite has574 passed,
-2 expected-open failures (R10/R11) and no errors/skips. The subsequent visual scope
-repair has84 focused passes, including4 new regressions. Evidence is indexed by
+Office COM remains unavailable. The latest full suite has 620 passed,
+one expected-open R10 failure and no errors/skips. T20 has 114 focused passes;
+the real-probe visual scope repair has 84. Evidence is indexed by
 `project_artifacts/formal_study/hardening_task_ledger.json`.
 T06 now supplies verified champion and controlled develop history to both candidate
 providers; T07 validates complete responses and records every normalization
@@ -77,13 +77,16 @@ T15 adds [visibility risks and page coverage](docs/visibility_checks.md). Their
 local work is complete. T13 passed14 actual isolated LibreOffice runs. T15 real
 rendering, individual controls and corrected long-deck batch scope passed the
 separately approved three-request real recheck. R01-R09
-and R12 pass, including conservative gap/review outcomes for R03-R05; R10/R11
-remain open. T16 local [judge evidence management](docs/judge_evidence_scope.md),
+and R11/R12 pass, including conservative gap/review outcomes for R03-R05; R10
+remains open. T16 local [judge evidence management](docs/judge_evidence_scope.md),
 T17 [public score semantics](docs/score_semantics_v2.md) and T18
 [actionable issue evidence](docs/issue_evidence_quality.md) are delivered.
 T16 actual CLI source/injection/cache/independent and joint-image controls passed;
 The batch-scope recheck passed with all17 pages cited. Direct API /responses and
-accuracy calibration remain unqualified. T19 onward and G1 remain pending. Historical T01 red
+accuracy calibration remain unqualified. T19 [trace diagnosis](docs/trace_diagnosis.md)
+and T20 [execution failure feedback](docs/execution_failure_feedback.md) are
+complete locally: code failures reach candidate context, unobserved quality
+stays null and task denominators remain frozen. T21 onward and G1 remain pending. Historical T01 red
 observations are retained; their repair status must be read from the latest
 ledger rather than the original red baseline. The historical gate summary follows.
 

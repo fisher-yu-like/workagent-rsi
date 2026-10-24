@@ -5,6 +5,7 @@ from pathlib import PurePosixPath
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+from .run_contracts import FailureOrigin
 
 
 Component = Literal["prompt", "tool_policy", "context", "office_script", "verifier_rule", "candidate_test"]
@@ -168,6 +169,7 @@ class ProviderRecord(StrictModel):
     ended_at: datetime
     exit_code: int | None = None
     status: Literal["completed", "failed", "unavailable", "timeout"]
+    failure_origin: FailureOrigin | None = None
     output_ref: str | None = None
     error: str | None = None
 

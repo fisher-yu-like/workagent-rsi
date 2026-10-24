@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T13:08:27.312899+00:00",
+  "updated_at": "2026-10-24T13:31:50.220302+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -186,9 +186,10 @@
     },
     {
       "task_id": "T20",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T20/20261024T133149608664Z",
+      "note": "Typed code/transport/environment/input origins survive provider/adapter/orchestrator. Code failures enter develop feedback and actual RSI candidate context with null artifact quality; fixed denominators, paired quality, runtime cost and private cohort/rate checks prevent dropping hard tasks. R11 passes. Exact focused/full counts in manifest; only R10 remains open. No model/server calls.",
+      "manifest": "project_artifacts/formal_study/hardening_t20_execution_feedback.json"
     },
     {
       "task_id": "T21",
@@ -489,5 +490,16 @@
     "R11": {
       "status": "expected_open"
     }
-  }
+  },
+  "latest_full_validation": {
+    "passed": 620,
+    "failed": 1,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/T20-delivery-full/20261024T132432256612Z"
+  },
+  "expected_open": [
+    "R10"
+  ]
 }

@@ -1,10 +1,12 @@
 """Developer-visible feedback and explicit v1 comparison of artifact metrics."""
 
 import json
+import math
 from pathlib import Path
 
 from .assessment_contracts import RSIFeedback
 from .artifact_feedback import public_issue_advice
+from .hashing import canonical_json_hash
 
 
 def candidate_diagnoses(diagnoses, *, split='develop', hidden_test=False):
@@ -29,7 +31,8 @@ def candidate_feedback(feedback: RSIFeedback) -> RSIFeedback:
     """
     feedback = RSIFeedback.model_validate(feedback.model_dump())
     task_fields = {'task_id', 'acceptance_status', 'quality_score', 'dimension_scores', 'coverage',
-                   'errors', 'requirement_refs', 'trace_summary','task_acceptance','score_semantics'}
+                   'errors', 'requirement_refs', 'trace_summary','task_acceptance','score_semantics',
+                   'execution_status','execution_success','task_success','execution_error','diagnoses'}
     issue_fields = {'issue_id', 'requirement_id', 'kind', 'location', 'observed', 'expected', 'evidence_refs',
                     'severity', 'cause_hypothesis', 'repair_hint', 'skill_improvement_hint', 'recheck_ids', 'feedback_visibility',
                     'requested_location','observed_locations','failure_origin','affected_requirements','repair_action',
@@ -50,6 +53,8 @@ def candidate_feedback(feedback: RSIFeedback) -> RSIFeedback:
         if row.get('hidden_test') or row.get('split', 'develop') != 'develop':
             continue
         entry = {k: public(v) for k,v in row.items() if k in task_fields}
+        if 'diagnoses' in entry:
+            entry['diagnoses']=[d.model_dump(mode='json') for d in candidate_diagnoses(entry['diagnoses'])]
         if 'issues' in row:
             issues = []
             for issue in row['issues']:
@@ -70,14 +75,31 @@ def candidate_feedback(feedback: RSIFeedback) -> RSIFeedback:
     return RSIFeedback(mode=feedback.mode, tasks=tasks, issue_groups=groups)
 
 
-def build_feedback(develop, *, mode="structured") -> RSIFeedback:
+def build_feedback(develop, *, mode="structured",execution_failures=None) -> RSIFeedback:
     if develop.get("split") != "develop":
         raise ValueError("only develop feedback can enter candidate context")
     tasks, groups = [], {}
-    for row in develop.get("rows", []):
+    seen=set()
+    for row in [*develop.get("rows", []),*(execution_failures if execution_failures is not None else develop.get('execution_failures',[]))]:
         if row.get("hidden_test"):
             continue
+        if row['task_id'] in seen:continue
+        seen.add(row['task_id'])
+        if row.get('execution_failure'):
+            outcome=row.get('execution_outcome') or {}
+            if outcome.get('failure_origin')!='agent_execution' or outcome.get('status') not in {'failed','timeout'}:continue
+            entry={'task_id':row['task_id'],'acceptance_status':'EXECUTION_FAILED','task_acceptance':'FAIL',
+                'quality_score':None,'dimension_scores':{},'coverage':{},'execution_status':outcome['status'],
+                'execution_success':False,'task_success':False,'score_semantics':'task-assessment-v2'}
+            if mode!='score_only':entry['errors']=['Agent execution failed before a valid artifact was assessed.']
+            if mode=='structured':
+                error=row.get('execution_error') or {}
+                entry['execution_error']={k:error[k] for k in ('message','failure_origin','content_boundary') if k in error}
+                entry['diagnoses']=[d.model_dump(mode='json') for d in candidate_diagnoses(row.get('diagnoses',[]))]
+            tasks.append(entry)
+            continue
         score = row["score_report"]
+        if score is None:continue
         entry = {"task_id": row["task_id"], "acceptance_status": score["acceptance_status"], "quality_score": score["total_score"], "dimension_scores": score["dimension_scores"], "coverage": score["coverage"]}
         entry.update(task_acceptance=score.get('task_acceptance','NOT_ASSESSED'),
             score_semantics=score.get('score_semantics','declared-check-v1'))
@@ -115,32 +137,75 @@ def feedback_with_requirements(feedback, develop_tasks):
 def comparison_metrics(baseline, candidate, root, contract):
     splits = set(baseline)
     complete = bool(splits) and splits == set(candidate) and all(r.get("assessment_complete") and r.get("quality_score") is not None for bundle in (baseline, candidate) for r in bundle.values())
-    comparable = complete and all(baseline[s]["assessment_identity"] == candidate[s]["assessment_identity"] == contract.assessment_identity and baseline[s]["split_hash"] == candidate[s]["split_hash"] for s in splits)
+    identity_match=bool(splits) and splits==set(candidate) and all(baseline[s]["assessment_identity"] == candidate[s]["assessment_identity"] == contract.assessment_identity and baseline[s]["split_hash"] == candidate[s]["split_hash"]==contract.split_hashes[s] for s in splits)
+    comparable = complete and identity_match
+    task_comparable=identity_match and all(r.get('task_outcomes_complete',r.get('assessment_complete')) for bundle in (baseline,candidate) for r in bundle.values())
     metrics = {"assessment_mode": "artifact-v1", "assessment_complete": complete,
         "comparable": comparable, "repeat_agreement": complete and all(r.get("repeat_agreement") for bundle in (baseline, candidate) for r in bundle.values()),
         "evaluation_seconds": sum(r.get("evaluation_seconds", 0) for bundle in (baseline, candidate) for r in bundle.values()),
         "cost_delta": None, "critical_regressions": 0, "quality_delta": None, "success_delta": None,
-        "protected_quality_deltas": {}, "issue_changes": {"resolved": 0, "introduced": 0}}
-    if not comparable:
+        "protected_quality_deltas": {}, "issue_changes": {"resolved": 0, "introduced": 0},
+        'task_comparable':task_comparable,'task_success_delta':None,'execution_success_delta':None,
+        'paired_quality_delta':None,'paired_quality_denominators':{}}
+    if not task_comparable:
         return metrics
     if "develop" not in splits:
         metrics["comparable"] = False
         return metrics
-    metrics["quality_delta"] = candidate["develop"]["quality_score"] - baseline["develop"]["quality_score"]
-    metrics["success_delta"] = candidate["develop"]["success_rate"] - baseline["develop"]["success_rate"]
-    metrics["protected_quality_deltas"] = {s: candidate[s]["quality_score"] - baseline[s]["quality_score"] for s in splits if s != "develop"}
+    # Compare the same admitted tasks, even if one version produced no artifact.
+    private={}
+    for split in splits:
+        pairs=[]
+        for side,bundle in [('baseline',baseline),('candidate',candidate)]:
+            data=json.loads((Path(root)/side/split/'evaluation_full.json').read_text(encoding='utf-8'))
+            rows=data['rows'];ids=[r['task_id'] for r in rows]
+            report=bundle[split];denominator=report.get('task_denominator',report['task_count'])
+            if (type(denominator) is not int or denominator<1 or len(ids)!=len(set(ids)) or len(ids)!=denominator
+                or ('task_cohort_hash' in report and report['task_cohort_hash']!=canonical_json_hash(ids))):
+                metrics.update(task_comparable=False,comparable=False)
+                return metrics
+            if 'task_outcomes_complete' in report:
+                rates={'task_success_rate':sum(r.get('task_success') is True for r in rows)/denominator,
+                       'execution_success_rate':sum(r.get('execution_success') is True for r in rows)/denominator}
+                valid=all(r.get('task_outcome_complete') is True and type(r.get('task_success')) is bool
+                    and r.get('execution_complete') is True and type(r.get('execution_success')) is bool for r in rows)
+                valid=valid and all(type(report.get(k)) in {int,float} and math.isfinite(report[k])
+                    and abs(report[k]-value)<1e-10 for k,value in rates.items())
+                count=sum(r.get('assessment_complete') is True and type(r.get('score')) in {int,float}
+                    and math.isfinite(r['score']) and 0<=r['score']<=1 for r in rows)
+                valid=valid and type(report.get('quality_denominator')) is int and report['quality_denominator']==count
+                valid=valid and report.get('success_rate')==report.get('task_success_rate')
+                if not valid:
+                    metrics.update(task_comparable=False,comparable=False)
+                    return metrics
+            pairs.append({r['task_id']:r for r in rows})
+        if pairs[0].keys()!=pairs[1].keys():
+            metrics.update(task_comparable=False,comparable=False)
+            return metrics
+        private[split]=pairs
+    metrics['success_delta']=candidate['develop'].get('task_success_rate',candidate['develop']['success_rate'])-baseline['develop'].get('task_success_rate',baseline['develop']['success_rate'])
+    metrics['task_success_delta']=metrics['success_delta']
+    if all(bundle['develop'].get('execution_success_rate') is not None for bundle in [baseline,candidate]):
+        metrics['execution_success_delta']=candidate['develop']['execution_success_rate']-baseline['develop']['execution_success_rate']
+    if comparable:
+        metrics["quality_delta"] = candidate["develop"]["quality_score"] - baseline["develop"]["quality_score"]
+        metrics["protected_quality_deltas"] = {s: candidate[s]["quality_score"] - baseline[s]["quality_score"] for s in splits if s != "develop"}
     # Private rows remain on the evaluation side, including hidden requirements.
     for split in splits:
-        old = json.loads((Path(root) / "baseline" / split / "evaluation_full.json").read_text(encoding="utf-8"))
-        new = json.loads((Path(root) / "candidate" / split / "evaluation_full.json").read_text(encoding="utf-8"))
-        old_rows = {r["task_id"]: r for r in old["rows"]}
-        for row in new["rows"]:
+        old_rows,new_rows=private[split]
+        eligible=[key for key in old_rows if old_rows[key].get('assessment_complete') and new_rows[key].get('assessment_complete')
+            and old_rows[key].get('score') is not None and new_rows[key].get('score') is not None]
+        metrics['paired_quality_denominators'][split]=len(eligible)
+        if split=='develop' and eligible:
+            metrics['paired_quality_delta']=sum(new_rows[k]['score']-old_rows[k]['score'] for k in eligible)/len(eligible)
+        for row in new_rows.values():
             previous = old_rows[row["task_id"]]
-            before = {c["requirement_id"]: c["status"] for c in previous["score_report"]["criterion_results"]}
-            after = {c["requirement_id"]: c["status"] for c in row["score_report"]["criterion_results"]}
-            metrics["critical_regressions"] += sum(before[r] == "PASS" and after[r] != "PASS" for r in row["critical_requirements"])
-            a = {i["issue_id"] for i in previous["issue_report"]["issues"] if i["kind"] == "artifact_defect"}
-            b = {i["issue_id"] for i in row["issue_report"]["issues"] if i["kind"] == "artifact_defect"}
+            before = {c["requirement_id"]: c["status"] for c in (previous.get('score_report') or {}).get('criterion_results',[])}
+            after = {c["requirement_id"]: c["status"] for c in (row.get('score_report') or {}).get('criterion_results',[])}
+            metrics["critical_regressions"] += sum(before.get(r) == "PASS" and after.get(r) != "PASS" for r in row["critical_requirements"])
+            if not (row.get('assessment_complete') and previous.get('assessment_complete')):continue
+            a = {i["issue_id"] for i in (previous.get('issue_report') or {}).get('issues',[]) if i["kind"] == "artifact_defect"}
+            b = {i["issue_id"] for i in (row.get('issue_report') or {}).get('issues',[]) if i["kind"] == "artifact_defect"}
             metrics["issue_changes"]["resolved"] += len(a - b)
             metrics["issue_changes"]["introduced"] += len(b - a)
     return metrics

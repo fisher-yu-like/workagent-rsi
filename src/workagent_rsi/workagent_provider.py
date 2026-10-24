@@ -22,6 +22,7 @@ from .hashing import canonical_json_hash, sha256_file
 from .execution_sandbox import SandboxExecutor, SandboxPolicy
 from .apptainer_sandbox import ApptainerPolicy, ApptainerSSHExecutor
 from .rsi_contracts import ProviderRecord
+from .run_contracts import FailureOrigin
 
 
 _RELATIVE_POSIX_PATH_PATTERN = r"^(?!/)(?!.*[:\\])(?!.*(?:^|/)\.{1,2}(?:/|$))[^/]+(?:/[^/]+)*$"
@@ -84,6 +85,7 @@ class ProviderOutcome(BaseModel):
     response: AgentResponse | None = None
     record: ProviderRecord | None = None
     error: str | None = None
+    failure_origin: FailureOrigin | None = None
 
 
 def build_agent_response_schema() -> dict[str, object]:
@@ -160,6 +162,7 @@ class CodexOfficeProvider:
         status = "failed"
         response = None
         error = None
+        failure_origin = None
         exit_code = None
         stdout = ""
         stderr = ""
@@ -182,24 +185,30 @@ class CodexOfficeProvider:
                 error = f"provider exited with code {exit_code}"
                 if _environment_failure(stdout, stderr, self.config.model):
                     status = "unavailable"
+                    failure_origin = 'environment'
                     error += ": required CLI/provider/model capability unavailable (see stdout/stderr)"
             elif not response_path.exists():
                 error = "provider did not write structured output"
+                failure_origin='agent_execution'
             else:
                 try:
                     response = AgentResponse.model_validate_json(response_path.read_text(encoding="utf-8"))
                     status = response.status
+                    failure_origin=None if status=='completed' else 'agent_execution'
                     shutil.copyfile(response_path, canonical_response_path)
                     shutil.copyfile(response_path, records / "agent_response.json")
                 except ValueError as exc:
                     error = f"invalid provider response: {exc}"
+                    failure_origin='agent_execution'
         except subprocess.TimeoutExpired as exc:
             status = "timeout"
+            failure_origin='model_transport'
             error = f"provider timeout after {exc.timeout} seconds"
             stdout = _decode_process_output(exc.stdout)
             stderr = _decode_process_output(exc.stderr)
         except OSError as exc:
             status = "unavailable"
+            failure_origin='environment'
             error = str(exc)
 
         (records / "provider.stdout.jsonl").write_text(stdout, encoding="utf-8", newline="\n")
@@ -216,6 +225,7 @@ class CodexOfficeProvider:
             ended_at=ended,
             exit_code=exit_code,
             status=status,
+            failure_origin=failure_origin,
             output_ref=sha256_file(response_path) if response is not None else None,
             error=error,
         )
@@ -224,7 +234,7 @@ class CodexOfficeProvider:
             encoding="utf-8",
             newline="\n",
         )
-        return ProviderOutcome(status=status, response=response, record=record, error=error)
+        return ProviderOutcome(status=status, response=response, record=record, error=error,failure_origin=failure_origin)
 
     def _run_openai_chat(
         self,
@@ -253,6 +263,7 @@ class CodexOfficeProvider:
                 status="unavailable", response=None, error=f"missing environment variable {self.config.api_key_env}",
                 command=command, prompt=prompt, workspace_hash=workspace_hash, response_path=response_path,
                 records=records, started=started,
+                failure_origin='model_transport',
             )
         system = (
             "You are an Office WorkAgent in an isolated workspace. Use the provided tools to create the requested "
@@ -269,6 +280,7 @@ class CodexOfficeProvider:
         response: AgentResponse | None = None
         status: Literal["completed", "failed", "unavailable", "timeout"] = "failed"
         error: str | None = None
+        failure_origin = None
         exit_code: int | None = 0
         force_finalize = False
         format_corrections = 0
@@ -335,7 +347,7 @@ class CodexOfficeProvider:
                             arguments = json.loads(function.get("arguments") or "{}")
                         except json.JSONDecodeError:
                             arguments = {"_raw": function.get("arguments")}
-                        result = _execute_native_tool(name, arguments, workspace, timeout_seconds=max(1, int(remaining)), sandbox=self.sandbox)
+                        result = _execute_native_tool(name, arguments, workspace, timeout_seconds=max(1, int(remaining)), sandbox=self.sandbox,records=records)
                         event = {"turn": turn, "index": index, "name": name, "arguments": arguments, "result": result}
                         with tool_log.open("a", encoding="utf-8", newline="\n") as handle:
                             handle.write(json.dumps(event, ensure_ascii=False) + "\n")
@@ -344,6 +356,7 @@ class CodexOfficeProvider:
                             failed.append(event)
                     if any(event["result"].get("execution", {}).get("status") == "unavailable" for event in failed):
                         status, error = "unavailable", "required execution sandbox unavailable; no host fallback"
+                        failure_origin='environment'
                         break
                     if failed:
                         messages.append({"role": "user", "content": "A tool action failed. Inspect the exact tool result, repair the full script or manifest, and continue. Do not claim completion until the output is verified."})
@@ -386,32 +399,42 @@ class CodexOfficeProvider:
             else:
                 error = f"provider exceeded {self.config.max_tool_turns} tool turns"
         except urllib.error.HTTPError as exc:
+            failure_origin='model_transport'
             status = "unavailable" if exc.code in (404, 408, 429, 500, 502, 503, 504) else "failed"
             error = f"OpenAI-compatible HTTP error {exc.code}: {exc.reason}"
             stderr_lines.append(error)
             exit_code = exc.code
         except urllib.error.URLError as exc:
+            failure_origin='model_transport'
             status, error = "unavailable", f"OpenAI-compatible connection failed: {exc.reason}"
             stderr_lines.append(error)
         except TimeoutError:
+            failure_origin='model_transport'
             status, error = "timeout", f"provider timeout after {self.config.timeout_seconds} seconds"
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
+        except json.JSONDecodeError as exc:
+            status,failure_origin,error='unavailable','model_transport','provider returned malformed transport JSON'
+            stderr_lines.append(error)
+        except OSError as exc:
+            status,failure_origin,error='unavailable','environment',str(exc)
+            stderr_lines.append(error)
+        except ValueError as exc:
             error = str(exc)
             stderr_lines.append(error)
         if status == "failed" and error is None:
             error = "provider did not produce a completed response"
         (records / "provider.stdout.jsonl").write_text("\n".join(stdout_lines) + ("\n" if stdout_lines else ""), encoding="utf-8", newline="\n")
         (records / "provider.stderr.txt").write_text("\n".join(stderr_lines) + ("\n" if stderr_lines else ""), encoding="utf-8", newline="\n")
-        return self._openai_outcome(status=status, response=response, error=error, command=command, prompt=prompt, workspace_hash=workspace_hash, response_path=response_path, records=records, started=started, exit_code=exit_code)
+        return self._openai_outcome(status=status, response=response, error=error, command=command, prompt=prompt, workspace_hash=workspace_hash, response_path=response_path, records=records, started=started, exit_code=exit_code,failure_origin=failure_origin)
 
-    def _openai_outcome(self, *, status, response, error, command, prompt, workspace_hash, response_path, records, started, exit_code=None):
+    def _openai_outcome(self, *, status, response, error, command, prompt, workspace_hash, response_path, records, started, exit_code=None,failure_origin=None):
+        failure_origin=None if status=='completed' else failure_origin or ('agent_execution' if status=='failed' else 'model_transport')
         ended = datetime.now(timezone.utc)
         record = ProviderRecord(provider="openai-compatible-api", provider_version="openai-chat-v1", model_identity=self.model_identity,
             command=command, prompt_hash=canonical_json_hash({"prompt": prompt}), workspace_hash=workspace_hash,
-            started_at=started, ended_at=ended, exit_code=exit_code, status=status,
+            started_at=started, ended_at=ended, exit_code=exit_code, status=status,failure_origin=failure_origin,
             output_ref=sha256_file(response_path) if response is not None and response_path.exists() else None, error=error)
         (records / "provider_record.json").write_text(json.dumps(record.model_dump(mode="json"), indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
-        return ProviderOutcome(status=status, response=response, record=record, error=error)
+        return ProviderOutcome(status=status, response=response, record=record, error=error,failure_origin=failure_origin)
 
     def _run_native_ollama(
         self,
@@ -429,6 +452,7 @@ class CodexOfficeProvider:
         status: Literal["completed", "failed", "unavailable", "timeout"] = "failed"
         response: AgentResponse | None = None
         error: str | None = None
+        failure_origin = None
         stdout_lines: list[str] = []
         stderr_lines: list[str] = []
         tool_log = records / "tool_events.jsonl"
@@ -536,6 +560,7 @@ class CodexOfficeProvider:
                                 workspace,
                                 timeout_seconds=max(1, int(remaining)),
                                 sandbox=self.sandbox,
+                                records=records,
                             )
                         event = {"turn": turn, "index": index, "name": name, "arguments": arguments, "result": result}
                         with tool_log.open("a", encoding="utf-8", newline="\n") as handle:
@@ -545,6 +570,7 @@ class CodexOfficeProvider:
                             failed_tools.append({"name": name, "result": result})
                     if any(event["result"].get("execution", {}).get("status") == "unavailable" for event in failed_tools):
                         status, error = "unavailable", "required execution sandbox unavailable; no host fallback"
+                        failure_origin='environment'
                         break
                     if failed_tools:
                         failure_details = json.dumps(failed_tools, ensure_ascii=False)
@@ -739,15 +765,24 @@ class CodexOfficeProvider:
         except urllib.error.HTTPError as exc:
             status = "unavailable" if exc.code in (404, 408, 429, 500, 502, 503, 504) else "failed"
             error = f"Ollama HTTP error {exc.code}: {exc.reason}"
+            failure_origin='model_transport'
             stderr_lines.append(error)
         except urllib.error.URLError as exc:
             status = "unavailable"
             error = f"Ollama connection failed: {exc.reason}"
+            failure_origin='model_transport'
             stderr_lines.append(error)
         except TimeoutError:
             status = "timeout"
             error = f"provider timeout after {self.config.timeout_seconds} seconds"
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            failure_origin='model_transport'
+        except json.JSONDecodeError as exc:
+            status,failure_origin,error='unavailable','model_transport','provider returned malformed transport JSON'
+            stderr_lines.append(error)
+        except OSError as exc:
+            status,failure_origin,error='unavailable','environment',str(exc)
+            stderr_lines.append(error)
+        except ValueError as exc:
             error = str(exc)
             stderr_lines.append(error)
 
@@ -756,6 +791,7 @@ class CodexOfficeProvider:
         (records / "provider.stdout.jsonl").write_text("\n".join(stdout_lines) + ("\n" if stdout_lines else ""), encoding="utf-8", newline="\n")
         (records / "provider.stderr.txt").write_text("\n".join(stderr_lines) + ("\n" if stderr_lines else ""), encoding="utf-8", newline="\n")
         ended = datetime.now(timezone.utc)
+        failure_origin=None if status=='completed' else failure_origin or ('agent_execution' if status=='failed' else 'model_transport')
         record = ProviderRecord(
             provider="ollama-api",
             provider_version="local-1",
@@ -767,6 +803,7 @@ class CodexOfficeProvider:
             ended_at=ended,
             exit_code=exit_code,
             status=status,
+            failure_origin=failure_origin,
             output_ref=sha256_file(response_path) if response is not None else None,
             error=error,
         )
@@ -775,7 +812,7 @@ class CodexOfficeProvider:
             encoding="utf-8",
             newline="\n",
         )
-        return ProviderOutcome(status=status, response=response, record=record, error=error)
+        return ProviderOutcome(status=status, response=response, record=record, error=error,failure_origin=failure_origin)
 
 def _native_completion_errors(
     workspace: Path,
@@ -984,6 +1021,7 @@ def _execute_native_tool(
     *,
     timeout_seconds: int = 60,
     sandbox: SandboxExecutor | ApptainerSSHExecutor | None = None,
+    records: Path | None = None,
 ) -> dict[str, object]:
     """Execute one bounded native tool call and return JSON-serializable evidence."""
     if not isinstance(arguments, dict):
@@ -1059,6 +1097,16 @@ def _execute_native_tool(
             script = _native_tool_path(workspace, arguments.get("path"), write=True)
             if script.suffix.lower() != ".py" or not script.is_file():
                 raise ValueError("run_python requires an existing .py script")
+            digest=sha256_file(script)
+            snapshot_ref=None
+            if records is not None and script.stat().st_size<=100000:
+                from .view_safety import checked_path,ordinary_file
+                snapshot_ref='executed-scripts/'+digest+'.py'
+                snapshot=checked_path(Path(records)/snapshot_ref)
+                snapshot.parent.mkdir(parents=True,exist_ok=True)
+                if not snapshot.exists():
+                    with snapshot.open('xb') as target:target.write(script.read_bytes())
+                if sha256_file(ordinary_file(snapshot))!=digest:raise ValueError('executed script snapshot hash mismatch')
             outcome = (sandbox or SandboxExecutor()).run(script, workspace, max(1, timeout_seconds))
             evidence = {}
             if outcome.trace_refs:
@@ -1069,6 +1117,7 @@ def _execute_native_tool(
                 "stdout": evidence.get("stdout", ""), "stderr": evidence.get("stderr", ""),
                 "normalized_outputs": [],
                 "execution": outcome.model_dump(mode="json"),
+                'script_sha256':digest,'script_snapshot_ref':snapshot_ref,
                 "error": evidence.get("error") or (None if outcome.status == "succeeded" else "sandbox execution did not succeed"),
             }
 
