@@ -24,8 +24,8 @@ def config(provider="api", **kwargs):
 
 def decision(request, *, score=1, invalid=False):
     if request.get("modality") == "semantic":
-        item = request["evidence"]["items"][0]
-        observations = [{"evidence_id": "invented" if invalid else item["evidence_id"], "quote": item["text"], "observation": "Content supports the criterion."}]
+        observations = [{"evidence_id": "invented" if invalid else item["evidence_id"], "quote": item["text"],
+                         "observation": "Authored citation supports the criterion."} for item in request['evidence']['items']]
     else:
         observations = [{"image_id": "invented" if invalid else i["image_id"], "artifact_location": i["artifact_location"], "region": "whole page", "observation": "Readable."} for i in request["images"]]
     return {"status": "PASS" if score == 1 else "FAIL" if score == 0 else "PARTIAL", "completion": score,
