@@ -144,3 +144,12 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 - `docs/artifact_repair.md`: public options, protected split rules, supported transports and qualification limits.
 - `project_artifacts/formal_study/hardening_t21_repair_loop.json` and `hardening_t22_budget_visibility.json`: current evidence indexes.
 - Portable bundles and relocated verification are indexed in the manifests. This batch uses genuine Office library files and authored transport substitutes; it makes no live model or server qualification claim.
+
+## T23 and T24 input-dependent engineering
+
+- `docs/policies/template-and-overfitting.md`: prompt composition, explicit task mode and qualification-only formal boundaries.
+- `src/workagent_rsi/task_observations.py` and `office_input_inspector.py`: host-owned read evidence via existing execution sandbox and bounded visibility.
+- `src/workagent_rsi/behavior_probes.py`: independent behavioral oracles, ID controls and exact source/process evidence.
+- `project_artifacts/phase3_experiments/scripts/run_t24_behavior_probe.py` and `t24_authored_program.py`: trusted local qualification with22 cases in nine groups; no arbitrary candidate code or real model calls.
+- `docs/input_behavior_probes.md` and `formal_study/hardening_t23_prompt_independence.json` / `hardening_t24_dynamic_input.json`: usage, evidence, portable verification and explicit limits.
+- Final full692/focused129 pass; authored engineering pass does not establish live model, new sandbox or research qualification.

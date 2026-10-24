@@ -470,6 +470,8 @@ class WorkAgentFrozenEvaluator:
             "workagent_evaluator.py",
             "repair_loop.py",
             "run_budget.py",
+            "task_observations.py",
+            "office_input_inspector.py",
             "harness_artifact_evaluator.py",
             "harness.py",
             "run.py",

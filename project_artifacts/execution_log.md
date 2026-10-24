@@ -378,3 +378,11 @@ Explicitly approved three-request recheck passed: pages1-8 PASS,9-16 PASS,17 FAI
 ## T23 production prompt independence
 
 Removed fixed answer rules and task-ID strategy selection; retained generic Office knowledge and authorized template inputs. Added explicit execution mode and task binding. Qualification-only fixed implementations are rejected by formal entry points. Red12 failures; focused92 passes. See hardening_t23_prompt_independence.json. No model/server calls.
+
+## T24 input observation and behavior qualification
+
+- Added optional native inspect_office through the configured T04 sandbox, host-owned read evidence and TaskObservation. Facts, declared plans and incomplete visibility stay distinct; no host fallback was added.
+- Added independent behavioral oracles, source integrity, actual script/process/tool trace checks and output signatures. Same code may pass dynamic variants; task IDs alone must not change semantic results.
+- Actual trusted local probe: 22 real Office cases in nine groups (three per domain), all passed; three ID controls and reusable-code controls passed. Model calls0; no sandbox/generalization claim. The authored executor refuses arbitrary code.
+- Final focused129/full692 pass, zero failures/errors/skips; R01-R12 pass. Exact sources, commands, environment, artifacts and relocated bundle checks are indexed in hardening_t24_dynamic_input.json.
+- Read-only cluster_vlab_jump connectivity check returned Connection refused after the Vlab banner. No uploads or remote execution. Optional new real-model budget proposed because the old27-request policy is exhausted; no new model request made. Global plan distinguishes engineering delivery from live/model/research qualification, so the task is delivered locally with those boundaries explicit.

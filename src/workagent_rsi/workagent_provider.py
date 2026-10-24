@@ -987,6 +987,12 @@ def _native_tool_definitions(*, include_read_file: bool = True) -> list[dict[str
             },
         },
     ]
+    tools.append({'type':'function','function':{'name':'inspect_office',
+        'description':'Inspect one authorized staged Office file in the execution sandbox; returns bounded actual structure and read evidence. Optional operations and verification plans are declarations, not proof.',
+        'parameters':{'type':'object','properties':{'path':{'type':'string'},
+            'chosen_operations':{'type':'array','items':{'type':'string'},'maxItems':16},
+            'verification_plan':{'type':'array','items':{'type':'string'},'maxItems':16}},
+            'required':['path'],'additionalProperties':False}}})
     if not include_read_file:
         tools = [tool for tool in tools if tool["function"]["name"] != "read_file"]
     return tools
@@ -1040,6 +1046,9 @@ def _execute_native_tool(
     if not isinstance(arguments, dict):
         return {"ok": False, "error": "tool arguments must be an object"}
     try:
+        if name == 'inspect_office':
+            from .task_observations import inspect_input_tool
+            return inspect_input_tool(arguments,workspace,timeout_seconds=timeout_seconds,sandbox=sandbox,records=records)
         if name == "write_file":
             path = _native_tool_path(workspace, arguments.get("path"), write=True)
             content = arguments.get("content")

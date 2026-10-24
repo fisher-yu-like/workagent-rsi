@@ -316,6 +316,10 @@ class WorkAgentOfficeAdapter:
                 "error": outcome.error,
                 'failure_origin':outcome.failure_origin,
             }
+            from .task_observations import capture_task_observation
+            observation = capture_task_observation(task,workspace,records,manifest)
+            yield {'kind':'task_observation','status':observation.status,
+                   'record_sha256':sha256_file(records/'task-observation.json')}
             # No response or artifact is trusted until both original and staged
             # inputs have been checked after every provider exit.
             try:

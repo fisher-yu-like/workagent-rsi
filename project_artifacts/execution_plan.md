@@ -53,12 +53,14 @@ No server/model call or rendering/recalculation qualification was performed in T
 | T20 execution feedback | completed locally | 114 focused passes; full 620 passed / one expected-open R10 / zero errors/skips. R11 passes. Valid execution failures reach the actual RSI candidate-context path, quality remains null without artifacts, denominators and observed runtime stay intact. |
 | T21 task repair | completed locally | Opt-in Harness repair, independent execution retries, fresh full assessment and frozen task/skill; 55 focused passes at 7d8613c. Final combined evidence is indexed in the T22 manifest. |
 | T22 repair budget and visibility | completed locally | Final 121 focused/663 full passes, zero failures/errors/skips. Shared reservations, protected split isolation, best-result retention, interruptions and portable evidence; no live model/server qualification claim. |
+| T23 prompt independence | completed locally | Focused92 passes at e157f1e; generic production prompts, explicit/input-derived mode, fixed qualification markers and formal guards. |
+| T24 input behavior | completed locally | Full692/focused129 pass; 22 actual authored library cases in nine groups pass. Input/read/code/process/artifact evidence, ID invariance and same-code controls retained. No current-model generalization or new sandbox qualification claim; optional live path awaits budget and server. |
 
 The local deliveries above made no remote server or real model calls. Subsequent
 T08 real isolated behavior/RSI rejection and T13 real recalculation passed.
 T15 real rendering, T16 CLI controls and the separately approved3-request
 corrected real batch-scope recheck passed. T19/T20 local delivery followed;
-T21/T22 local repair and budget controls now close R10. T23 onward and later live/research qualifications
+T21/T22 local repair and budget controls now close R10. T25 onward and later live/research qualifications
 remain open. Original historical
 results above are retained. Exact source hashes, manifests and portable evidence
 are indexed by `formal_study/hardening_task_ledger.json`.
