@@ -42,6 +42,23 @@ hashes, page IDs and artifact locations. Identical-looking pages in different
 batches cannot reuse one another's locations. Cached decisions are revalidated
 and contribute zero independent model calls.
 
+The v2 batch protocol sends a copy of the requirement scoped to the attached
+pages only. It retains the original requirement hash and global required pages
+in `batch_scope`; the enclosing evaluator owns global coverage. Local requests
+omit consistency groups, while a consistency request contains only its attached
+group. The original requirement is unchanged. The protocol identity changed so
+old unscoped cached decisions cannot satisfy a corrected request.
+
+The first actual 2026-10-24 probe rendered all 24 authored control/long-deck
+pages on the frozen worker. CLI gpt-6.1-sol rejected off-canvas, white-on-white
+and opaque-cover controls, and accepted readable rotation, transparent cover
+and legal-background controls. It cited all 17 long-deck pages but returned
+NEEDS_REVIEW because each batch still declared all 17 pages. This real finding
+produced four failing offline regression cases. They now pass along with 80
+existing related tests. Real three-batch requalification is pending an explicit
+additional request budget. Existing run records are preserved and do not prove
+the corrected protocol yet.
+
 ## Qualification still required
 
 The local suite uses authored PPTX geometry and injected rendering/judgement
