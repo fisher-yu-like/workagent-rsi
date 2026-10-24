@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-23T13:25:26.799610+00:00",
+  "updated_at": "2026-10-24T04:25:09.636358+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -39,9 +39,12 @@
     },
     {
       "task_id": "T05",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T05/20261024T041832387079Z",
+      "note": "Input/candidate allowlist and pre-resolve link checks complete. Real isolated LibreOffice/Poppler XLSX/DOCX/PPTX rendering, unchanged source hashes, unrelated Office survivor and detached timeout cleanup passed. Dedicated MS Office COM unavailable; G1 remains unfinished.",
+      "base_commit": "d1a469750808f6b7bbbea93b8b6ef1cb5eb7b1f0",
+      "manifest": "project_artifacts/formal_study/hardening_t05_evaluation_boundary.json",
+      "bundle": "project_artifacts/results/hardening-v2/T05-handoff/20261024T042509615734Z/bundle/manifest.json"
     },
     {
       "task_id": "T06",
@@ -350,10 +353,11 @@
     "T01_initial": "9290197",
     "T03_and_final_handoff": "commit containing this ledger; exact tested sources hashed in final run.json",
     "T03_policy_completion": "9160b41",
-    "T04": "commit containing ledger; exact sources in evidence"
+    "T04": "commit containing ledger; exact sources in evidence",
+    "T05": "commit containing ledger; exact sources hashed in evidence"
   },
   "full_validation": {
-    "passed": 233,
+    "passed": 250,
     "failed": 11,
     "error": 0,
     "skipped": 0,
@@ -371,12 +375,10 @@
       "R10",
       "R11"
     ],
-    "evidence": "project_artifacts/results/hardening-v2/T04-verified/20261023T132132594651Z",
-    "expected_open_failed": 11
+    "evidence": "project_artifacts/results/hardening-v2/T05-final-full/20261024T041854561992Z"
   },
   "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
   "next_recommended_tasks": [
-    "T05",
     "T06",
     "T07",
     "T08",

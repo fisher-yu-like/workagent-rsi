@@ -61,5 +61,27 @@ Real authored probes require an explicit command:
 The command writes exclusive raw boundary/runtime/timeout evidence and actual
 XLSX/DOCX/PPTX artifacts. See `deploy/agent-runtime/README.md` and
 `project_artifacts/formal_study/hardening_t04_execution_boundary.json` for the
-qualified backend, source identities and remaining limits. T05's authorized
-input export and Office worker boundaries are still pending.
+qualified backend, source identities and remaining limits.
+
+## T05 evaluation and rendering boundary
+
+`test_evaluation_isolation.py` has 17 independent cases for input allowlists,
+source links/junctions/hardlinks, protected history, context collisions,
+immutable copies and renderer/COM policy proof. Unconfigured workers return
+unavailable without activating host Office. Authored worker stubs in these
+unit tests do not qualify a real renderer.
+
+```powershell
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_hardening_checks.py T05 tests/test_evaluation_isolation.py
+& $TaskPython project_artifacts/phase3_experiments/scripts/run_t05_office_probe.py --policy <office-sandbox-policy.json> --process-checks
+```
+
+The explicit real probe creates small XLSX/DOCX/PPTX fixtures, renders through
+the frozen Apptainer LibreOffice/Poppler worker, checks unchanged source hashes,
+remote visibility/read-only inputs, an unrelated Office sentinel surviving
+normal rendering, and detached-process timeout cleanup. It never connects to
+a model or user Office instance. Operations and current temporary runtime
+identity are in `deploy/office-worker/README.md`; actual results and limits are
+in `project_artifacts/formal_study/hardening_t05_evaluation_boundary.json`.
+The latest full suite is 250 passed and 11 active R01-R11 failures, with no
+errors/skips; T05 does not repair those future-task defects or complete G1.

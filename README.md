@@ -48,12 +48,19 @@ The active local directory is `D:/ws/Projects/WorkAgent-RSI` on the existing
 `feat/evaluation-rsi-hardening` branch. See the
 [task ledger](project_artifacts/formal_study/hardening_task_ledger.json),
 [test/evidence commands](tests/README.md), and
-[T04 runtime operations](deploy/agent-runtime/README.md).
-T00?T03 are delivered, including the default-off live-call approval contract.
+[T04 runtime operations](deploy/agent-runtime/README.md), and
+[T05 controlled Office rendering](deploy/office-worker/README.md).
+T00-T03 are delivered, including the default-off live-call approval contract.
 T04 adds fail-closed native execution, a default Docker backend and an explicit
 Apptainer SSH alternative. Qualification status and current tests are recorded in
 `project_artifacts/formal_study/hardening_t04_execution_boundary.json`.
-T05 and subsequent evaluator/repair tasks remain pending. Historical T01 red
+T05 adds allowlisted execution/candidate views, source-link checks and verified
+copies rendered inside an explicit LibreOffice/Poppler Apptainer worker. Real
+XLSX/DOCX/PPTX rendering and owned process cleanup passed; dedicated Microsoft
+Office COM remains unavailable. Current validation is 250 passed and 11
+expected-open failures, detailed in
+`project_artifacts/formal_study/hardening_t05_evaluation_boundary.json`.
+T06 and subsequent evaluator/repair tasks and the overall G1 gate remain pending. Historical T01 red
 observations are retained; their repair status must be read from the latest
 ledger rather than the original red baseline. The historical gate summary follows.
 

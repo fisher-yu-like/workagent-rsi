@@ -1,0 +1,333 @@
+{
+  "schema_version": "hardening-t05-evaluation-boundary-v1",
+  "status": "completed",
+  "completed_at": "2026-10-24T04:25:09.636358+00:00",
+  "working_tree": "D:\\ws\\Projects\\WorkAgent-RSI",
+  "branch": "feat/evaluation-rsi-hardening",
+  "base_commit": "d1a469750808f6b7bbbea93b8b6ef1cb5eb7b1f0",
+  "implementation_commit": "commit containing this manifest; exact tested sources hashed in evidence",
+  "scope": "T05 only; controlled LibreOffice rendering and evaluation-view isolation; G1 and T06-T35 remain unfinished",
+  "red": {
+    "failed": 9,
+    "errors": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T05-red/20261023T140712039465Z"
+  },
+  "focused": {
+    "passed": 38,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T05-resume-focused/20261024T041303759159Z"
+  },
+  "new_isolation_tests": 17,
+  "full_validation": {
+    "passed": 250,
+    "failed": 11,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "expected_open": [
+      "R01",
+      "R02",
+      "R03",
+      "R04",
+      "R05",
+      "R06",
+      "R07",
+      "R08",
+      "R09",
+      "R10",
+      "R11"
+    ],
+    "evidence": "project_artifacts/results/hardening-v2/T05-final-full/20261024T041854561992Z"
+  },
+  "real_evidence": "project_artifacts/results/hardening-v2/T05/20261024T041832387079Z",
+  "qualified_backend": "apptainer-ssh",
+  "qualified_render_policy": {
+    "renderer": "isolated-office-pdf-poppler-v2",
+    "dpi": 144,
+    "max_pages": 40,
+    "policy": {
+      "engine": "libreoffice-sandbox",
+      "read_only_copy": true,
+      "macros": "never",
+      "update_external_links": false,
+      "cleanup": "owned_worker",
+      "network": "none"
+    },
+    "worker": {
+      "backend": "apptainer-ssh",
+      "image": null,
+      "network": "none",
+      "uid": 68288,
+      "gid": 68288,
+      "pids_limit": 128,
+      "memory_bytes": 2147483648,
+      "cpus": 2.0,
+      "max_files": 128,
+      "max_file_bytes": 104857600,
+      "max_total_bytes": 33554432,
+      "ssh_host": "cluster_vlab_jump",
+      "remote_image": "/tmp/wrsi-t05-runtime-ngigwm0t/rootfs-office",
+      "remote_image_sha256": "481af80d507540f293116f57b3331c75d5a69f55fa957c3643322fe471360cf7",
+      "apptainer_executable": "/public/app/apptainer/1.4.5/bin/apptainer",
+      "python_executable": "/usr/bin/python3"
+    },
+    "worker_code_sha256": "867f1d2dcf402dd6d9965c62d699eb150576662ce36010558959efcb76857b1f"
+  },
+  "qualified_renders": {
+    "excel": {
+      "status": "available",
+      "pages": 1,
+      "source_sha256_before": "2af0f77f10741257d5dbe7cad6474c810b247eb9e0d793e2c935080ef1ddfe06",
+      "source_sha256_after": "2af0f77f10741257d5dbe7cad6474c810b247eb9e0d793e2c935080ef1ddfe06",
+      "environment": {
+        "engine": "libreoffice-sandbox",
+        "worker_status": "available",
+        "office_engine": "LibreOffice",
+        "office_version": "LibreOffice 7.4.7.2 40(Build:2)",
+        "poppler_version": "pdftoppm version 22.12.0",
+        "office_startup_restarts": 1,
+        "office_binary_sha256": "49c0b1b896d10660ea223c00c45c91a72b94e8452bbf3b70b6b6d73957c05f20",
+        "poppler_binary_sha256": "eaac98d4d950f4a25adfe55254c6cc7299429a07370181b5acfd87ac6db42f13",
+        "font_fingerprint": "9d55d671b1a19edb9952f066362f474d8cd79afa91b5443fe90c1caaea467ec8",
+        "font_file_count": 7,
+        "system_fingerprint": "7c2df2b94a49f4d4069b0b94d37e5ff0a5621b90d824bc9b403cf0cb97ab4f8c",
+        "page_count": 1,
+        "dpi": 144
+      }
+    },
+    "word": {
+      "status": "available",
+      "pages": 1,
+      "source_sha256_before": "dd41065722bad51c816691b8f5d82360e7f6cab5373a2af8c1beef52543ce432",
+      "source_sha256_after": "dd41065722bad51c816691b8f5d82360e7f6cab5373a2af8c1beef52543ce432",
+      "environment": {
+        "engine": "libreoffice-sandbox",
+        "worker_status": "available",
+        "office_engine": "LibreOffice",
+        "office_version": "LibreOffice 7.4.7.2 40(Build:2)",
+        "poppler_version": "pdftoppm version 22.12.0",
+        "office_startup_restarts": 1,
+        "office_binary_sha256": "49c0b1b896d10660ea223c00c45c91a72b94e8452bbf3b70b6b6d73957c05f20",
+        "poppler_binary_sha256": "eaac98d4d950f4a25adfe55254c6cc7299429a07370181b5acfd87ac6db42f13",
+        "font_fingerprint": "9d55d671b1a19edb9952f066362f474d8cd79afa91b5443fe90c1caaea467ec8",
+        "font_file_count": 7,
+        "system_fingerprint": "7c2df2b94a49f4d4069b0b94d37e5ff0a5621b90d824bc9b403cf0cb97ab4f8c",
+        "page_count": 1,
+        "dpi": 144
+      }
+    },
+    "powerpoint": {
+      "status": "available",
+      "pages": 1,
+      "source_sha256_before": "ca8f60dc53da32323d61c1583116540696d57b234ff8dcf1738a11aabe989c52",
+      "source_sha256_after": "ca8f60dc53da32323d61c1583116540696d57b234ff8dcf1738a11aabe989c52",
+      "environment": {
+        "engine": "libreoffice-sandbox",
+        "worker_status": "available",
+        "office_engine": "LibreOffice",
+        "office_version": "LibreOffice 7.4.7.2 40(Build:2)",
+        "poppler_version": "pdftoppm version 22.12.0",
+        "office_startup_restarts": 1,
+        "office_binary_sha256": "49c0b1b896d10660ea223c00c45c91a72b94e8452bbf3b70b6b6d73957c05f20",
+        "poppler_binary_sha256": "eaac98d4d950f4a25adfe55254c6cc7299429a07370181b5acfd87ac6db42f13",
+        "font_fingerprint": "9d55d671b1a19edb9952f066362f474d8cd79afa91b5443fe90c1caaea467ec8",
+        "font_file_count": 7,
+        "system_fingerprint": "7c2df2b94a49f4d4069b0b94d37e5ff0a5621b90d824bc9b403cf0cb97ab4f8c",
+        "page_count": 1,
+        "dpi": 144
+      }
+    }
+  },
+  "boundary": {
+    "scope": "authored local allowlist views",
+    "passed": true,
+    "execution_files": [
+      "input_manifest.json",
+      "inputs/0001-fixture.xlsx"
+    ],
+    "expected_execution_files": [
+      "input_manifest.json",
+      "inputs/0001-fixture.xlsx"
+    ],
+    "candidate_files": [
+      "AGENTS.md",
+      "skill.json"
+    ],
+    "input_manifest": {
+      "files": [
+        {
+          "source": "fixture.xlsx",
+          "copied": "inputs/0001-fixture.xlsx",
+          "size_bytes": 4965,
+          "source_sha256": "2af0f77f10741257d5dbe7cad6474c810b247eb9e0d793e2c935080ef1ddfe06",
+          "copy_sha256": "2af0f77f10741257d5dbe7cad6474c810b247eb9e0d793e2c935080ef1ddfe06"
+        }
+      ]
+    },
+    "candidate_manifest": {
+      "root": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T05\\20261024T041832387079Z\\candidate-view",
+      "file_hashes": {
+        "AGENTS.md": "800a4cbfb1015e5fca39f5b35ce39ff0b5c02c8dfccf1424ba2f2a90a98e0525",
+        "skill.json": "239417c13c17235adb29e1fe4fb8cee61a7d1f427e46dc833f3fe8e2b7c48f4b"
+      },
+      "excluded_protected_paths": [
+        "hidden.jsonl"
+      ]
+    },
+    "remote": {
+      "passed": true,
+      "report": {
+        "host_sentinel_invisible": true,
+        "dummy_environment_absent": true,
+        "hidden_sibling_invisible": true,
+        "task_files": [
+          "authored_boundary.py",
+          "inputs/declared.xlsx"
+        ],
+        "input_readonly": true,
+        "input_sha256": "2af0f77f10741257d5dbe7cad6474c810b247eb9e0d793e2c935080ef1ddfe06"
+      },
+      "outcome": {
+        "schema_version": "run-outcome-v2",
+        "status": "succeeded",
+        "failure_origin": null,
+        "artifact_refs": [
+          "outputs/boundary.json"
+        ],
+        "trace_refs": [
+          "provider_records/sandbox/da73b9c41fe748c597b2e7f5730d731f.json"
+        ],
+        "usage": {
+          "tokens": null,
+          "tool_calls": null,
+          "steps": null,
+          "wall_seconds": 13.003131400095299,
+          "cost_usd": null,
+          "statuses": {
+            "tokens": "unavailable",
+            "tool_calls": "unavailable",
+            "steps": "unavailable",
+            "wall_seconds": "available",
+            "cost_usd": "unavailable"
+          }
+        }
+      }
+    }
+  },
+  "process_cleanup": {
+    "passed": true,
+    "normal": {
+      "schema_version": "run-outcome-v2",
+      "status": "succeeded",
+      "failure_origin": null,
+      "artifact_refs": [
+        "outputs/page-1.png",
+        "outputs/process-check.json",
+        "outputs/rendered.pdf"
+      ],
+      "trace_refs": [
+        "provider_records/sandbox/8c0e0481bf524f5ab5eae510f0defb9c.json"
+      ],
+      "usage": {
+        "tokens": null,
+        "tool_calls": null,
+        "steps": null,
+        "wall_seconds": 16.172800299944356,
+        "cost_usd": null,
+        "statuses": {
+          "tokens": "unavailable",
+          "tool_calls": "unavailable",
+          "steps": "unavailable",
+          "wall_seconds": "available",
+          "cost_usd": "unavailable"
+        }
+      }
+    },
+    "normal_report": {
+      "render_status": "available",
+      "render_owned_cleanup": true,
+      "unrelated_before": {
+        "pid": 20,
+        "start_ticks": "160786351"
+      },
+      "unrelated_after": {
+        "pid": 20,
+        "start_ticks": "160786351"
+      },
+      "unrelated_survived": true,
+      "authored_sentinel_cleaned": true
+    },
+    "timeout": {
+      "schema_version": "run-outcome-v2",
+      "status": "timeout",
+      "failure_origin": "agent_execution",
+      "artifact_refs": [],
+      "trace_refs": [
+        "provider_records/sandbox/e4acd3cbdcb04262912e8720a3193ebb.json"
+      ],
+      "usage": {
+        "tokens": null,
+        "tool_calls": null,
+        "steps": null,
+        "wall_seconds": 23.722338600084186,
+        "cost_usd": null,
+        "statuses": {
+          "tokens": "unavailable",
+          "tool_calls": "unavailable",
+          "steps": "unavailable",
+          "wall_seconds": "available",
+          "cost_usd": "unavailable"
+        }
+      }
+    },
+    "timeout_cleanup": {
+      "confirmed_absent": true,
+      "unit": "wrsi-99c63bb564a8438ca083642b0e900c3e.service",
+      "cgroup_empty_or_removed": true
+    },
+    "timeout_stdout": "owned detached Office launcher pid=16 poll=None\n"
+  },
+  "server_inspection": {
+    "owned_units": {
+      "wrsi-6803960e27c143d58e2b8f04f46e9a73.service": "LoadState=not-found\nActiveState=inactive\n",
+      "wrsi-1e52f11f37e74458a89c16b13dd8e364.service": "LoadState=not-found\nActiveState=inactive\n",
+      "wrsi-931c9ed0351848bf8a69551374df537d.service": "LoadState=not-found\nActiveState=inactive\n",
+      "wrsi-b8ae2d00f2a047559a1312af549d889e.service": "LoadState=not-found\nActiveState=inactive\n",
+      "wrsi-f4058e684b8a4a2a928ef0efd9e20d70.service": "LoadState=not-found\nActiveState=inactive\n",
+      "wrsi-99c63bb564a8438ca083642b0e900c3e.service": "LoadState=not-found\nActiveState=inactive\n"
+    },
+    "all_owned_absent": true,
+    "office_runtime_sha256": "481af80d507540f293116f57b3331c75d5a69f55fa957c3643322fe471360cf7",
+    "base_runtime_sha256": "6b7261597fc00dd0ed96e62ad4c9858762b841b8a088185bee0097458cdc9c3a",
+    "du_kib": "1102088\t/tmp/wrsi-t05-runtime-ngigwm0t\n198276\t/tmp/wrsi-runtime-ixervi9x\n1396\t/tmp/wrsi-t04.6UcYuFu3\n"
+  },
+  "provisioning_evidence": "project_artifacts/results/hardening-v2/T05-provision/20261023T141006854658Z",
+  "server_added_storage": {
+    "kib": 1301760,
+    "gib": 1.241,
+    "user_budget_bytes": 4000000000,
+    "includes": "retained T04 and T05 runtime preparations, apt metadata and archives; failed attempts retained"
+  },
+  "source_hashes_match_full_tests": true,
+  "visual_inspection": {
+    "reviewed": "all three authored sample page PNGs from first successful run 20261024T041658849585Z",
+    "observation": "visible headings/text/table values; no visible clipping in these fixtures",
+    "scope": "infrastructure fixture readability only; no general visual task score"
+  },
+  "limits": {
+    "microsoft_office_com": "unavailable; no dedicated controlled worker",
+    "general_formula_correctness": "not_qualified",
+    "general_visual_acceptance": "not_qualified",
+    "live_model_or_rsi_benchmark": "not_run",
+    "fonts": "7 provisioned files; layout may differ with missing fonts",
+    "runtime_lifetime": "private /tmp directory, fail closed if missing or identity changes",
+    "aggregate_disk_quota": "not enforced; measured preparation below 4 GB"
+  },
+  "bundle": "project_artifacts/results/hardening-v2/T05-handoff/20261024T042509615734Z/bundle/manifest.json",
+  "next_tasks": [
+    "T06",
+    "T07",
+    "T08",
+    "T09"
+  ]
+}

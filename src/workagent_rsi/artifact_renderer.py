@@ -1,22 +1,31 @@
-"""Read-only Office rendering with page-to-artifact mappings and explicit capability status."""
-
+"""Render only checked copies through an explicitly configured isolated worker."""
 from __future__ import annotations
-
 import json
-import os
-from pathlib import Path
 import shutil
-import subprocess
+from pathlib import Path
 import time
 from typing import Literal
+from uuid import uuid4
+import subprocess  # Test seam: rendering never spawns host Office.
 
 from pydantic import BaseModel, ConfigDict, Field
 
 from .hashing import canonical_json_hash, sha256_file
+from .run_contracts import RunContract
+from .view_safety import checked_path, ordinary_file
+
+
+class RenderPolicy(RunContract):
+    engine: Literal['libreoffice-sandbox'] = 'libreoffice-sandbox'
+    read_only_copy: Literal[True] = True
+    macros: Literal['never'] = 'never'
+    update_external_links: Literal[False] = False
+    cleanup: Literal['owned_worker'] = 'owned_worker'
+    network: Literal['none'] = 'none'
 
 
 class RenderedPage(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(extra='forbid', frozen=True)
     image_id: str
     path: str
     sha256: str
@@ -27,8 +36,8 @@ class RenderedPage(BaseModel):
 
 
 class RenderResult(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
-    status: Literal["available", "unavailable", "error", "timeout"]
+    model_config = ConfigDict(extra='forbid', frozen=True)
+    status: Literal['available', 'unavailable', 'error', 'timeout']
     artifact_sha256: str
     renderer_identity: str
     pages: list[RenderedPage] = Field(default_factory=list)
@@ -37,132 +46,99 @@ class RenderResult(BaseModel):
     environment: dict[str, str | int | None] = Field(default_factory=dict)
 
 
-_EXPORT_PDF = r'''
-$ErrorActionPreference = "Stop"
-$path = $env:ASSESS_ARTIFACT
-$domain = $env:ASSESS_DOMAIN
-$pdf = $env:ASSESS_PDF
-$processName = switch ($domain) { "word" { "WINWORD" } "excel" { "EXCEL" } "powerpoint" { "POWERPNT" } }
-$existing = @()
-if ($processName) { $existing = @(Get-Process -Name $processName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id) }
-$app = $null
-$file = $null
-try {
-  switch ($domain) {
-    "word" {
-      $app = New-Object -ComObject Word.Application
-      $app.Visible = $false; $app.DisplayAlerts = 0
-      $file = $app.Documents.Open($path, $false, $true, $false)
-      $file.ExportAsFixedFormat($pdf, 17)
-    }
-    "excel" {
-      $app = New-Object -ComObject Excel.Application
-      $app.Visible = $false; $app.DisplayAlerts = $false
-      $file = $app.Workbooks.Open($path, $null, $true)
-      $file.ExportAsFixedFormat(0, $pdf)
-    }
-    "powerpoint" {
-      $app = New-Object -ComObject PowerPoint.Application
-      $file = $app.Presentations.Open($path, $true, $true, $false)
-      $file.SaveAs($pdf, 32)
-    }
-  }
-  @{ ok = $true; version = [string]$app.Version } | ConvertTo-Json -Compress
-} catch {
-  @{ ok = $false; error = $_.Exception.Message } | ConvertTo-Json -Compress
-  exit 1
-} finally {
-  if ($file -ne $null) {
-    try { if ($domain -eq "powerpoint") { $file.Close() } else { $file.Close($false) } } catch {}
-    try { [System.Runtime.InteropServices.Marshal]::FinalReleaseComObject($file) | Out-Null } catch {}
-  }
-  if ($app -ne $null) {
-    try { $app.Quit() } catch {}
-    try { [System.Runtime.InteropServices.Marshal]::FinalReleaseComObject($app) | Out-Null } catch {}
-  }
-  [GC]::Collect(); [GC]::WaitForPendingFinalizers()
-  if ($processName) {
-    Get-Process -Name $processName -ErrorAction SilentlyContinue |
-      Where-Object { $existing -notcontains $_.Id } |
-      Stop-Process -Force -ErrorAction SilentlyContinue
-  }
-}
-'''
-
-
 class OfficeArtifactRenderer:
-    """Render unchanged Office files to PNG via Office PDF export and Poppler."""
+    """LibreOffice + Poppler inside the T04 boundary; no host COM fallback.
 
+    Legacy executable keywords remain accepted for call compatibility. They do
+    not authorize host execution. Supply a provisioned, frozen Office sandbox.
+    """
     def __init__(self, output_root: str | Path, *, dpi: int = 144, timeout_seconds: int = 90,
-                 powershell: str = "powershell.exe", pdftoppm: str | None = None, max_pages: int = 40):
+                 powershell: str = 'powershell.exe', pdftoppm: str | None = None, max_pages: int = 40,
+                 sandbox=None, policy: RenderPolicy | None = None):
+        if type(dpi) is not int or not 36 <= dpi <= 300 or type(max_pages) is not int or not 1 <= max_pages <= 40:
+            raise ValueError('render DPI/pages must be within fixed bounds')
+        if type(timeout_seconds) is not int or timeout_seconds < 1:
+            raise ValueError('render timeout must be positive')
         self.output_root = Path(output_root)
-        self.dpi = dpi
-        self.timeout_seconds = timeout_seconds
-        self.powershell = powershell
-        self.pdftoppm = pdftoppm or shutil.which("pdftoppm") or "pdftoppm"
-        self.max_pages = max_pages
+        self.dpi, self.timeout_seconds, self.max_pages = dpi, timeout_seconds, max_pages
+        self.sandbox, self.policy = sandbox, policy or RenderPolicy()
 
     def identity_config(self):
-        return {"renderer": "office-com-pdf-poppler-v1", "dpi": self.dpi, "max_pages": self.max_pages,
-                "pdftoppm": str(Path(self.pdftoppm).resolve()) if Path(self.pdftoppm).exists() else self.pdftoppm}
+        return {'renderer': 'isolated-office-pdf-poppler-v2', 'dpi': self.dpi, 'max_pages': self.max_pages,
+                'policy': self.policy.model_dump(mode='json'),
+                'worker': self.sandbox.policy.model_dump(mode='json') if self.sandbox is not None else None,
+                'worker_code_sha256': sha256_file(Path(__file__).with_name('libreoffice_worker.py'))}
 
     def render(self, path: str | Path, domain: str, artifact_sha256: str | None = None) -> RenderResult:
-        started = time.perf_counter()
-        source = Path(path).resolve()
-        digest = artifact_sha256 or (sha256_file(source) if source.is_file() else canonical_json_hash({"missing": str(source)}))
+        started = time.monotonic()
+        digest = artifact_sha256 or canonical_json_hash({'missing': str(path)})
         identity = canonical_json_hash(self.identity_config())
-        if not source.is_file():
-            return RenderResult(status="error", artifact_sha256=digest, renderer_identity=identity,
-                                elapsed_seconds=time.perf_counter() - started, error="artifact missing")
-        if domain not in {"excel", "word", "powerpoint"}:
-            return RenderResult(status="unavailable", artifact_sha256=digest, renderer_identity=identity,
-                                elapsed_seconds=time.perf_counter() - started, error="unsupported artifact domain")
-        run_root = self.output_root / canonical_json_hash({"artifact": digest, **self.identity_config()})[:24]
-        run_root.mkdir(parents=True, exist_ok=True)
-        pdf = run_root / "rendered.pdf"
-        env = {**os.environ, "ASSESS_ARTIFACT": str(source), "ASSESS_DOMAIN": domain, "ASSESS_PDF": str(pdf.resolve())}
+        environment = {'engine': self.policy.engine, 'worker_status': 'unavailable'}
+        def result(status, error=None, pages=None):
+            return RenderResult(status=status, artifact_sha256=digest, renderer_identity=identity,
+                                elapsed_seconds=time.monotonic()-started, pages=pages or [], error=error,
+                                environment=environment)
         try:
-            exported = subprocess.run([self.powershell, "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", _EXPORT_PDF],
-                                      env=env, capture_output=True, text=True, encoding="utf-8", errors="replace",
-                                      timeout=self.timeout_seconds, check=False)
-            lines = exported.stdout.strip().splitlines()
-            payload = json.loads(lines[-1]) if lines else {}
-            if exported.returncode or not payload.get("ok") or not pdf.is_file():
-                return RenderResult(status="error", artifact_sha256=digest, renderer_identity=identity,
-                                    elapsed_seconds=time.perf_counter() - started,
-                                    error=str(payload.get("error") or exported.stderr or "Office PDF export failed"))
-            prefix = run_root / "page"
-            raster = subprocess.run([self.pdftoppm, "-png", "-r", str(self.dpi), str(pdf), str(prefix)],
-                                    capture_output=True, text=True, encoding="utf-8", errors="replace",
-                                    timeout=self.timeout_seconds, check=False)
-            if raster.returncode:
-                return RenderResult(status="error", artifact_sha256=digest, renderer_identity=identity,
-                                    elapsed_seconds=time.perf_counter() - started, error=raster.stderr or "PDF rasterization failed")
-            from PIL import Image
+            source = ordinary_file(Path(path))
+            if source.stat().st_size > 104857600:
+                return result('unavailable', 'artifact exceeds fixed render input budget')
+            observed = sha256_file(source)
+            if artifact_sha256 is not None and observed != artifact_sha256:
+                return result('error', 'artifact SHA-256 does not match trusted hash')
+            digest = observed
+            suffix = {'excel': '.xlsx', 'word': '.docx', 'powerpoint': '.pptx'}.get(domain)
+            if suffix is None or source.suffix.lower() != suffix:
+                return result('unavailable', 'unsupported artifact domain or format')
+            if self.sandbox is None:
+                return result('unavailable', 'isolated Office worker is not configured')
+            root = checked_path(self.output_root) / (identity[:12] + '-' + uuid4().hex[:12])
+            root.mkdir(parents=True, exist_ok=False)
+            inputs = root / 'inputs'
+            inputs.mkdir()
+            copied = inputs / ('artifact' + suffix)
+            shutil.copyfile(source, copied)
+            if sha256_file(copied) != digest or sha256_file(source) != digest:
+                return result('error', 'artifact changed while preparing read-only copy')
+            config = {'domain': domain, 'source': copied.relative_to(root).as_posix(), 'source_sha256': digest,
+                      'dpi': self.dpi, 'max_pages': self.max_pages, 'policy': self.policy.model_dump(mode='json')}
+            (inputs / 'render-policy.json').write_text(json.dumps(config), encoding='utf-8')
+            script = root / 'render_office.py'
+            script.write_bytes(Path(__file__).with_name('libreoffice_worker.py').read_bytes())
+            outcome = self.sandbox.run(script, root, self.timeout_seconds)
+            if sha256_file(source) != digest or sha256_file(copied) != digest:
+                return result('error', 'source or rendering copy changed during worker execution')
+            if outcome.status != 'succeeded':
+                status = 'timeout' if outcome.status == 'timeout' else 'unavailable' if outcome.status == 'unavailable' else 'error'
+                return result(status, 'isolated Office execution ' + outcome.status)
+            report_path = ordinary_file(root / 'outputs/render-metadata.json')
+            report = json.loads(report_path.read_text(encoding='utf-8'))
+            environment.update(report.get('environment', {}))
+            if report.get('status') != 'available':
+                return result('unavailable', report.get('error', 'required Office capability unavailable'))
+            if (report.get('source_sha256') != digest or report.get('load_policy') != {
+                    'ReadOnly': True, 'MacroExecutionMode': 0, 'UpdateDocMode': 0} or report.get('owned_cleanup') is not True):
+                return result('error', 'worker did not establish copy/load/cleanup policy')
             pages = []
-            images = sorted(run_root.glob("page-*.png"), key=lambda item: int(item.stem.rsplit("-", 1)[1]))
-            if len(images) > self.max_pages:
-                return RenderResult(status="unavailable", artifact_sha256=digest, renderer_identity=identity,
-                                    elapsed_seconds=time.perf_counter() - started,
-                                    error=f"rendered {len(images)} pages, exceeding fixed max_pages={self.max_pages}")
-            for number, image_path in enumerate(images, 1):
+            rows = report.get('pages', [])
+            if not rows or len(rows) > self.max_pages:
+                return result('unavailable', 'worker page coverage outside fixed bounds')
+            from PIL import Image
+            for index, item in enumerate(rows, 1):
+                if item.get('page') != index or item.get('file') != f'outputs/page-{index}.png':
+                    return result('error', 'invalid worker page reference')
+                image_path = ordinary_file(root / item['file'])
+                if sha256_file(image_path) != item['sha256']:
+                    return result('error', 'worker page hash mismatch')
                 with Image.open(image_path) as image:
                     width, height = image.size
-                mapping = f"slide {number}" if domain == "powerpoint" else f"rendered page {number} ({domain} pagination)"
-                pages.append(RenderedPage(image_id=f"page-{number}", path=str(image_path.resolve()), sha256=sha256_file(image_path),
-                                          page=number, artifact_location=mapping, width=width, height=height))
-            if not pages:
-                return RenderResult(status="error", artifact_sha256=digest, renderer_identity=identity,
-                                    elapsed_seconds=time.perf_counter() - started, error="renderer produced no PNG pages")
-            return RenderResult(status="available", artifact_sha256=digest, renderer_identity=identity, pages=pages,
-                                elapsed_seconds=time.perf_counter() - started,
-                                environment={"office_version": str(payload.get("version")), "dpi": self.dpi, "page_count": len(pages)})
+                    if image.format != 'PNG' or width*height > 50000000:
+                        return result('error', 'invalid rendered PNG')
+                location = f'slide {index}' if domain == 'powerpoint' else f'rendered page {index} ({domain}; LibreOffice pagination)'
+                pages.append(RenderedPage(image_id=f'page-{index}', path=str(image_path), sha256=item['sha256'],
+                                          page=index, artifact_location=location, width=width, height=height))
+            environment.update(worker_status='available', page_count=len(pages), dpi=self.dpi)
+            return result('available', pages=pages)
         except FileNotFoundError as exc:
-            return RenderResult(status="unavailable", artifact_sha256=digest, renderer_identity=identity,
-                                elapsed_seconds=time.perf_counter() - started, error=str(exc))
-        except subprocess.TimeoutExpired as exc:
-            return RenderResult(status="timeout", artifact_sha256=digest, renderer_identity=identity,
-                                elapsed_seconds=time.perf_counter() - started, error=f"rendering timed out after {exc.timeout}s")
-        except (ValueError, json.JSONDecodeError) as exc:
-            return RenderResult(status="error", artifact_sha256=digest, renderer_identity=identity,
-                                elapsed_seconds=time.perf_counter() - started, error=f"invalid renderer output: {exc}")
+            return result('error', 'required file unavailable: ' + str(exc))
+        except (OSError, ValueError, TypeError, KeyError) as exc:
+            return result('error', 'render boundary rejected input/output: ' + str(exc))

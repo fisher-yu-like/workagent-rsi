@@ -10,6 +10,7 @@ from pathlib import Path, PureWindowsPath
 
 from .contracts import TaskSpec
 from .hashing import sha256_file
+from .view_safety import checked_path, ordinary_file
 from .office_checks import MEDIA_TYPES
 from .workagent_provider import AgentResponse, WorkAgentConfig, WorkAgentSkill
 from .workagent_provider import CodexOfficeProvider
@@ -142,8 +143,10 @@ def _source_path(value: str, base: Path) -> Path:
 def copy_task_inputs(task: TaskSpec, workspace: Path, input_base: Path) -> dict:
     """Copy explicitly named task-domain Office files and save a private manifest."""
     suffix = _domain_suffix(task)
-    base = Path(input_base).absolute()
-    workspace = Path(workspace).resolve()
+    base = checked_path(input_base)
+    workspace = checked_path(workspace)
+    if workspace.exists() and (not workspace.is_dir() or any(workspace.iterdir())):
+        raise ValueError('execution view must be empty')
     _check_existing_segments(base)
     _check_existing_segments(workspace)
     files: list[dict[str, object]] = []
@@ -151,6 +154,7 @@ def copy_task_inputs(task: TaskSpec, workspace: Path, input_base: Path) -> dict:
     for index, value in enumerate(task.input_files, 1):
         source = _source_path(value, base)
         _check_existing_segments(source)
+        ordinary_file(source)
         if not source.exists() or not source.is_file() or not stat.S_ISREG(source.lstat().st_mode):
             raise ValueError(f"input is not a regular file: {source.name}")
         if source.suffix != suffix:
@@ -185,6 +189,16 @@ def copy_task_inputs(task: TaskSpec, workspace: Path, input_base: Path) -> dict:
         json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"
     )
     return manifest
+
+
+def prepare_execution_view(task: TaskSpec, input_base: Path, destination: Path) -> dict:
+    """Fresh execution view: only TaskSpec.input_files, never evaluation metadata.
+
+    Explicit absolute local inputs stay compatible. The task's frozen input list
+    is the authorization boundary; this function does not infer business intent
+    from filenames or copy acceptance specs, answers or historical directories.
+    """
+    return copy_task_inputs(task, destination, input_base)
 
 
 def verify_task_input_hashes(task: TaskSpec, workspace: Path, input_base: Path, manifest: dict) -> None:
@@ -295,11 +309,12 @@ class WorkAgentOfficeAdapter:
         self.provider = CodexOfficeProvider(config)
 
     def execute(self, task: TaskSpec, skill_id: str):
-        workspace = (self.run_root / "agent_workspace").resolve()
-        records = (self.run_root / "provider_records").resolve()
+        workspace = (self.run_root / "agent_workspace").absolute()
+        records = (self.run_root / "provider_records").absolute()
         yield {"kind": "started", "provider": "workagent", "skill_id": skill_id}
         try:
-            manifest = copy_task_inputs(task, workspace, self.input_base)
+            checked_path(records)
+            manifest = prepare_execution_view(task, self.input_base, workspace)
         except (OSError, ValueError) as exc:
             yield {"kind": "failure", "message": f"input staging failed: {exc}", "provider": "workagent"}
             return
