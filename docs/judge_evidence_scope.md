@@ -60,6 +60,21 @@ T16 local protocol tests use authored Office files and injected CLI/API/image
 providers. No remote API, model, Office worker or SSH call is made by this phase.
 `capability_report()` returns `not_probed` for configured live capabilities.
 Configuration and a passing unit transport do not qualify Responses, structured
-output or image judgement. T16 remains partial until the separately deferred
-real capability probes have evidence. Real decision accuracy and human-label
+output or image judgement. T16's initial local delivery remained partial until
+the separately performed real probes below. Real decision accuracy and human-label
 calibration remain T28 work.
+
+The 2026-10-24 real CLI gpt-6.1-sol controls passed authorized-source agreement,
+source contradiction, artifact instruction injection, missing-source rejection,
+cache reuse with zero current calls/independent reviews, a fresh independent
+review, evidence partitions and summary consistency. Actual joint-image local
+and consistency reviews also passed. Raw requests, decisions, identities and
+usage are retained; direct API /responses and other providers stay not_probed.
+The CLI used an invocation-local OpenAI-auth provider alias with zero automatic
+request/stream retries and the approved shared call/time budget.
+
+The real long-deck check exposed an unscoped visual batch requirement. Its
+repair passed84 related tests; a separately approved three-request real recheck
+passed with two readable batches accepted and page17 rejected. T15/T16 are
+qualified for the recorded frozen worker and CLI configuration.
+These authored protocol controls do not establish calibrated accuracy.

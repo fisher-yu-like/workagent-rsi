@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T12:41:42.247423+00:00",
+  "updated_at": "2026-10-24T12:56:33.504147+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -138,22 +138,26 @@
     },
     {
       "task_id": "T15",
-      "status": "partial",
+      "status": "completed",
       "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z",
-      "note": "Local tests/protocol complete. Real qualification deferred by user.",
+      "note": "Actual frozen Office rendering, authored visual controls, CLI source/injection/cache/independent/partition/joint-image probes passed. Real batch-scope regression fixed0b64a04 with4 red/84 green; approved three-request recheck PASS/PASS/FAIL with17/17 citations. Direct API and calibrated accuracy remain unqualified; no full live RSI claim.",
       "base_commit": "b9598c4effd4c2e8c3e32306b847bcc70eeeac81",
       "local_status": "completed",
       "manifest": "project_artifacts/formal_study/hardening_t15_visibility.json",
-      "bundle": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z/bundle/manifest.json"
+      "bundle": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z/bundle/manifest.json",
+      "real_qualification": "configured_cli_and_frozen_office_worker_passed",
+      "server_evidence": "project_artifacts/results/hardening-v2/T15-T16-final/20261024T125633426727Z"
     },
     {
       "task_id": "T16",
-      "status": "partial",
+      "status": "completed",
       "evidence": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z",
-      "note": "Local engineering tests complete; real capability probes deferred.",
+      "note": "Actual frozen Office rendering, authored visual controls, CLI source/injection/cache/independent/partition/joint-image probes passed. Real batch-scope regression fixed0b64a04 with4 red/84 green; approved three-request recheck PASS/PASS/FAIL with17/17 citations. Direct API and calibrated accuracy remain unqualified; no full live RSI claim.",
       "local_status": "completed",
       "manifest": "project_artifacts/formal_study/hardening_t16_judge_evidence.json",
-      "bundle": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z/bundle/manifest.json"
+      "bundle": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z/bundle/manifest.json",
+      "real_qualification": "configured_cli_and_frozen_office_worker_passed",
+      "server_evidence": "project_artifacts/results/hardening-v2/T15-T16-final/20261024T125633426727Z"
     },
     {
       "task_id": "T17",

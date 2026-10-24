@@ -103,9 +103,11 @@ T06 shares verified champion/develop context across API/CLI; public history and
 context budgets are checked offline. See `docs/candidate_generation.md`.
 T07 admits complete raw candidate responses with auditable normalization and
 transport-owned model identity. Both tasks were qualified offline only.
-The latest full suite has 569 passed, 2 expected-open failures and no errors/skips.
-Counts and evidence are recorded in the T18 manifest and task ledger. T08 local validation/probe protocol is delivered; actual behavior remains
-deferred by user. See `docs/candidate_verification.md`. T09 comparable-cohort
+The latest pre-scope-fix full suite has 574 passed, 2 expected-open failures and no errors/skips.
+The subsequent visual scope repair has84 focused passes, including4 new regressions.
+Counts and evidence are recorded in the task ledger. T08 actual isolated behavior and
+RSI rejection passed on frozen CLI-generated Office programs; champion was unchanged.
+This is authored qualification, not a full live RSI benchmark. See `docs/candidate_verification.md`. T09 comparable-cohort
 analysis and reference evaluation are complete offline; see `docs/result_cohorts.md`.
 T10 adds task-bound reviewed requirement coverage, T11 preflights registered checks,
 and T12 enforces scoped positions with separate requested/observed evidence. See
@@ -115,14 +117,19 @@ and explicit task/quality/coverage outcomes. Legacy v1 fields remain declared-ch
 compatibility only; historical task entrypoints require an explicit legacy profile.
 T14 structural edit preservation is delivered within its documented support.
 T13 formula/recalculation and T15 geometry/page-coverage local work are complete;
-real recalculation and rendered visual qualification remain deferred by user.
+T13 actual qualification passed14 frozen LibreOffice worker runs. T15 actual rendering
+and individual controls passed; a real long-deck scope issue was fixed in0b64a04.
+Its separately approved three-request real recheck passed: two readable batches
+accepted, last-page defect rejected, all17 pages covered.
 See `docs/edit_preservation.md`, `docs/formula_recalculation.md` and
 `docs/visibility_checks.md`. T16 adds scoped/source-bound evidence partitions and
-independent review records. Its real capability probes remain deferred. T18 adds
+independent review records. Actual CLI semantic/source/injection/cache/independent and
+joint-image controls passed. Direct API /responses and accuracy calibration remain
+unqualified; the configured CLI and corrected real batch-scope probes passed. T18 adds
 grounded issue facts, repair targets and verification steps; general feedback no
 longer contains internal fixture knobs. See `docs/judge_evidence_scope.md`,
 `docs/score_semantics_v2.md` and `docs/issue_evidence_quality.md`.
-T08/T13/T15/T16 real qualification, T19-T35 and
+T19-T35 and
 the overall G1 gate remain unfinished. Full-suite evidence is not
 all-green, and isolated authored probes are not live model/RSI qualification.
 The entries below preserve historical stage evidence.

@@ -57,12 +57,13 @@ Apptainer SSH alternative. Qualification status and current tests are recorded i
 T05 adds allowlisted execution/candidate views, source-link checks and verified
 copies rendered inside an explicit LibreOffice/Poppler Apptainer worker. Real
 XLSX/DOCX/PPTX rendering and owned process cleanup passed; dedicated Microsoft
-Office COM remains unavailable. The latest full suite has 569 passed, 2 expected-open failures (R10/R11)
-and no errors/skips. Evidence is recorded in
-`project_artifacts/formal_study/hardening_t18_issue_evidence.json`.
+Office COM remains unavailable. The latest pre-scope-fix full suite has574 passed,
+2 expected-open failures (R10/R11) and no errors/skips. The subsequent visual scope
+repair has84 focused passes, including4 new regressions. Evidence is indexed by
+`project_artifacts/formal_study/hardening_task_ledger.json`.
 T06 now supplies verified champion and controlled develop history to both candidate
 providers; T07 validates complete responses and records every normalization
-mapping and transport-owned identity. See [candidate contracts](docs/candidate_generation.md). T08 local validation is delivered with actual behavior acceptance deferred;
+mapping and transport-owned identity. See [candidate contracts](docs/candidate_generation.md). T08 actual isolated Office behavior and RSI rejection passed on authored fixed tasks;
 T09 now groups comparable results, validates evidence/retries and formal claim
 boundaries, and writes separate paired reference runs. See [result cohorts](docs/result_cohorts.md).
 T10 adds [reviewed task requirement coverage](docs/requirement_admission.md);
@@ -73,13 +74,16 @@ unifies normal task entrypoints and requires explicit legacy selection for histo
 T14 adds [authorized edit preservation](docs/edit_preservation.md).
 T13 adds [formula/recalculation evidence](docs/formula_recalculation.md), and
 T15 adds [visibility risks and page coverage](docs/visibility_checks.md). Their
-local work is complete; real T13/T15 qualification remains deferred. R01-R09
+local work is complete. T13 passed14 actual isolated LibreOffice runs. T15 real
+rendering, individual controls and corrected long-deck batch scope passed the
+separately approved three-request real recheck. R01-R09
 and R12 pass, including conservative gap/review outcomes for R03-R05; R10/R11
 remain open. T16 local [judge evidence management](docs/judge_evidence_scope.md),
 T17 [public score semantics](docs/score_semantics_v2.md) and T18
 [actionable issue evidence](docs/issue_evidence_quality.md) are delivered.
-T16 real capability probes, T19 onward and the overall G1 gate remain pending,
-along with T08 real behavior acceptance. Historical T01 red
+T16 actual CLI source/injection/cache/independent and joint-image controls passed;
+The batch-scope recheck passed with all17 pages cited. Direct API /responses and
+accuracy calibration remain unqualified. T19 onward and G1 remain pending. Historical T01 red
 observations are retained; their repair status must be read from the latest
 ledger rather than the original red baseline. The historical gate summary follows.
 

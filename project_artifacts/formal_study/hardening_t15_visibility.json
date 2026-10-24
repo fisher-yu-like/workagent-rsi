@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-t15-v1",
-  "status": "partial",
+  "status": "completed",
   "local_status": "completed",
   "base_commit": "b9598c4effd4c2e8c3e32306b847bcc70eeeac81",
   "implementation_commit": "commit containing manifest; exact source hashes in test records",
@@ -24,7 +24,7 @@
   "bundle": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z/bundle/manifest.json",
   "A1_cleanup": "blocked_by_automatic_policy_no_deletion",
   "G1": "incomplete",
-  "real_qualification": "deferred_by_user_not_run",
+  "real_qualification": "configured_cli_and_frozen_office_worker_passed",
   "full_validation": {
     "passed": 512,
     "failed": 2,
@@ -36,5 +36,57 @@
   "expected_open": [
     "R10",
     "R11"
-  ]
+  ],
+  "server_progress": {
+    "render_evidence": "project_artifacts/results/hardening-v2/T15-real/20261024T122723725831Z",
+    "judge_evidence": "project_artifacts/results/hardening-v2/T15-T16-real/20261024T123919420416Z",
+    "delivery_evidence": "project_artifacts/results/hardening-v2/T15-T16-progress/20261024T125249837509Z",
+    "scope_fix_commit": "0b64a04f2bfece8594c7595c3efba9780922b8e6",
+    "scope_fix_focused": "project_artifacts/results/hardening-v2/T15-scope-green/20261024T124632256063Z",
+    "model": "gpt-6.1-sol",
+    "provider": "codex-cli",
+    "actual_rendered_pages": 24,
+    "original_long_review": "NEEDS_REVIEW with all17 citations; batch requests incorrectly declared all17 pages",
+    "pending": "explicit three-request amendment, then actual recheck of corrected batch scope",
+    "semantic_controls": "correct-source/cache/independent PASS; missing-source NEEDS_REVIEW; wrong-source/injection FAIL; partitions PASS",
+    "direct_api_responses": "not_probed",
+    "confidence_calibration": "not_run; T28",
+    "bundle": "project_artifacts/results/hardening-v2/T15-T16-progress/20261024T125249837509Z/bundle/manifest.json"
+  },
+  "server_qualification": {
+    "evidence": "project_artifacts/results/hardening-v2/T15-T16-final/20261024T125633426727Z",
+    "render_evidence": "project_artifacts/results/hardening-v2/T15-real/20261024T122723725831Z",
+    "initial_judge_evidence": "project_artifacts/results/hardening-v2/T15-T16-real/20261024T123919420416Z",
+    "scope_recheck": "project_artifacts/results/hardening-v2/T15-scope-real/20261024T125416040494Z",
+    "scope_fix_commit": "0b64a04f2bfece8594c7595c3efba9780922b8e6",
+    "actual_rendered_pages": 24,
+    "all_17_pages_cited": true,
+    "scope_recheck_batch_statuses": [
+      "PASS",
+      "PASS",
+      "FAIL"
+    ],
+    "model": "gpt-6.1-sol",
+    "provider": "codex-cli",
+    "semantic_and_joint_image_controls": "passed",
+    "cache_current_calls": 0,
+    "fresh_independent_calls": 1,
+    "direct_api_responses": "not_probed",
+    "confidence_calibration": "not_run; T28",
+    "limitations": "authored engineering controls and explicit frozen configuration only; no general accuracy or full live RSI claim",
+    "budget": {
+      "launch_reservations": 27,
+      "observed_completed_model_turns": 26,
+      "reserved_cumulative_wall_seconds": 429,
+      "input_tokens": 418336,
+      "output_tokens": 5412,
+      "max_observed_output_tokens": 559,
+      "cost_usd": null,
+      "cost_status": "unavailable",
+      "tools_in_retained_accepted_logs": 0,
+      "legacy_conservative_tool_charge": 1,
+      "scope": "24 original +3 explicitly approved launch reservations; original1200s/32tool ceiling retained"
+    },
+    "bundle": "project_artifacts/results/hardening-v2/T15-T16-final/20261024T125633426727Z/bundle/manifest.json"
+  }
 }

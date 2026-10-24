@@ -55,17 +55,18 @@ and opaque-cover controls, and accepted readable rotation, transparent cover
 and legal-background controls. It cited all 17 long-deck pages but returned
 NEEDS_REVIEW because each batch still declared all 17 pages. This real finding
 produced four failing offline regression cases. They now pass along with 80
-existing related tests. Real three-batch requalification is pending an explicit
-additional request budget. Existing run records are preserved and do not prove
-the corrected protocol yet.
+existing related tests. The separately approved three-request real recheck then
+passed: pages1-8 PASS, pages9-16 PASS, page17 FAIL. All17 pages were cited and
+global coverage was complete. Existing pre-fix records remain preserved.
 
-## Qualification still required
+## Qualification scope
 
 The local suite uses authored PPTX geometry and injected rendering/judgement
 fixtures, including a 17-page coverage example. It makes no server, Office or
 model call. R03/R04 now conservatively reject or request review; this is not a
-measurement of visual judgement accuracy. The T15 manifest remains `partial`
-with local work `completed` and real qualification deferred by the user.
+measurement of calibrated visual judgement accuracy. The T15 manifest also
+indexes actual frozen Office rendering, authored annotations, CLI controls and
+the corrected real batch-scope recheck.
 
 When the server is available, retain an immutable worker/image identity and:
 

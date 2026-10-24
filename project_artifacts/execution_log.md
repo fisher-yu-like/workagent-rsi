@@ -331,3 +331,18 @@ Real server/model capability remains unqualified by these authored tests.
 ### T08 actual behavior qualification (2026-10-24)
 
 Preserving candidate passed three authored tasks; first-two-entries control regressed on two protected cases and was rejected. Actual RSI route reran behavior and preserved champion. Three accepted model generations used codex-cli gpt-6.1-sol; no generated code ran on the host. Frozen generation snapshots and cached real parent baseline do not constitute a full live RSI benchmark. Evidence: `project_artifacts/results/hardening-v2/T08-real/20261024T123719407816Z`, `project_artifacts/results/hardening-v2/T08-rsi-real/20261024T123929807716Z`. Earlier CLI startup/configuration and warning-classification failures are retained separately and charged against the same budget.
+
+
+### T15/T16 actual probe and discovered scope regression (2026-10-24)
+
+24 actual rendered pages and six visual controls passed; joint-image review passed. Semantic authorized-source, contradiction, injection, cache and independent review contracts passed with real CLI gpt-6.1-sol. The17-page result conservatively requested review due to incorrect whole-document scope in individual batches. Fixed in0b64a04; four new red cases now pass, related suite84 pass. Original budget24 launch reservations exhausted (23 observed model turns, including one rejected warning-classification result). Additional3 requests require explicit user confirmation; not yet executed. T15/T16 remain partial pending this concrete recheck. Pre-fix full suite574 passed/2 known R10/R11 failures.
+
+
+### T15/T16 actual probe and discovered scope regression (2026-10-24)
+
+24 actual rendered pages and six visual controls passed; joint-image review passed. Semantic authorized-source, contradiction, injection, cache and independent review contracts passed with real CLI gpt-6.1-sol. The17-page result conservatively requested review due to incorrect whole-document scope in individual batches. Fixed in0b64a04; four new red cases now pass, related suite84 pass. Original budget24 launch reservations exhausted (23 observed model turns, including one rejected warning-classification result). Additional3 requests require explicit user confirmation; not yet executed. T15/T16 remain partial pending this concrete recheck. Pre-fix full suite574 passed/2 known R10/R11 failures.
+
+
+### T15/T16 completed for frozen worker and selected CLI (2026-10-24)
+
+Explicitly approved three-request recheck passed: pages1-8 PASS,9-16 PASS,17 FAIL; all17 pages cited. Scope confusion is fixed and old cache protocol invalidated. T08/T13/T15/T16 deferred qualification is now complete for the recorded Apptainer worker and CLI gpt-6.1-sol profile. Direct API and accuracy calibration are not claimed. {"launch_reservations": 27, "observed_completed_model_turns": 26, "reserved_cumulative_wall_seconds": 429, "input_tokens": 418336, "output_tokens": 5412, "max_observed_output_tokens": 559, "cost_usd": null, "cost_status": "unavailable", "tools_in_retained_accepted_logs": 0, "legacy_conservative_tool_charge": 1, "scope": "24 original +3 explicitly approved launch reservations; original1200s/32tool ceiling retained"}

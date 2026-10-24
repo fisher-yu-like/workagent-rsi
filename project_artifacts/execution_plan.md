@@ -33,7 +33,7 @@
 | Hardening B | T04 native generated-code execution boundary | completed | Real isolation, observed resource caps, owned timeout cleanup, no host fallback | T03 | `execution_sandbox.py`, `apptainer_sandbox.py`, runtime deployment and T04 manifest | 2026-10-23: Apptainer SSH real probes passed; Docker implementation unit-tested, real Docker not run. 78 focused pass; full 233 pass / 11 expected-open fail / 0 errors / 0 skipped. R12 passes. T05 not started. |
 
 
-Current hardening progress is tracked in `formal_study/hardening_task_ledger.json`; T08 real behavior remains user-deferred.
+Current hardening progress is tracked in `formal_study/hardening_task_ledger.json`.
 
 | Local evaluator task | Status | Actual acceptance |
 |---|---|---|
@@ -46,11 +46,14 @@ No server/model call or rendering/recalculation qualification was performed in T
 
 | Local hardening task | Status | Actual acceptance |
 |---|---|---|
-| T16 judge evidence scope | partial, local completed | Red18; final focused99 passed. Scoped partitions, source hash/citation contracts, independent review records and bounded joint-image groups. Real judge capability probes remain deferred; no accuracy claim. |
+| T16 judge evidence scope | completed for configured CLI | Red18; initial focused99 passed. Actual CLI source/injection/cache/independent/partition/joint-image probes passed. Corrected real visual batch scope passed3 calls after4 red/84 focused green cases. No calibrated accuracy or direct API claim. |
 | T17 public outcome parity | completed | Red11; final focused141 passed. Check, Harness and WorkAgent RSI share task admission and explicit quality/coverage outcomes. Historical qualification uses explicit legacy profiles. |
 | T18 issue evidence quality | completed | Red13 failures/1 control; final focused207 passed. Grounded repair actions, stable IDs, spec/capability gaps, safe develop projection and historical feedback provenance controls. See latest manifest for full-suite counts. |
 
-These local deliveries make no remote server or real model calls. T08/T13/T15/T16
-real qualification, R10/R11, T19 onward and G1 remain open. Original historical
+The local deliveries above made no remote server or real model calls. Subsequent
+T08 real isolated behavior/RSI rejection and T13 real recalculation passed.
+T15 real rendering, T16 CLI controls and the separately approved3-request
+corrected real batch-scope recheck passed. R10/R11, T19 onward and G1
+remain open. Original historical
 results above are retained. Exact source hashes, manifests and portable evidence
 are indexed by `formal_study/hardening_task_ledger.json`.
