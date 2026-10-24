@@ -5,7 +5,7 @@
   "base_commit": "f9730d4607ab3e57f0a091455eeba89e978a53eb",
   "implementation_commit": "commit containing manifest; exact source hashes in test records",
   "completed_at": "2026-10-24T07:26:36.209598+00:00",
-  "scope": "local authored engineering tests; no server/model/API calls",
+  "scope": "Local formula contracts plus actual frozen Apptainer/LibreOffice numeric recalculation qualification; no model calls or general equivalence claim.",
   "red": {
     "passed": 2,
     "failed": 16,
@@ -32,5 +32,7 @@
     "source_hashes_unchanged": true,
     "all_runtime_traces_qualified": true,
     "bundle": "project_artifacts/results/hardening-v2/T13-real/20261024T122504362212Z/bundle/manifest.json"
-  }
+  },
+  "local_delivery_scope": "local authored engineering tests; no server/model/API calls",
+  "qualification_index_updated_at": "2026-10-24T13:35:20.167805+00:00"
 }
