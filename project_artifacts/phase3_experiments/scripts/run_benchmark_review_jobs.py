@@ -73,6 +73,7 @@ def generate(request: dict, work: Path, runner) -> str:
 
 
 def run(plan_path: Path, policy_path: Path, sandbox_path: Path, output: Path) -> dict:
+    output = output.resolve()
     plan = json.loads(plan_path.read_text(encoding='utf-8'))
     if plan['job_count'] != 20 or len(plan['jobs']) != 20:
         raise ValueError('frozen first cohort must contain exactly 20 jobs')
@@ -150,6 +151,70 @@ def run(plan_path: Path, policy_path: Path, sandbox_path: Path, output: Path) ->
         'actual_human_labels': 0, 'judge_calls': 0, 'server_execution_reservations': operations,
         'run_plan_sha256': sha256_file(plan_path), 'no_retry': True}
     write(output / 'summary.json', report)
+    return report
+
+
+def recover_saved_outputs(plan_path: Path, output: Path) -> dict:
+    """Reconcile saved successful exports after a controller bookkeeping error.
+
+    This performs no model request and no execution. Preserve the original run
+    records and require a succeeded worker trace plus the declared export name.
+    """
+    output = output.resolve()
+    plan = json.loads(plan_path.read_text(encoding='utf-8'))
+    frozen = json.loads((output / 'run-inputs.json').read_text(encoding='utf-8'))
+    if frozen['plan_sha256'] != sha256_file(plan_path):
+        raise ValueError('recovery plan differs from the original execution')
+    records_path = output / 'job-results.json'
+    records = json.loads(records_path.read_text(encoding='utf-8'))
+    if len(records) != len(plan['jobs']) or any(r['status'] == 'reserved' for r in records):
+        raise ValueError('wait until the original run is finished before reconciliation')
+    rows = {r['case_id']: r for r in records}
+    natural, rejected = [], []
+    for job in plan['jobs']:
+        record = rows[job['case_id']]
+        execution = record.get('execution', {})
+        expected_ref = 'outputs/' + job['expected_output']
+        if execution.get('status') != 'succeeded' or expected_ref not in execution.get('artifact_refs', []):
+            rejected.append({'case_id': job['case_id'], 'reason': record.get('error', 'no successful expected export')})
+            continue
+        workspace = output / 'cases' / job['case_id']
+        try:
+            traces = [json.loads(ordinary_file(workspace / relative_reference(p)).read_text(encoding='utf-8'))
+                      for p in execution['trace_refs']]
+            if not any(t.get('outcome', {}).get('status') == 'succeeded' and
+                       t.get('cleanup', {}).get('confirmed_absent') is True for t in traces):
+                raise ValueError('successful worker cleanup trace missing')
+            response = GeneratedProgram.model_validate_json((output / 'provider-records' / job['case_id'] / 'response.json').read_text(encoding='utf-8'))
+            if (workspace / 'generate.py').read_text(encoding='utf-8') != response.python_source:
+                raise ValueError('saved executed source differs from model response')
+            for name, digest in job['inputs'].items():
+                if sha256_file(ordinary_file(workspace / 'inputs' / relative_reference(name))) != digest:
+                    raise ValueError('saved input changed')
+            artifact = ordinary_file(workspace / relative_reference(expected_ref))
+            if job['domain'] == 'excel':
+                from openpyxl import load_workbook
+                book = load_workbook(artifact, keep_links=False)
+                book.close()
+            elif job['domain'] == 'word':
+                from docx import Document
+                Document(artifact)
+            else:
+                from pptx import Presentation
+                Presentation(artifact)
+            natural.append({'case_id': job['case_id'], 'domain': job['domain'], 'instruction': job['instruction'],
+                'source_family': job['source_family'], 'source_kind': 'natural_model_output',
+                'source_refs': job['source_refs'], 'artifact_path': artifact.relative_to(output).as_posix(),
+                'artifact_hash': sha256_file(artifact),
+                'input_paths': [(workspace / 'inputs' / n).relative_to(output).as_posix() for n in job['inputs']]})
+        except Exception as exc:
+            rejected.append({'case_id': job['case_id'], 'reason': type(exc).__name__ + ': ' + str(exc)})
+    report = {'actual_natural_artifacts': len(natural), 'required_natural_artifacts': 20,
+        'actual_human_labels': 0, 'new_model_calls': 0, 'new_server_operations': 0,
+        'original_job_records_sha256': sha256_file(records_path), 'rejected': rejected,
+        'reason': 'Reconcile already exported files after relative/absolute controller-path error; no regeneration.'}
+    write(output / 'natural-manifest.recovered.json', {'cases': natural, 'actual_human_labels': 0})
+    write(output / 'recovery-report.json', report)
     return report
 
 

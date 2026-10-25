@@ -44,3 +44,48 @@ def test_generated_program_is_not_executed_locally_and_cli_tools_are_disabled(tm
     returned = module.generate({'instruction': 'authored fixture'}, tmp_path, runner)
     assert returned == program
     assert not sentinel.exists()
+
+
+def test_recovery_registers_existing_relative_run_without_rerunning_models(tmp_path, monkeypatch):
+    from openpyxl import Workbook
+    from workagent_rsi.hashing import sha256_file
+    module = script()
+    monkeypatch.chdir(tmp_path)
+    root = Path('relative-run')
+    case = root / 'cases' / 'one'
+    (case / 'inputs').mkdir(parents=True)
+    (case / 'outputs').mkdir()
+    (case / 'inputs/source.xlsx').write_bytes(b'authored input identity')
+    book = Workbook()
+    book.active['A1'] = 'authored output fixture'
+    book.save(case / 'outputs/output.xlsx')
+    source = '# authored test fixture; never executed\n'
+    (case / 'generate.py').write_text(source, encoding='utf-8')
+    provider = root / 'provider-records/one'
+    provider.mkdir(parents=True)
+    (provider / 'response.json').write_text(json.dumps({'python_source': source, 'summary': 'fixture'}), encoding='utf-8')
+    trace = case / 'provider_records/sandbox/trace.json'
+    trace.parent.mkdir(parents=True)
+    trace.write_text(json.dumps({'outcome': {'status': 'succeeded'}, 'cleanup': {'confirmed_absent': True}}), encoding='utf-8')
+    job = {'case_id': 'one', 'expected_output': 'output.xlsx', 'domain': 'excel', 'instruction': 'Authored test fixture.',
+           'source_family': 'fixture-family', 'source_refs': ['authored-unit-fixture'],
+           'inputs': {'source.xlsx': sha256_file(case / 'inputs/source.xlsx')}}
+    jobs = [job] + [{**job, 'case_id': f'failed-{i}'} for i in range(19)]
+    plan = Path('plan.json')
+    plan.write_text(json.dumps({'job_count': 20, 'jobs': jobs}), encoding='utf-8')
+    (root / 'run-inputs.json').write_text(json.dumps({'plan_sha256': sha256_file(plan)}), encoding='utf-8')
+    records = [{'case_id': 'one', 'status': 'failed', 'error': 'authored controller path error', 'execution': {
+        'status': 'succeeded', 'artifact_refs': ['outputs/output.xlsx'], 'trace_refs': ['provider_records/sandbox/trace.json']}}]
+    records += [{'case_id': j['case_id'], 'status': 'failed'} for j in jobs[1:]]
+    (root / 'job-results.json').write_text(json.dumps(records), encoding='utf-8')
+    original = (root / 'job-results.json').read_bytes()
+    result = module.recover_saved_outputs(plan, root)
+    assert result['actual_natural_artifacts'] == 1
+    assert result['new_model_calls'] == result['new_server_operations'] == 0
+    assert (root / 'job-results.json').read_bytes() == original
+    recovered = json.loads((root / 'natural-manifest.recovered.json').read_text(encoding='utf-8'))
+    assert recovered['cases'][0]['artifact_path'] == 'cases/one/outputs/output.xlsx'
+    (case / 'generate.py').write_text('# changed source', encoding='utf-8')
+    result = module.recover_saved_outputs(plan, root)
+    assert result['actual_natural_artifacts'] == 0
+    assert 'differs' in result['rejected'][0]['reason']
