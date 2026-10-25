@@ -157,3 +157,6 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 - T25: `formal_study/hardening_t25_calibration_materials.json`, `../docs/calibration_materials.md`, development-only truth in `tests/fixtures/calibration/case_manifest.json`.
 
 - T26: `formal_study/hardening_t26_family_splits.json`, `../docs/dataset_splits.md`, `phase3_experiments/configs/evaluation_protocol_v2.json`; local interface delivered, data/deployment blocked.
+
+- T27: `formal_study/hardening_t27_offline_calibration.json`; actual90-case declared-check calibration, known gaps explicit.
+- T28: `formal_study/hardening_t28_human_calibration.json`, `../docs/human_calibration.md`;12-case human page/20 actual rendered pages, no human-agreement claim.

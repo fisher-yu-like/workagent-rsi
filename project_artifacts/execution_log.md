@@ -400,3 +400,13 @@ T26 groups families/source hashes before variants, rejects all overlap and expos
 Actual inventory: 90 exposed calibration controls, 30 inputs, 3 families; historical pilot 3 families already span splits. No formally admitted bases or final cases. Both inventory and quality CLIs return the expected exit 1 blocker. The 72/216 target is not completed or padded. T26 remains blocked with local_status=completed. No model/server calls.
 
 An early full attempt was stopped for a Python 3.11 compatibility correction and is retained as interrupted, not counted as a pass. The replacement is the only completed final full run. Evidence packaging reuses test outputs and retains the full generated ZIP once.
+
+## 2026-10-25 T26 server boundary, T27 calibration, T28 review engineering
+
+Final full regression: 717 passed, zero failures/errors/skips. Focused30 passed; no repeated final full runs.
+
+Reused the frozen Apptainer/LibreOffice runtime. Actual private32-byte canary was unreadable from the candidate container; public input readable/read-only and owned cleanup passed. No installation, new image, final corpus, host-owner isolation or separate principal is claimed.
+
+T27 actual production checks on90 cases:45 PASS,28 FAIL,17 INCOMPLETE. Error denominators exclude15 true gaps;2 visual defects stay unresolved. Observed false accepts0/28, false rejects0/45, gap classes15/15 and defect locations28/28. Descriptive intervals over3 correlated families do not imply general accuracy. No fabricated human admission.
+
+T28 engineering: exact-source human intake receipts, rubric/evaluator identity binding, opaque manual review pack12 cases,12 real isolated renders/20 pages. User agreed to review; no actual labels or agreement yet. Natural20-file cohort is deferred by user. Prior model budget exhausted; no new judge/model requests. The user asks to stop after current validation and not generate new materials.

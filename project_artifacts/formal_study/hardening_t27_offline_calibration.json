@@ -148,5 +148,6 @@
   "limitations": [
     "Two occlusion defects remain INCOMPLETE for actual visual judging in T28.",
     "Three correlated development families; no final benchmark accuracy or human agreement claim."
-  ]
+  ],
+  "implementation_commit": "a9377b217aa8d82c7941a7c9ab5fac410adc7285"
 }

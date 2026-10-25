@@ -2,6 +2,11 @@
 
 ## Focused checks for current work
 
+For T27/T28 metrics, actual human-submission provenance and the existing
+deterministic/family regressions, use `--profile calibration-human`. It contains
+30 checks and does not regenerate the90-case corpus for each assertion. Test
+labels and receipts are authored controls; they never count as actual humans.
+
 For changes limited to calibration data and grouped splits, use the fixed
 profile below. It covers corpus integrity, family/source/variant overlap,
 legacy mapping, the runner boundary, one-use final storage and external-data

@@ -1,0 +1,62 @@
+{
+  "task_id": "T28",
+  "status": "blocked",
+  "local_status": "completed",
+  "server_render_status": "completed",
+  "human_status": "awaiting_actual_user_review",
+  "reviewer_confirmed": "user agreed in conversation",
+  "natural_cohort_status": "deferred_by_user",
+  "real_judge_status": "not_run; await labels/rubric and new bounded approval",
+  "evidence_bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
+  "bundle_files": 163,
+  "latest_full_validation": {
+    "passed": 717,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+  },
+  "blind_review_page": "project_artifacts/results/hardening-v2/T28/20261025-human-pack/blind-review-pack/index.html",
+  "standards_count": 12,
+  "actual_rendered_pages": 20,
+  "actual_human_labels": 0,
+  "actual_natural_artifacts": 0,
+  "required_natural_artifacts": 20,
+  "agreement": null,
+  "model_calls": 0,
+  "report": {
+    "status": "blocked",
+    "standards_cases": 12,
+    "natural_cases": 0,
+    "required_natural_cases": 20,
+    "actual_human_labels": 0,
+    "rubric_hash": "bd95df9c9a5f586502ec279f1eb001e6384c98cd1470fb69796696e83d8174b1",
+    "judge_results_revealed": false,
+    "blind_pack_hash": "116ed3aa8bfa44a527ecec22b43bd68e0f6a20787bc4c44eacb4ea2c2ce89a47",
+    "blockers": [
+      "Actual human labeling required",
+      "Independent natural finished-artifact cohort missing"
+    ],
+    "rendered_cases": 12,
+    "rendered_pages": 20
+  },
+  "source_hashes": {
+    "src/workagent_rsi/human_calibration.py": "ef722a9c1b8ffdafe052db792ab703f28f333f6850622b3afc3a23fb8172fafa",
+    "tests/test_human_label_provenance.py": "374c5f3473336a6890deb2add4de410618fa2b1312bdcf62f4483d816531db03",
+    "project_artifacts/phase3_experiments/scripts/prepare_human_calibration.py": "006d9fff5c9d88f7532745a2e0fd567225517e9ceadc7e6cb9453859cbf8eb0a",
+    "project_artifacts/phase3_experiments/scripts/run_hardening_checks.py": "f71b3ba837694abb8a4d538fce725642fe2aef1d1be13bd41981f3e8fbe94e1f"
+  },
+  "red_evidence": "project_artifacts/results/hardening-v2/T27-T28-red/20261025T021119075237Z",
+  "red_counts": {
+    "failed": 6,
+    "error": 0
+  },
+  "ui_validation": "12 opaque cases,20 actual images,12 empty selectors; Node syntax validation passed; no browser qualification claim.",
+  "remaining": [
+    "Actual user labels for standards12 and frozen rubric.",
+    "At least20 independent natural finished artifacts; user will supply later.",
+    "New bounded real-judge authorization, actual decisions and paired comparison after labels are fixed."
+  ],
+  "user_stop_instruction": "Finish current engineering verification and stop. Do not generate new materials or start T29."
+}

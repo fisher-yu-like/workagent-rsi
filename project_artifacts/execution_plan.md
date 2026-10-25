@@ -66,4 +66,7 @@ results above are retained. Exact source hashes, manifests and portable evidence
 are indexed by `formal_study/hardening_task_ledger.json`.
 
 | F | T25 calibration materials | completed | 90 real Office files, independent truth, reproducible hashes | T10–T18, T24 | T25 manifest | Four grouped integrity checks pass; no accuracy or human-agreement claim. |
-| F | T26 grouped splits and final sealing | blocked | Family/source/variant isolation and honest scale audit | T25 | T26 manifest | Local interfaces complete;72/216 corpus, unseen final content and private service remain blocked. See T26 manifest. |
+| F | T26 grouped splits and final sealing | blocked | Family/source/variant isolation and honest scale audit | T25 | T26 manifest | Actual candidate-container private canary denial passed;72/216 independent corpus and separate service principal remain deferred. See T26 manifest. |
+
+| F | T27 offline calibration | completed | Production declared-check observations and explicit denominators | T25, T26 local isolation | T27 manifest |90 actual cases;2 visual defects unresolved forT28; no general accuracy claim. |
+| F | T28 human/visual calibration | blocked | Actual human labels and natural cohort | T16, T27 | T28 manifest and public review page | Local engineering and12 renders/20 pages complete; awaiting user labels, natural files and bounded judge authorization. Stop after current delivery. |

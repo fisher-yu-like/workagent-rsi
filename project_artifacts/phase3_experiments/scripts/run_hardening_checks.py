@@ -23,6 +23,8 @@ from workagent_rsi.environment_manifest import capture_environment
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('label', help='Evidence task/run label; letters, digits, hyphen or underscore')
 PROFILES = {
+    'calibration-human': ['tests/test_calibration_metrics.py', 'tests/test_human_label_provenance.py',
+                           'tests/test_review_regressions.py', 'tests/test_family_split_isolation.py'],
     'calibration-splits': ['tests/test_calibration_case_integrity.py',
                            'tests/test_family_split_isolation.py', 'tests/test_external_dataset.py'],
     'full': [],

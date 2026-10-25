@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-25T02:02:12.171374+00:00",
+  "updated_at": "2026-10-25T02:36:29.529473+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -230,23 +230,31 @@
       "task_id": "T26",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
-      "note": "Family split and seal interfaces delivered locally. Actual90-case calibration inventory remains exposed;72/216 formal corpus and private service unprovisioned.",
+      "note": "Actual private canary denial/read-only input/owned cleanup passed. Independent72/216 sources and separate evaluator principal remain unavailable; user will provide materials later.",
       "local_status": "completed",
-      "data_scale_status": "blocked",
+      "data_scale_status": "deferred_by_user",
       "evaluator_service_status": "unprovisioned",
-      "manifest": "project_artifacts/formal_study/hardening_t26_family_splits.json"
+      "manifest": "project_artifacts/formal_study/hardening_t26_family_splits.json",
+      "server_boundary_status": "qualified"
     },
     {
       "task_id": "T27",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json",
+      "note": "90 actual production-check cases:45PASS/28FAIL/17INCOMPLETE. No observed critical false accepts/equivalent rejects;15 correct gaps;2 visual cases unresolved. Declared checks only.",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t27_offline_calibration.json"
     },
     {
       "task_id": "T28",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
+      "note": "12 opaque standards cases/20 actual rendered pages ready. User will review;0 actual labels,0 natural cohort files,0 model calls. New real-judge budget pending.",
+      "local_status": "completed",
+      "server_render_status": "completed",
+      "human_status": "awaiting_user_review",
+      "natural_cohort_status": "deferred_by_user",
+      "manifest": "project_artifacts/formal_study/hardening_t28_human_calibration.json"
     },
     {
       "task_id": "T29",
@@ -441,79 +449,82 @@
     "T23": "e157f1e688f39010ca66f19cfab2c4fb0d3f363d",
     "T24": "commit containing this ledger; exact source hashes in final evidence",
     "T25_initial": "4f9ea6e22e58a1e5b6f83e06152fc2a4d7d2baad",
-    "T25_final_T26_local": "commit containing this ledger; exact tested sources are hashed in final run.json"
+    "T25_final_T26_local": "commit containing this ledger; exact tested sources are hashed in final run.json",
+    "T27_T28": "commits delivering these manifests; exact tested files hashed in final run.json",
+    "T27_remote_boundary": "a9377b217aa8d82c7941a7c9ab5fac410adc7285",
+    "T28_engineering": "commit containing this ledger; exact sources hashed in717-case final run"
   },
   "full_validation": {
-    "passed": 710,
+    "passed": 717,
     "failed": 0,
     "error": 0,
     "skipped": 0,
     "exit_code": 0,
-    "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z",
+    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z",
     "expected_open": []
   },
-  "bundle": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
+  "bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "T27",
-    "T26-independent-source-and-deployment-intake"
+    "Await actual T28 reviewer submission; no automatic new work",
+    "T26 independent material intake deferred by user"
   ],
   "review_case_status": {
     "R12": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R01": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R02": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R03": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R04": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R05": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R06": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R07": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R08": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R09": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R10": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     },
     "R11": {
       "status": "passed",
-      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
     }
   },
   "latest_full_validation": {
-    "passed": 710,
+    "passed": 717,
     "failed": 0,
     "error": 0,
     "skipped": 0,
     "exit_code": 0,
-    "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
   },
   "expected_open": [],
   "historical_full_validation_indexes": [
@@ -561,6 +572,14 @@
       "skipped": 0,
       "exit_code": 0,
       "evidence": "project_artifacts/results/hardening-v2/T24-final-full/20261024T170246296852Z"
+    },
+    {
+      "passed": 710,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
     }
   ],
   "historical_contract_example_bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json"
