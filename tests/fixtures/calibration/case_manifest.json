@@ -4,7 +4,7 @@
   "source_kind": "project-generated",
   "purpose": "development_calibration_only",
   "authorship": "Literal requirements and expected OOXML facts; no evaluator-derived labels.",
-  "limitation": "Two input contexts per domain; three source families. Not independent final-test material.",
+  "limitation": "Ten numerical input contexts per domain; three source families. Not independent final-test material.",
   "cases": [
     {
       "case_id": "excel-01-1-correct",
@@ -400,7 +400,7 @@
       ]
     },
     {
-      "case_id": "excel-02-1-correct",
+      "case_id": "excel-02-3-correct",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": null,
@@ -412,11 +412,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-02-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#excel-02-3-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
       "category": "correct",
@@ -424,7 +424,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "none"
       },
       "xml_claims": [
@@ -439,14 +439,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "7"
+            "21"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "12"
+            "8"
           ]
         },
         {
@@ -460,13 +460,13 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 3."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-02-1-single_defect",
+      "case_id": "excel-02-3-single_defect",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": "wrong_range",
@@ -478,11 +478,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-02-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#excel-02-3-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
       "category": "single_defect",
@@ -490,7 +490,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "wrong_range"
       },
       "xml_claims": [
@@ -505,14 +505,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "7"
+            "21"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "12"
+            "8"
           ]
         },
         {
@@ -526,13 +526,13 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 3."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-02-1-equivalent",
+      "case_id": "excel-02-3-equivalent",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": null,
@@ -544,11 +544,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-02-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#excel-02-3-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. A literal total in B6 is also allowed.",
       "category": "equivalent",
@@ -556,7 +556,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A literal total in B6 is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -571,14 +571,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "7"
+            "21"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "12"
+            "8"
           ]
         },
         {
@@ -590,20 +590,20 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B6']/s:v",
           "texts": [
-            "38"
+            "45"
           ]
         },
         {
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 3."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-02-2-correct",
+      "case_id": "excel-02-4-correct",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": null,
@@ -615,11 +615,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-02-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#excel-02-4-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
       "category": "correct",
@@ -627,7 +627,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "none"
       },
       "xml_claims": [
@@ -642,14 +642,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "23"
+            "29"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "5"
+            "4"
           ]
         },
         {
@@ -663,13 +663,13 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 4."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-02-2-single_defect",
+      "case_id": "excel-02-4-single_defect",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": "wrong_range",
@@ -681,11 +681,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-02-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#excel-02-4-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
       "category": "single_defect",
@@ -693,7 +693,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "wrong_range"
       },
       "xml_claims": [
@@ -708,14 +708,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "23"
+            "29"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "5"
+            "4"
           ]
         },
         {
@@ -729,13 +729,13 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 4."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-02-2-gap",
+      "case_id": "excel-02-4-gap",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": null,
@@ -747,11 +747,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-02-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#excel-02-4-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. Ambiguous scope: use the preferred layout, without identifying a layout.",
       "category": "gap",
@@ -759,7 +759,7 @@
       "gap_origin": "spec_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "none"
       },
       "xml_claims": [
@@ -774,14 +774,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "23"
+            "29"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "5"
+            "4"
           ]
         },
         {
@@ -795,13 +795,13 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 4."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-03-1-correct",
+      "case_id": "excel-03-5-correct",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": null,
@@ -813,11 +813,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-03-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#excel-03-5-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
       "category": "correct",
@@ -825,7 +825,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "none"
       },
       "xml_claims": [
@@ -840,14 +840,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "7"
+            "22"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "12"
+            "9"
           ]
         },
         {
@@ -861,13 +861,13 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 5."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-03-1-single_defect",
+      "case_id": "excel-03-5-single_defect",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": "misplaced_content",
@@ -879,11 +879,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-03-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#excel-03-5-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
       "category": "single_defect",
@@ -891,7 +891,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "misplaced_content"
       },
       "xml_claims": [
@@ -906,14 +906,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "7"
+            "22"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "12"
+            "9"
           ]
         },
         {
@@ -932,13 +932,13 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 5."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-03-1-equivalent",
+      "case_id": "excel-03-5-equivalent",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": null,
@@ -950,11 +950,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-03-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#excel-03-5-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. A literal total in B6 is also allowed.",
       "category": "equivalent",
@@ -962,7 +962,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A literal total in B6 is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -977,14 +977,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "7"
+            "22"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "12"
+            "9"
           ]
         },
         {
@@ -996,20 +996,20 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B6']/s:v",
           "texts": [
-            "38"
+            "44"
           ]
         },
         {
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 5."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-03-2-correct",
+      "case_id": "excel-03-6-correct",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": null,
@@ -1021,11 +1021,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 6,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-03-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#excel-03-6-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
       "category": "correct",
@@ -1033,7 +1033,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 5,
         "mutation": "none"
       },
       "xml_claims": [
@@ -1048,880 +1048,7 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "23"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "5"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 2."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-03-2-single_defect",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": "misplaced_content",
-      "oracle_status": "FAIL",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 2,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-03-2-single_defect"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "single_defect",
-      "artifact_valid": false,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 1,
-        "mutation": "misplaced_content"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "23"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "5"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": []
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='C6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 2."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-03-2-gap",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": null,
-      "oracle_status": "INCOMPLETE",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 2,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-03-2-gap"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. Also certify rendered visibility; the calibration capability profile has no renderer.",
-      "category": "gap",
-      "artifact_valid": true,
-      "gap_origin": "capability_gap",
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 1,
-        "mutation": "none"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "23"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "5"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 2."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-04-1-correct",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": null,
-      "oracle_status": "PASS",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 1,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-04-1-correct"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "correct",
-      "artifact_valid": true,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 0,
-        "mutation": "none"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "7"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "12"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 1."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-04-1-single_defect",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": "source_damage",
-      "oracle_status": "FAIL",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 1,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-04-1-single_defect"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "single_defect",
-      "artifact_valid": false,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 0,
-        "mutation": "source_damage"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "7"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "12"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "DAMAGED"
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-04-1-equivalent",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": null,
-      "oracle_status": "PASS",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 1,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-04-1-equivalent"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. A literal total in B6 is also allowed.",
-      "category": "equivalent",
-      "artifact_valid": true,
-      "gap_origin": null,
-      "equivalence_authorization": "A literal total in B6 is also allowed.",
-      "recipe": {
-        "context": 0,
-        "mutation": "equivalent"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "7"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "12"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": []
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:v",
-          "texts": [
-            "38"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 1."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-04-2-correct",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": null,
-      "oracle_status": "PASS",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 2,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-04-2-correct"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "correct",
-      "artifact_valid": true,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 1,
-        "mutation": "none"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "23"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "5"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 2."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-04-2-single_defect",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": "source_damage",
-      "oracle_status": "FAIL",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 2,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-04-2-single_defect"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "single_defect",
-      "artifact_valid": false,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 1,
-        "mutation": "source_damage"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "23"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "5"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "DAMAGED"
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-04-2-gap",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": null,
-      "oracle_status": "INCOMPLETE",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 2,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-04-2-gap"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. Also assess editorial quality; the calibration capability profile has no semantic judge.",
-      "category": "gap",
-      "artifact_valid": true,
-      "gap_origin": "capability_gap",
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 1,
-        "mutation": "none"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "23"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "5"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 2."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-05-1-correct",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": null,
-      "oracle_status": "PASS",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 1,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-05-1-correct"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "correct",
-      "artifact_valid": true,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 0,
-        "mutation": "none"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "7"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "12"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 1."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-05-1-single_defect",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": "wrong_value",
-      "oracle_status": "FAIL",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 1,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-05-1-single_defect"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "single_defect",
-      "artifact_valid": false,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 0,
-        "mutation": "wrong_value"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "7"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "13"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 1."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-05-1-equivalent",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": null,
-      "oracle_status": "PASS",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 1,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-05-1-equivalent"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. A literal total in B6 is also allowed.",
-      "category": "equivalent",
-      "artifact_valid": true,
-      "gap_origin": null,
-      "equivalence_authorization": "A literal total in B6 is also allowed.",
-      "recipe": {
-        "context": 0,
-        "mutation": "equivalent"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "7"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "12"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": []
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:v",
-          "texts": [
-            "38"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 1."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-05-2-correct",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": null,
-      "oracle_status": "PASS",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 2,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-05-2-correct"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "correct",
-      "artifact_valid": true,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 1,
-        "mutation": "none"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "23"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B2']/s:v",
-          "texts": [
-            "5"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B6']/s:f",
-          "texts": [
-            "SUM(B2:B4)"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet2.xml",
-          "xpath": ".//s:t",
-          "texts": [
-            "Preserve source ledger 2."
-          ]
-        }
-      ]
-    },
-    {
-      "case_id": "excel-05-2-single_defect",
-      "domain": "excel",
-      "source_family": "excel/ledger-summary-v1",
-      "defect_type": "wrong_value",
-      "oracle_status": "FAIL",
-      "expected_locations": [
-        "Ledger!A2:B4",
-        "Ledger!B6",
-        "Notes!A1"
-      ],
-      "expected_scope": {
-        "task": "ordered ledger summary",
-        "input_context": 2,
-        "rendering": "authored geometry only; no actual renderer used"
-      },
-      "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-05-2-single_defect"
-      ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
-      "category": "single_defect",
-      "artifact_valid": false,
-      "gap_origin": null,
-      "equivalence_authorization": null,
-      "recipe": {
-        "context": 1,
-        "mutation": "wrong_value"
-      },
-      "xml_claims": [
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='A4']/s:is/s:t",
-          "texts": [
-            "West"
-          ]
-        },
-        {
-          "part": "xl/worksheets/sheet1.xml",
-          "xpath": ".//s:c[@r='B4']/s:v",
-          "texts": [
-            "23"
+            "25"
           ]
         },
         {
@@ -1942,13 +1069,84 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 6."
           ]
         }
       ]
     },
     {
-      "case_id": "excel-05-2-gap",
+      "case_id": "excel-03-6-single_defect",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": "misplaced_content",
+      "oracle_status": "FAIL",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 6,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-03-6-single_defect"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "single_defect",
+      "artifact_valid": false,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 5,
+        "mutation": "misplaced_content"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "25"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "6"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": []
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='C6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 6."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-03-6-gap",
       "domain": "excel",
       "source_family": "excel/ledger-summary-v1",
       "defect_type": null,
@@ -1960,19 +1158,19 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 6,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#excel-05-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#excel-03-6-gap"
       ],
-      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. Also certify the external approval signature; its verification service is unavailable.",
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. Also certify rendered visibility; the calibration capability profile has no renderer.",
       "category": "gap",
       "artifact_valid": true,
       "gap_origin": "capability_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 5,
         "mutation": "none"
       },
       "xml_claims": [
@@ -1987,14 +1185,14 @@
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B4']/s:v",
           "texts": [
-            "23"
+            "25"
           ]
         },
         {
           "part": "xl/worksheets/sheet1.xml",
           "xpath": ".//s:c[@r='B2']/s:v",
           "texts": [
-            "5"
+            "6"
           ]
         },
         {
@@ -2008,7 +1206,809 @@
           "part": "xl/worksheets/sheet2.xml",
           "xpath": ".//s:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 6."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-04-7-correct",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": null,
+      "oracle_status": "PASS",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 7,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-04-7-correct"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "correct",
+      "artifact_valid": true,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 6,
+        "mutation": "none"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "27"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "10"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 7."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-04-7-single_defect",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": "source_damage",
+      "oracle_status": "FAIL",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 7,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-04-7-single_defect"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "single_defect",
+      "artifact_valid": false,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 6,
+        "mutation": "source_damage"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "27"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "10"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "DAMAGED"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-04-7-equivalent",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": null,
+      "oracle_status": "PASS",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 7,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-04-7-equivalent"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. A literal total in B6 is also allowed.",
+      "category": "equivalent",
+      "artifact_valid": true,
+      "gap_origin": null,
+      "equivalence_authorization": "A literal total in B6 is also allowed.",
+      "recipe": {
+        "context": 6,
+        "mutation": "equivalent"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "27"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "10"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": []
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:v",
+          "texts": [
+            "51"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 7."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-04-8-correct",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": null,
+      "oracle_status": "PASS",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 8,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-04-8-correct"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "correct",
+      "artifact_valid": true,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 7,
+        "mutation": "none"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "31"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "3"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 8."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-04-8-single_defect",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": "source_damage",
+      "oracle_status": "FAIL",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 8,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-04-8-single_defect"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "single_defect",
+      "artifact_valid": false,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 7,
+        "mutation": "source_damage"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "31"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "3"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "DAMAGED"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-04-8-gap",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": null,
+      "oracle_status": "INCOMPLETE",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 8,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-04-8-gap"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. Also assess editorial quality; the calibration capability profile has no semantic judge.",
+      "category": "gap",
+      "artifact_valid": true,
+      "gap_origin": "capability_gap",
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 7,
+        "mutation": "none"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "31"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "3"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 8."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-05-9-correct",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": null,
+      "oracle_status": "PASS",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 9,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-05-9-correct"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "correct",
+      "artifact_valid": true,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 8,
+        "mutation": "none"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "32"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "15"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 9."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-05-9-single_defect",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": "wrong_value",
+      "oracle_status": "FAIL",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 9,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-05-9-single_defect"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "single_defect",
+      "artifact_valid": false,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 8,
+        "mutation": "wrong_value"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "32"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "16"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 9."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-05-9-equivalent",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": null,
+      "oracle_status": "PASS",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 9,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-05-9-equivalent"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. A literal total in B6 is also allowed.",
+      "category": "equivalent",
+      "artifact_valid": true,
+      "gap_origin": null,
+      "equivalence_authorization": "A literal total in B6 is also allowed.",
+      "recipe": {
+        "context": 8,
+        "mutation": "equivalent"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "32"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "15"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": []
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:v",
+          "texts": [
+            "71"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 9."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-05-10-correct",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": null,
+      "oracle_status": "PASS",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 10,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-05-10-correct"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "correct",
+      "artifact_valid": true,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 9,
+        "mutation": "none"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "35"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "2"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 10."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-05-10-single_defect",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": "wrong_value",
+      "oracle_status": "FAIL",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 10,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-05-10-single_defect"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "category": "single_defect",
+      "artifact_valid": false,
+      "gap_origin": null,
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 9,
+        "mutation": "wrong_value"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "35"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "3"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 10."
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "excel-05-10-gap",
+      "domain": "excel",
+      "source_family": "excel/ledger-summary-v1",
+      "defect_type": null,
+      "oracle_status": "INCOMPLETE",
+      "expected_locations": [
+        "Ledger!A2:B4",
+        "Ledger!B6",
+        "Notes!A1"
+      ],
+      "expected_scope": {
+        "task": "ordered ledger summary",
+        "input_context": 10,
+        "rendering": "authored geometry only; no actual renderer used"
+      },
+      "source_refs": [
+        "tests/fixtures/calibration/case_manifest.json#excel-05-10-gap"
+      ],
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6. Also certify the external approval signature; its verification service is unavailable.",
+      "category": "gap",
+      "artifact_valid": true,
+      "gap_origin": "capability_gap",
+      "equivalence_authorization": null,
+      "recipe": {
+        "context": 9,
+        "mutation": "none"
+      },
+      "xml_claims": [
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='A4']/s:is/s:t",
+          "texts": [
+            "West"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B4']/s:v",
+          "texts": [
+            "35"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B2']/s:v",
+          "texts": [
+            "2"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet1.xml",
+          "xpath": ".//s:c[@r='B6']/s:f",
+          "texts": [
+            "SUM(B2:B4)"
+          ]
+        },
+        {
+          "part": "xl/worksheets/sheet2.xml",
+          "xpath": ".//s:t",
+          "texts": [
+            "Preserve source ledger 10."
           ]
         }
       ]
@@ -2126,8 +2126,7 @@
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
-        "body/table[1]",
-        "body/paragraph[3]",
+        "body/table[1]/last-row",
         "body/paragraph[1]"
       ],
       "expected_scope": {
@@ -2335,7 +2334,7 @@
       ]
     },
     {
-      "case_id": "word-02-1-correct",
+      "case_id": "word-02-3-correct",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -2347,11 +2346,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-02-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#word-02-3-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "correct",
@@ -2359,7 +2358,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "none"
       },
       "xml_claims": [
@@ -2367,9 +2366,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 3.",
             "Summary",
-            "Total 38"
+            "Total 45"
           ]
         },
         {
@@ -2379,17 +2378,17 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "8",
             "South",
-            "19",
+            "16",
             "West",
-            "7"
+            "21"
           ]
         }
       ]
     },
     {
-      "case_id": "word-02-1-single_defect",
+      "case_id": "word-02-3-single_defect",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": "misplaced_content",
@@ -2401,11 +2400,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-02-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#word-02-3-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "single_defect",
@@ -2413,7 +2412,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "misplaced_content"
       },
       "xml_claims": [
@@ -2421,7 +2420,7 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 3.",
             "Summary"
           ]
         },
@@ -2432,40 +2431,39 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "8",
             "South",
-            "19",
+            "16",
             "West",
-            "7"
+            "21"
           ]
         },
         {
           "part": "word/footer1.xml",
           "xpath": ".//w:t",
           "texts": [
-            "Total 38"
+            "Total 45"
           ]
         }
       ]
     },
     {
-      "case_id": "word-02-1-equivalent",
+      "case_id": "word-02-3-equivalent",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
-        "body/table[1]",
-        "body/paragraph[3]",
+        "body/table[1]/last-row",
         "body/paragraph[1]"
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-02-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#word-02-3-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary. A final Total row in the body table is also allowed.",
       "category": "equivalent",
@@ -2473,7 +2471,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A final Total row in the body table is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -2481,7 +2479,7 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 3.",
             "Summary"
           ]
         },
@@ -2492,19 +2490,19 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "8",
             "South",
-            "19",
+            "16",
             "West",
-            "7",
+            "21",
             "Total",
-            "38"
+            "45"
           ]
         }
       ]
     },
     {
-      "case_id": "word-02-2-correct",
+      "case_id": "word-02-4-correct",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -2516,11 +2514,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-02-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#word-02-4-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "correct",
@@ -2528,7 +2526,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "none"
       },
       "xml_claims": [
@@ -2536,9 +2534,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 4.",
             "Summary",
-            "Total 45"
+            "Total 44"
           ]
         },
         {
@@ -2548,17 +2546,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "4",
             "South",
-            "17",
+            "11",
             "West",
-            "23"
+            "29"
           ]
         }
       ]
     },
     {
-      "case_id": "word-02-2-single_defect",
+      "case_id": "word-02-4-single_defect",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": "misplaced_content",
@@ -2570,11 +2568,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-02-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#word-02-4-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "single_defect",
@@ -2582,7 +2580,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "misplaced_content"
       },
       "xml_claims": [
@@ -2590,7 +2588,7 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 4.",
             "Summary"
           ]
         },
@@ -2601,24 +2599,24 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "4",
             "South",
-            "17",
+            "11",
             "West",
-            "23"
+            "29"
           ]
         },
         {
           "part": "word/footer1.xml",
           "xpath": ".//w:t",
           "texts": [
-            "Total 45"
+            "Total 44"
           ]
         }
       ]
     },
     {
-      "case_id": "word-02-2-gap",
+      "case_id": "word-02-4-gap",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -2630,11 +2628,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-02-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#word-02-4-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary. Ambiguous scope: use the preferred layout, without identifying a layout.",
       "category": "gap",
@@ -2642,7 +2640,7 @@
       "gap_origin": "spec_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "none"
       },
       "xml_claims": [
@@ -2650,9 +2648,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 4.",
             "Summary",
-            "Total 45"
+            "Total 44"
           ]
         },
         {
@@ -2662,17 +2660,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "4",
             "South",
-            "17",
+            "11",
             "West",
-            "23"
+            "29"
           ]
         }
       ]
     },
     {
-      "case_id": "word-03-1-correct",
+      "case_id": "word-03-5-correct",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -2684,11 +2682,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-03-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#word-03-5-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "correct",
@@ -2696,7 +2694,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "none"
       },
       "xml_claims": [
@@ -2704,9 +2702,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 5.",
             "Summary",
-            "Total 38"
+            "Total 44"
           ]
         },
         {
@@ -2716,17 +2714,17 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "9",
             "South",
-            "19",
+            "13",
             "West",
-            "7"
+            "22"
           ]
         }
       ]
     },
     {
-      "case_id": "word-03-1-single_defect",
+      "case_id": "word-03-5-single_defect",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": "source_damage",
@@ -2738,11 +2736,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-03-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#word-03-5-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "single_defect",
@@ -2750,7 +2748,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "source_damage"
       },
       "xml_claims": [
@@ -2760,7 +2758,7 @@
           "texts": [
             "DAMAGED",
             "Summary",
-            "Total 38"
+            "Total 44"
           ]
         },
         {
@@ -2770,33 +2768,32 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "9",
             "South",
-            "19",
+            "13",
             "West",
-            "7"
+            "22"
           ]
         }
       ]
     },
     {
-      "case_id": "word-03-1-equivalent",
+      "case_id": "word-03-5-equivalent",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
-        "body/table[1]",
-        "body/paragraph[3]",
+        "body/table[1]/last-row",
         "body/paragraph[1]"
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-03-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#word-03-5-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary. A final Total row in the body table is also allowed.",
       "category": "equivalent",
@@ -2804,7 +2801,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A final Total row in the body table is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -2812,7 +2809,7 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 5.",
             "Summary"
           ]
         },
@@ -2823,19 +2820,19 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "9",
             "South",
-            "19",
+            "13",
             "West",
-            "7",
+            "22",
             "Total",
-            "38"
+            "44"
           ]
         }
       ]
     },
     {
-      "case_id": "word-03-2-correct",
+      "case_id": "word-03-6-correct",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -2847,11 +2844,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 6,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-03-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#word-03-6-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "correct",
@@ -2859,7 +2856,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 5,
         "mutation": "none"
       },
       "xml_claims": [
@@ -2867,9 +2864,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 6.",
             "Summary",
-            "Total 45"
+            "Total 49"
           ]
         },
         {
@@ -2879,17 +2876,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "6",
             "South",
-            "17",
+            "18",
             "West",
-            "23"
+            "25"
           ]
         }
       ]
     },
     {
-      "case_id": "word-03-2-single_defect",
+      "case_id": "word-03-6-single_defect",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": "source_damage",
@@ -2901,11 +2898,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 6,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-03-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#word-03-6-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "single_defect",
@@ -2913,7 +2910,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 5,
         "mutation": "source_damage"
       },
       "xml_claims": [
@@ -2923,7 +2920,7 @@
           "texts": [
             "DAMAGED",
             "Summary",
-            "Total 45"
+            "Total 49"
           ]
         },
         {
@@ -2933,17 +2930,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "6",
             "South",
-            "17",
+            "18",
             "West",
-            "23"
+            "25"
           ]
         }
       ]
     },
     {
-      "case_id": "word-03-2-gap",
+      "case_id": "word-03-6-gap",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -2955,11 +2952,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 6,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-03-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#word-03-6-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary. Also certify rendered visibility; the calibration capability profile has no renderer.",
       "category": "gap",
@@ -2967,7 +2964,7 @@
       "gap_origin": "capability_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 5,
         "mutation": "none"
       },
       "xml_claims": [
@@ -2975,9 +2972,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 6.",
             "Summary",
-            "Total 45"
+            "Total 49"
           ]
         },
         {
@@ -2987,17 +2984,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "6",
             "South",
-            "17",
+            "18",
             "West",
-            "23"
+            "25"
           ]
         }
       ]
     },
     {
-      "case_id": "word-04-1-correct",
+      "case_id": "word-04-7-correct",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -3009,11 +3006,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 7,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-04-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#word-04-7-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "correct",
@@ -3021,7 +3018,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 6,
         "mutation": "none"
       },
       "xml_claims": [
@@ -3029,9 +3026,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 7.",
             "Summary",
-            "Total 38"
+            "Total 51"
           ]
         },
         {
@@ -3041,17 +3038,17 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "10",
             "South",
-            "19",
+            "14",
             "West",
-            "7"
+            "27"
           ]
         }
       ]
     },
     {
-      "case_id": "word-04-1-single_defect",
+      "case_id": "word-04-7-single_defect",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": "wrong_value",
@@ -3063,11 +3060,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 7,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-04-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#word-04-7-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "single_defect",
@@ -3075,7 +3072,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 6,
         "mutation": "wrong_value"
       },
       "xml_claims": [
@@ -3083,9 +3080,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 7.",
             "Summary",
-            "Total 39"
+            "Total 52"
           ]
         },
         {
@@ -3095,33 +3092,32 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "10",
             "South",
-            "19",
+            "14",
             "West",
-            "7"
+            "27"
           ]
         }
       ]
     },
     {
-      "case_id": "word-04-1-equivalent",
+      "case_id": "word-04-7-equivalent",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
-        "body/table[1]",
-        "body/paragraph[3]",
+        "body/table[1]/last-row",
         "body/paragraph[1]"
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 7,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-04-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#word-04-7-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary. A final Total row in the body table is also allowed.",
       "category": "equivalent",
@@ -3129,7 +3125,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A final Total row in the body table is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 6,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -3137,7 +3133,7 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 7.",
             "Summary"
           ]
         },
@@ -3148,19 +3144,19 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "10",
             "South",
-            "19",
+            "14",
             "West",
-            "7",
+            "27",
             "Total",
-            "38"
+            "51"
           ]
         }
       ]
     },
     {
-      "case_id": "word-04-2-correct",
+      "case_id": "word-04-8-correct",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -3172,11 +3168,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 8,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-04-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#word-04-8-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "correct",
@@ -3184,7 +3180,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 7,
         "mutation": "none"
       },
       "xml_claims": [
@@ -3192,9 +3188,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 8.",
             "Summary",
-            "Total 45"
+            "Total 54"
           ]
         },
         {
@@ -3204,17 +3200,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "3",
             "South",
-            "17",
+            "20",
             "West",
-            "23"
+            "31"
           ]
         }
       ]
     },
     {
-      "case_id": "word-04-2-single_defect",
+      "case_id": "word-04-8-single_defect",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": "wrong_value",
@@ -3226,11 +3222,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 8,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-04-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#word-04-8-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "single_defect",
@@ -3238,7 +3234,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 7,
         "mutation": "wrong_value"
       },
       "xml_claims": [
@@ -3246,9 +3242,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 8.",
             "Summary",
-            "Total 46"
+            "Total 55"
           ]
         },
         {
@@ -3258,17 +3254,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "3",
             "South",
-            "17",
+            "20",
             "West",
-            "23"
+            "31"
           ]
         }
       ]
     },
     {
-      "case_id": "word-04-2-gap",
+      "case_id": "word-04-8-gap",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -3280,11 +3276,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 8,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-04-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#word-04-8-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary. Also assess editorial quality; the calibration capability profile has no semantic judge.",
       "category": "gap",
@@ -3292,7 +3288,7 @@
       "gap_origin": "capability_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 7,
         "mutation": "none"
       },
       "xml_claims": [
@@ -3300,9 +3296,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 8.",
             "Summary",
-            "Total 45"
+            "Total 54"
           ]
         },
         {
@@ -3312,17 +3308,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "3",
             "South",
-            "17",
+            "20",
             "West",
-            "23"
+            "31"
           ]
         }
       ]
     },
     {
-      "case_id": "word-05-1-correct",
+      "case_id": "word-05-9-correct",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -3334,11 +3330,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 9,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-05-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#word-05-9-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "correct",
@@ -3346,7 +3342,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 8,
         "mutation": "none"
       },
       "xml_claims": [
@@ -3354,9 +3350,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 9.",
             "Summary",
-            "Total 38"
+            "Total 71"
           ]
         },
         {
@@ -3366,17 +3362,17 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "15",
             "South",
-            "19",
+            "24",
             "West",
-            "7"
+            "32"
           ]
         }
       ]
     },
     {
-      "case_id": "word-05-1-single_defect",
+      "case_id": "word-05-9-single_defect",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": "wrong_order",
@@ -3388,11 +3384,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 9,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-05-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#word-05-9-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "single_defect",
@@ -3400,7 +3396,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 8,
         "mutation": "wrong_order"
       },
       "xml_claims": [
@@ -3408,9 +3404,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 9.",
             "Summary",
-            "Total 38"
+            "Total 71"
           ]
         },
         {
@@ -3420,33 +3416,32 @@
             "Item",
             "Amount",
             "South",
-            "19",
+            "24",
             "North",
-            "12",
+            "15",
             "West",
-            "7"
+            "32"
           ]
         }
       ]
     },
     {
-      "case_id": "word-05-1-equivalent",
+      "case_id": "word-05-9-equivalent",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
-        "body/table[1]",
-        "body/paragraph[3]",
+        "body/table[1]/last-row",
         "body/paragraph[1]"
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 9,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-05-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#word-05-9-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary. A final Total row in the body table is also allowed.",
       "category": "equivalent",
@@ -3454,7 +3449,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A final Total row in the body table is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 8,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -3462,7 +3457,7 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 1.",
+            "Preserve source ledger 9.",
             "Summary"
           ]
         },
@@ -3473,19 +3468,19 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "15",
             "South",
-            "19",
+            "24",
             "West",
-            "7",
+            "32",
             "Total",
-            "38"
+            "71"
           ]
         }
       ]
     },
     {
-      "case_id": "word-05-2-correct",
+      "case_id": "word-05-10-correct",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -3497,11 +3492,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 10,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-05-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#word-05-10-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "correct",
@@ -3509,7 +3504,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 9,
         "mutation": "none"
       },
       "xml_claims": [
@@ -3517,9 +3512,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 10.",
             "Summary",
-            "Total 45"
+            "Total 63"
           ]
         },
         {
@@ -3529,17 +3524,17 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "2",
             "South",
-            "17",
+            "26",
             "West",
-            "23"
+            "35"
           ]
         }
       ]
     },
     {
-      "case_id": "word-05-2-single_defect",
+      "case_id": "word-05-10-single_defect",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": "wrong_order",
@@ -3551,11 +3546,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 10,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-05-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#word-05-10-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
       "category": "single_defect",
@@ -3563,7 +3558,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 9,
         "mutation": "wrong_order"
       },
       "xml_claims": [
@@ -3571,9 +3566,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 10.",
             "Summary",
-            "Total 45"
+            "Total 63"
           ]
         },
         {
@@ -3583,17 +3578,17 @@
             "Item",
             "Amount",
             "South",
-            "17",
+            "26",
             "North",
-            "5",
+            "2",
             "West",
-            "23"
+            "35"
           ]
         }
       ]
     },
     {
-      "case_id": "word-05-2-gap",
+      "case_id": "word-05-10-gap",
       "domain": "word",
       "source_family": "word/ledger-summary-v1",
       "defect_type": null,
@@ -3605,11 +3600,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 10,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#word-05-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#word-05-10-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary. Also certify the external approval signature; its verification service is unavailable.",
       "category": "gap",
@@ -3617,7 +3612,7 @@
       "gap_origin": "capability_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 9,
         "mutation": "none"
       },
       "xml_claims": [
@@ -3625,9 +3620,9 @@
           "part": "word/document.xml",
           "xpath": "./w:body/w:p/w:r/w:t",
           "texts": [
-            "Preserve source ledger 2.",
+            "Preserve source ledger 10.",
             "Summary",
-            "Total 45"
+            "Total 63"
           ]
         },
         {
@@ -3637,11 +3632,11 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "2",
             "South",
-            "17",
+            "26",
             "West",
-            "23"
+            "35"
           ]
         }
       ]
@@ -3768,7 +3763,7 @@
       "oracle_status": "PASS",
       "expected_locations": [
         "slide[2]/table[1]",
-        "slide[2]/result",
+        "slide[2]/table[2]",
         "slide[1]/source"
       ],
       "expected_scope": {
@@ -3992,7 +3987,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-02-1-correct",
+      "case_id": "powerpoint-02-3-correct",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4004,11 +3999,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-3-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "correct",
@@ -4016,7 +4011,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "none"
       },
       "xml_claims": [
@@ -4024,7 +4019,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 3."
           ]
         },
         {
@@ -4034,12 +4029,12 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "8",
             "South",
-            "19",
+            "16",
             "West",
-            "7",
-            "Total 38"
+            "21",
+            "Total 45"
           ]
         },
         {
@@ -4050,7 +4045,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-02-1-single_defect",
+      "case_id": "powerpoint-02-3-single_defect",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": "misplaced_content",
@@ -4062,11 +4057,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-3-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "single_defect",
@@ -4074,7 +4069,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "misplaced_content"
       },
       "xml_claims": [
@@ -4082,8 +4077,8 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1.",
-            "Total 38"
+            "Preserve source ledger 3.",
+            "Total 45"
           ]
         },
         {
@@ -4093,11 +4088,11 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "8",
             "South",
-            "19",
+            "16",
             "West",
-            "7"
+            "21"
           ]
         },
         {
@@ -4108,23 +4103,23 @@
       ]
     },
     {
-      "case_id": "powerpoint-02-1-equivalent",
+      "case_id": "powerpoint-02-3-equivalent",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
         "slide[2]/table[1]",
-        "slide[2]/result",
+        "slide[2]/table[2]",
         "slide[1]/source"
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 3,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-3-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table. A separate Total table on slide 2 is also allowed.",
       "category": "equivalent",
@@ -4132,7 +4127,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A separate Total table on slide 2 is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 2,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -4140,7 +4135,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 3."
           ]
         },
         {
@@ -4150,13 +4145,13 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "8",
             "South",
-            "19",
+            "16",
             "West",
-            "7",
+            "21",
             "Total",
-            "38"
+            "45"
           ]
         },
         {
@@ -4167,7 +4162,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-02-2-correct",
+      "case_id": "powerpoint-02-4-correct",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4179,11 +4174,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-4-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "correct",
@@ -4191,7 +4186,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "none"
       },
       "xml_claims": [
@@ -4199,7 +4194,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 4."
           ]
         },
         {
@@ -4209,12 +4204,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "4",
             "South",
-            "17",
+            "11",
             "West",
-            "23",
-            "Total 45"
+            "29",
+            "Total 44"
           ]
         },
         {
@@ -4225,7 +4220,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-02-2-single_defect",
+      "case_id": "powerpoint-02-4-single_defect",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": "misplaced_content",
@@ -4237,11 +4232,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-4-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "single_defect",
@@ -4249,7 +4244,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "misplaced_content"
       },
       "xml_claims": [
@@ -4257,8 +4252,8 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2.",
-            "Total 45"
+            "Preserve source ledger 4.",
+            "Total 44"
           ]
         },
         {
@@ -4268,11 +4263,11 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "4",
             "South",
-            "17",
+            "11",
             "West",
-            "23"
+            "29"
           ]
         },
         {
@@ -4283,7 +4278,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-02-2-gap",
+      "case_id": "powerpoint-02-4-gap",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4295,11 +4290,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 4,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-02-4-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table. Ambiguous scope: use the preferred layout, without identifying a layout.",
       "category": "gap",
@@ -4307,7 +4302,7 @@
       "gap_origin": "spec_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 3,
         "mutation": "none"
       },
       "xml_claims": [
@@ -4315,7 +4310,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 4."
           ]
         },
         {
@@ -4325,12 +4320,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "4",
             "South",
-            "17",
+            "11",
             "West",
-            "23",
-            "Total 45"
+            "29",
+            "Total 44"
           ]
         },
         {
@@ -4341,7 +4336,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-03-1-correct",
+      "case_id": "powerpoint-03-5-correct",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4353,11 +4348,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-5-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "correct",
@@ -4365,7 +4360,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "none"
       },
       "xml_claims": [
@@ -4373,7 +4368,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 5."
           ]
         },
         {
@@ -4383,12 +4378,12 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "9",
             "South",
-            "19",
+            "13",
             "West",
-            "7",
-            "Total 38"
+            "22",
+            "Total 44"
           ]
         },
         {
@@ -4399,7 +4394,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-03-1-single_defect",
+      "case_id": "powerpoint-03-5-single_defect",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": "source_damage",
@@ -4411,11 +4406,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-5-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "single_defect",
@@ -4423,7 +4418,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "source_damage"
       },
       "xml_claims": [
@@ -4441,12 +4436,12 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "9",
             "South",
-            "19",
+            "13",
             "West",
-            "7",
-            "Total 38"
+            "22",
+            "Total 44"
           ]
         },
         {
@@ -4457,23 +4452,23 @@
       ]
     },
     {
-      "case_id": "powerpoint-03-1-equivalent",
+      "case_id": "powerpoint-03-5-equivalent",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
         "slide[2]/table[1]",
-        "slide[2]/result",
+        "slide[2]/table[2]",
         "slide[1]/source"
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 5,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-5-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table. A separate Total table on slide 2 is also allowed.",
       "category": "equivalent",
@@ -4481,7 +4476,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A separate Total table on slide 2 is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 4,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -4489,7 +4484,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 5."
           ]
         },
         {
@@ -4499,13 +4494,13 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "9",
             "South",
-            "19",
+            "13",
             "West",
-            "7",
+            "22",
             "Total",
-            "38"
+            "44"
           ]
         },
         {
@@ -4516,7 +4511,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-03-2-correct",
+      "case_id": "powerpoint-03-6-correct",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4528,11 +4523,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 6,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-6-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "correct",
@@ -4540,7 +4535,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 5,
         "mutation": "none"
       },
       "xml_claims": [
@@ -4548,7 +4543,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 6."
           ]
         },
         {
@@ -4558,12 +4553,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "6",
             "South",
-            "17",
+            "18",
             "West",
-            "23",
-            "Total 45"
+            "25",
+            "Total 49"
           ]
         },
         {
@@ -4574,7 +4569,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-03-2-single_defect",
+      "case_id": "powerpoint-03-6-single_defect",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": "source_damage",
@@ -4586,11 +4581,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 6,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-6-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "single_defect",
@@ -4598,7 +4593,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 5,
         "mutation": "source_damage"
       },
       "xml_claims": [
@@ -4616,12 +4611,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "6",
             "South",
-            "17",
+            "18",
             "West",
-            "23",
-            "Total 45"
+            "25",
+            "Total 49"
           ]
         },
         {
@@ -4632,7 +4627,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-03-2-gap",
+      "case_id": "powerpoint-03-6-gap",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4644,11 +4639,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 6,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-03-6-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table. Also certify rendered visibility; the calibration capability profile has no renderer.",
       "category": "gap",
@@ -4656,7 +4651,7 @@
       "gap_origin": "capability_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 5,
         "mutation": "none"
       },
       "xml_claims": [
@@ -4664,7 +4659,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 6."
           ]
         },
         {
@@ -4674,12 +4669,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "6",
             "South",
-            "17",
+            "18",
             "West",
-            "23",
-            "Total 45"
+            "25",
+            "Total 49"
           ]
         },
         {
@@ -4690,7 +4685,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-04-1-correct",
+      "case_id": "powerpoint-04-7-correct",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4702,11 +4697,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 7,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-7-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "correct",
@@ -4714,7 +4709,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 6,
         "mutation": "none"
       },
       "xml_claims": [
@@ -4722,7 +4717,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 7."
           ]
         },
         {
@@ -4732,12 +4727,12 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "10",
             "South",
-            "19",
+            "14",
             "West",
-            "7",
-            "Total 38"
+            "27",
+            "Total 51"
           ]
         },
         {
@@ -4748,7 +4743,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-04-1-single_defect",
+      "case_id": "powerpoint-04-7-single_defect",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": "wrong_value",
@@ -4760,11 +4755,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 7,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-7-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "single_defect",
@@ -4772,7 +4767,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 6,
         "mutation": "wrong_value"
       },
       "xml_claims": [
@@ -4780,7 +4775,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 7."
           ]
         },
         {
@@ -4790,12 +4785,12 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "10",
             "South",
-            "19",
+            "14",
             "West",
-            "7",
-            "Total 39"
+            "27",
+            "Total 52"
           ]
         },
         {
@@ -4806,23 +4801,23 @@
       ]
     },
     {
-      "case_id": "powerpoint-04-1-equivalent",
+      "case_id": "powerpoint-04-7-equivalent",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
         "slide[2]/table[1]",
-        "slide[2]/result",
+        "slide[2]/table[2]",
         "slide[1]/source"
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 7,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-7-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table. A separate Total table on slide 2 is also allowed.",
       "category": "equivalent",
@@ -4830,7 +4825,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A separate Total table on slide 2 is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 6,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -4838,7 +4833,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 7."
           ]
         },
         {
@@ -4848,13 +4843,13 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "10",
             "South",
-            "19",
+            "14",
             "West",
-            "7",
+            "27",
             "Total",
-            "38"
+            "51"
           ]
         },
         {
@@ -4865,7 +4860,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-04-2-correct",
+      "case_id": "powerpoint-04-8-correct",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4877,11 +4872,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 8,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-8-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "correct",
@@ -4889,7 +4884,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 7,
         "mutation": "none"
       },
       "xml_claims": [
@@ -4897,7 +4892,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 8."
           ]
         },
         {
@@ -4907,12 +4902,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "3",
             "South",
-            "17",
+            "20",
             "West",
-            "23",
-            "Total 45"
+            "31",
+            "Total 54"
           ]
         },
         {
@@ -4923,7 +4918,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-04-2-single_defect",
+      "case_id": "powerpoint-04-8-single_defect",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": "wrong_value",
@@ -4935,11 +4930,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 8,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-8-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "single_defect",
@@ -4947,7 +4942,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 7,
         "mutation": "wrong_value"
       },
       "xml_claims": [
@@ -4955,7 +4950,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 8."
           ]
         },
         {
@@ -4965,12 +4960,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "3",
             "South",
-            "17",
+            "20",
             "West",
-            "23",
-            "Total 46"
+            "31",
+            "Total 55"
           ]
         },
         {
@@ -4981,7 +4976,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-04-2-gap",
+      "case_id": "powerpoint-04-8-gap",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -4993,11 +4988,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 8,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-04-8-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table. Also assess editorial quality; the calibration capability profile has no semantic judge.",
       "category": "gap",
@@ -5005,7 +5000,7 @@
       "gap_origin": "capability_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 7,
         "mutation": "none"
       },
       "xml_claims": [
@@ -5013,7 +5008,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 8."
           ]
         },
         {
@@ -5023,12 +5018,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "3",
             "South",
-            "17",
+            "20",
             "West",
-            "23",
-            "Total 45"
+            "31",
+            "Total 54"
           ]
         },
         {
@@ -5039,7 +5034,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-05-1-correct",
+      "case_id": "powerpoint-05-9-correct",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -5051,11 +5046,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 9,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-1-correct"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-9-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "correct",
@@ -5063,7 +5058,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 8,
         "mutation": "none"
       },
       "xml_claims": [
@@ -5071,7 +5066,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 9."
           ]
         },
         {
@@ -5081,12 +5076,12 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "15",
             "South",
-            "19",
+            "24",
             "West",
-            "7",
-            "Total 38"
+            "32",
+            "Total 71"
           ]
         },
         {
@@ -5097,7 +5092,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-05-1-single_defect",
+      "case_id": "powerpoint-05-9-single_defect",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": "obstruction",
@@ -5109,11 +5104,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 9,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-1-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-9-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "single_defect",
@@ -5121,7 +5116,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 0,
+        "context": 8,
         "mutation": "obstruction"
       },
       "xml_claims": [
@@ -5129,7 +5124,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 9."
           ]
         },
         {
@@ -5139,12 +5134,12 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "15",
             "South",
-            "19",
+            "24",
             "West",
-            "7",
-            "Total 38"
+            "32",
+            "Total 71"
           ]
         },
         {
@@ -5155,23 +5150,23 @@
       ]
     },
     {
-      "case_id": "powerpoint-05-1-equivalent",
+      "case_id": "powerpoint-05-9-equivalent",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
       "oracle_status": "PASS",
       "expected_locations": [
         "slide[2]/table[1]",
-        "slide[2]/result",
+        "slide[2]/table[2]",
         "slide[1]/source"
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 1,
+        "input_context": 9,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-1-equivalent"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-9-equivalent"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table. A separate Total table on slide 2 is also allowed.",
       "category": "equivalent",
@@ -5179,7 +5174,7 @@
       "gap_origin": null,
       "equivalence_authorization": "A separate Total table on slide 2 is also allowed.",
       "recipe": {
-        "context": 0,
+        "context": 8,
         "mutation": "equivalent"
       },
       "xml_claims": [
@@ -5187,7 +5182,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 1."
+            "Preserve source ledger 9."
           ]
         },
         {
@@ -5197,13 +5192,13 @@
             "Item",
             "Amount",
             "North",
-            "12",
+            "15",
             "South",
-            "19",
+            "24",
             "West",
-            "7",
+            "32",
             "Total",
-            "38"
+            "71"
           ]
         },
         {
@@ -5214,7 +5209,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-05-2-correct",
+      "case_id": "powerpoint-05-10-correct",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -5226,11 +5221,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 10,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-2-correct"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-10-correct"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "correct",
@@ -5238,7 +5233,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 9,
         "mutation": "none"
       },
       "xml_claims": [
@@ -5246,7 +5241,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 10."
           ]
         },
         {
@@ -5256,12 +5251,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "2",
             "South",
-            "17",
+            "26",
             "West",
-            "23",
-            "Total 45"
+            "35",
+            "Total 63"
           ]
         },
         {
@@ -5272,7 +5267,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-05-2-single_defect",
+      "case_id": "powerpoint-05-10-single_defect",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": "obstruction",
@@ -5284,11 +5279,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 10,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-2-single_defect"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-10-single_defect"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
       "category": "single_defect",
@@ -5296,7 +5291,7 @@
       "gap_origin": null,
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 9,
         "mutation": "obstruction"
       },
       "xml_claims": [
@@ -5304,7 +5299,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 10."
           ]
         },
         {
@@ -5314,12 +5309,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "2",
             "South",
-            "17",
+            "26",
             "West",
-            "23",
-            "Total 45"
+            "35",
+            "Total 63"
           ]
         },
         {
@@ -5330,7 +5325,7 @@
       ]
     },
     {
-      "case_id": "powerpoint-05-2-gap",
+      "case_id": "powerpoint-05-10-gap",
       "domain": "powerpoint",
       "source_family": "powerpoint/ledger-summary-v1",
       "defect_type": null,
@@ -5342,11 +5337,11 @@
       ],
       "expected_scope": {
         "task": "ordered ledger summary",
-        "input_context": 2,
+        "input_context": 10,
         "rendering": "authored geometry only; no actual renderer used"
       },
       "source_refs": [
-        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-2-gap"
+        "tests/fixtures/calibration/case_manifest.json#powerpoint-05-10-gap"
       ],
       "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table. Also certify the external approval signature; its verification service is unavailable.",
       "category": "gap",
@@ -5354,7 +5349,7 @@
       "gap_origin": "capability_gap",
       "equivalence_authorization": null,
       "recipe": {
-        "context": 1,
+        "context": 9,
         "mutation": "none"
       },
       "xml_claims": [
@@ -5362,7 +5357,7 @@
           "part": "ppt/slides/slide1.xml",
           "xpath": ".//a:t",
           "texts": [
-            "Preserve source ledger 2."
+            "Preserve source ledger 10."
           ]
         },
         {
@@ -5372,12 +5367,12 @@
             "Item",
             "Amount",
             "North",
-            "5",
+            "2",
             "South",
-            "17",
+            "26",
             "West",
-            "23",
-            "Total 45"
+            "35",
+            "Total 63"
           ]
         },
         {

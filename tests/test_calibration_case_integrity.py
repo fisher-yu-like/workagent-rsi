@@ -29,6 +29,9 @@ def test_balanced_corpus_with_separate_truth(corpus):
             'correct': 10, 'single_defect': 10, 'equivalent': 5, 'gap': 5}
     assert Counter(c.oracle_status for c in cases) == {'PASS': 45, 'FAIL': 30, 'INCOMPLETE': 15}
     assert len({c.case_id for c in cases}) == 90
+    assert len({c.input_hash for c in cases}) == 30
+    for domain in ('excel', 'word', 'powerpoint'):
+        assert len({c.artifact_hash for c in cases if c.domain == domain and c.category == 'correct'}) == 10
     for c in cases:
         assert c.source_refs and c.expected_locations and c.expected_scope
         assert c.artifact_hash == hashlib.sha256((root / c.artifact_path).read_bytes()).hexdigest()

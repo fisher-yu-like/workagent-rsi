@@ -1,0 +1,234 @@
+{
+  "task_id": "T26",
+  "status": "blocked",
+  "local_status": "completed",
+  "data_scale_status": "blocked",
+  "evaluator_service_status": "unprovisioned",
+  "delivery_level": "local_engineering",
+  "evidence_bundle": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
+  "bundle_files": 36,
+  "latest_full_validation": {
+    "passed": 710,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+  },
+  "focused_profile": {
+    "profile": "calibration-splits",
+    "type": "selection from the completed full run; no second execution",
+    "source_run": "project_artifacts\\results\\hardening-v2\\T25-T26-final-full\\20261025T015339198696Z\\run.json",
+    "source_run_sha256": "ca456f50da01726d87cb750cf01a696aa2e243e45923ed0a9ecd3e54069b79f2",
+    "counts": {
+      "passed": 23
+    },
+    "cases": [
+      {
+        "node": "tests.test_calibration_case_integrity::test_balanced_corpus_with_separate_truth",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_calibration_case_integrity::test_every_office_file_reopens_and_matches_authored_xml_claims",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_calibration_case_integrity::test_gaps_and_equivalents_are_not_bad_artifacts",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_calibration_case_integrity::test_rebuild_is_byte_reproducible_and_tamper_fails",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_external_dataset::test_external_manifest_is_metadata_only_and_has_official_sources",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_external_dataset::test_external_intake_refuses_download_without_verified_license",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_external_dataset::test_external_quality_checker_passes_without_external_files",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_external_dataset::test_verified_archive_download_is_checksum_checked_and_recorded",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_external_dataset::test_verified_archive_download_rejects_checksum_mismatch",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_grouped_assignment_precedes_variants_and_is_reproducible",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_any_shared_identity_cannot_cross_splits[family_id]",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_any_shared_identity_cannot_cross_splits[source_document_id]",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_any_shared_identity_cannot_cross_splits[source_hash]",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_any_shared_identity_cannot_cross_splits[variant_ids]",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_any_shared_identity_cannot_cross_splits[base_task_id]",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_final_content_is_separate_from_developer_and_candidate_views",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_final_input_snapshot_is_hashed_and_tampering_rejected",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_final_seal_rejects_exposed_content_and_incomplete_task_binding",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_insufficient_families_are_blocked_not_padded",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_legacy_hidden_mapping_is_explicit_and_final_never_enters_adaptive_loop",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_runner_applies_mapping_before_execution_and_writes_role_record",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_runner_rejects_formal_inventory_gaps_before_creating_output",
+        "status": "passed",
+        "detail": null
+      },
+      {
+        "node": "tests.test_family_split_isolation::test_final_callback_failure_consumes_set_and_mutation_cannot_pass",
+        "status": "passed",
+        "detail": null
+      }
+    ]
+  },
+  "red_evidence": "project_artifacts/results/hardening-v2/T26-red/20261025T014357491509Z",
+  "red_reason": "Task-specific module/interface absent; not a missing external dependency.",
+  "inventory_evidence": "project_artifacts/results/hardening-v2/T26-inventory/20261025T015510977206Z",
+  "inventory": {
+    "actual_base_tasks": 30,
+    "actual_instances": 90,
+    "blockers": [
+      "Independent base tasks do not meet per-domain 8/4/4/4/4 targets.",
+      "Each base task needs three distinct, input-hashed variants.",
+      "Independent, unexposed task sources and evaluator-service deployment are not provisioned."
+    ],
+    "calibration_case_count": 90,
+    "calibration_source_family_count": 3,
+    "family_count": 3,
+    "final_content_available": false,
+    "final_test_count": 0,
+    "formal_admitted_base_tasks": 0,
+    "formal_admitted_instances": 0,
+    "legacy_pilot_family_count": 3,
+    "legacy_pilot_family_split_overlap": {
+      "excel_generated_v1": [
+        "develop",
+        "evolve",
+        "ood_transfer",
+        "promotion_validation",
+        "regression"
+      ],
+      "powerpoint_generated_v1": [
+        "develop",
+        "evolve",
+        "ood_transfer",
+        "promotion_validation",
+        "regression"
+      ],
+      "word_generated_v1": [
+        "develop",
+        "evolve",
+        "ood_transfer",
+        "promotion_validation",
+        "regression"
+      ]
+    },
+    "legacy_pilot_task_count": 30,
+    "limitation": "Calibration cases are exposed, repeated output controls, not three independent input variants per base. Legacy pilot families already cross splits. Neither is an untouched final set.",
+    "per_domain_splits": {
+      "excel": {
+        "develop": 10
+      },
+      "powerpoint": {
+        "develop": 10
+      },
+      "word": {
+        "develop": 10
+      }
+    },
+    "schema_version": "family-split-quality-v1",
+    "scope": "manifest integrity; file admission and deployment isolation remain separate",
+    "source_document_count": 30,
+    "source_kind": "project-generated",
+    "status": "blocked",
+    "target_base_tasks": 72,
+    "target_instances": 216
+  },
+  "source_hashes": {
+    "src/workagent_rsi/dataset_splits.py": "ecd75264d03c94d6b7dfde7876aea5a58b664c71fa69f19ef60b61698d74de32",
+    "src/workagent_rsi/workagent_experiment.py": "cadea28524ea7397e8cdd68aafcdd20a6f9048c0dc3ffade199436792dfb35b7",
+    "tests/test_family_split_isolation.py": "4a26c284817e01b4075b827c04d0375ae78365be5b497c628410adb0b431c921",
+    "project_artifacts/phase3_experiments/data/quality_check.py": "45fc53c20047a1dbc521e6b276e6dfda21791f3f38d419e4ecfaf6af9c78de84",
+    "project_artifacts/phase3_experiments/scripts/audit_family_inventory.py": "7fb7e6fe455a756c6e38a9f19c9af92dcc24c6d03e81ba276043a943474f7127",
+    "project_artifacts/phase3_experiments/scripts/run_hardening_checks.py": "5c092a0aade30d70a1502731bfd6e162b46c76188bf5b3cd1447974de438ab14",
+    "project_artifacts/phase3_experiments/configs/evaluation_protocol_v2.json": "6dda7f77d772fb646342ed2f7a080af72f2824e6b5defea52e1e5890a7a66df1"
+  },
+  "completed": [
+    "Whole-family/source/hash assignment before variants; overlap rejection.",
+    "Explicit legacy hidden -> promotion_validation mapping and runner task/domain binding.",
+    "No final_test in adaptive RSI; evaluator-only snapshot/hash/count interface and one-use guard.",
+    "Actual exposed-material inventory and honest scale/admission blocker.",
+    "Fixed focused test profile; shared corpus fixture; one completed final full run."
+  ],
+  "remaining": [
+    "Independently sourced task families sufficient for 72 bases and 216 input variants.",
+    "Unexposed final content, frozen after development; current final count is zero.",
+    "Separate evaluator principal/service and candidate/developer mount isolation."
+  ],
+  "live_model_calls": 0,
+  "server_operations": 0,
+  "limitations": [
+    "Local application tests do not prove production deployment isolation.",
+    "No final corpus was created or evaluated. No benchmark accuracy or RSI gain claim."
+  ]
+}

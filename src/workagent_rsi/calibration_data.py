@@ -9,13 +9,14 @@ from __future__ import annotations
 from datetime import datetime
 import json
 import re
-from pathlib import Path, PurePosixPath
+from pathlib import Path
 from typing import Literal
 from zipfile import ZipFile, ZipInfo, ZIP_DEFLATED
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from .hashing import sha256_file
+from .view_safety import checked_path, ordinary_file, relative_reference
 
 
 class CalibrationCase(BaseModel):
@@ -60,11 +61,9 @@ class CalibrationCase(BaseModel):
 
 
 def _contained(root: Path, name: str) -> Path:
-    value = PurePosixPath(name)
-    if not name or '\\' in name or ':' in name or value.is_absolute() or '..' in value.parts:
-        raise ValueError('invalid calibration relative path')
-    path = root / name
-    if not path.resolve().is_relative_to(root.resolve()) or any(p.is_symlink() or p.is_junction() for p in [path, *path.parents] if p != root.parent):
+    relative_reference(name)
+    path = checked_path(root / name)
+    if not path.resolve().is_relative_to(root.resolve()):
         raise ValueError('calibration path escapes corpus')
     return path
 
@@ -85,7 +84,8 @@ def _freeze_zip(path: Path) -> None:
 
 def _write_office(path: Path, domain: str, context: int, mutation: str) -> None:
     # Independent construction: no production evaluator, oracle or XML claim reader.
-    values = ([12, 19, 7], [5, 17, 23])[context]
+    values = ([12, 19, 7], [5, 17, 23], [8, 16, 21], [4, 11, 29], [9, 13, 22],
+              [6, 18, 25], [10, 14, 27], [3, 20, 31], [15, 24, 32], [2, 26, 35])[context]
     total = sum(values)
     protected = f'Preserve source ledger {context + 1}.'
     damaged = mutation == 'source_damage'
@@ -171,7 +171,7 @@ def _write_office(path: Path, domain: str, context: int, mutation: str) -> None:
 
 
 def build_calibration_cases(root: str | Path, truth_manifest: str | Path) -> list[CalibrationCase]:
-    root, truth_manifest = Path(root), Path(truth_manifest)
+    root, truth_manifest = checked_path(root), Path(truth_manifest)
     if root.exists() and any(root.iterdir()):
         raise FileExistsError(root)
     authored = json.loads(truth_manifest.read_text(encoding='utf-8'))
@@ -226,6 +226,6 @@ def load_calibration_cases(manifest: str | Path) -> list[CalibrationCase]:
         if case.truth_source_hash != truth_hash or case.seed != truth['seed'] or any(case.model_dump()[k] != v for k, v in expected.items()):
             raise ValueError('calibration truth hash or label mismatch')
         for name, expected in [(case.artifact_path, case.artifact_hash), (case.input_path, case.input_hash)]:
-            if sha256_file(_contained(manifest.parent, name)) != expected:
+            if sha256_file(ordinary_file(_contained(manifest.parent, name))) != expected:
                 raise ValueError('calibration file hash mismatch')
     return cases

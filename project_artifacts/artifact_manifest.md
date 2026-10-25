@@ -155,3 +155,5 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 - Final full692/focused129 pass; authored engineering pass does not establish live model, new sandbox or research qualification.
 
 - T25: `formal_study/hardening_t25_calibration_materials.json`, `../docs/calibration_materials.md`, development-only truth in `tests/fixtures/calibration/case_manifest.json`.
+
+- T26: `formal_study/hardening_t26_family_splits.json`, `../docs/dataset_splits.md`, `phase3_experiments/configs/evaluation_protocol_v2.json`; local interface delivered, data/deployment blocked.

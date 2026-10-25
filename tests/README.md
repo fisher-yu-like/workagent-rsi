@@ -1,5 +1,27 @@
 # Tests
 
+## Focused checks for current work
+
+For changes limited to calibration data and grouped splits, use the fixed
+profile below. It covers corpus integrity, family/source/variant overlap,
+legacy mapping, the runner boundary, one-use final storage and external-data
+license gates. It does not replace the release/handoff regression.
+
+```powershell
+& .venv/Scripts/python.exe project_artifacts/phase3_experiments/scripts/run_hardening_checks.py local-data --profile calibration-splits
+& .venv/Scripts/python.exe project_artifacts/phase3_experiments/scripts/run_hardening_checks.py handoff-full --profile full
+```
+
+Use the focused profile while developing, then run the full profile once after
+the batch is frozen. Profiles cannot be combined with custom pytest selectors
+or flags. Omitting both a profile and explicit test paths retains the complete
+suite. No regression is skipped, xfailed or removed by default.
+
+T25's four grouped tests inspect all 90 cases through one shared corpus fixture.
+Only the reproducibility check builds a second copy. Evidence packaging reuses
+these generated files rather than building a third corpus. The number of test
+functions is not the number of files or independent facts checked.
+
 All automated tests for WorkAgent-RSI live directly in this single top-level directory. The suite covers contracts, storage, orchestration, Office adapters/evaluators, path safety, candidate isolation/provider execution, deterministic diagnosis, leakage verification, frozen evaluation, immutable registry, promotion/rollback and E01-E12 orchestration. No phase-specific test subdirectories are used.
 
 ## Current hardening handoff

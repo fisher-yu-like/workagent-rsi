@@ -390,3 +390,13 @@ Removed fixed answer rules and task-ID strategy selection; retained generic Offi
 ## 2026-10-25 T25 development calibration materials
 
 Built 90 actual Office cases, with separately authored truth and input/output hashes. Four grouped tests passed after a real reproducibility failure exposed unfrozen core dates. No production evaluator labels, model calls or remote execution. These are three development source families, not an independent final set. Evidence: `formal_study/hardening_t25_calibration_materials.json`.
+
+## 2026-10-25 T26 local boundary and dataset shortage
+
+Final regression: 710 passed, 0 failures/errors/skips. Fixed calibration-splits profile contributes 23 passing cases within that run; no repeated final focused execution. T25 now uses 30 input documents and 10 distinct correct outputs per domain.
+
+T26 groups families/source hashes before variants, rejects all overlap and exposed final content, maps legacy hidden explicitly to promotion_validation, and excludes final_test from adaptive RSI. The evaluator-side interface snapshots inputs and enforces hash/count-only views plus one-use evaluation. Production account/mount isolation is unprovisioned.
+
+Actual inventory: 90 exposed calibration controls, 30 inputs, 3 families; historical pilot 3 families already span splits. No formally admitted bases or final cases. Both inventory and quality CLIs return the expected exit 1 blocker. The 72/216 target is not completed or padded. T26 remains blocked with local_status=completed. No model/server calls.
+
+An early full attempt was stopped for a Python 3.11 compatibility correction and is retained as interrupted, not counted as a pass. The replacement is the only completed final full run. Evidence packaging reuses test outputs and retains the full generated ZIP once.

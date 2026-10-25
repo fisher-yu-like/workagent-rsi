@@ -89,7 +89,7 @@ A candidate skill version can be promoted only if all conditions hold:
 ## Current state
 
 For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
-and `hardening_t24_dynamic_input.json`. Work in the existing
+and `hardening_t25_calibration_materials.json` / `hardening_t26_family_splits.json`. Work in the existing
 `feat/evaluation-rsi-hardening` branch at `D:/ws/Projects/WorkAgent-RSI`.
 T00-T03 are delivered; T03 includes the strict default-off live-call policy.
 T04's default Docker and explicit Apptainer SSH backends do not execute native
@@ -102,7 +102,7 @@ T06 shares verified champion/develop context across API/CLI; public history and
 context budgets are checked offline. See `docs/candidate_generation.md`.
 T07 admits complete raw candidate responses with auditable normalization and
 transport-owned model identity. Both tasks were qualified offline only.
-The latest full suite has 692 passed with no failures, errors or skips.
+The latest full suite has 710 passed with no failures, errors or skips.
 The final T23/T24 focused suite has 129 passes; T21/T22 historical focused has121.
 T20's focused suite has 114 passes; the real-probe visual scope repair has 84.
 Counts and evidence are recorded in the task ledger. T08 actual isolated behavior and
@@ -151,8 +151,12 @@ This qualifies local engineering and that authored implementation; it does not
 establish current model/champion generalization or new real sandbox qualification.
 Read-only SSH forwarding currently refused the target connection; no remote
 execution or new model requests were made. See `docs/input_behavior_probes.md`
-and `docs/policies/template-and-overfitting.md`. T00-T24 engineering tasks are
-delivered; T25-T35 and later live/research qualification remain unfinished. All-green local tests and authored
+and `docs/policies/template-and-overfitting.md`. T00-T25 engineering tasks are
+delivered. T26 local family/source/variant and one-use final-store interfaces pass;
+its 72-base/216-instance corpus and separate evaluator deployment remain blocked.
+T25 supplies 90 exposed calibration cases, 30 inputs and 3 source families. The
+calibration-splits profile covers 23 checks; complete handoff regression remains
+mandatory. T27-T35 and later live/research qualification remain unfinished. All-green local tests and authored
 probes do not establish live model repair or RSI improvement.
 The entries below preserve historical stage evidence.
 

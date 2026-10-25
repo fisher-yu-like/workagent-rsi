@@ -14,7 +14,7 @@ read OOXML directly, reopen every output through its Office library, verify
 hashes and rebuild the corpus to check byte reproducibility. ZIP timestamps and
 core-property dates are fixed. The seed is 20261025.
 
-The 90 cases share three source families and six input documents. These are
+The 90 cases share three source families and 30 distinct input documents. These are
 development calibration materials, not 90 independent task families, an external
 benchmark, or an untouched final set. There are no human agreement or model
 accuracy results. T27 will measure evaluator behavior on these materials; a

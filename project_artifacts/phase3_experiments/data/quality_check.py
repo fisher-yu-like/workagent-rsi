@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+import argparse
 from collections import Counter
 from pathlib import Path
 
@@ -34,7 +35,30 @@ def file_hash(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def check_family_manifest(path: Path) -> dict:
+    sys.path.insert(0, str(ROOT / 'src'))
+    from workagent_rsi.dataset_splits import TaskFamilyManifest, split_quality_report
+    payload = json.loads(path.read_text(encoding='utf-8'))
+    report = split_quality_report([TaskFamilyManifest.model_validate(row) for row in payload['families']])
+    if payload.get('eligible_for_formal_study') is not True:
+        report['status'] = 'blocked'
+        report['blockers'].append('Inventory is not admitted as a formal study taskset.')
+    return report
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--family-manifest', type=Path)
+    parser.add_argument('--report', type=Path)
+    options = parser.parse_args()
+    if options.family_manifest is not None:
+        report = check_family_manifest(options.family_manifest)
+        if options.report is not None:
+            with options.report.open('x', encoding='utf-8') as handle:
+                json.dump(report, handle, indent=2)
+                handle.write('\n')
+        print(json.dumps(report, sort_keys=True))
+        return 0 if report['status'] == 'pass' else 1
     checks: list[dict] = []
     failures: list[str] = []
     all_tasks = load_jsonl(RAW)

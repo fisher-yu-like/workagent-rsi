@@ -22,7 +22,17 @@ from workagent_rsi.environment_manifest import capture_environment
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('label', help='Evidence task/run label; letters, digits, hyphen or underscore')
+PROFILES = {
+    'calibration-splits': ['tests/test_calibration_case_integrity.py',
+                           'tests/test_family_split_isolation.py', 'tests/test_external_dataset.py'],
+    'full': [],
+}
+parser.add_argument('--profile', choices=sorted(PROFILES), help='Fixed task-focused selection, or the complete suite')
 options, arguments = parser.parse_known_args()
+if options.profile:
+    if arguments:
+        parser.error('--profile cannot be combined with custom pytest selectors or flags')
+    arguments = PROFILES[options.profile]
 label = options.label
 if not re.fullmatch(r'[A-Za-z0-9_-]+', label):
     parser.error('label must use letters, digits, hyphen or underscore')

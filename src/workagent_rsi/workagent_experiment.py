@@ -47,11 +47,31 @@ class WorkAgentExperimentRunner:
         *,
         rounds: int = 1,
         mode: str = 'qualification',
+        legacy_hidden_mapping: str | None = None,
+        family_manifest=None,
     ) -> dict:
         from .execution_policy import require_production
         if mode not in {'qualification','formal'}:
             raise ValueError('unknown experiment mode')
         if mode=='formal': require_production(provider)
+        from .dataset_splits import prepare_adaptive_splits, split_quality_report, validate_family_splits
+        tasks_by_split, split_roles = prepare_adaptive_splits(
+            tasks_by_split, legacy_hidden_mapping=legacy_hidden_mapping)
+        if family_manifest is not None:
+            from .dataset_splits import TaskFamilyManifest
+            family_manifest = [TaskFamilyManifest.model_validate(r) for r in family_manifest]
+            validate_family_splits(family_manifest)
+            for split, tasks in tasks_by_split.items():
+                role = 'promotion_validation' if split == 'hidden' else split
+                expected = {v for r in family_manifest if r.split == role for v in r.variant_ids}
+                if expected != {t.task_id for t in tasks} or len(tasks) != len(expected):
+                    raise ValueError('family manifest does not bind the adaptive task IDs')
+                domains = {v: r.domain for r in family_manifest for v in r.variant_ids}
+                if any(t.domain != domains[t.task_id] for t in tasks):
+                    raise ValueError('family manifest does not bind the task domains')
+        if mode == 'formal':
+            if family_manifest is None or split_quality_report(family_manifest)['status'] != 'pass':
+                raise ValueError('formal runs require a complete, isolated family manifest; inventory is blocked')
         from .repair_loop import RunBudget, RepairPolicy
         if self.repair_policy is not None and self.run_budget is None:
             policy=RepairPolicy.model_validate(self.repair_policy)
@@ -61,6 +81,9 @@ class WorkAgentExperimentRunner:
         if Path(output_root).exists() and any(Path(output_root).iterdir()):
             raise FileExistsError(output_root)
         with context:
+            Path(output_root).mkdir(parents=True, exist_ok=True)
+            (Path(output_root) / 'split-roles.json').write_text(
+                json.dumps(split_roles, indent=2) + '\n', encoding='utf-8')
             return self._run(tasks_by_split,initial_skill,provider,output_root,rounds=rounds)
 
     def _run(self,tasks_by_split,initial_skill,provider,output_root,*,rounds):
