@@ -1,0 +1,64 @@
+{
+  "schema_version": "benchmark-sources-v1",
+  "recorded_at": "2026-10-25",
+  "seed": 20261025,
+  "server_full_downloads": false,
+  "sources": [
+    {
+      "id": "spreadsheetbench-2",
+      "revision": "5a2215ed4121945ab09d8723df2995602090b042",
+      "code_revision": "a7bdc2d358e052d35a94768e1f487c0d9e9c0011",
+      "data_license": "MIT",
+      "license_status": "verified",
+      "license_evidence": "https://huggingface.co/datasets/KAKA22/SpreadsheetBench-v2/blob/5a2215ed4121945ab09d8723df2995602090b042/README.md",
+      "assets": [
+        {
+          "local_path": "raw/ssb2.zip",
+          "url": "https://huggingface.co/datasets/KAKA22/SpreadsheetBench-v2/resolve/5a2215ed4121945ab09d8723df2995602090b042/spreadsheetbench-v2-09-10.zip",
+          "size_bytes": 134232213,
+          "sha256": "52699c974c30aced7125f3d12cdaabbbcbba8db804373d7397a5d3bdf68e5b3e"
+        }
+      ]
+    },
+    {
+      "id": "workspace-bench-lite",
+      "revision": "3491f9eb611eaf3bd6753048d94e0e049c07ad30",
+      "lite_revision": "60b08b1cc2e8054afbc3ca2160d37876b4f0765c",
+      "code_revision": "3fbd0f1a136720fece86786545983e26642c3db2",
+      "data_license": "Apache-2.0",
+      "license_status": "verified",
+      "license_evidence": "https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench/blob/3491f9eb611eaf3bd6753048d94e0e049c07ad30/README.md",
+      "annotation_policy": "Use licensed full-release task text, rubrics, graph and assets at the official 100 Lite IDs. Lite text/outputs/rubrics must match; dependency/context differences are reported. No assumption that the unlicensed Lite card supplies a data license.",
+      "assets": [
+        {
+          "local_path": "metadata/workspace-lite.csv",
+          "url": "https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite/resolve/60b08b1cc2e8054afbc3ca2160d37876b4f0765c/task_lite_clean_en_metadata_table.csv",
+          "size_bytes": 536700,
+          "sha256": "7ef9e4e0e922a465e517a292fc5fb95fc60bd15d61c95ed3ad04ba34f8c42065"
+        },
+        {
+          "local_path": "metadata/workspace-full.csv",
+          "url": "https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench/resolve/3491f9eb611eaf3bd6753048d94e0e049c07ad30/task_en_metadata_table.csv",
+          "size_bytes": 2290169,
+          "sha256": "4aa24c0c8d74090d34daef716b4292fbeed9fa794e028f9b2a77955cdabf53b5"
+        }
+      ]
+    },
+    {
+      "id": "spreadsheetbench-v1",
+      "revision": "49b73a94775fb489063f60ca1865e3a650079a79",
+      "data_license": "CC-BY-SA-4.0",
+      "license_status": "verified",
+      "license_evidence": "https://github.com/RUCKBReasoning/SpreadsheetBench/blob/49b73a94775fb489063f60ca1865e3a650079a79/README.md#license-and-citation",
+      "license_scope": "Upstream project license statement; retain attribution/share-alike for redistributed derivatives. Raw third-party files remain local, no assertion of individually audited ownership.",
+      "assets": [
+        {
+          "local_path": "raw/ssb1.tar.gz",
+          "url": "https://raw.githubusercontent.com/RUCKBReasoning/SpreadsheetBench/49b73a94775fb489063f60ca1865e3a650079a79/data/spreadsheetbench_912_v0.1.tar.gz",
+          "size_bytes": 95752357,
+          "blob_sha1": "b4583957c7838204bb45c1a7af35d3581e7e8fb3"
+        }
+      ]
+    }
+  ]
+}

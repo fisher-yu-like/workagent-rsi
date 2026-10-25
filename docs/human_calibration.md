@@ -51,8 +51,12 @@ The later blind cohort needs at least20 natural finished artifacts from families
 outside the development calibration families. Intake requires original source
 references, domain, task instruction, input files and output hash. Real Office
 libraries reopen supplied files. Controlled defect fixtures are refused as a
-substitute for natural output. No such independent files are currently available;
-the user will provide them later. No fake files or labels fill that count.
+substitute for natural output. On 2026-10-25 the user authorized benchmark intake.
+Twenty input-only jobs are now frozen (Excel10/Word7/PPT3), but no actual model
+outputs or human labels exist yet. All nine connected source groups leave the
+adaptive/OOD splits before calibration. See `benchmark_intake.md` and
+`project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json`.
+No reference workbook, fake file or agent-generated label fills that count.
 
 Real model judging also needs a newly approved bounded policy; the previous27
 request allowance is exhausted. The server renders without a model. Existing
