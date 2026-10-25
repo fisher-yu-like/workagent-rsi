@@ -64,3 +64,6 @@ T21/T22 local repair and budget controls now close R10. T25 onward and later liv
 remain open. Original historical
 results above are retained. Exact source hashes, manifests and portable evidence
 are indexed by `formal_study/hardening_task_ledger.json`.
+
+| F | T25 calibration materials | completed | 90 real Office files, independent truth, reproducible hashes | T10–T18, T24 | T25 manifest | Four grouped integrity checks pass; no accuracy or human-agreement claim. |
+| F | T26 grouped splits and final sealing | in_progress | Family/source/variant isolation and honest scale audit | T25 | T26 manifest | Implementing local boundary; independent unexposed source inventory is insufficient. |

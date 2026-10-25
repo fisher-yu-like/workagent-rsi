@@ -153,3 +153,5 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 - `project_artifacts/phase3_experiments/scripts/run_t24_behavior_probe.py` and `t24_authored_program.py`: trusted local qualification with22 cases in nine groups; no arbitrary candidate code or real model calls.
 - `docs/input_behavior_probes.md` and `formal_study/hardening_t23_prompt_independence.json` / `hardening_t24_dynamic_input.json`: usage, evidence, portable verification and explicit limits.
 - Final full692/focused129 pass; authored engineering pass does not establish live model, new sandbox or research qualification.
+
+- T25: `formal_study/hardening_t25_calibration_materials.json`, `../docs/calibration_materials.md`, development-only truth in `tests/fixtures/calibration/case_manifest.json`.

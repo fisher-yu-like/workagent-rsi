@@ -1,0 +1,34 @@
+{
+  "task_id": "T25",
+  "status": "completed",
+  "delivery_level": "local_engineering",
+  "evidence_bundle": "project_artifacts/results/hardening-v2/T25/20261025T014502287648Z/bundle/manifest.json",
+  "focused_evidence": "project_artifacts/results/hardening-v2/T25-green/20261025T014229678680Z",
+  "counts": {
+    "cases": 90,
+    "per_domain": 30,
+    "correct": 30,
+    "single_defect": 30,
+    "equivalent": 15,
+    "gap": 15
+  },
+  "source_families": 3,
+  "input_documents": 6,
+  "seed": 20261025,
+  "focused_passed": 4,
+  "red_evidence": [
+    "project_artifacts/results/hardening-v2/T25-red/20261025T013953682773Z",
+    "project_artifacts/results/hardening-v2/T25-focused/20261025T014145412648Z"
+  ],
+  "red_reason": "Missing calibration module; then independent reproducibility check caught unfrozen core metadata.",
+  "source_hashes": {
+    "src/workagent_rsi/calibration_data.py": "e1edc2eedcc6d4a9939acf72d26e237d1478839fdfa896dc46af5af1c1ca13a4",
+    "tests/fixtures/calibration/case_manifest.json": "b753543ce949747efcecadcb52023c9999bda68a0052832686747a6918999764",
+    "tests/test_calibration_case_integrity.py": "c26c60f3b94e7a469bedc4110e581d6c4deeadb44a7f0ef327c3500826e37744",
+    "project_artifacts/phase3_experiments/scripts/build_calibration_cases.py": "2bde6476c0000b18269e9a9e898624aa8644311b44c5c12a12da0722bacf1ede"
+  },
+  "limitations": [
+    "Development material only; three source families, not 90 independent tasks.",
+    "No evaluator accuracy, human agreement, live model, renderer or sandbox qualification."
+  ]
+}

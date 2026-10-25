@@ -386,3 +386,7 @@ Removed fixed answer rules and task-ID strategy selection; retained generic Offi
 - Actual trusted local probe: 22 real Office cases in nine groups (three per domain), all passed; three ID controls and reusable-code controls passed. Model calls0; no sandbox/generalization claim. The authored executor refuses arbitrary code.
 - Final focused129/full692 pass, zero failures/errors/skips; R01-R12 pass. Exact sources, commands, environment, artifacts and relocated bundle checks are indexed in hardening_t24_dynamic_input.json.
 - Read-only cluster_vlab_jump connectivity check returned Connection refused after the Vlab banner. No uploads or remote execution. Optional new real-model budget proposed because the old27-request policy is exhausted; no new model request made. Global plan distinguishes engineering delivery from live/model/research qualification, so the task is delivered locally with those boundaries explicit.
+
+## 2026-10-25 T25 development calibration materials
+
+Built 90 actual Office cases, with separately authored truth and input/output hashes. Four grouped tests passed after a real reproducibility failure exposed unfrozen core dates. No production evaluator labels, model calls or remote execution. These are three development source families, not an independent final set. Evidence: `formal_study/hardening_t25_calibration_materials.json`.

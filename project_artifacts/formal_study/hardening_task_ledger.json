@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-24T17:12:47.549217+00:00",
+  "updated_at": "2026-10-25T01:45:06.836004+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -221,9 +221,10 @@
     },
     {
       "task_id": "T25",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T25/20261025T014502287648Z/bundle/manifest.json",
+      "note": "90 authored development Office cases; 4 grouped integrity tests pass; only three source families.",
+      "manifest": "project_artifacts/formal_study/hardening_t25_calibration_materials.json"
     },
     {
       "task_id": "T26",
@@ -447,7 +448,6 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T24/20261024T171019773994Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "T25",
     "T26"
   ],
   "review_case_status": {
