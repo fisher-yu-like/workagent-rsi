@@ -1146,6 +1146,8 @@ Bash使用：`"$TASK_PYTHON" -m pytest -q tests/test_calibration_case_integrity.
 
 ### T26：按任务家族切分数据并封存最终集
 
+**2026-10-25 用户修订：** Excel、Word、PowerPoint 不再要求数量相等。下面的每域数量是原始方案，后续按实际独立家族制定不同域的配额并分别报告结果；总量目标72基础任务/216实例暂保留。家族隔离、来源证明、输入变体独立性和最终集封存要求继续有效。现有固定配额的原始协议审计仅保留历史对照用途，不能用来否决数量不等本身，也不能据此宣称新配额已完成。
+
 **阶段/依赖：** F；T25。
 
 **Files：** 新增：`src/workagent_rsi/dataset_splits.py`、`tests/test_family_split_isolation.py`；修改：`src/workagent_rsi/workagent_experiment.py`、`project_artifacts/phase3_experiments/data/quality_check.py`；新增：`project_artifacts/phase3_experiments/configs/evaluation_protocol_v2.json`。

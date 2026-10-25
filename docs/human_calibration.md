@@ -53,19 +53,27 @@ references, domain, task instruction, input files and output hash. Real Office
 libraries reopen supplied files. Controlled defect fixtures are refused as a
 substitute for natural output. On 2026-10-25 the user authorized benchmark intake.
 Twenty jobs were frozen (Excel10/Word7/PPT3). The user then approved twenty
-generation requests. They produced17 real outputs (Excel9/Word6/PPT2), with
-three runtime failures and no retries. There are still no submitted human
-labels. All nine connected source groups leave the adaptive/OOD splits before
-calibration. A natural-only review pack contains the17 outputs and126 actual
-pages from15 complete renders; two workbooks exceed the forty-page render
-limit. It retains the20-file shortage blocker. See `benchmark_intake.md` and
+generation requests. They initially produced17 real outputs (Excel9/Word6/PPT2),
+with three runtime failures and no automatic retries. The user later approved
+three model repairs and a separate deterministic PowerPoint assertion correction.
+There are now20 natural outputs (Excel10/Word7/PPT3). All nine connected source
+groups leave the adaptive/OOD splits before calibration. A complete review pack
+contains the12 standards and20 natural outputs, with187 actual pages from30
+complete renders. Two original workbooks exceed the forty-page render limit;
+their original files remain available. There are still no submitted human
+labels. See `benchmark_intake.md` and
 `project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json`.
 No reference workbook, fake file or agent-generated label fills that count.
 
+Use `project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html`
+for the complete32-case review. The earlier12-case and17-case packs remain
+unchanged historical deliveries. No earlier review has been submitted.
+
 Real model judging also needs a newly approved bounded policy. The previous27
-request allowance and the new20-request generation allowance are exhausted.
-Three repair requests are proposed separately and remain unapproved. The
-server renders without a model. Existing
+request allowance, the20-request generation allowance and the separately
+approved3-request repair allowance are exhausted. The extra PowerPoint correction
+and rendering were separately approved and completed without a model request.
+The server renders without a model. Existing
 CLI protocol qualification does not imply this cohort has been judged or agrees
 with humans. Missing labels, independent files or live authorization remain
 explicit blockers rather than numeric accuracy.

@@ -83,7 +83,7 @@
   },
   "generation_protocol": "Single-shot adapted public benchmark tasks with bounded source previews and original unrecalculated release inputs. No native leaderboard parity or whole-task quality claim.",
   "proposed_repairs": {
-    "status": "not_authorized; awaiting separate user answer",
+    "status": "Authorized and attempted3 model repairs;2 exported directly, third exported after separately approved deterministic source correction. See current_combined_delivery.",
     "new_requests": 3,
     "new_server_operations": 6,
     "new_model_seconds": 540,
@@ -103,5 +103,7 @@
     "skipped": 0,
     "evidence": "project_artifacts/results/hardening-v2/T28-approved-delivery-focused/20261025T072234422873Z"
   },
-  "execution_integrity": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/execution-integrity.json"
+  "execution_integrity": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/execution-integrity.json",
+  "snapshot_scope": "Historical original20 single-shot requests; current combined review delivery is separate.",
+  "current_combined_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json"
 }

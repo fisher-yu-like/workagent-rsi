@@ -2,10 +2,10 @@
   "task_id": "T28",
   "status": "blocked",
   "local_status": "completed",
-  "server_render_status": "15 natural renders available/126 pages;2 over fixed40-page limit;12 previous standards/20 pages retained",
+  "server_render_status": "30/32 review cases rendered,187 pages;2 original workbooks exceed40-page cap",
   "human_status": "awaiting_actual_user_review",
   "reviewer_confirmed": "user agreed in conversation",
-  "natural_cohort_status": "17 actual outputs from20 approved single-shot attempts;3 runtime failures; no retries",
+  "natural_cohort_status": "20 real natural outputs:17 single-shot plus3 repaired; all source records retained",
   "real_judge_status": "not_run; generation approval did not authorize judge calls",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "bundle_files": 163,
@@ -17,29 +17,32 @@
     "exit_code": 0,
     "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
   },
-  "blind_review_page": "project_artifacts/results/hardening-v2/T28/20261025-human-pack/blind-review-pack/index.html",
+  "blind_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
   "standards_count": 12,
-  "actual_rendered_pages": 20,
+  "actual_rendered_pages": 187,
   "actual_human_labels": 0,
-  "actual_natural_artifacts": 17,
+  "actual_natural_artifacts": 20,
   "required_natural_artifacts": 20,
   "agreement": null,
-  "model_calls": 20,
+  "model_calls": 23,
   "report": {
     "status": "blocked",
     "standards_cases": 12,
-    "natural_cases": 0,
+    "natural_cases": 20,
     "required_natural_cases": 20,
     "actual_human_labels": 0,
     "rubric_hash": "bd95df9c9a5f586502ec279f1eb001e6384c98cd1470fb69796696e83d8174b1",
     "judge_results_revealed": false,
-    "blind_pack_hash": "116ed3aa8bfa44a527ecec22b43bd68e0f6a20787bc4c44eacb4ea2c2ce89a47",
+    "blind_pack_hash": "12582cc4368b767b7884b869789c7c51546a5a17cd52622fd8b70d7baf6de312",
     "blockers": [
-      "Actual human labeling required",
-      "Independent natural finished-artifact cohort missing"
+      "Actual human labeling required"
     ],
-    "rendered_cases": 12,
-    "rendered_pages": 20
+    "rendered_cases": 30,
+    "rendered_pages": 187,
+    "standards_renders_reused": 12,
+    "rendering_gaps": 2,
+    "new_model_calls": 0,
+    "new_server_operations": 0
   },
   "source_hashes": {
     "src/workagent_rsi/human_calibration.py": "ef722a9c1b8ffdafe052db792ab703f28f333f6850622b3afc3a23fb8172fafa",
@@ -52,17 +55,19 @@
     "failed": 6,
     "error": 0
   },
-  "ui_validation": "12 opaque cases,20 actual images,12 empty selectors; Node syntax validation passed; no browser qualification claim.",
+  "ui_validation": "32 empty selectors;84 local links and187 page hashes verified;Node syntax exit0. Static validation only; no actual human submission or browser qualification.",
   "remaining": [
-    "Three more natural outputs are needed; proposed3 repairs await separate budget approval.",
-    "Actual user labels for standards12 and natural outputs; freeze rubric before judge.",
-    "Two long spreadsheet renders remain unavailable under fixed coverage.",
-    "Separate judge approval and actual paired calibration still required."
+    "Actual human review of12 standards and20 natural cases.",
+    "Separate bounded judge approval and paired calibration after human labels are fixed.",
+    "Existing2 spreadsheet render coverage gaps require original-file inspection."
   ],
   "user_stop_instruction": "Superseded on 2026-10-25: user authorized benchmark preparation in priority order.",
   "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
   "judge_calls": 0,
-  "natural_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/natural-human-pack-v1/blind-review-pack/index.html",
+  "natural_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
   "standards_review_page": "project_artifacts/results/hardening-v2/T28/20261025-human-pack/blind-review-pack/index.html",
-  "natural_report": "project_artifacts/formal_study/hardening_t28_benchmark_generation.json"
+  "natural_report": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
+  "complete_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
+  "repaired_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
+  "total_review_cases": 32
 }

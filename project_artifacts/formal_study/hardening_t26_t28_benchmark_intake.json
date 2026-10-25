@@ -42,8 +42,8 @@
     "powerpoint": 3
   },
   "planned_inputs_bytes": 2999530,
-  "actual_model_calls": 20,
-  "actual_natural_model_outputs": 17,
+  "actual_model_calls": 23,
+  "actual_natural_model_outputs": 20,
   "actual_human_labels": 0,
   "actual_judge_calls": 0,
   "server_operations": {
@@ -59,10 +59,10 @@
     "skipped": 0,
     "evidence": "project_artifacts/results/hardening-v2/T26-T28-benchmark-focused/20261025T063329032021Z"
   },
-  "t26_status": "blocked: original three-domain family/variant target and sealed untouched final corpus not met",
+  "t26_status": "blocked: revised unequal-domain allocation, native variant qualification, untouched sealed final corpus and separate evaluator principal pending",
   "t27_status": "completed for deterministic development calibration; both native scorers integration-qualified",
-  "t28_status": "blocked:3 natural outputs missing; actual human labels and later judge calibration required",
-  "approval_request": "Initial20-request budget approved and exhausted; proposed3 runtime-error repairs await a separate user answer.",
+  "t28_status": "32 review materials complete; actual human labels and later authorized judge calibration pending",
+  "approval_request": "3 model repairs approved and consumed; additional deterministic PPT execution/render approved and completed. No judge approval.",
   "evidence": {
     "source_discovery": "project_artifacts/results/hardening-v2/T26-benchmarks/20261025/source-discovery",
     "source_inventory": "project_artifacts/results/hardening-v2/T26-benchmarks/20261025/corpus/split-quality-report.json",
@@ -76,5 +76,8 @@
   "verified_validation_source_files": 170,
   "source_hash_mismatches": 0,
   "integrity_evidence": "project_artifacts/results/hardening-v2/T26-benchmarks/20261025/delivery-integrity.json",
-  "generation_delivery": "project_artifacts/formal_study/hardening_t28_benchmark_generation.json"
+  "generation_delivery": "project_artifacts/formal_study/hardening_t28_benchmark_generation.json",
+  "repaired_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
+  "equal_domain_counts_required": false,
+  "domain_inventory": "project_artifacts/formal_study/hardening_t26_domain_inventory.json"
 }

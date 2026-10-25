@@ -2,7 +2,7 @@
   "task_id": "T26",
   "status": "blocked",
   "local_status": "completed",
-  "data_scale_status": "licensed benchmark development inventory admitted; original three-domain 72/216 acceptance not met",
+  "data_scale_status": "User waived equal-domain counts;72/216 total target, revised qualified allocation and protected final corpus still pending",
   "evaluator_service_status": "same-owner mount boundary qualified; separate principal unprovisioned",
   "delivery_level": "local_engineering",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
@@ -237,5 +237,7 @@
   "server_execution_calls": 1,
   "server_preparation_requests": 2,
   "server_boundary_bundle": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json",
-  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
+  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+  "domain_inventory": "project_artifacts/formal_study/hardening_t26_domain_inventory.json",
+  "equal_domain_counts_required": false
 }
