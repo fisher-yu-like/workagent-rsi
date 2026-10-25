@@ -2,11 +2,11 @@
   "task_id": "T28",
   "status": "blocked",
   "local_status": "completed",
-  "server_render_status": "completed",
+  "server_render_status": "15 natural renders available/126 pages;2 over fixed40-page limit;12 previous standards/20 pages retained",
   "human_status": "awaiting_actual_user_review",
   "reviewer_confirmed": "user agreed in conversation",
-  "natural_cohort_status": "20 jobs and input-only requests frozen; actual outputs0; new bounded approval pending",
-  "real_judge_status": "not_run; actual labels and new bounded judge approval still required",
+  "natural_cohort_status": "17 actual outputs from20 approved single-shot attempts;3 runtime failures; no retries",
+  "real_judge_status": "not_run; generation approval did not authorize judge calls",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "bundle_files": 163,
   "latest_full_validation": {
@@ -21,10 +21,10 @@
   "standards_count": 12,
   "actual_rendered_pages": 20,
   "actual_human_labels": 0,
-  "actual_natural_artifacts": 0,
+  "actual_natural_artifacts": 17,
   "required_natural_artifacts": 20,
   "agreement": null,
-  "model_calls": 0,
+  "model_calls": 20,
   "report": {
     "status": "blocked",
     "standards_cases": 12,
@@ -54,10 +54,15 @@
   },
   "ui_validation": "12 opaque cases,20 actual images,12 empty selectors; Node syntax validation passed; no browser qualification claim.",
   "remaining": [
-    "Actual user labels for standards12 and frozen rubric.",
-    "20 natural output jobs are prepared; model execution awaits new bounded approval.",
-    "Render actual natural outputs, collect genuine labels, then separately authorize judge calls and compare."
+    "Three more natural outputs are needed; proposed3 repairs await separate budget approval.",
+    "Actual user labels for standards12 and natural outputs; freeze rubric before judge.",
+    "Two long spreadsheet renders remain unavailable under fixed coverage.",
+    "Separate judge approval and actual paired calibration still required."
   ],
   "user_stop_instruction": "Superseded on 2026-10-25: user authorized benchmark preparation in priority order.",
-  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
+  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+  "judge_calls": 0,
+  "natural_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/natural-human-pack-v1/blind-review-pack/index.html",
+  "standards_review_page": "project_artifacts/results/hardening-v2/T28/20261025-human-pack/blind-review-pack/index.html",
+  "natural_report": "project_artifacts/formal_study/hardening_t28_benchmark_generation.json"
 }

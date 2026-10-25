@@ -58,10 +58,29 @@ An actual output is admitted only after remote execution and a successful Office
 
 After at least twenty outputs exist, use `prepare_human_calibration.py --natural-manifest <actual-run/natural-manifest.json>` with the existing standards manifest. Reuse the twelve standards' already verified render pages, and reserve the remaining server operations for the twenty natural outputs. Rendering all thirty-two files again would exceed this proposal's forty operations after generation.
 
-The user must submit actual labels. Judge results stay hidden until labels are fixed. Judge calls require a separate bounded approval. A changed rubric requires a new evaluator identity and a rerun of the whole comparable cohort. At this delivery there are twenty prepared jobs, zero new model calls, zero natural model outputs and zero submitted human labels. The earlier instruction to defer materials was superseded by the user's request to prepare these benchmarks.
+The user must submit actual labels. Judge results stay hidden until labels are fixed. Judge calls require a separate bounded approval. A changed rubric requires a new evaluator identity and a rerun of the whole comparable cohort. The initial preparation delivery had twenty prepared jobs and no model calls or outputs. The later approved execution is recorded below. The earlier instruction to defer materials was superseded by the user's request to prepare these benchmarks.
+
+## Approved generation on 2026-10-25
+
+The user explicitly approved twenty generation requests and forty server execution/render operations, with 3,600 cumulative model-request seconds. The run used all twenty gpt-6.1-sol requests, zero model tools, and 1,598 charged model seconds. All twenty programs reached the isolated worker. Three failed at runtime, one in each Office domain. There were no retries and no judge calls.
+
+Seventeen actual outputs reopen with their Office libraries: nine Excel, six Word and two PowerPoint files. They span eight connected source groups. Fifteen outputs have full cached renderings covering126 pages. Two workbooks exceed the fixed forty-page renderer limit; their original files remain available. The twenty executions and seventeen render attempts consumed37 of40 server operations. All37 worker traces confirm owned cleanup and resource checks.
+
+The generation controller initially mixed relative run paths with absolute checked artifact paths. That registration error did not erase the files. The original generation records remain unchanged. A separate recovery pass verified model-source equality, frozen inputs, successful worker traces, cleanup and Office reopen, and registered the seventeen saved exports without new model or server calls. New runs resolve their output root before registration.
+
+The existing twelve standards remain in their original review page. A separate natural-only review page contains the seventeen actual outputs, empty label choices, and their verified render pages. Input links show their original business filenames so they can be matched to the task. No model identity, score or hidden truth is supplied in the review manifest. Static checks verified every local link, artifact/page hashes, empty controls and JavaScript syntax. No browser or human-label submission is claimed.
+
+```powershell
+& .venv/Scripts/python.exe project_artifacts/phase3_experiments/scripts/prepare_human_calibration.py --manifest <standards-case-manifest.json> --natural-manifest <actual-natural-manifest.json> --output <new-review-directory> --allow-partial-natural --natural-only
+& .venv/Scripts/python.exe project_artifacts/phase3_experiments/scripts/attach_benchmark_review_renders.py --output <new-review-directory> --standards-pack <existing-standards/blind-review-pack> --natural-cache <natural-render-cache>
+```
+
+Partial preparation retains the twenty-file shortage blocker and cannot qualify T28. It does not pad the cohort with references or controlled fixtures. The three failed tasks have separate proposed repair requests containing the unchanged tasks, public inputs, prior programs and runtime errors. A repair plan can contain only actual failed parent executions, must preserve task/input identities and evidence hashes, and requires its own newly approved policy. At this delivery those three repairs are proposed, not authorized or executed. A repaired-output cohort would retain the original twenty attempts and be reported separately from the single-shot cohort.
+
+The exact allowance, token observations, failures and review links are in `project_artifacts/formal_study/hardening_t28_benchmark_generation.json`. Output token4096 was a prompt instruction. Three responses exceeded it, with a maximum of4505 tokens; all observed usage is retained. No exact monetary cost is claimed. Inputs were original release files and model observations were bounded previews, so this is an adapted output-generation protocol, not native benchmark leaderboard execution.
 
 ## Validation
 
-Use `run_hardening_checks.py <label> --profile benchmark-intake` for the focused checks. This delivery ran 41 checks, with zero failures or skips. The previous full run of 717 checks is historical evidence; it is not reported as a new full run.
+Use `run_hardening_checks.py <label> --profile benchmark-intake` for the focused checks. The initial intake delivery ran41 checks. The latest approved-generation delivery ran45 checks, with zero failures, errors or skips. The previous full run of717 checks is historical evidence; it is not reported as a new full run.
 
 Source pages: [SpreadsheetBench 2 data](https://huggingface.co/datasets/KAKA22/SpreadsheetBench-v2), [Workspace full data](https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench), [Workspace Lite data](https://huggingface.co/datasets/Workspace-Bench/Workspace-Bench-Lite), and [SpreadsheetBench 1](https://github.com/RUCKBReasoning/SpreadsheetBench).

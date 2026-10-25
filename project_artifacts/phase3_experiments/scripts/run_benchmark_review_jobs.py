@@ -31,6 +31,29 @@ class GeneratedProgram(BaseModel):
     summary: str
 
 
+def validate_run_plan(plan: dict) -> int:
+    count = plan['job_count']
+    if count != len(plan['jobs']) or len({j['case_id'] for j in plan['jobs'] if 'case_id' in j}) not in (0, count):
+        raise ValueError('job count or identity mismatch')
+    if plan.get('schema_version') == 'benchmark-natural-output-repair-plan-v1':
+        if not 1 <= count <= 3:
+            raise ValueError('repair proposal is limited to three failed jobs')
+        parent_path = ordinary_file(Path(plan['parent_plan']))
+        records_path = ordinary_file(Path(plan['parent_job_records']))
+        if sha256_file(parent_path) != plan['parent_plan_sha256'] or sha256_file(records_path) != plan['parent_job_records_sha256']:
+            raise ValueError('repair parent evidence changed')
+        parent = {j['case_id']: j for j in json.loads(parent_path.read_text(encoding='utf-8'))['jobs']}
+        records = {r['case_id']: r for r in json.loads(records_path.read_text(encoding='utf-8'))}
+        for job in plan['jobs']:
+            if records[job['case_id']].get('execution', {}).get('status') != 'failed':
+                raise ValueError('only an actual failed execution can enter this repair proposal')
+            if any(job[k] != parent[job['case_id']][k] for k in ('base_task_id', 'variant_id', 'domain', 'source_family', 'inputs', 'expected_output')):
+                raise ValueError('repair must preserve the frozen task and input identities')
+    elif count != 20:
+        raise ValueError('frozen first cohort must contain exactly 20 jobs')
+    return count
+
+
 def write(path, value):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
@@ -75,10 +98,9 @@ def generate(request: dict, work: Path, runner) -> str:
 def run(plan_path: Path, policy_path: Path, sandbox_path: Path, output: Path) -> dict:
     output = output.resolve()
     plan = json.loads(plan_path.read_text(encoding='utf-8'))
-    if plan['job_count'] != 20 or len(plan['jobs']) != 20:
-        raise ValueError('frozen first cohort must contain exactly 20 jobs')
+    count = validate_run_plan(plan)
     runner = QualificationCLI(policy_path)  # Disabled/unapproved policies fail before any run directory.
-    if runner.policy.max_model_calls > 20 or runner.policy.max_tool_calls > 40 or runner.policy.max_wall_seconds > 3600:
+    if runner.policy.max_model_calls > count or runner.policy.max_tool_calls > count * 2 or runner.policy.max_wall_seconds > count * 180:
         raise ValueError('policy exceeds this cohort proposal')
     if output.exists():
         raise FileExistsError('new run directory required; never automatically replay interrupted jobs')

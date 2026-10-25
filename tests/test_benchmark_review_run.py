@@ -89,3 +89,27 @@ def test_recovery_registers_existing_relative_run_without_rerunning_models(tmp_p
     result = module.recover_saved_outputs(plan, root)
     assert result['actual_natural_artifacts'] == 0
     assert 'differs' in result['rejected'][0]['reason']
+
+
+def test_repair_proposal_cannot_change_inputs_or_repeat_successful_jobs(tmp_path):
+    from copy import deepcopy
+    from workagent_rsi.hashing import sha256_file
+    module = script()
+    job = {'case_id': 'failed-case', 'base_task_id': 'original', 'variant_id': 'original/one',
+           'domain': 'excel', 'source_family': 'family', 'inputs': {'source.xlsx': 'a'*64}, 'expected_output': 'output.xlsx'}
+    parent = tmp_path / 'parent.json'
+    parent.write_text(json.dumps({'jobs': [job]}), encoding='utf-8')
+    records = tmp_path / 'records.json'
+    records.write_text(json.dumps([{'case_id': 'failed-case', 'execution': {'status': 'failed'}}]), encoding='utf-8')
+    plan = {'schema_version': 'benchmark-natural-output-repair-plan-v1', 'job_count': 1, 'jobs': [deepcopy(job)],
+            'parent_plan': str(parent), 'parent_plan_sha256': sha256_file(parent),
+            'parent_job_records': str(records), 'parent_job_records_sha256': sha256_file(records)}
+    assert module.validate_run_plan(plan) == 1
+    changed = deepcopy(plan)
+    changed['jobs'][0]['inputs'] = {'other.xlsx': 'b'*64}
+    with pytest.raises(ValueError, match='preserve'):
+        module.validate_run_plan(changed)
+    records.write_text(json.dumps([{'case_id': 'failed-case', 'execution': {'status': 'succeeded'}}]), encoding='utf-8')
+    plan['parent_job_records_sha256'] = sha256_file(records)
+    with pytest.raises(ValueError, match='actual failed'):
+        module.validate_run_plan(plan)

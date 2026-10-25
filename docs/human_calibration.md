@@ -52,14 +52,20 @@ outside the development calibration families. Intake requires original source
 references, domain, task instruction, input files and output hash. Real Office
 libraries reopen supplied files. Controlled defect fixtures are refused as a
 substitute for natural output. On 2026-10-25 the user authorized benchmark intake.
-Twenty input-only jobs are now frozen (Excel10/Word7/PPT3), but no actual model
-outputs or human labels exist yet. All nine connected source groups leave the
-adaptive/OOD splits before calibration. See `benchmark_intake.md` and
+Twenty jobs were frozen (Excel10/Word7/PPT3). The user then approved twenty
+generation requests. They produced17 real outputs (Excel9/Word6/PPT2), with
+three runtime failures and no retries. There are still no submitted human
+labels. All nine connected source groups leave the adaptive/OOD splits before
+calibration. A natural-only review pack contains the17 outputs and126 actual
+pages from15 complete renders; two workbooks exceed the forty-page render
+limit. It retains the20-file shortage blocker. See `benchmark_intake.md` and
 `project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json`.
 No reference workbook, fake file or agent-generated label fills that count.
 
-Real model judging also needs a newly approved bounded policy; the previous27
-request allowance is exhausted. The server renders without a model. Existing
+Real model judging also needs a newly approved bounded policy. The previous27
+request allowance and the new20-request generation allowance are exhausted.
+Three repair requests are proposed separately and remain unapproved. The
+server renders without a model. Existing
 CLI protocol qualification does not imply this cohort has been judged or agrees
 with humans. Missing labels, independent files or live authorization remain
 explicit blockers rather than numeric accuracy.

@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-25T06:40:00+00:00",
+  "updated_at": "2026-10-25T07:31:25.298186+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -251,13 +251,14 @@
       "task_id": "T28",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
-      "note": "20 genuine-output jobs frozen across9 reserved groups (Excel10/Word7/PPT3); no new model allowance, outputs or human labels yet.",
+      "note": "Approved20 model requests yielded17 genuine outputs (Excel9/Word6/PPT2),3 runtime failures, no retries/judge.15 renders/126 pages available,2 render gaps.37/40 server operations;1598/3600 charged model seconds. Human labels0; proposed3 repairs need separate approval.",
       "local_status": "completed",
       "server_render_status": "completed",
       "human_status": "awaiting_user_review",
       "natural_cohort_status": "deferred_by_user",
       "manifest": "project_artifacts/formal_study/hardening_t28_human_calibration.json",
-      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
+      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+      "generation_delivery": "project_artifacts/formal_study/hardening_t28_benchmark_generation.json"
     },
     {
       "task_id": "T29",

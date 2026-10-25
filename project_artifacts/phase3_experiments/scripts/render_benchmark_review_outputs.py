@@ -17,6 +17,7 @@ from workagent_rsi.apptainer_sandbox import ApptainerPolicy, ApptainerSSHExecuto
 from workagent_rsi.artifact_renderer import OfficeArtifactRenderer
 from workagent_rsi.hashing import sha256_file
 from workagent_rsi.view_safety import ordinary_file, relative_reference
+from run_benchmark_review_jobs import validate_run_plan
 
 
 def write(path, value):
@@ -28,8 +29,7 @@ def write(path, value):
 
 def render_available(plan_path: Path, actual_run: Path, policy_path: Path, output: Path, *, watch=False):
     plan = json.loads(plan_path.read_text(encoding='utf-8'))
-    if len(plan['jobs']) != 20 or plan['job_count'] != 20:
-        raise ValueError('only the frozen twenty-job cohort is admitted')
+    count = validate_run_plan(plan)
     if output.exists():
         raise FileExistsError('new render cache required; never replay an interrupted reservation')
     frozen = json.loads((actual_run / 'run-inputs.json').read_text(encoding='utf-8'))
@@ -66,7 +66,7 @@ def render_available(plan_path: Path, actual_run: Path, policy_path: Path, outpu
                 seen.add(identity)
                 continue
             artifact = ordinary_file(actual_run / 'cases' / identity / relative_reference(reference))
-            if len(results) >= 20:
+            if len(results) >= count:
                 raise ValueError('approved twenty-render cap exhausted')
             entry = {'case_id': identity, 'artifact_sha256': sha256_file(artifact), 'status': 'reserved',
                      'reserved_at': datetime.now(timezone.utc).isoformat()}
@@ -81,15 +81,15 @@ def render_available(plan_path: Path, actual_run: Path, policy_path: Path, outpu
             write(output / 'render-results.json', results)
             print(json.dumps({'case_id': identity, 'status': entry['status'],
                               'pages': len(entry.get('render', {}).get('pages', [])), 'render_reservations': len(results)}), flush=True)
-        finished = len(records) == 20 and all(r['status'] != 'reserved' for r in records)
+        finished = len(records) == count and all(r['status'] != 'reserved' for r in records)
         if not watch or finished or time.monotonic() - started > 7200:
             break
         time.sleep(2)
     executions = json.loads((actual_run / 'server-operations.json').read_text(encoding='utf-8')).get('reserved', 0)
-    if executions > 20 or executions + len(results) > 40:
+    if executions > count or executions + len(results) > count * 2:
         raise ValueError('combined generation/render budget exceeded')
     report = {'execution_reservations': executions, 'render_reservations': len(results),
-        'combined_server_operations': executions + len(results), 'approved_limit': 40,
+        'combined_server_operations': executions + len(results), 'approved_limit': count * 2,
         'available_renders': sum(r['status'] == 'available' for r in results),
         'actual_rendered_pages': sum(len(r.get('render', {}).get('pages', [])) for r in results),
         'generation_finished': finished, 'model_calls': 0, 'judge_calls': 0,
