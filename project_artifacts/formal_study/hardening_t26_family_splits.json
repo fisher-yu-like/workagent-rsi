@@ -2,18 +2,18 @@
   "task_id": "T26",
   "status": "blocked",
   "local_status": "completed",
-  "data_scale_status": "blocked",
-  "evaluator_service_status": "unprovisioned",
+  "data_scale_status": "deferred_by_user",
+  "evaluator_service_status": "same-owner mount boundary qualified; separate principal unprovisioned",
   "delivery_level": "local_engineering",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
   "bundle_files": 36,
   "latest_full_validation": {
-    "passed": 710,
+    "passed": 717,
     "failed": 0,
     "error": 0,
     "skipped": 0,
     "exit_code": 0,
-    "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
   },
   "focused_profile": {
     "profile": "calibration-splits",
@@ -226,9 +226,15 @@
     "Separate evaluator principal/service and candidate/developer mount isolation."
   ],
   "live_model_calls": 0,
-  "server_operations": 0,
+  "server_operations": 3,
   "limitations": [
     "Local application tests do not prove production deployment isolation.",
     "No final corpus was created or evaluated. No benchmark accuracy or RSI gain claim."
-  ]
+  ],
+  "server_boundary_status": "qualified actual candidate-container denial",
+  "server_boundary_evidence": "project_artifacts/results/hardening-v2/T26-server/20261025-boundary",
+  "source_generation_requested": false,
+  "server_execution_calls": 1,
+  "server_preparation_requests": 2,
+  "server_boundary_bundle": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json"
 }
