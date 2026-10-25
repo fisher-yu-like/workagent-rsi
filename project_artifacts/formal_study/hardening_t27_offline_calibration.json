@@ -149,5 +149,7 @@
     "Two occlusion defects remain INCOMPLETE for actual visual judging in T28.",
     "Three correlated development families; no final benchmark accuracy or human agreement claim."
   ],
-  "implementation_commit": "a9377b217aa8d82c7941a7c9ab5fac410adc7285"
+  "implementation_commit": "a9377b217aa8d82c7941a7c9ab5fac410adc7285",
+  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+  "benchmark_native_scorers": "two actual server recalculation/input-control checks completed; not model outputs or accuracy measurements"
 }

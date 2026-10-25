@@ -2,7 +2,7 @@
   "task_id": "T26",
   "status": "blocked",
   "local_status": "completed",
-  "data_scale_status": "deferred_by_user",
+  "data_scale_status": "licensed benchmark development inventory admitted; original three-domain 72/216 acceptance not met",
   "evaluator_service_status": "same-owner mount boundary qualified; separate principal unprovisioned",
   "delivery_level": "local_engineering",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
@@ -221,9 +221,9 @@
     "Fixed focused test profile; shared corpus fixture; one completed final full run."
   ],
   "remaining": [
-    "Independently sourced task families sufficient for 72 bases and 216 input variants.",
-    "Unexposed final content, frozen after development; current final count is zero.",
-    "Separate evaluator principal/service and candidate/developer mount isolation."
+    "Original per-domain independent families and native variants are insufficient, especially Word/PPT.",
+    "Untouched final corpus must be supplied and sealed outside developer mounts.",
+    "Separate evaluator principal remains unprovisioned."
   ],
   "live_model_calls": 0,
   "server_operations": 3,
@@ -233,8 +233,9 @@
   ],
   "server_boundary_status": "qualified actual candidate-container denial",
   "server_boundary_evidence": "project_artifacts/results/hardening-v2/T26-server/20261025-boundary",
-  "source_generation_requested": false,
+  "source_generation_requested": true,
   "server_execution_calls": 1,
   "server_preparation_requests": 2,
-  "server_boundary_bundle": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json"
+  "server_boundary_bundle": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json",
+  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
 }

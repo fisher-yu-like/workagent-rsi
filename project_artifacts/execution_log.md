@@ -409,4 +409,16 @@ Reused the frozen Apptainer/LibreOffice runtime. Actual private32-byte canary wa
 
 T27 actual production checks on90 cases:45 PASS,28 FAIL,17 INCOMPLETE. Error denominators exclude15 true gaps;2 visual defects stay unresolved. Observed false accepts0/28, false rejects0/45, gap classes15/15 and defect locations28/28. Descriptive intervals over3 correlated families do not imply general accuracy. No fabricated human admission.
 
-T28 engineering: exact-source human intake receipts, rubric/evaluator identity binding, opaque manual review pack12 cases,12 real isolated renders/20 pages. User agreed to review; no actual labels or agreement yet. Natural20-file cohort is deferred by user. Prior model budget exhausted; no new judge/model requests. The user asks to stop after current validation and not generate new materials.
+T28 engineering: exact-source human intake receipts, rubric/evaluator identity binding, opaque manual review pack12 cases,12 real isolated renders/20 pages. User agreed to review; no actual labels or agreement yet. Natural20-file cohort was deferred at this point. Prior model budget exhausted; no new judge/model requests. The later benchmark-intake authorization below supersedes that material-preparation pause.
+
+## 2026-10-25 Benchmark intake for T26 to T28
+
+The user authorized SpreadsheetBench 2, Workspace-Bench-Lite, then SpreadsheetBench 1. Pinned versions, content identities and license evidence are recorded in `phase3_experiments/configs/benchmark_sources_v1.json`. The full Workspace dataset provides Apache-2.0 annotations at all100 Lite IDs with matching task text/outputs/rubrics;80 input/graph differences are explicit. This is an adapted file subset, not native Lite leaderboard parity.
+
+Actual inventory:1333 metadata task records and3079 materialized native input cases. SSB2 contributes321/321, Workspace100/32 and SSB1 912/2726. The SSB1 archive count differs from the advertised2729. Workspace downloads are208 files/62,449,760 bytes on Windows. No full workspace ZIP, server package installation or new runtime image. The original three-domain72/216 family/variant target and evaluator-side untouched final corpus remain incomplete; no final cases or renamed copies were created.
+
+T28 reserves20 input-only jobs (Excel10/Word7/PPT3) from9 connected source groups. All173 task records in those groups leave adaptive/OOD use. The reserved manifest supersedes the pre-reservation development snapshot. Planned input bytes2,999,530. Actual natural model outputs0, submitted human labels0, model/judge calls0. A separate bounded request for20 gpt-6.1-sol generation calls/40 server operations/3600 cumulative model seconds is awaiting the user's reply. The runner defaults to refusal without that approval and executes generated Python only in Apptainer.
+
+T27 production90-case calibration repeated unchanged:45 PASS,28 FAIL,17 INCOMPLETE. Native SSB1 and SSB2 input controls were recalculated through four actual isolated server runs and both rejected. These qualify scorer integration, not model performance or accuracy. Server cleanup evidence is retained in each worker trace.
+
+Focused benchmark-intake checks:41 passed,0 failures/errors/skips, in `results/hardening-v2/T26-T28-benchmark-focused/20261025T063329032021Z`. No repeated full717 run. Syntax checks and `git diff --check` passed. Delivery state and evidence paths are in `formal_study/hardening_t26_t28_benchmark_intake.json`; usage and remaining acceptance limits are in `docs/benchmark_intake.md`.

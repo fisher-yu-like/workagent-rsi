@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-25T02:36:29.529473+00:00",
+  "updated_at": "2026-10-25T06:40:00+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -230,31 +230,34 @@
       "task_id": "T26",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
-      "note": "Actual private canary denial/read-only input/owned cleanup passed. Independent72/216 sources and separate evaluator principal remain unavailable; user will provide materials later.",
+      "note": "Licensed benchmark intake delivered (1333 records/3079 materialized instances). Original balanced domain/variant targets and untouched final set remain blocked.",
       "local_status": "completed",
       "data_scale_status": "deferred_by_user",
       "evaluator_service_status": "unprovisioned",
       "manifest": "project_artifacts/formal_study/hardening_t26_family_splits.json",
-      "server_boundary_status": "qualified"
+      "server_boundary_status": "qualified",
+      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
     },
     {
       "task_id": "T27",
       "status": "completed",
       "evidence": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json",
-      "note": "90 actual production-check cases:45PASS/28FAIL/17INCOMPLETE. No observed critical false accepts/equivalent rejects;15 correct gaps;2 visual cases unresolved. Declared checks only.",
+      "note": "90-case calibration repeated with unchanged outcomes; native SpreadsheetBench 1/2 scorer integration checked through four actual server recalculations. No model output or general accuracy claim.",
       "local_status": "completed",
-      "manifest": "project_artifacts/formal_study/hardening_t27_offline_calibration.json"
+      "manifest": "project_artifacts/formal_study/hardening_t27_offline_calibration.json",
+      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
     },
     {
       "task_id": "T28",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
-      "note": "12 opaque standards cases/20 actual rendered pages ready. User will review;0 actual labels,0 natural cohort files,0 model calls. New real-judge budget pending.",
+      "note": "20 genuine-output jobs frozen across9 reserved groups (Excel10/Word7/PPT3); no new model allowance, outputs or human labels yet.",
       "local_status": "completed",
       "server_render_status": "completed",
       "human_status": "awaiting_user_review",
       "natural_cohort_status": "deferred_by_user",
-      "manifest": "project_artifacts/formal_study/hardening_t28_human_calibration.json"
+      "manifest": "project_artifacts/formal_study/hardening_t28_human_calibration.json",
+      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
     },
     {
       "task_id": "T29",

@@ -5,8 +5,8 @@
   "server_render_status": "completed",
   "human_status": "awaiting_actual_user_review",
   "reviewer_confirmed": "user agreed in conversation",
-  "natural_cohort_status": "deferred_by_user",
-  "real_judge_status": "not_run; await labels/rubric and new bounded approval",
+  "natural_cohort_status": "20 jobs and input-only requests frozen; actual outputs0; new bounded approval pending",
+  "real_judge_status": "not_run; actual labels and new bounded judge approval still required",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "bundle_files": 163,
   "latest_full_validation": {
@@ -55,8 +55,9 @@
   "ui_validation": "12 opaque cases,20 actual images,12 empty selectors; Node syntax validation passed; no browser qualification claim.",
   "remaining": [
     "Actual user labels for standards12 and frozen rubric.",
-    "At least20 independent natural finished artifacts; user will supply later.",
-    "New bounded real-judge authorization, actual decisions and paired comparison after labels are fixed."
+    "20 natural output jobs are prepared; model execution awaits new bounded approval.",
+    "Render actual natural outputs, collect genuine labels, then separately authorize judge calls and compare."
   ],
-  "user_stop_instruction": "Finish current engineering verification and stop. Do not generate new materials or start T29."
+  "user_stop_instruction": "Superseded on 2026-10-25: user authorized benchmark preparation in priority order.",
+  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
 }
