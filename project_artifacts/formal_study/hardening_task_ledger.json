@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-26T08:51:21.524067+00:00",
+  "updated_at": "2026-10-26T11:57:30.897609+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -253,15 +253,19 @@
       "task_id": "T28",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
-      "note": "32 review cases prepared:12 standards+20 natural outputs.3 approved model repairs and separately approved PPT assertion correction completed.30 cases/187 pages rendered;2 original workbook coverage gaps.23 generation requests/1786 charged seconds/44 server operations cumulative. Human labels0;judge0.",
+      "note": "32actual human labels imported with exact-byte provenance:29PASS/2FAIL/1PARTIAL. User disclosed quick visual/uncertain review; references remain provisional. Repetition audit:24 distinct instruction texts,5shared groups/13cases,0identical artifact hashes. Approved24-request standard pilot attempted6,returned5channel decisions,stopped on HTTP429 without retry;natural20 complete model judge calibration still pending.10natural Excel target diagnostics:6mismatches/4unavailable,not official or whole-task scores.",
       "local_status": "completed",
       "server_render_status": "30_available_2_coverage_gaps",
-      "human_status": "awaiting_user_review",
+      "human_status": "32_received_provisional_requirements_adjudication_pending",
       "natural_cohort_status": "material_preparation_complete",
       "manifest": "project_artifacts/formal_study/hardening_t28_human_calibration.json",
       "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
       "generation_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
-      "complete_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html"
+      "complete_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
+      "actual_human_labels": 32,
+      "actual_judge_attempts": 6,
+      "valid_judge_channel_decisions": 5,
+      "current_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json"
     },
     {
       "task_id": "T29",
@@ -303,11 +307,12 @@
     },
     {
       "task_id": "T34",
-      "status": "blocked",
-      "evidence": "project_artifacts/results/hardening-v2/T34-local/20261026",
-      "note": "Final exact-source suite767 passed,0failed/errors/skips at T34-final/20261026T083145209758Z. All source hashes match.Compileall,diff check,90-case calibration,T01 regression selection,three-domain moved-bundle fresh replay,tracked credential patterns pass.Linux target SSH forwarding refused, so engineering/live/research/external release levels remain false rather than claiming full cross-platform acceptance.",
-      "local_engineering_complete": false,
-      "windows_validation_complete": true
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T34-human-release/20261026",
+      "note": "Current-source Windows773 passed;selected Linux non-COM149 passed in existing Apptainer.Compileall,diff,90-case declared calibration,T01 regressions,three-domain moved-bundle fresh assessment and tracked credential scan pass.Engineering release gate passes;live/research/external levels remain false.Source and test hashes verified;temporary server workspaces cleaned, no installation/image change.",
+      "local_engineering_complete": true,
+      "windows_validation_complete": true,
+      "linux_non_com_validation_complete": true
     },
     {
       "task_id": "T35",
@@ -470,21 +475,23 @@
     "T25_final_T26_local": "commit containing this ledger; exact tested sources are hashed in final run.json",
     "T27_T28": "commits delivering these manifests; exact tested files hashed in final run.json",
     "T27_remote_boundary": "a9377b217aa8d82c7941a7c9ab5fac410adc7285",
-    "T28_engineering": "commit containing this ledger; exact sources hashed in717-case final run"
+    "T28_engineering": "commit containing this ledger; exact sources hashed in717-case final run",
+    "T28_human_intake": "e96bf91",
+    "T34_linux_completion": "commit containing current delivery; tested source hashes in full run.json"
   },
   "full_validation": {
-    "passed": 717,
+    "passed": 773,
     "failed": 0,
     "error": 0,
     "skipped": 0,
     "exit_code": 0,
-    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z",
-    "expected_open": []
+    "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
   },
   "bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "Await actual T28 reviewer submission; no automatic new work",
-    "T26 independent material intake deferred by user"
+    "Adjudicate the targeted six standard differences without overwriting original blind labels.",
+    "Resolve HTTP429 and explicitly authorize any new judge attempt; complete comparable standard/natural judging, no automatic retry.",
+    "Then admit whole-task specs/final cohort and qualified budget backend before T29/T31/T32 actual qualification."
   ],
   "review_case_status": {
     "R12": {
@@ -537,12 +544,12 @@
     }
   },
   "latest_full_validation": {
-    "passed": 717,
+    "passed": 773,
     "failed": 0,
     "error": 0,
     "skipped": 0,
     "exit_code": 0,
-    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
   },
   "expected_open": [],
   "historical_full_validation_indexes": [

@@ -10,6 +10,18 @@ from workagent_rsi.run_contracts import (
 from workagent_rsi.costs import usage_from_legacy_costs
 
 
+def test_model_only_approval_can_explicitly_forbid_all_tools():
+    from datetime import datetime, timezone
+    from workagent_rsi.run_contracts import LiveCallPolicy
+    policy=LiveCallPolicy(allow_live_calls=True,approved_by_user=True,provider='codex-cli',model='test',
+        max_model_calls=2,max_tool_calls=0,max_wall_seconds=60,
+        approved_at=datetime.now(timezone.utc),approval_source='authored zero-tool approval fixture')
+    policy.require_authorized(provider='codex-cli',model='test',endpoint=None)
+    assert policy.max_tool_calls==0
+    with pytest.raises(ValidationError):
+        LiveCallPolicy.model_validate({**policy.model_dump(),'max_tool_calls':-1})
+
+
 def test_absent_usage_is_null_and_zero_requires_an_observation():
     usage = RunUsage()
     assert usage.tokens is None and usage.cost_usd is None

@@ -1,0 +1,168 @@
+{
+  "schema_version": "human-intake-linux-followup-v1",
+  "recorded_at": "2026-10-26T11:57:30.897609+00:00",
+  "branch": "feat/evaluation-rsi-hardening",
+  "base_commit": "b7e3ce8",
+  "human_intake_commit": "e96bf91",
+  "completion_commit_lookup": "git log -1 --format=%H -- project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
+  "task_count": 36,
+  "task_status_counts": {
+    "completed": 30,
+    "blocked": 6
+  },
+  "remaining_tasks": [
+    "T26",
+    "T28",
+    "T29",
+    "T31",
+    "T32",
+    "T33"
+  ],
+  "raw_human_labels": 32,
+  "human_label_counts": {
+    "PASS": 29,
+    "FAIL": 2,
+    "PARTIAL": 1
+  },
+  "human_reference_status": "provisional_quick_visual_reviewer_uncertain",
+  "raw_labels_rewritten": false,
+  "blind_pack_unchanged": true,
+  "review_repetition": {
+    "cases": 32,
+    "distinct_instruction_texts": 24,
+    "shared_instruction_groups": 5,
+    "shared_instruction_cases": 13,
+    "identical_artifact_groups": 0
+  },
+  "standard_reference_differences": 6,
+  "native_target_diagnostics": {
+    "workbooks": 10,
+    "mismatches": 6,
+    "unavailable": 4,
+    "actual_worker_jobs": 19,
+    "official_score_claim": false,
+    "whole_task_acceptance_claim": false
+  },
+  "judge_pilot": {
+    "schema_version": "standard-pilot-diagnostic-v1",
+    "attempted_requests": 6,
+    "valid_channel_decisions": 5,
+    "fully_returned_case_pairs": 2,
+    "planned_requests": 24,
+    "remaining_requests_not_issued": 18,
+    "stop_reason": "HTTP 429 Too Many Requests on request6; approved no automatic retry policy enforced",
+    "tool_calls": 0,
+    "elapsed_seconds": 128.35651479987428,
+    "charged_wall_seconds": 132,
+    "usage_totals": {
+      "input_tokens": 81625,
+      "cached_input_tokens": 0,
+      "output_tokens": 3158,
+      "reasoning_output_tokens": 133
+    },
+    "unknown_usage_calls": 1,
+    "quality_qualified": false,
+    "case_scope": "Text semantic obligations plus general rendered readability; no full-task qualification; missing evidence remains INCOMPLETE.",
+    "cases": [
+      {
+        "case_id": "review-ec20117491502820",
+        "channel_statuses": {
+          "semantic": "PASS",
+          "visual": "PASS"
+        },
+        "aggregate_status": "PASS"
+      },
+      {
+        "case_id": "review-201d371b1160838f",
+        "channel_statuses": {
+          "semantic": "NEEDS_REVIEW",
+          "visual": "PARTIAL"
+        },
+        "aggregate_status": "INCOMPLETE"
+      },
+      {
+        "case_id": "review-19988a00ef040b43",
+        "channel_statuses": {
+          "semantic": "NEEDS_REVIEW",
+          "visual": null
+        },
+        "aggregate_status": "INCOMPLETE"
+      }
+    ],
+    "evaluator_identity": "c648c2e5486552c0d8b3aadce71d8f261a772e87c23226c76aa44cfef2eb5c15"
+  },
+  "server_tests": {
+    "runs": 3,
+    "run_v1": "146passed2failed:temporary child dependency import; original failure preserved",
+    "run_v2": "148passed before zero-tool policy contract change",
+    "run_v3": "149passed current tested sources",
+    "installations": 0,
+    "image_changes": 0,
+    "new_images": 0,
+    "cleanup_verified": true,
+    "archive_transfer_bytes": 24877596,
+    "source_expanded_bytes": 27208138,
+    "dependencies_expanded_bytes": 16716186
+  },
+  "windows_validation": {
+    "passed": 773,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
+  },
+  "release_manifest": "project_artifacts/results/hardening-v2/T34-human-release/20261026/release-manifest.json",
+  "release_gate": "project_artifacts/results/hardening-v2/T34-human-release/20261026/release-gate.json",
+  "followup_guide": "docs/operations/human-review-follow-up-20261026.md",
+  "evaluator_only_evidence": {
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/.gitattributes": "87150d91775e68ba542ea27b752564c0038c32b0a9920fc8221b6bb3c7633157",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/controlled-standard-triage.json": "c3f27dbbeebd35e378fcee98b7b98dec871ff917e11d4e94bf5fd6c8dc8036b9",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/diagnostic-summary.json": "7c8030b784e1273dea7c1582935609ee6ff7c48e80af82a9aef7c4c5534d32ac",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/external-submission.json": "3a19b2e01492583c051ecec7a93f9b0a9677775b139732bff3153c9f710b5ba5",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/human-comparison.json": "ac33ed27658165edfc9e15af33958bcaf6a736a04dc8f85bd61d552479b5892e",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/human-labels.jsonl": "cbcd578a2ea07104e260accb04dc8697f0357d36abdcedbcddf5185150d691e6",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/native-target-diagnostics.json": "fd0e8589d8373870cfedbf80ab47e880baff553973b992eb6989790188b8e467",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/pilot-approval-receipt.json": "20ae1361e63c502667efa37c352f77b20253761d0cad2fb3e9d77d2e2359b4f5",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/pilot-budget-state.json": "c41ade099c22edc862bbec5c45026372c6c77e310ba60b05b62a9b10c165f728",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/pilot-live-policy.json": "6a483ec062de196d01eb2a4349860c3765d60ea9e5b1447296791f8148d768de",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/pilot-results.json": "abcf84e82ed238124f740253fca0bd61dfef37d9a2a28976b4ed4f78cc58fdb0",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/repetition-audit.json": "fc23855d3f516c0f4fd3a2e7bb136ec16ffe1c4aab0ecb93e3db8ea966c7557d",
+    "project_artifacts/formal_study/human_review/20261026/evaluator-only/submission-receipt.json": "a8ac9178f538b2489f3670ed5afb731079774fd36be74c18bfd2809698cf863f"
+  },
+  "actual_result_scope": "Engineering completion and diagnostic observations; T28 and downstream research qualification remain blocked.",
+  "release_gate_result": {
+    "schema_version": "release-gates-v2",
+    "engineering_pass": true,
+    "live_loop_pass": false,
+    "research_pass": false,
+    "external_pass": false,
+    "checks": {
+      "full_pytest": true,
+      "compileall": true,
+      "diff_check": true,
+      "calibration_90": true,
+      "t01_regressions": true,
+      "moved_bundle_replay": true,
+      "credential_scan": true,
+      "linux_non_com": true
+    },
+    "blocked_checks": [],
+    "pending_claims": [
+      "live_loop",
+      "research",
+      "external"
+    ]
+  },
+  "release_receipt": "project_artifacts/formal_study/hardening_t34_cross_platform_release.json",
+  "evidence_hashes": {
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/release-gate.json": "9cf9a3929aa1e6efb624b2bd2c9d98593962e8ac3b98ee537a7c4a801a99e33b",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/release-manifest.json": "d7e5289bc684c47d46c348f45bcab798dc0f2a93c23c1d9dee9ad2caed84eab5",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/coverage-map.json": "325e16300781f478a1dd0738ad60af88a2ff0abff490c9894865a20ce54adf3d",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/calibration-90.json": "c94aa06b3a42aece1229a0ab4864ec9f16f1796b0a0cad9cb4b45a65cbddbb6b",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/frozen-pack-check.json": "84ee280b3b7330f5ccdb349a9c26615d0d496fdc0f38da4811c204ab880bbba9",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/full-pytest.json": "e9cbe2ea2197b6ec16490c7a8a479c9174bdb4121493be954a92eb68c241a07b",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/linux-non-com.json": "c77f1e2495e1dba6e93d04bc20c1486a7a5854494ee4cbb45be53aa784edfbcb",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/moved-bundle-replay.json": "127159a38e237a092a5ac8b43aa107f8066463eaad4636dcedf4a6cb6221b5e5"
+  }
+}

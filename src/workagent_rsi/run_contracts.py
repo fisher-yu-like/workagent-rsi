@@ -38,7 +38,7 @@ class LiveCallPolicy(RunContract):
     model: str | None = None
     endpoint: str | None = None
     max_model_calls: int | None = Field(default=None, ge=1)
-    max_tool_calls: int | None = Field(default=None, ge=1)
+    max_tool_calls: int | None = Field(default=None, ge=0)
     max_wall_seconds: int | None = Field(default=None, ge=1)
     max_cost_usd: float | None = Field(default=None, gt=0)
     approved_at: datetime | None = None

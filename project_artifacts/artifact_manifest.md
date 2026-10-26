@@ -166,3 +166,8 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 - Final local test evidence: `results/hardening-v2/T34-final/20261026T083145209758Z/run.json`;767 passed. Release checks: `results/hardening-v2/T34-local/20261026/release-gate.json`;Linux non-COM execution blocked, later live/research/external claim levels false.
 - T31 draft inputs: `results/hardening-v2/T31-prepared/20261026/task-bundle.draft.json`;72 existing inputs,24 per domain, no new benchmark artifact generation, all whole-task acceptance specifications still incomplete.
 - Operations and rollback: `../docs/operations/evaluation-rsi-v2.md`.
+
+- Current human/server follow-up: `formal_study/hardening_human_intake_linux_delivery.json`;32 real provisional labels retained with exact bytes under `formal_study/human_review/20261026/evaluator-only/`. This supersedes earlier “labels pending” status.
+- Review repetition and targeted adjudication: `../docs/operations/human-review-follow-up-20261026.md`;24 distinct instruction texts across32 different artifacts;6 controlled-standard differences without label replacement.
+- Current validation: `results/hardening-v2/T28-T34-release/20261026T113921863242Z/run.json` (Windows773passed),`results/hardening-v2/T34-linux/20261026/run-v3/linux-non-com.json` (selected Linux149passed),`results/hardening-v2/T34-human-release/20261026/release-gate.json` (engineering true;live/research/external false).
+- Judge pilot: `results/hardening-v2/T28-judge-pilot/20261026/actual-v1/`;6 requests,5 valid channel decisions,HTTP429 stop without retry,0tools. Complete T28 calibration remains blocked. Native Excel diagnostics are separate from these model decisions and are not official benchmark results.

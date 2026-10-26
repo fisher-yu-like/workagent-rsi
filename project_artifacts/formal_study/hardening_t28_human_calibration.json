@@ -3,28 +3,28 @@
   "status": "blocked",
   "local_status": "completed",
   "server_render_status": "30/32 review cases rendered,187 pages;2 original workbooks exceed40-page cap",
-  "human_status": "awaiting_actual_user_review",
+  "human_status": "32_received_provisional",
   "reviewer_confirmed": "user agreed in conversation",
   "natural_cohort_status": "20 real natural outputs:17 single-shot plus3 repaired; all source records retained",
-  "real_judge_status": "not_run; generation approval did not authorize judge calls",
+  "real_judge_status": "standard_pilot_6attempts_5decisions_stopped_HTTP429_no_retry",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "bundle_files": 163,
   "latest_full_validation": {
-    "passed": 717,
+    "passed": 773,
     "failed": 0,
     "error": 0,
     "skipped": 0,
     "exit_code": 0,
-    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
   },
   "blind_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
   "standards_count": 12,
   "actual_rendered_pages": 187,
-  "actual_human_labels": 0,
+  "actual_human_labels": 32,
   "actual_natural_artifacts": 20,
   "required_natural_artifacts": 20,
   "agreement": null,
-  "model_calls": 23,
+  "model_calls": 29,
   "report": {
     "status": "blocked",
     "standards_cases": 12,
@@ -57,17 +57,21 @@
   },
   "ui_validation": "32 empty selectors;84 local links and187 page hashes verified;Node syntax exit0. Static validation only; no actual human submission or browser qualification.",
   "remaining": [
-    "Actual human review of12 standards and20 natural cases.",
-    "Separate bounded judge approval and paired calibration after human labels are fixed.",
-    "Existing2 spreadsheet render coverage gaps require original-file inspection."
+    "Requirements-based adjudication of provisional labels; retain original blind submission.",
+    "Complete semantic/visual judging after resolving HTTP429 and explicit new-attempt authorization; no automatic retries.",
+    "Resolve semantic/visual evidence scope gaps and two original workbook render coverage gaps."
   ],
   "user_stop_instruction": "Superseded on 2026-10-25: user authorized benchmark preparation in priority order.",
   "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
-  "judge_calls": 0,
+  "judge_calls": 6,
   "natural_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
   "standards_review_page": "project_artifacts/results/hardening-v2/T28/20261025-human-pack/blind-review-pack/index.html",
   "natural_report": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
   "complete_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
   "repaired_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
-  "total_review_cases": 32
+  "total_review_cases": 32,
+  "generation_model_calls": 23,
+  "latest_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
+  "source_hashes_scope": "Historical T27/T28 engineering delivery; current source hashes in current release evidence.",
+  "report_scope": "Historical material-delivery report before actual user submission."
 }
