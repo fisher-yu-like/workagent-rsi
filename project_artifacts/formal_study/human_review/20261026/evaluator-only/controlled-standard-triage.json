@@ -1,0 +1,109 @@
+{
+  "scope": "Controlled-standard triage, not live model judging or evaluator accuracy",
+  "compared_standards": 12,
+  "different_labels": 6,
+  "rows": [
+    {
+      "case_id": "review-ec20117491502820",
+      "original_id": "excel-01-1-correct",
+      "human_label": "PASS",
+      "standard_reference": "PASS",
+      "needs_review": false,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "original_id": "powerpoint-05-10-single_defect",
+      "human_label": "FAIL",
+      "standard_reference": "FAIL",
+      "needs_review": false,
+      "human_notes": [
+        "第二张幻灯片的上面是黑色的，没有显示“总计”"
+      ]
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "original_id": "powerpoint-01-1-correct",
+      "human_label": "PASS",
+      "standard_reference": "PASS",
+      "needs_review": false,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "original_id": "word-01-1-correct",
+      "human_label": "PASS",
+      "standard_reference": "PASS",
+      "needs_review": false,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "original_id": "powerpoint-01-2-gap",
+      "human_label": "PASS",
+      "standard_reference": "INCOMPLETE",
+      "needs_review": true,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "original_id": "word-01-2-gap",
+      "human_label": "PASS",
+      "standard_reference": "INCOMPLETE",
+      "needs_review": true,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "original_id": "excel-02-3-single_defect",
+      "human_label": "PASS",
+      "standard_reference": "FAIL",
+      "needs_review": true,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "original_id": "excel-01-2-gap",
+      "human_label": "PASS",
+      "standard_reference": "INCOMPLETE",
+      "needs_review": true,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "original_id": "word-01-1-equivalent",
+      "human_label": "FAIL",
+      "standard_reference": "PASS",
+      "needs_review": true,
+      "human_notes": [
+        "任务说的是保留三行，但是表格里面不知道为什么会有四行"
+      ]
+    },
+    {
+      "case_id": "review-eae3e39d4eebdc00",
+      "original_id": "powerpoint-01-1-equivalent",
+      "human_label": "PASS",
+      "standard_reference": "PASS",
+      "needs_review": false,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-44158a7fd630cae5",
+      "original_id": "excel-01-1-equivalent",
+      "human_label": "PASS",
+      "standard_reference": "PASS",
+      "needs_review": false,
+      "human_notes": []
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "original_id": "word-04-7-single_defect",
+      "human_label": "PASS",
+      "standard_reference": "FAIL",
+      "needs_review": true,
+      "human_notes": []
+    }
+  ],
+  "labels_changed": false,
+  "quality_qualified": false
+}

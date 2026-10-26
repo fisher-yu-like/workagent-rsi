@@ -1,5 +1,11 @@
 # Development calibration and human review
 
+Update2026-10-26: the user supplied32 actual labels (29PASS,2FAIL,1PARTIAL) and disclosed quick visual review and uncertain accuracy. The original bytes are frozen in `results/hardening-v2/T28-human-intake/20261026/submission-v1/`. They are provisional references, not verified truth. See [the targeted follow-up](operations/human-review-follow-up-20261026.md) for repeated-task explanations and six controlled-standard differences. Earlier statements below about no submitted labels describe the historical delivery.
+
+Intake now records `--review-depth quick_visual --reviewer-uncertain` and an optional `--review-note`. Only an explicit requirements-checked, non-uncertain receipt passes the reference gate. Provisional labels retain raw disagreement counts, but `critical_false_accepts` stays null: a human FAIL paired with a judge PASS is an unresolved difference, not proof of evaluator error. Revisions after seeing diagnostic results are adjudication records, not independent blind labels.
+
+The newly approved12-standard pilot attempted6 of24 requests with gpt-6.1-sol and zero tools. Five channel decisions returned; request6 failed with HTTP429 and execution stopped without retry. Only2 cases have both channels returned, so neither full32-case agreement nor T28 qualification is established. The remaining18 requests were not issued. See `results/hardening-v2/T28-judge-pilot/20261026/actual-v1/diagnostic-summary.json` for recorded usage and scope.
+
 T27 runs the production SharedAssessment, ArtifactEvaluator and ArtifactVerifier
 against the90 T25 materials. Its compiler reads task instructions and frozen
 input documents. It does not read labels or outputs to choose expected results.

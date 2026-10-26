@@ -1,0 +1,158 @@
+{
+  "schema_version": "review-repetition-audit-v1",
+  "case_count": 32,
+  "distinct_instruction_count": 24,
+  "shared_instruction_groups": [
+    {
+      "instruction": "Please audit and fix this file thoroughly. Errors may include but are not limited to: formula logic errors or inconsistencies, hardcoded values that should be formulas, broken cell references, data validation issues, potential calculation errors, inconsistent formatting or naming conventions, best practice violations, and any other issues that could affect accuracy or maintainability.",
+      "count": 3,
+      "cases": [
+        {
+          "case_id": "review-4a85dc3e1d4675c8",
+          "domain": "excel",
+          "cohort": "natural-blind",
+          "artifact_hash": "6da27a57dc65c3df89557193db8cfd7d7328c844d3651972b0d4bddd469a1f14",
+          "input_hashes": [
+            "105fc9ddfefaa18fa47c91b4982b031acf14809b6a32a1db066b87c89420e540"
+          ]
+        },
+        {
+          "case_id": "review-7fa353cc90101d8e",
+          "domain": "excel",
+          "cohort": "natural-blind",
+          "artifact_hash": "c571d2bb60db5e0854c85cc595f706701da048cf0d7c0693cdcbab3d18637d24",
+          "input_hashes": [
+            "0ca3f0cf0a4639e2789005f81bf540731cd9f17a7797378883cb242e6a709a57"
+          ]
+        },
+        {
+          "case_id": "review-c0ea6a3781224c9e",
+          "domain": "excel",
+          "cohort": "natural-blind",
+          "artifact_hash": "983a8ed8d2f4cbf464cea33443c19302739fad6da728671934ebd646bcd14531",
+          "input_hashes": [
+            "23a52e0fbd9781d8916d38a5354f04c227762c94bc612774a5fa6d806cadd8fb"
+          ]
+        }
+      ]
+    },
+    {
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put the full-range SUM formula in Ledger!B6.",
+      "count": 2,
+      "cases": [
+        {
+          "case_id": "review-ec20117491502820",
+          "domain": "excel",
+          "cohort": "standards-12",
+          "artifact_hash": "04d4508e3b03fc3d18b3d03b5b9a30104107d1764448e8f36325b2e6e1bfcdab",
+          "input_hashes": [
+            "6e46921db7b65a4311288876cf682b33c1aa7cf14f664b41681d81380c31358a"
+          ]
+        },
+        {
+          "case_id": "review-070bf88a4446ba8f",
+          "domain": "excel",
+          "cohort": "standards-12",
+          "artifact_hash": "25f7338d97021db42a5d58dc55b3249d96415e95df8e6972ec8542415a353337",
+          "input_hashes": [
+            "5b373d87229cd2a2d6f1a05618a921506931965530bc1ff95632e47889d1e2b0"
+          ]
+        }
+      ]
+    },
+    {
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put visible Total and its value on slide 2 above the table.",
+      "count": 2,
+      "cases": [
+        {
+          "case_id": "review-201d371b1160838f",
+          "domain": "powerpoint",
+          "cohort": "standards-12",
+          "artifact_hash": "eab01a49de4802f65114ce426d3399cf280d3f1f0787327950165757e6f6a0d5",
+          "input_hashes": [
+            "ac5d77950f87cf5d050f699bd0db0a4e77a7ebab360c206775ce576b42674565"
+          ]
+        },
+        {
+          "case_id": "review-19988a00ef040b43",
+          "domain": "powerpoint",
+          "cohort": "standards-12",
+          "artifact_hash": "9e9f506af86c19b1a418d93d2dce638bfb2700342c2c314ad0152b13d30b54d9",
+          "input_hashes": [
+            "6624ba57f28683a7009f3bfa586d5f5d9b688746d872806bfb1537dc02d7da5a"
+          ]
+        }
+      ]
+    },
+    {
+      "instruction": "Preserve the source text and all three ordered ledger rows. Put Total and its value in the body paragraph after Summary.",
+      "count": 2,
+      "cases": [
+        {
+          "case_id": "review-8a0f33aa1247b0b8",
+          "domain": "word",
+          "cohort": "standards-12",
+          "artifact_hash": "2d28f71128a2ada2f6430bf513f7e5beb272daefca5b99c4de322047d6b905a5",
+          "input_hashes": [
+            "e15a6b80ebafac8ca06456a043f9b604feec763ad61535c042433e95213427aa"
+          ]
+        },
+        {
+          "case_id": "review-ccfa7110e2ffbd7e",
+          "domain": "word",
+          "cohort": "standards-12",
+          "artifact_hash": "8d2db8ac61b1fd7507d627f87ef5af1e9ee79c10145f0f5bfd80236cffef8ce1",
+          "input_hashes": [
+            "77c17cd00e0942c7e87d53236f4d519269be76960c91202c6fae0c77a081baf7"
+          ]
+        }
+      ]
+    },
+    {
+      "instruction": "Complete the financial model based on the provided assumptions. Ensure that all formulas, references, and calculations are correct.",
+      "count": 4,
+      "cases": [
+        {
+          "case_id": "review-d8fa947266fa7b8e",
+          "domain": "excel",
+          "cohort": "natural-blind",
+          "artifact_hash": "0a1ff90fb6e5633bc7c84ef79526fb2dd769b4a21384555122b06676caf1cad1",
+          "input_hashes": [
+            "e5023b5d9790783d9b5e5abdff9724eed744008325bf5184b8091c21092bcf69"
+          ]
+        },
+        {
+          "case_id": "review-f1a51e11aea9fca8",
+          "domain": "excel",
+          "cohort": "natural-blind",
+          "artifact_hash": "aa48edd7af86cb14fd93cb2348784fab276dc78987003e7678713461cebd7166",
+          "input_hashes": [
+            "e98907f7263a5f4f3134f09b9827801511427aa3e4ad714f6077bd2364ecab53"
+          ]
+        },
+        {
+          "case_id": "review-d69312f31c49fcab",
+          "domain": "excel",
+          "cohort": "natural-blind",
+          "artifact_hash": "34b413c4599e501c986794c3d3e5031f6e3bf17747d39e4a726f6f116cf5f5f6",
+          "input_hashes": [
+            "3210a0816bc4d2fb267b19e689dfc0f609568ca15170b1665f962425d9a2d6b2"
+          ]
+        },
+        {
+          "case_id": "review-8c91b91efb85a0a5",
+          "domain": "excel",
+          "cohort": "natural-blind",
+          "artifact_hash": "36b716e58377979ccba50614bf179f4ed5df6913ddfd9b1a8c596c9ccd1462de",
+          "input_hashes": [
+            "205d9a76852ff816aa95a47e5c3f18d8fead66a17c3f33dc05c7cb826096137b"
+          ]
+        }
+      ]
+    }
+  ],
+  "shared_instruction_case_count": 13,
+  "identical_artifact_groups": [],
+  "identical_task_input_artifact_groups": [],
+  "interpretation": "Shared wording is not an independent task count. Standard variants and benchmark templates must be grouped by family; inspect each input/artifact separately."
+}

@@ -65,4 +65,32 @@ def test_external_file_intake_preserves_exact_source_and_rejects_model_claim(tmp
     source.write_text(json.dumps({**payload,'source_kind':'model'}))
     with pytest.raises(ValueError,match='model'):
         intake_human_submission(source,tmp_path/'never',reviewer_id='user',evidence_ref='test',review_manifest=manifest)
+
+
+def test_quick_uncertain_human_labels_are_preserved_but_cannot_qualify_judge(tmp_path):
+    import json
+    from workagent_rsi.human_calibration import intake_human_submission,compare_human_labels
+    manifest={'case_ids':['opaque-1'],'rubric_hash':'a'*64}
+    payload={'rubric_hash':'a'*64,'labels':[{'case_id':'opaque-1','label':'FAIL','defect_locations':['page2']}]}
+    source=tmp_path/'external.json';source.write_text(json.dumps(payload),encoding='utf-8')
+    receipt=intake_human_submission(source,tmp_path/'intake',reviewer_id='user',evidence_ref='actual-user-file',
+        review_manifest=manifest,review_depth='quick_visual',reviewer_uncertain=True,review_note='Reviewer disclosed a quick scan.')
+    labels=[json.loads(line) for line in (tmp_path/'intake/human-labels.jsonl').read_text(encoding='utf-8').splitlines()]
+    assert receipt['reference_status']=='provisional'
+    assert (tmp_path/'intake/external-submission.json').read_bytes()==source.read_bytes()
+    decisions=[dict(case_id='opaque-1',status='PASS',rubric_hash='a'*64,evaluator_identity='same-evaluator')]
+    report=compare_human_labels(labels,decisions,review_manifest=manifest,submission_receipts=[receipt])
+    assert report['accepted_human_labels']==1 and report['human_fail_judge_pass']==1
+    assert report['critical_false_accepts'] is None
+    assert not report['reference_gate_passed'] and not report['critical_gate_passed']
+    assert not report['quality_qualified']
+
+
+def test_unspecified_intake_does_not_assert_detailed_review(tmp_path):
+    import json
+    from workagent_rsi.human_calibration import intake_human_submission
+    source=tmp_path/'external.json';source.write_text(json.dumps({'rubric_hash':'a'*64,'labels':[]}),encoding='utf-8')
+    receipt=intake_human_submission(source,tmp_path/'intake',reviewer_id='user',evidence_ref='test',
+        review_manifest={'case_ids':[],'rubric_hash':'a'*64})
+    assert receipt['review_depth']=='unspecified' and receipt['reference_status']=='provisional'
     assert not (tmp_path/'never').exists()

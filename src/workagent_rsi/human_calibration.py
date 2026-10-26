@@ -46,13 +46,19 @@ def evaluator_identity_for_rubric(base_identity: str,rubric: dict) -> str:
 
 
 def intake_human_submission(submission: Path, output: Path, *, reviewer_id: str, evidence_ref: str,
-                            review_manifest: dict, judge_revealed: bool=False) -> dict:
+                            review_manifest: dict, judge_revealed: bool=False,
+                            review_depth: str='unspecified', reviewer_uncertain: bool=False,
+                            review_note: str='') -> dict:
     """Controller entrypoint after an actual reviewer supplies a file.
 
     The caller must have observed the external submission. This function does
     not infer human provenance from a file's self-declared source_kind.
     """
     if judge_revealed: raise ValueError('labels must be frozen before judge results are revealed')
+    if review_depth not in {'unspecified','quick_visual','requirements_checked'}:
+        raise ValueError('unknown human review depth')
+    if type(reviewer_uncertain) is not bool:
+        raise ValueError('reviewer uncertainty must be explicit boolean')
     if not evidence_ref.strip(): raise ValueError('external submission reference required')
     submission=ordinary_file(submission)
     if submission.stat().st_size>1048576: raise ValueError('human submission exceeds1MB')
@@ -73,7 +79,9 @@ def intake_human_submission(submission: Path, output: Path, *, reviewer_id: str,
     ids=[l.case_id for l in labels]
     if len(set(ids))!=len(ids) or not set(ids)<=required: raise ValueError('duplicate or unknown human case')
     receipt={'source_kind':'reviewer_file','submission_hash':digest,'reviewer_id':reviewer_id,
-        'evidence_ref':evidence_ref,'case_ids':ids,'rubric_hash':payload['rubric_hash'],'received_at':now,'judge_revealed':False}
+        'evidence_ref':evidence_ref,'case_ids':ids,'rubric_hash':payload['rubric_hash'],'received_at':now,'judge_revealed':False,
+        'review_depth':review_depth,'reviewer_uncertain':reviewer_uncertain,'review_note':review_note,
+        'reference_status':'reviewed_requirements' if review_depth=='requirements_checked' and not reviewer_uncertain else 'provisional'}
     output=Path(output)
     if output.exists(): raise FileExistsError(output)
     output.mkdir(parents=True)
@@ -119,6 +127,11 @@ def compare_human_labels(labels, decisions, *, review_manifest: dict, submission
         identities.add(decision['evaluator_identity']);decisions_by_id[decision['case_id']]=decision
     if len(identities)>1: raise ValueError('mixed evaluator identities cannot form one comparable cohort')
     compared=[l for l in accepted if l.case_id in decisions_by_id]
+    accepted_receipts=[receipts[(l.submission_hash,l.reviewer_id,l.evidence_ref)] for l in accepted]
+    provisional=any(r.get('reference_status')=='provisional' or r.get('review_depth')=='quick_visual'
+                    or r.get('reviewer_uncertain') is True for r in accepted_receipts)
+    reviewed_reference=bool(accepted_receipts) and all(r.get('review_depth')=='requirements_checked'
+        and r.get('reviewer_uncertain') is False for r in accepted_receipts)
     hits=sum(l.label==decisions_by_id[l.case_id]['status'] for l in compared)
     critical=sum(l.label=='FAIL' and decisions_by_id[l.case_id]['status']=='PASS' for l in compared)
     missing=sorted(required-{l.case_id for l in accepted})
@@ -127,9 +140,13 @@ def compare_human_labels(labels, decisions, *, review_manifest: dict, submission
         'human_locations':l.defect_locations} for l in compared if l.label!=decisions_by_id[l.case_id]['status']]
     return {'status':'blocked' if not required or missing or judge_missing else 'completed','accepted_human_labels':len(accepted),
         'required_cases':len(required),'missing_human_cases':missing,'missing_judge_cases':judge_missing,
-        'agreement':proportion(hits,len(compared)), 'critical_false_accepts':critical,
+        'agreement':proportion(hits,len(compared)), 'critical_false_accepts':None if provisional else critical,
+        'human_fail_judge_pass':critical,
+        'reference_status':'provisional' if provisional else 'reviewed_requirements' if reviewed_reference else 'unspecified',
+        'reference_gate_passed':reviewed_reference,
+        'disagreement_interpretation':'Unadjudicated human/judge differences; neither side is assumed correct.',
         'quality_qualified':False,
-        'critical_gate_passed':bool(required) and not missing and not judge_missing and critical==0,
+        'critical_gate_passed':bool(required) and not missing and not judge_missing and reviewed_reference and critical==0,
         'disagreements':disagreements,'rubric_hash':rubric,
         'evaluator_identity':next(iter(identities)) if identities else None,
         'interval_scope':'Descriptive paired-case agreement; no population accuracy or inter-rater reliability claim.'}
@@ -145,6 +162,9 @@ def main():
     intake.add_argument('--output',type=Path,required=True)
     intake.add_argument('--reviewer-id',required=True)
     intake.add_argument('--evidence-ref',required=True)
+    intake.add_argument('--review-depth',choices=('unspecified','quick_visual','requirements_checked'),default='unspecified')
+    intake.add_argument('--reviewer-uncertain',action='store_true')
+    intake.add_argument('--review-note',default='')
     compare=commands.add_parser('compare')
     for name in ['labels','receipt','decisions','review-manifest','output']:
         compare.add_argument('--'+name,type=Path,required=True)
@@ -152,7 +172,8 @@ def main():
     manifest=json.loads(ordinary_file(args.review_manifest).read_text(encoding='utf-8'))
     if args.action=='intake':
         result=intake_human_submission(args.submission,args.output,reviewer_id=args.reviewer_id,
-            evidence_ref=args.evidence_ref,review_manifest=manifest)
+            evidence_ref=args.evidence_ref,review_manifest=manifest,review_depth=args.review_depth,
+            reviewer_uncertain=args.reviewer_uncertain,review_note=args.review_note)
     else:
         def jsonl(path): return [json.loads(line) for line in ordinary_file(path).read_text(encoding='utf-8').splitlines() if line.strip()]
         result=compare_human_labels(jsonl(args.labels),jsonl(args.decisions),review_manifest=manifest,

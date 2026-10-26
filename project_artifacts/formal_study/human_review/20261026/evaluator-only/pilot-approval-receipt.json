@@ -1,0 +1,9 @@
+{
+  "question_id": "call_ec33f7d402884aa2aa50710dd6331e83",
+  "answer": "User explicitly approved this configuration and caps.",
+  "recorded_at": "2026-10-26T11:42:40.672690+00:00",
+  "policy_sha256": "6a483ec062de196d01eb2a4349860c3765d60ea9e5b1447296791f8148d768de",
+  "manifest_sha256": "e2d6eb10db978d5fdd8f5a546e388c203f9c7bd722e9c8d5efed8521d7b6b0f2",
+  "output_tokens_limit": "4096 prompt request, no CLI server-side hard cap; actual usage retained.",
+  "authorization_scope": "At most24semantic/visual model requests across12frozenstandards;zero tools;1200cumulative seconds;no retries or automatic expansion."
+}
