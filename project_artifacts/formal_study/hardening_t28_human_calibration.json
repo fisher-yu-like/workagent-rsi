@@ -3,7 +3,7 @@
   "status": "blocked",
   "local_status": "completed",
   "server_render_status": "30/32 review cases rendered,187 pages;2 original workbooks exceed40-page cap",
-  "human_status": "32_received_provisional",
+  "human_status": "32_first_pass_and6_nonblind_adjudications_received",
   "reviewer_confirmed": "user agreed in conversation",
   "natural_cohort_status": "20 real natural outputs:17 single-shot plus3 repaired; all source records retained",
   "real_judge_status": "standard_pilot_6attempts_5decisions_stopped_HTTP429_no_retry",
@@ -73,5 +73,7 @@
   "generation_model_calls": 23,
   "latest_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
   "source_hashes_scope": "Historical T27/T28 engineering delivery; current source hashes in current release evidence.",
-  "report_scope": "Historical material-delivery report before actual user submission."
+  "report_scope": "Historical material-delivery report before actual user submission.",
+  "actual_adjudications": 6,
+  "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json"
 }

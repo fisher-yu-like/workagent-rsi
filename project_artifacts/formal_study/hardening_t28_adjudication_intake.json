@@ -1,0 +1,37 @@
+{
+  "schema_version": "t28-adjudication-intake-delivery-v1",
+  "recorded_at": "2026-10-26T13:57:11.375703+00:00",
+  "base_commit": "5c23734",
+  "commit_lookup": "git log -1 --format=%H -- project_artifacts/formal_study/hardening_t28_adjudication_intake.json",
+  "actual_adjudications": 6,
+  "unique_human_cases_total": 32,
+  "new_independent_blind_labels": 0,
+  "adjudication_counts": {
+    "FAIL": 3,
+    "INCOMPLETE": 3
+  },
+  "controlled_reference_disagreements": 2,
+  "blind_labels_changed": false,
+  "quality_qualified": false,
+  "live_v2_approval": "pending",
+  "model_calls": 0,
+  "server_jobs": 0,
+  "focused_validation": {
+    "passed": 13,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-adjudication-intake-final/20261026T135853984590Z/run.json"
+  },
+  "compileall_exit_code": 0,
+  "evidence_hashes": {
+    "project_artifacts/formal_study/human_review/20261026/adjudication-v1/adjudicated-labels.jsonl": "762f3c8a68d2de875ab88f6f1a322476b5392e62ad0c4e61981a84d0b112a6a4",
+    "project_artifacts/formal_study/human_review/20261026/adjudication-v1/controlled-reference-comparison.json": "3bc1d6006d57095184b985428247513f8d9d286c0360709f29f387e361fc9611",
+    "project_artifacts/formal_study/human_review/20261026/adjudication-v1/external-submission.json": "35feda71996950533f58ea03802a8f14e8c28ff597b4c5f58608e7d6a12e2509",
+    "project_artifacts/formal_study/human_review/20261026/adjudication-v1/submission-receipt.json": "092919a17b38743754b8f647ad81832054200292b098915104b86c03e00bb623",
+    "project_artifacts/results/hardening-v2/T28-adjudication/20261026/received-v1/intake-run.json": "e66807d4431bd0cfe7f5c6e9c62434753af42dcec41d8d3004ddd43f7700cda5",
+    "project_artifacts/results/hardening-v2/T28-adjudication/20261026/received-v1/environment.json": "a7767c6e0ce82d62bf017575fa4d5b150a663e335373b0b71e61c914d03f3166",
+    "project_artifacts/results/hardening-v2/T28-adjudication-intake-final/20261026T135853984590Z/run.json": "330b74231ec6231e5eb724de15f1844910bc38a406b1abee2ead921be1b448aa"
+  },
+  "scope": "Actual externally supplied nonblind requirements-checked revisions of six existing cases,not a new independent human cohort or a full reliability claim.",
+  "post_intake_parent_normalization_verified": true,
+  "current_importer_source_sha256": "07d03b82c149ceb35160d70ffb7c5f145d1b4266a27177412ca318620785addd"
+}

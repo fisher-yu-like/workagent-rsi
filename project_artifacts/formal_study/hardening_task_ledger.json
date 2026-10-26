@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-26T13:27:40.898275+00:00",
+  "updated_at": "2026-10-26T13:57:11.501455+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -256,7 +256,7 @@
       "note": "32actual human labels imported with exact-byte provenance:29PASS/2FAIL/1PARTIAL. User disclosed quick visual/uncertain review; references remain provisional. Repetition audit:24 distinct instruction texts,5shared groups/13cases,0identical artifact hashes. Approved24-request standard pilot attempted6,returned5channel decisions,stopped on HTTP429 without retry;natural20 complete model judge calibration still pending.10natural Excel target diagnostics:6mismatches/4unavailable,not official or whole-task scores.",
       "local_status": "completed",
       "server_render_status": "30_available_2_coverage_gaps",
-      "human_status": "32_received_provisional_requirements_adjudication_pending",
+      "human_status": "32first_pass_provisional_6nonblind_adjudications_received_2reference_disputes",
       "natural_cohort_status": "material_preparation_complete",
       "manifest": "project_artifacts/formal_study/hardening_t28_human_calibration.json",
       "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
@@ -267,8 +267,10 @@
       "valid_judge_channel_decisions": 5,
       "current_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
       "latest_offline_preparation": "project_artifacts/formal_study/hardening_t28_t31_preparation.json",
-      "next_human_action": "project_artifacts/results/hardening-v2/T28-adjudication/20261026/six-case-v1/index.html",
-      "judge_v2_status": "24requests_prepared_not_approved_not_run"
+      "next_human_action": "Confirm new frozen v2 live request budget;do not repeat completed six-case adjudication.",
+      "judge_v2_status": "24requests_prepared_approval_pending",
+      "actual_adjudications": 6,
+      "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json"
     },
     {
       "task_id": "T29",
@@ -496,9 +498,9 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "User performs the six-case requirements-based adjudication through the separate follow-up page.",
-    "After adjudication,confirm a new v2 manifest-bound model budget;old v1 opinions are not reused.",
-    "Implement uncovered T31 capabilities and independently review complete specs before live qualification."
+    "Obtain new manifest-bound v2 model approval and execute up to24 standard requests with no retry.",
+    "Preserve separate blind-first-pass and nonblind-adjudicated comparisons;resolve interpretations without automatic relabeling.",
+    "Then plan natural20 judging and complete T31 unsupported capabilities/spec review."
   ],
   "review_case_status": {
     "R12": {

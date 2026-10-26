@@ -1,0 +1,33 @@
+{
+  "schema_version": "human-adjudication-receipt-v1",
+  "source_kind": "human_adjudication",
+  "submission_hash": "35feda71996950533f58ea03802a8f14e8c28ff597b4c5f58608e7d6a12e2509",
+  "request_manifest_hash": "fc2c031d478ac49a9d835ee02fe2af1deca43806d5d6b0dbd46c2914b2794a84",
+  "request_file_sha256": "2325203ec39a95be0e9a907c9be85bebf8d599a65719f8ac8490569480c4d552",
+  "source_submission_hash": "3a19b2e01492583c051ecec7a93f9b0a9677775b139732bff3153c9f710b5ba5",
+  "rubric_hash": "bd95df9c9a5f586502ec279f1eb001e6384c98cd1470fb69796696e83d8174b1",
+  "reviewer_id": "xy",
+  "case_ids": [
+    "review-070bf88a4446ba8f",
+    "review-ccfa7110e2ffbd7e",
+    "review-0db11ab1e4e3d5e1",
+    "review-6cda065fb91529a5",
+    "review-3dfbb6e577ab463f",
+    "review-01c7eae4091c4f6e"
+  ],
+  "evidence_ref": "Actual user message supplied C:/Users/Lenovo/Downloads/office-human-adjudication.json and confirmed completion of human adjudication.",
+  "received_at": "2026-10-26T13:55:35.724936+00:00",
+  "accepted_adjudications": 6,
+  "label_counts": {
+    "FAIL": 3,
+    "INCOMPLETE": 3
+  },
+  "changed_from_original": 6,
+  "adjudication_after_diagnostics": true,
+  "independent_blind_review": false,
+  "new_independent_blind_labels": 0,
+  "original_labels_rewritten": false,
+  "reference_gate_passed": false,
+  "quality_qualified": false,
+  "scope": "Requirements-checked revisions of a selected subset after diagnostic hints; no full-cohort truth or evaluator-accuracy claim."
+}
