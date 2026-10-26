@@ -2,6 +2,8 @@
 
 ## Project
 
+Current hardening status (2026-10-26): see [execution and handoff](docs/operations/evaluation-rsi-v2.md) and the [task ledger](project_artifacts/formal_study/hardening_task_ledger.json). T28 human labels remain pending. Default-off qualification/comparison preparation is available; real four-arm dispatch requires a qualified token-metered backend. Historical phase results below do not establish these later acceptance claims.
+
 WorkAgent-RSI is a benchmark-driven recursive skill improvement framework for Office agents. In this repository, RSI means **Recursive Skill Improvement**. It does not mean unrestricted model-weight self-modification.
 
 ## Non-negotiable execution rules

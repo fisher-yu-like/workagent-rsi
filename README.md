@@ -6,6 +6,8 @@ The project keeps the full research machinery behind a small vocabulary: `Run` e
 
 ## Start here
 
+- [当前评估与 RSI 执行说明、待验收项和恢复命令](docs/operations/evaluation-rsi-v2.md)（2026-10-26；人工审阅与研究资格尚未完成）
+
 - [Chinese project overview](docs/project_overview_zh.md)
 - [Literature review](docs/literature_review.md)
 - [Agent operating contract](Agent.md)
@@ -26,7 +28,7 @@ src/workagent_rsi/             Harness, closed-loop RSI and Office evaluation pa
 
 ## Tooling policy
 
-- Python 3.11+; use `py -3.12` on the current Windows environment.
+- Python 3.11+; the current verified Windows environment uses `.venv\Scripts\python.exe` (Python 3.13).
 - `pytest` is allowed and all tests belong under the single top-level `tests/` directory.
 - Git is the source-control system; every meaningful phase boundary receives a commit.
 - LibreOffice is optional for development but required for claims involving Office recalculation or rendered visual validation.

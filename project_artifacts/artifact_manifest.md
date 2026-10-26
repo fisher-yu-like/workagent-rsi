@@ -160,3 +160,9 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 
 - T27: `formal_study/hardening_t27_offline_calibration.json`; actual90-case declared-check calibration, known gaps explicit.
 - T28: `formal_study/hardening_t28_human_calibration.json`, `../docs/human_calibration.md`;12-case human page/20 actual rendered pages, no human-agreement claim.
+
+- 2026-10-26 current T28 delivery: `results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html`;32 cases, human labels still pending. Historical smaller packs above remain unchanged.
+- T29-T35 local engineering: `formal_study/hardening_t29_t35_local_delivery.json`;paired repeats, scoped memory/resume, default-off qualification and study entrypoints, external gates, release checks and Chinese handoff.
+- Final local test evidence: `results/hardening-v2/T34-final/20261026T083145209758Z/run.json`;767 passed. Release checks: `results/hardening-v2/T34-local/20261026/release-gate.json`;Linux non-COM execution blocked, later live/research/external claim levels false.
+- T31 draft inputs: `results/hardening-v2/T31-prepared/20261026/task-bundle.draft.json`;72 existing inputs,24 per domain, no new benchmark artifact generation, all whole-task acceptance specifications still incomplete.
+- Operations and rollback: `../docs/operations/evaluation-rsi-v2.md`.

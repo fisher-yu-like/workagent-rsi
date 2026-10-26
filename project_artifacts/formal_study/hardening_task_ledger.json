@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-26T08:31:43.621713+00:00",
+  "updated_at": "2026-10-26T08:51:21.524067+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -282,37 +282,39 @@
     {
       "task_id": "T31",
       "status": "blocked",
-      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
-      "note": "Default-off qualification CLI, frozen input/config/capability/budget preflight, real metered API runner path, explicit resume and natural repair evidence reporting implemented. Zero live calls. New approved policy, qualified endpoint/sandbox, admitted task specs and real three-domain execution remain required.",
+      "evidence": "project_artifacts/results/hardening-v2/T31-prepared/20261026",
+      "note": "Default-off CLI, frozen preflight/config/input identities, real metered API runner path, explicit resume and natural repair evidence reporting implemented.72 existing input tasks prepared with family/hash bindings, but all72 whole-task acceptance specs are SPEC_INCOMPLETE. New approved budget, qualified API/sandbox, admitted specs and real three-domain repair execution remain blocked.",
       "local_engineering_complete": true
     },
     {
       "task_id": "T32",
       "status": "blocked",
-      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
-      "note": "Equal-cap B0/B1/B2/B3 preregistration, immutable complete-arm receipts, fixed-reference reassessment, resumable trusted-backend dispatch and sealed-final one-use gate implemented/tested offline. CLI actual dispatch blocked: no qualified production token-budget backend, no current paid allowance and no sealed final cohort. No RSI benefit claim.",
-      "local_engineering_complete": false
+      "evidence": "project_artifacts/results/hardening-v2/T34-final/20261026T083145209758Z",
+      "note": "Equal-cap B0/B1/B2/B3 preregistration, immutable complete-arm receipts, initial/final fixed-reference reassessment, resumable trusted-backend dispatch and sealed-final one-use gate implemented/tested offline. Production token-metered backend and its live qualification remain unfinished, so CLI live dispatch blocks. No current paid allowance or independent final cohort; no RSI benefit claim.",
+      "local_engineering_complete": false,
+      "local_protocol_complete": true
     },
     {
       "task_id": "T33",
       "status": "blocked",
-      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
-      "note": "Versioned external admission checks and separate native/custom score channels implemented. Missing permission/hash/primary provenance/boundary/parity prevents formal readiness. Current native Office environment parity and separate evaluator principal remain unqualified; no official benchmark score.",
+      "evidence": "project_artifacts/results/hardening-v2/T33-local/20261026",
+      "note": "Source/license/hash/boundary/native-parity gates and separate native/custom scoring channels implemented. Read-only current-source formal audit saved at T33-local/20261026. Previous input admission is preserved. Independent evaluator principal and original native Office environment parity remain unqualified.",
       "local_engineering_complete": true
     },
     {
       "task_id": "T34",
-      "status": "in_progress",
-      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
-      "note": "Initial broad suite 764 passed; portable replay was strengthened afterward to relocate hash-bound inputs and verify fresh check results. Three-domain moved-bundle replay passed; 90-case calibration passed; 12 documented commands verified. Final source-bound suite and release gate pending; Linux SSH target forwarding refused.",
-      "local_engineering_complete": false
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T34-local/20261026",
+      "note": "Final exact-source suite767 passed,0failed/errors/skips at T34-final/20261026T083145209758Z. All source hashes match.Compileall,diff check,90-case calibration,T01 regression selection,three-domain moved-bundle fresh replay,tracked credential patterns pass.Linux target SSH forwarding refused, so engineering/live/research/external release levels remain false rather than claiming full cross-platform acceptance.",
+      "local_engineering_complete": false,
+      "windows_validation_complete": true
     },
     {
       "task_id": "T35",
-      "status": "in_progress",
-      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
-      "note": "Chinese operations/handoff guide and root/package/skill documentation updated; final evidence and commit references pending.",
-      "local_engineering_complete": false
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T35-local/20261026",
+      "note": "Chinese operations/handoff guide and README/package/Agent/skill documentation updated.12 help/dry-run commands verified with zero failures. Stage commits and rollback rules recorded; no evidence deletion. Final statuses distinguish completed engineering from actual model/human/external blockers.",
+      "local_engineering_complete": true
     }
   ],
   "review_cases": {

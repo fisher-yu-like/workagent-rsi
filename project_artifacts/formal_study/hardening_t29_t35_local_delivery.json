@@ -1,0 +1,124 @@
+{
+  "schema_version": "t29-t35-local-delivery-v1",
+  "recorded_at": "2026-10-26T08:51:21.524067+00:00",
+  "status": "feasible_local_work_delivered_actual_acceptance_blocked",
+  "task_count": 36,
+  "task_status_counts": {
+    "completed": 29,
+    "blocked": 7
+  },
+  "completed_tasks": [
+    "T00",
+    "T01",
+    "T02",
+    "T03",
+    "T04",
+    "T05",
+    "T06",
+    "T07",
+    "T08",
+    "T09",
+    "T10",
+    "T11",
+    "T12",
+    "T13",
+    "T14",
+    "T15",
+    "T16",
+    "T17",
+    "T18",
+    "T19",
+    "T20",
+    "T21",
+    "T22",
+    "T23",
+    "T24",
+    "T25",
+    "T27",
+    "T30",
+    "T35"
+  ],
+  "blocked_tasks": [
+    "T26",
+    "T28",
+    "T29",
+    "T31",
+    "T32",
+    "T33",
+    "T34"
+  ],
+  "commits_before_final_handoff": [
+    "334e04f",
+    "fb32a74"
+  ],
+  "baseline_commit": "d07f9c2",
+  "final_handoff_commit_lookup": "git log -1 --format=%H -- project_artifacts/formal_study/hardening_t29_t35_local_delivery.json",
+  "new_paid_model_calls": 0,
+  "new_judge_calls": 0,
+  "new_human_labels": 0,
+  "new_server_job_executions": 0,
+  "new_server_installations": 0,
+  "human_review_pack_unchanged": true,
+  "human_review_pack": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
+  "review_index_sha256": "e465a040070d25614a0349cee46f45e4775b18c67fe38c6fb9ec82b0a12260b6",
+  "evidence": {
+    "final_pytest": "project_artifacts/results/hardening-v2/T34-final/20261026T083145209758Z/run.json",
+    "release_manifest": "project_artifacts/results/hardening-v2/T34-local/20261026/release-manifest.json",
+    "release_gate": "project_artifacts/results/hardening-v2/T34-local/20261026/release-gate.json",
+    "moved_bundle_replay": "project_artifacts/results/hardening-v2/T34-local/20261026/moved-bundle-replay.json",
+    "commands": "project_artifacts/results/hardening-v2/T34-local/20261026/commands-verified.json",
+    "draft72": "project_artifacts/results/hardening-v2/T31-prepared/20261026/task-bundle.draft.json",
+    "external_admission_audit": "project_artifacts/results/hardening-v2/T33-local/20261026/admission-report.json"
+  },
+  "validation": {
+    "pytest_passed": 767,
+    "pytest_failed": 0,
+    "source_hash_mismatches": 0,
+    "calibration_cases": 90,
+    "calibration_statuses": {
+      "PASS": 45,
+      "FAIL": 28,
+      "INCOMPLETE": 17
+    },
+    "known_false_accepts": 0,
+    "equivalent_false_rejects": 0,
+    "three_domain_portable_replay": true,
+    "verified_help_and_dryrun_commands": 12,
+    "credential_pattern_findings": 0,
+    "linux_non_com": "blocked_target_forwarding_refused"
+  },
+  "release_levels": {
+    "schema_version": "release-gates-v2",
+    "engineering_pass": false,
+    "live_loop_pass": false,
+    "research_pass": false,
+    "external_pass": false,
+    "checks": {
+      "full_pytest": true,
+      "compileall": true,
+      "diff_check": true,
+      "calibration_90": true,
+      "t01_regressions": true,
+      "moved_bundle_replay": true,
+      "credential_scan": true,
+      "linux_non_com": false
+    },
+    "blocked_checks": [
+      "linux_non_com"
+    ],
+    "pending_claims": [
+      "live_loop",
+      "research",
+      "external"
+    ]
+  },
+  "operations": "docs/operations/evaluation-rsi-v2.md",
+  "remaining": [
+    "T26:144 qualified native variants, untouched sealed final data, independent evaluator principal; revise protocol explicitly if target changes.",
+    "T28:user review32 cases and separately approved judge comparison.",
+    "T29/T31:admitted requirement/spec mappings, qualified model/worker and fresh budget for actual repeats/repair acceptance.",
+    "T32:qualified production total-token backend and four-arm actual study; no positive-gain assumption.",
+    "T33:official native environment parity and evaluator boundary.",
+    "T34:actual Linux non-COM checks after target connection is restored."
+  ]
+}
