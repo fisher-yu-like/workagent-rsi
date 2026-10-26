@@ -33,10 +33,36 @@ def test_preparation_is_zero_call_and_excludes_labels_and_answer_key(tmp_path,mo
     result=module.prepare(pack,tmp_path/'prepared')
     assert len(result['calls'])==24 and result['allowed_tool_calls']==0
     assert result['allow_live_calls'] is False
+    assert result['schema_version']==module.REQUEST_VERSION
+    assert result['prior_version_results_reused'] is False
+    assert str((pack/'blind-review-pack/page.png').resolve()) in result['input_bindings']
+    visual=json.loads((tmp_path/'prepared'/result['calls'][1]['request']).read_text(encoding='utf-8'))
+    assert visual['requirement']['expected']['task_instruction']=='Preserve the input value42.'
+    semantic=json.loads((tmp_path/'prepared'/result['calls'][0]['request']).read_text(encoding='utf-8'))
+    assert 'delegated' in semantic['requirement']['expected']['review_scope']
+    assert not json.loads((tmp_path/'prepared/proposed-live-policy.json').read_text(encoding='utf-8'))['allow_live_calls']
     text=''.join(p.read_text(encoding='utf-8') for p in (tmp_path/'prepared').glob('*.json'))
     assert 'private-answer-sentinel' not in text and 'human-label-sentinel' not in text
     payload=tmp_path/'prepared'/result['calls'][0]['request']
     payload.write_text('{}',encoding='utf-8')
     with pytest.raises(ValueError,match='request changed'):
         module.execute(tmp_path/'prepared',tmp_path/'nonexistent-policy',tmp_path/'never')
+    assert not (tmp_path/'never').exists()
+
+
+def test_mandatory_partial_rejects_before_an_unrelated_missing_channel():
+    module=load_script('run_standard_judge_pilot.py')
+    assert module.aggregate_channels({'semantic':{'status':'NEEDS_REVIEW'},'visual':{'status':'PARTIAL'}})=='FAIL'
+    assert module.aggregate_channels({'semantic':{'status':'PASS'}})=='INCOMPLETE'
+    assert module.aggregate_channels({'semantic':{'status':'PASS'},'visual':{'status':'PASS'}})=='PASS'
+
+
+def test_old_manifest_approval_cannot_start_new_cohort(tmp_path,monkeypatch):
+    module=load_script('run_standard_judge_pilot.py')
+    monkeypatch.setattr(module,'ModelJudgementProvider',lambda *a,**k:pytest.fail('provider constructed before authorization'))
+    pack=tmp_path/'pack';pack_fixture(pack);module.prepare(pack,tmp_path/'prepared')
+    policy=tmp_path/'policy.json';policy.write_text('{}',encoding='utf-8')
+    (tmp_path/'approval-receipt.json').write_text(json.dumps({'policy_sha256':sha256_file(policy),'manifest_sha256':'0'*64}),encoding='utf-8')
+    with pytest.raises(ValueError,match='approval does not bind'):
+        module.execute(tmp_path/'prepared',policy,tmp_path/'never')
     assert not (tmp_path/'never').exists()

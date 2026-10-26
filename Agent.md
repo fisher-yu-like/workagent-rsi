@@ -2,7 +2,7 @@
 
 ## Project
 
-Current hardening status (2026-10-26): see [execution and handoff](docs/operations/evaluation-rsi-v2.md) and the [task ledger](project_artifacts/formal_study/hardening_task_ledger.json). T28 has32 actual provisional human labels; requirements-based adjudication and complete judge calibration remain pending. The approved standard pilot stopped on request6 with HTTP429, without retry. Windows773 and selected Linux non-COM149 checks passed. Default-off qualification/comparison preparation is available; real four-arm dispatch requires a qualified token-metered backend. Historical phase results below do not establish these later acceptance claims.
+Current hardening status (2026-10-26): see [execution and handoff](docs/operations/evaluation-rsi-v2.md) and the [task ledger](project_artifacts/formal_study/hardening_task_ledger.json). T28 has32 actual provisional human labels; requirements-based adjudication and complete judge calibration remain pending. The approved standard pilot stopped on request6 with HTTP429, without retry. The prior engineering snapshot passed Windows773 and selected Linux non-COM149 checks. Later offline preparation freezes judge v2 requests and72 unreviewed T31 spec drafts, with focused validation only. The next user action is [six-case adjudication](docs/operations/next-human-checkpoint-20261026.md); no new model/server calls were made. Real four-arm dispatch still requires a qualified token-metered backend. Historical phase results below do not establish these later acceptance claims.
 
 WorkAgent-RSI is a benchmark-driven recursive skill improvement framework for Office agents. In this repository, RSI means **Recursive Skill Improvement**. It does not mean unrestricted model-weight self-modification.
 

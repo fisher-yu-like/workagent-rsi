@@ -1,0 +1,90 @@
+{
+  "schema_version": "t28-t31-offline-preparation-v1",
+  "recorded_at": "2026-10-26T13:27:40.798869+00:00",
+  "base_commit": "f5c6f06",
+  "completion_commit_lookup": "git log -1 --format=%H -- project_artifacts/formal_study/hardening_t28_t31_preparation.json",
+  "model_calls": 0,
+  "server_jobs": 0,
+  "actual_new_human_labels": 0,
+  "old_labels_and_blind_pack_unchanged": true,
+  "judge_request_version": "standard-judge-pilot-v2-task-visual-scope",
+  "judge_manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+  "judge_calls_proposed": 24,
+  "judge_old_results_reused": false,
+  "live_policy_approved": false,
+  "proposal_caps": {
+    "model": "gpt-6.1-sol",
+    "provider": "codex-cli",
+    "max_model_calls": 24,
+    "max_tool_calls": 0,
+    "max_total_seconds": 1200,
+    "per_call_timeout_seconds": 120,
+    "automatic_retries": 0,
+    "output_tokens": "4096 requested,not server hard limit;actual usage recorded"
+  },
+  "t31_summary": {
+    "schema_version": "t31-requirement-preparation-v1",
+    "source_bundle": "project_artifacts\\results\\hardening-v2\\T31-prepared\\20261026\\task-bundle.draft.json",
+    "source_bundle_sha256": "8f6bc8fe72a744447d27c2d406a98aae1f6e04de5fa6e79d0efeb62d9d0ebe25",
+    "task_count": 72,
+    "domain_counts": {
+      "excel": 24,
+      "powerpoint": 24,
+      "word": 24
+    },
+    "obligation_count": 405,
+    "proposed_check_routes": {
+      "uncovered": 286,
+      "visual": 34,
+      "semantic": 85
+    },
+    "gap_counts": {
+      "spreadsheet_scope_and_recalculation": 63,
+      "edit_preservation_scope": 7,
+      "spreadsheet_requirement_review": 17,
+      "native_object_editability": 72,
+      "source_figure_comparison": 82,
+      "output_filename_binding": 24,
+      "word_package_and_preservation": 21
+    },
+    "admission_counts": {
+      "SPEC_INCOMPLETE": 72
+    },
+    "live_ready": false,
+    "model_calls": 0,
+    "server_jobs": 0,
+    "reviewer_signatures_created": 0,
+    "coverage_scope": "Lossless instruction spans with proposed checks. Draft segmentation is not independent review or proof that every unit is atomic."
+  },
+  "adjudication": {
+    "case_count": 6,
+    "page": "project_artifacts/results/hardening-v2/T28-adjudication/20261026/six-case-v1/index.html",
+    "request_manifest_hash": "fc2c031d478ac49a9d835ee02fe2af1deca43806d5d6b0dbd46c2914b2794a84",
+    "source_kind": "human_adjudication",
+    "independent_blind_review": false,
+    "labels_generated": 0
+  },
+  "focused_validation": {
+    "passed": 38,
+    "failed": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-T31-offline-final/20261026T132333698628Z/run.json"
+  },
+  "full_release_requalification": false,
+  "previous_engineering_snapshot": "f5c6f06:Windows773/selectedLinux149;not rerun this turn",
+  "next_action": "User reviews six follow-up cases and supplies downloaded office-human-adjudication.json. Only then discuss a new manifest-bound live request approval.",
+  "evidence_hashes": {
+    "project_artifacts/results/hardening-v2/T28-judge-pilot/20261026/prepared-v2-final/pilot-manifest.json": "c7c7a886a2e100506ba89550216d67f6896c7c741a952946cba4a7413325d1f7",
+    "project_artifacts/results/hardening-v2/T28-judge-pilot/20261026/prepared-v2-final/proposed-live-policy.json": "a1e7d3bd144bca496773f5c44b93bbaca232e23cc37a082fea7977febdc798ab",
+    "project_artifacts/results/hardening-v2/T31-spec-preparation/20261026/drafts-v1/preparation-report.json": "f8d1ee0e29bd5561231043b3732e60418d04efd5702bf206678fe6817e097e5e",
+    "project_artifacts/results/hardening-v2/T28-adjudication/20261026/six-case-v1/index.html": "a0951f3afe0a71e9b9178be05e13cb677ad4e0188182bdad470783490be96a16",
+    "project_artifacts/results/hardening-v2/T28-adjudication/20261026/six-case-v1/adjudication-request.json": "2325203ec39a95be0e9a907c9be85bebf8d599a65719f8ac8490569480c4d552",
+    "project_artifacts/results/hardening-v2/T28-T31-offline-final/20261026T132333698628Z/run.json": "cde9adf505aadf0d5ea298defc55d7996b70ae3bd81b67c164afdabf54a91122",
+    "project_artifacts/results/hardening-v2/T28-T31-offline-handoff/20261026/offline-verification.json": "8e78242c14a798d0521304077fd1b87c4aa9a2a4fa458271f67b1880e3efe281",
+    "project_artifacts/results/hardening-v2/T28-T31-offline-handoff/20261026/environment.json": "5738a02143e13b4e957b27cbb489d4f02cd3afc6c61e3e9385ac11cfb6e714ec",
+    "project_artifacts/results/hardening-v2/T28-T31-offline-handoff/20261026/judge-preparation-run.json": "b6edd02bcfd9adf556e61c1156e27db7d21be7bc6ac342fa348f1cd62a851f82",
+    "project_artifacts/results/hardening-v2/T28-T31-offline-handoff/20261026/t31-preparation-run.json": "ab859aabf53166b4e59f46856cdf8aa8699e11fc9fd3002d0708a9424d1954a3",
+    "project_artifacts/results/hardening-v2/T28-T31-offline-handoff/20261026/credential-scan.json": "25e4ab96ead3c2137a4e632b9480d2ef40719e77569913d7afa435ab0d108d64",
+    "project_artifacts/results/hardening-v2/T28-T31-offline-handoff/20261026/diff-check.json": "2b256d7ca835dbbcc509467196ed82fc193bc58e03dd5a7ad693d15169061f16"
+  }
+}

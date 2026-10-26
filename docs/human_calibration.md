@@ -1,5 +1,7 @@
 # Development calibration and human review
 
+Latest offline preparation: [the six-case follow-up page and user instructions](operations/next-human-checkpoint-20261026.md) are ready. Judge v2 includes the original task in visual review and separates content from rendered placement obligations. Its24 requests require new manifest-bound approval; no v2 calls were made. Follow-up exports are explicitly nonblind adjudication and cannot enter the original blind-label intake.
+
 Update2026-10-26: the user supplied32 actual labels (29PASS,2FAIL,1PARTIAL) and disclosed quick visual review and uncertain accuracy. The original bytes are frozen in `results/hardening-v2/T28-human-intake/20261026/submission-v1/`. They are provisional references, not verified truth. See [the targeted follow-up](operations/human-review-follow-up-20261026.md) for repeated-task explanations and six controlled-standard differences. Earlier statements below about no submitted labels describe the historical delivery.
 
 Intake now records `--review-depth quick_visual --reviewer-uncertain` and an optional `--review-note`. Only an explicit requirements-checked, non-uncertain receipt passes the reference gate. Provisional labels retain raw disagreement counts, but `critical_false_accepts` stays null: a human FAIL paired with a judge PASS is an unresolved difference, not proof of evaluator error. Revisions after seeing diagnostic results are adjudication records, not independent blind labels.
