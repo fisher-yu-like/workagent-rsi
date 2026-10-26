@@ -174,3 +174,6 @@ Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Mic
 
 - Latest offline preparation: `formal_study/hardening_t28_t31_preparation.json`;task-aware judge v2 request manifest,proposed disabled budget,72 unreviewed T31 spec drafts and explicit capability gaps.38focused checks passed,no new full release qualification or model/server execution.
 - User checkpoint: `results/hardening-v2/T28-adjudication/20261026/six-case-v1/index.html`;six existing standards only,empty choices,original task/input/output/render links. Download is nonblind `office-human-adjudication.json`. Instructions: `../docs/operations/next-human-checkpoint-20261026.md`.
+
+- Actual six-case adjudication: `formal_study/hardening_t28_adjudication_intake.json`;3FAIL/3INCOMPLETE,original32unchanged,13focused checks passed.
+- Actual approved judge v2: `formal_study/hardening_t28_judge_v2_delivery.json` and `formal_study/judge_review/20261026/v2/`;16attempts/14valid channels/6complete cases,twoHTTP429stops,0tools/295chargedseconds,no failed retries.Only2controlled defects tested,no accuracy claim.8never-issued payloads remain under original approval;full recovery of10missing results needs at least26total attempts.

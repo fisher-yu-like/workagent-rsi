@@ -66,3 +66,16 @@ def test_old_manifest_approval_cannot_start_new_cohort(tmp_path,monkeypatch):
     with pytest.raises(ValueError,match='approval does not bind'):
         module.execute(tmp_path/'prepared',policy,tmp_path/'never')
     assert not (tmp_path/'never').exists()
+
+
+def test_continuation_skips_failed_attempt_and_retains_shared_budget():
+    module=load_script('run_standard_judge_pilot.py')
+    calls=[{'case_id':str(i),'modality':'semantic','request':str(i),'sha256':str(i)} for i in range(4)]
+    manifest={'manifest_hash':'frozen','calls':calls}
+    previous={'manifest_hash':'frozen','rows':[{**calls[0],'decision':{'status':'PASS'}},{**calls[1],'decision':None}]}
+    rows,pending=module.continuation_rows(manifest,previous,{'calls':[{},{}]})
+    assert rows[1]['decision'] is None and pending==calls[2:]
+    with pytest.raises(ValueError,match='shared budget'):
+        module.continuation_rows(manifest,previous,{'calls':[{}]})
+    with pytest.raises(ValueError,match='different request cohort'):
+        module.continuation_rows({**manifest,'manifest_hash':'changed'},previous,{'calls':[{},{}]})

@@ -1,0 +1,230 @@
+{
+  "schema_version": "standard-judge-pilot-v2-task-visual-scope",
+  "allow_live_calls": false,
+  "model_config": {
+    "provider": "codex-cli",
+    "model": "gpt-6.1-sol",
+    "codex_executable": "codex",
+    "api_base_url": "https://api.openai.com/v1",
+    "api_key_env": "OPENAI_API_KEY",
+    "timeout_seconds": 120,
+    "retries": 0,
+    "repeats": 1,
+    "disagreement_tolerance": 0.25,
+    "max_text_chars": 60000,
+    "max_text_items": 2000,
+    "max_images": 8,
+    "max_image_bytes": 20000000,
+    "max_output_tokens": 4096,
+    "cache_enabled": false,
+    "independent_review": true,
+    "semantic_enabled": true,
+    "visual_enabled": true
+  },
+  "rubric_hash": "bd95df9c9a5f586502ec279f1eb001e6384c98cd1470fb69796696e83d8174b1",
+  "calls": [
+    {
+      "case_id": "review-ec20117491502820",
+      "modality": "semantic",
+      "request": "review-ec20117491502820-semantic.json",
+      "sha256": "db65d2681f92cdf40b5801f6e77d9e12e2218694fe8d9a292ba82632b3fd4dde"
+    },
+    {
+      "case_id": "review-ec20117491502820",
+      "modality": "visual",
+      "request": "review-ec20117491502820-visual.json",
+      "sha256": "703f6782326a5a9a18f50d7bffccd48a1ac2ea646f887e9f7621c44525ecc994"
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "modality": "semantic",
+      "request": "review-201d371b1160838f-semantic.json",
+      "sha256": "42e3ce7e04c857edd7c5aa3eaa7d336a8a0f5a6c4b094078e5ab9759c4c22052"
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "modality": "visual",
+      "request": "review-201d371b1160838f-visual.json",
+      "sha256": "92b882d85781d3638543907bb671d1e36e1bc21f9c3030b68d0f7196309f572e"
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "modality": "semantic",
+      "request": "review-19988a00ef040b43-semantic.json",
+      "sha256": "f601e1e6a213722301a1ede7ac356815b288b43eda88734e486b6994716410e8"
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "modality": "visual",
+      "request": "review-19988a00ef040b43-visual.json",
+      "sha256": "22fafd3457defa63e3e8dc84e9948b90f41db6d8f6393ee141f23e5beacd60fa"
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "modality": "semantic",
+      "request": "review-8a0f33aa1247b0b8-semantic.json",
+      "sha256": "602133492b8ded084a7f2b00a9bbf406499cee6249b6d118e9c7e6e9de604bad"
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "modality": "visual",
+      "request": "review-8a0f33aa1247b0b8-visual.json",
+      "sha256": "008a327a9a0bc78cfc8260e3a8b27a0a7da019e85c3c74f588eb13329a335e9c"
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "modality": "semantic",
+      "request": "review-01c7eae4091c4f6e-semantic.json",
+      "sha256": "0baa750453bb5a10a522f8668705f9065e479e770c0aedf51bb40fe6654749a0"
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "modality": "visual",
+      "request": "review-01c7eae4091c4f6e-visual.json",
+      "sha256": "6b517b5a94b5de5b56c5fe15b0a6eb768e3f1de82e10d2188d7526f8d247601a"
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "modality": "semantic",
+      "request": "review-3dfbb6e577ab463f-semantic.json",
+      "sha256": "7c91e0127dd8dee475d8a747a4c920c5eb056b548b7b029f9cf7dcb91f1b5c3b"
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "modality": "visual",
+      "request": "review-3dfbb6e577ab463f-visual.json",
+      "sha256": "11845f3e4293a98110cba45beae59e359d874141ab108b8848656261d26ee9f2"
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "modality": "semantic",
+      "request": "review-070bf88a4446ba8f-semantic.json",
+      "sha256": "2d2d01e28ddf97ac2b6069c9e5ea2da4916c2b1be8d526ae61336537e94d6113"
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "modality": "visual",
+      "request": "review-070bf88a4446ba8f-visual.json",
+      "sha256": "69cc0fff4b7d4fa5659a68445e54e58e0aabba1f8da692c03a57892b8f43ccea"
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "modality": "semantic",
+      "request": "review-6cda065fb91529a5-semantic.json",
+      "sha256": "e694a6e8993e8597bc3de19b6249e7edfbf5781bead536db2436706b60196595"
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "modality": "visual",
+      "request": "review-6cda065fb91529a5-visual.json",
+      "sha256": "604e2a66121d009dc374e93f46b2ffe3cb2f9683213dbc585203bdda9977021d"
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "modality": "semantic",
+      "request": "review-0db11ab1e4e3d5e1-semantic.json",
+      "sha256": "c53c67e0ea23e31ba830bf961d1680934a95cae53a7d57450b809906e35a795c"
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "modality": "visual",
+      "request": "review-0db11ab1e4e3d5e1-visual.json",
+      "sha256": "1a6af395cb1438646a68965f25432c773b2635d550a8a3b243e558cc2414c424"
+    },
+    {
+      "case_id": "review-eae3e39d4eebdc00",
+      "modality": "semantic",
+      "request": "review-eae3e39d4eebdc00-semantic.json",
+      "sha256": "46d2561db90c07d7e855af7b6462a0993af2ff271b702e90a25a580d9450b792"
+    },
+    {
+      "case_id": "review-eae3e39d4eebdc00",
+      "modality": "visual",
+      "request": "review-eae3e39d4eebdc00-visual.json",
+      "sha256": "cf3c63f23c64a4df9e7b99767982a39a6d79bccac90f88fa909078998a62fe27"
+    },
+    {
+      "case_id": "review-44158a7fd630cae5",
+      "modality": "semantic",
+      "request": "review-44158a7fd630cae5-semantic.json",
+      "sha256": "230d5757afdc011a2cddb2f78a8f212b32db253646b98095f81d2f6d6ef0b087"
+    },
+    {
+      "case_id": "review-44158a7fd630cae5",
+      "modality": "visual",
+      "request": "review-44158a7fd630cae5-visual.json",
+      "sha256": "384e5e3bf4dd4fd4d0384f74390075590132a05b2cabeea30dfaf9f643ef8615"
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "modality": "semantic",
+      "request": "review-ccfa7110e2ffbd7e-semantic.json",
+      "sha256": "1306e23c23691d58bffc0efada1e2a4fb3bb257849c7c391680abde11b5eacc2"
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "modality": "visual",
+      "request": "review-ccfa7110e2ffbd7e-visual.json",
+      "sha256": "cad4be4706c93be339ee5f50b0d543a163116649dfe2d64dd2f0d0a78a335978"
+    }
+  ],
+  "max_model_requests": 24,
+  "allowed_tool_calls": 0,
+  "max_total_seconds": 1200,
+  "output_tokens_policy": "4096 requested; CLI has no server-side hard output token cap; record actual usage.",
+  "reference_answers_included": false,
+  "human_labels_included": false,
+  "controlled_truth_included": false,
+  "qualification_scope": "12-standard diagnostic pilot, not full32-case T28 qualification",
+  "aggregation_rule": "A mandatory FAIL or PARTIAL rejects acceptance; otherwise a missing/NEEDS_REVIEW channel stays INCOMPLETE; both PASS accept declared scopes only.",
+  "prior_version_results_reused": false,
+  "approval_requirement": "New manifest-bound approval required. All24requests rerun under v2; v1 decisions remain separate.",
+  "public_pack_hash": "12582cc4368b767b7884b869789c7c51546a5a17cd52622fd8b70d7baf6de312",
+  "input_bindings": {
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-ec20117491502820.xlsx": "04d4508e3b03fc3d18b3d03b5b9a30104107d1764448e8f36325b2e6e1bfcdab",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-ec20117491502820-input-1.xlsx": "6e46921db7b65a4311288876cf682b33c1aa7cf14f664b41681d81380c31358a",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-ec20117491502820-page-1.png": "64a29272c1955e1b5812cd50acf9bc638381088d283539dbdbde611428b85fe0",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-ec20117491502820-page-2.png": "1a818efd0a5042a3ef5bba81e882824c4fc523ceeba491418b469756c13fbe6a",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-201d371b1160838f.pptx": "eab01a49de4802f65114ce426d3399cf280d3f1f0787327950165757e6f6a0d5",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-201d371b1160838f-input-1.pptx": "ac5d77950f87cf5d050f699bd0db0a4e77a7ebab360c206775ce576b42674565",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-201d371b1160838f-page-1.png": "827913cdc39aa963ef382e74edf7d511724939ae425b40090e851d758b5628b7",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-201d371b1160838f-page-2.png": "59ce6ba23264ef943659bd0beb7e1134fcd9fdb3d560d40866d496e6dd918a2e",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-19988a00ef040b43.pptx": "9e9f506af86c19b1a418d93d2dce638bfb2700342c2c314ad0152b13d30b54d9",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-19988a00ef040b43-input-1.pptx": "6624ba57f28683a7009f3bfa586d5f5d9b688746d872806bfb1537dc02d7da5a",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-19988a00ef040b43-page-1.png": "24bb350c79e9d30079e7506b014c07f2193385e067a2175df6a8b7b872fee899",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-19988a00ef040b43-page-2.png": "7aff60a4351003ace86bfd34f89aaf0c91429c946f1513b69c5aa118f3ad80e8",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-8a0f33aa1247b0b8.docx": "2d28f71128a2ada2f6430bf513f7e5beb272daefca5b99c4de322047d6b905a5",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-8a0f33aa1247b0b8-input-1.docx": "e15a6b80ebafac8ca06456a043f9b604feec763ad61535c042433e95213427aa",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-8a0f33aa1247b0b8-page-1.png": "3f5a6e1a88babda8e1da77a5ccd8895a3bef354d381ad5794038c247f12b1fd4",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-01c7eae4091c4f6e.pptx": "80d3a2b9a2e1daf1e29adfd0f60a1f164a4bc299e7234e900f2eaaa4fed95cf8",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-01c7eae4091c4f6e-input-1.pptx": "4911681944aba936bcf5f35124047239bbec0a9712ae4631eb357789e7f3b56a",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-01c7eae4091c4f6e-page-1.png": "e7719ea67442c5f92278c54f946898075b41ad73d91c309c7da903bca9a9d197",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-01c7eae4091c4f6e-page-2.png": "b06a63c4758096e90a81758e9e643158759664af831fd1034695640ad14812ec",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-3dfbb6e577ab463f.docx": "df20165f6171dd785bc5cbbc04c7e54633cfedaf54b86c65f667decf0568995f",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-3dfbb6e577ab463f-input-1.docx": "8ff5ca17c1ef7c2cbfaf17fe051e365571969ec6d4ec482d12fd80fe7b3cdd3e",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-3dfbb6e577ab463f-page-1.png": "1ca5d6ef45500b226f422379b3d05a81db464dd30961fedf8c6e6de9b5aa2aff",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-070bf88a4446ba8f.xlsx": "25f7338d97021db42a5d58dc55b3249d96415e95df8e6972ec8542415a353337",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-070bf88a4446ba8f-input-1.xlsx": "5b373d87229cd2a2d6f1a05618a921506931965530bc1ff95632e47889d1e2b0",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-070bf88a4446ba8f-page-1.png": "791ad0568270793d7f268a612fb83b10eebc9122fb6559416ac2f744b73d5637",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-070bf88a4446ba8f-page-2.png": "69321f945a040aad90f07d30bccc47adae9cba80810167bb711298df91e48061",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-6cda065fb91529a5.xlsx": "4dacb9a0fa4767dc31dd161b088bbac1ac03354dba71bc2281d631c2e0ca2232",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-6cda065fb91529a5-input-1.xlsx": "9509086fac6c3bb863311d6d1b71d836bbbe819237a79920c1b6dbd96aacf330",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-6cda065fb91529a5-page-1.png": "cf024f8bdf3a90c0ee907a55b94612062ddcfa04607cfe88fbfabc622eb61282",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-6cda065fb91529a5-page-2.png": "80212d399ec7bfdc1daae6139087e7dada32cca136afa59c8c95bad3a8b80baa",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-0db11ab1e4e3d5e1.docx": "8016fb47890f6ba88454b5a4c674ee7f3cf3df84183dd81038e4150caa6d73c5",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-0db11ab1e4e3d5e1-input-1.docx": "e15a6b80ebafac8ca06456a043f9b604feec763ad61535c042433e95213427aa",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-0db11ab1e4e3d5e1-page-1.png": "842f0e6bc291dd096adc29a0f8b398074102e74b37d0955b590aca4a6993510e",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-eae3e39d4eebdc00.pptx": "11535760ae70e7f7fbf3a3d2f41ce454acbb99ce357ff2882cb67c44efad881d",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-eae3e39d4eebdc00-input-1.pptx": "6624ba57f28683a7009f3bfa586d5f5d9b688746d872806bfb1537dc02d7da5a",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-eae3e39d4eebdc00-page-1.png": "24bb350c79e9d30079e7506b014c07f2193385e067a2175df6a8b7b872fee899",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-eae3e39d4eebdc00-page-2.png": "f11307e18ef3520618240acad71d9ca1a73ff471057caef640ad5c66757cc95f",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-44158a7fd630cae5.xlsx": "d63db790691d45097b495c7534a41f3ea447e0a754a9d08c9b06524446418a48",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-44158a7fd630cae5-input-1.xlsx": "6e46921db7b65a4311288876cf682b33c1aa7cf14f664b41681d81380c31358a",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-44158a7fd630cae5-page-1.png": "64a29272c1955e1b5812cd50acf9bc638381088d283539dbdbde611428b85fe0",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-44158a7fd630cae5-page-2.png": "1a818efd0a5042a3ef5bba81e882824c4fc523ceeba491418b469756c13fbe6a",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-ccfa7110e2ffbd7e.docx": "8d2db8ac61b1fd7507d627f87ef5af1e9ee79c10145f0f5bfd80236cffef8ce1",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-ccfa7110e2ffbd7e-input-1.docx": "77c17cd00e0942c7e87d53236f4d519269be76960c91202c6fae0c77a081baf7",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-ccfa7110e2ffbd7e-page-1.png": "aea034aa71e9f32e2b78d23a6b1530d231c479e39adc9c86ae7364d94d3eabcd"
+  },
+  "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5"
+}

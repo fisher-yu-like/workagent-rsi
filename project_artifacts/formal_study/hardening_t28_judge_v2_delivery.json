@@ -1,0 +1,155 @@
+{
+  "schema_version": "t28-judge-v2-delivery-v1",
+  "recorded_at": "2026-10-26T14:29:46.747776+00:00",
+  "base_commit": "84c5969",
+  "commit_lookup": "git log -1 --format=%H -- project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json",
+  "summary": {
+    "schema_version": "standard-judge-v2-diagnostic-v1",
+    "status": "incomplete",
+    "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+    "evaluator_identity": "48a378a644acf48ef1313d35f3725bec0e5194b4e316480c76b87a2ec63ddde8",
+    "model": "gpt-6.1-sol",
+    "attempted_requests": 16,
+    "valid_channel_decisions": 14,
+    "complete_case_pairs": 6,
+    "planned_requests": 24,
+    "not_issued_requests": 8,
+    "valid_decisions_still_needed": 10,
+    "stop_reason": "HTTP429 at requests11and16. Failed requests were not retried;explicit continuation attempted only never-issued approved payloads and stopped on the next429.",
+    "actual_tool_calls": 0,
+    "elapsed_seconds": 286.1530515998602,
+    "charged_wall_seconds": 295,
+    "known_usage": {
+      "input_tokens": 234212,
+      "cached_input_tokens": 38912,
+      "output_tokens": 7294,
+      "reasoning_output_tokens": 232
+    },
+    "unknown_usage_calls": 2,
+    "first_pass_paired_cases": 6,
+    "first_pass_equal_labels": 4,
+    "adjudicated_paired_cases": 2,
+    "controlled_fully_returned_matches": 6,
+    "controlled_tested_defects": 2,
+    "quality_qualified": false,
+    "cases": [
+      {
+        "case_id": "review-ec20117491502820",
+        "channel_statuses": {
+          "semantic": "PASS",
+          "visual": "PASS"
+        },
+        "declared_scope_acceptance": "PASS",
+        "both_channels_returned": true
+      },
+      {
+        "case_id": "review-201d371b1160838f",
+        "channel_statuses": {
+          "semantic": "PASS",
+          "visual": "PARTIAL"
+        },
+        "declared_scope_acceptance": "FAIL",
+        "both_channels_returned": true
+      },
+      {
+        "case_id": "review-19988a00ef040b43",
+        "channel_statuses": {
+          "semantic": "PASS",
+          "visual": "PASS"
+        },
+        "declared_scope_acceptance": "PASS",
+        "both_channels_returned": true
+      },
+      {
+        "case_id": "review-8a0f33aa1247b0b8",
+        "channel_statuses": {
+          "semantic": "PASS",
+          "visual": "PASS"
+        },
+        "declared_scope_acceptance": "PASS",
+        "both_channels_returned": true
+      },
+      {
+        "case_id": "review-01c7eae4091c4f6e",
+        "channel_statuses": {
+          "semantic": "NEEDS_REVIEW",
+          "visual": "PASS"
+        },
+        "declared_scope_acceptance": "INCOMPLETE",
+        "both_channels_returned": true
+      },
+      {
+        "case_id": "review-3dfbb6e577ab463f",
+        "channel_statuses": {
+          "semantic": null,
+          "visual": "NEEDS_REVIEW"
+        },
+        "declared_scope_acceptance": "INCOMPLETE",
+        "both_channels_returned": false
+      },
+      {
+        "case_id": "review-070bf88a4446ba8f",
+        "channel_statuses": {
+          "semantic": "PARTIAL",
+          "visual": "PASS"
+        },
+        "declared_scope_acceptance": "FAIL",
+        "both_channels_returned": true
+      },
+      {
+        "case_id": "review-6cda065fb91529a5",
+        "channel_statuses": {
+          "semantic": "NEEDS_REVIEW",
+          "visual": null
+        },
+        "declared_scope_acceptance": "INCOMPLETE",
+        "both_channels_returned": false
+      }
+    ]
+  },
+  "scope": "Approved twelve-standard diagnostic pilot,incomplete. Natural20 judging not authorized or executed. First-pass provisional and nonblind-adjudicated comparisons remain separate.",
+  "new_server_jobs": 0,
+  "new_human_labels": 0,
+  "frozen_review_pack_unchanged": true,
+  "original_blind_labels_unchanged": true,
+  "adjudications_unchanged": true,
+  "v1_results_not_reused": true,
+  "current_status": "blocked_after_two_HTTP429_stops_no_failed_request_retries",
+  "offline_continuation_payloads": 10,
+  "min_cumulative_attempts_to_finish_v2": 26,
+  "current_attempt_cap": 24,
+  "extra_attempts_needed_at_minimum": 2,
+  "new_continuation_approval": false,
+  "natural20_preflight_scope": "Lower bound only:20semantic+30available-page visual calls;2render gaps and text/source partition overhead still unresolved. Not a complete budget or an approved run.",
+  "evidence_hashes": {
+    "project_artifacts/formal_study/judge_review/20261026/v2/adjudicated-subset-comparison.json": "712ebc0c2af374f21fd3d27022a7bed2232a20130bbec10b230804eb3ee4a83b",
+    "project_artifacts/formal_study/judge_review/20261026/v2/approval-receipt.json": "f153bef96d4a9119efdd9a3d947bd74930454b6c10902abd3cce8c22568c774b",
+    "project_artifacts/formal_study/judge_review/20261026/v2/budget-state.json": "b2f63c37d3c7e7360c9b6b9dbc4fdbc92f9da34b109d23a8cc77bff86aa95419",
+    "project_artifacts/formal_study/judge_review/20261026/v2/continuation-plan.json": "4659aacdc4ed2185848b57b0e98e421ce8e9d97f9bbd1dfd13c805696a87ba4b",
+    "project_artifacts/formal_study/judge_review/20261026/v2/controlled-standard-comparison.json": "286aa496a868f0cf446f442a16700960932eddf8f08e58e8aabf49e416dce5d6",
+    "project_artifacts/formal_study/judge_review/20261026/v2/diagnostic-summary.json": "d61366de8fda42a98bb88ddb658d75ce9fbc332791aed0b020c720ca3f485d05",
+    "project_artifacts/formal_study/judge_review/20261026/v2/first-pass-human-comparison.json": "96a787bc57d46e797858b09d5d4b00c14faf94cb85dcb3a9ce772eda889ee08a",
+    "project_artifacts/formal_study/judge_review/20261026/v2/live-policy.json": "a02b406297975e7660d17dc323895ad894f845b521d70b2bb8b66ba1602683d8",
+    "project_artifacts/formal_study/judge_review/20261026/v2/natural20-metadata-preflight.json": "09ed6faa3227c9df170c09a0ee045ffffdf387cbf626d57bb06825f626cf67d0",
+    "project_artifacts/formal_study/judge_review/20261026/v2/phase1-adjudicated-subset-comparison.json": "a781d5f1d99ceaab6aef81ded0adbdd298c32ba3ab45fdc3ae58ed4eee92cd73",
+    "project_artifacts/formal_study/judge_review/20261026/v2/phase1-budget-state.json": "7fb105e8fcb7cd5752d62ea278c0a8f66e4b581c61c31a8a436cb1ae666f63db",
+    "project_artifacts/formal_study/judge_review/20261026/v2/phase1-continuation-plan.json": "4092461f6817aa6828fcfa9ae8f79445fdcd1eac92108bdbe7969a7372f42d9e",
+    "project_artifacts/formal_study/judge_review/20261026/v2/phase1-controlled-standard-comparison.json": "f90dba755b5e97d2cdd4beb3fc6969b51726e554493615cc8b612bcec002ad26",
+    "project_artifacts/formal_study/judge_review/20261026/v2/phase1-diagnostic-summary.json": "f93c807a5550fcb7b03f69cf4a2ed8035f55aae0a6e6f6c737950d6005c30d0d",
+    "project_artifacts/formal_study/judge_review/20261026/v2/phase1-first-pass-human-comparison.json": "bce01413127b14d555be9722bb4307a55bf349024c5813cbab79d1ed432a58ea",
+    "project_artifacts/formal_study/judge_review/20261026/v2/phase1-pilot-results.json": "c71a9f5ac4937550d2c135c969d60285c8e23f03fd3fafc1566181e0b20f1c74",
+    "project_artifacts/formal_study/judge_review/20261026/v2/phase1-run-window.json": "eeb3659f3c48b4b4d0b3d43e315cdf20f9e5dab70b6ef05816e245d1380d94db",
+    "project_artifacts/formal_study/judge_review/20261026/v2/pilot-manifest.json": "c7c7a886a2e100506ba89550216d67f6896c7c741a952946cba4a7413325d1f7",
+    "project_artifacts/formal_study/judge_review/20261026/v2/pilot-results.json": "6499f0d249bee134c76fbadbf0bf367257c030b6658ed5d06f121abb3810d184",
+    "project_artifacts/formal_study/judge_review/20261026/v2/post-run-verification.json": "0dd5611789712875e4cb52cb525099546e5e943f7939577f81e6b5957073db95",
+    "project_artifacts/formal_study/judge_review/20261026/v2/run-window.json": "7494973c347aca0b8eaf158c966cfcf4500425ff35b890b232f6f1bf08bd3716",
+    "project_artifacts/results/hardening-v2/T28-unissued-continuation/20261026T142008250923Z/run.json": "e0ce5434769abab60adf9c397217081e0ec024191b95e6e9c7ea28f3bf3af9d1"
+  },
+  "unissued_only_continuation_used_existing_approval": true,
+  "failed_retry_approval": false,
+  "continuation_focused_validation": {
+    "passed": 4,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-unissued-continuation/20261026T142008250923Z/run.json"
+  }
+}

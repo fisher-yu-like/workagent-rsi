@@ -6,7 +6,7 @@
   "human_status": "32_first_pass_and6_nonblind_adjudications_received",
   "reviewer_confirmed": "user agreed in conversation",
   "natural_cohort_status": "20 real natural outputs:17 single-shot plus3 repaired; all source records retained",
-  "real_judge_status": "standard_pilot_6attempts_5decisions_stopped_HTTP429_no_retry",
+  "real_judge_status": "v2_incomplete_two_HTTP429_stops_16attempts_14decisions_6complete_pairs",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "bundle_files": 163,
   "latest_full_validation": {
@@ -24,7 +24,7 @@
   "actual_natural_artifacts": 20,
   "required_natural_artifacts": 20,
   "agreement": null,
-  "model_calls": 29,
+  "model_calls": 45,
   "report": {
     "status": "blocked",
     "standards_cases": 12,
@@ -57,13 +57,13 @@
   },
   "ui_validation": "32 empty selectors;84 local links and187 page hashes verified;Node syntax exit0. Static validation only; no actual human submission or browser qualification.",
   "remaining": [
-    "Requirements-based adjudication of provisional labels; retain original blind submission.",
-    "Complete semantic/visual judging after resolving HTTP429 and explicit new-attempt authorization; no automatic retries.",
-    "Resolve semantic/visual evidence scope gaps and two original workbook render coverage gaps."
+    "Resolve429;8never-issued requests remain under the existing24cap. Retrying2failed requests/full26attempt minimum requires explicit added approval. No failed requests automatically retried.",
+    "Natural20 full semantic/visual evidence partitioning and separate model approval remain pending;first-pass labels remain provisional.",
+    "Two original workbook render coverage gaps and complete cohort reference validity remain unresolved."
   ],
   "user_stop_instruction": "Superseded on 2026-10-25: user authorized benchmark preparation in priority order.",
   "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
-  "judge_calls": 6,
+  "judge_calls": 22,
   "natural_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
   "standards_review_page": "project_artifacts/results/hardening-v2/T28/20261025-human-pack/blind-review-pack/index.html",
   "natural_report": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
@@ -75,5 +75,10 @@
   "source_hashes_scope": "Historical T27/T28 engineering delivery; current source hashes in current release evidence.",
   "report_scope": "Historical material-delivery report before actual user submission.",
   "actual_adjudications": 6,
-  "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json"
+  "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json",
+  "judge_calls_by_version": {
+    "v1": 6,
+    "v2": 16
+  },
+  "judge_v2_delivery": "project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json"
 }

@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-26T13:57:11.501455+00:00",
+  "updated_at": "2026-10-26T14:29:46.989045+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -263,14 +263,24 @@
       "generation_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
       "complete_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
       "actual_human_labels": 32,
-      "actual_judge_attempts": 6,
-      "valid_judge_channel_decisions": 5,
+      "actual_judge_attempts": 22,
+      "valid_judge_channel_decisions": 14,
       "current_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
       "latest_offline_preparation": "project_artifacts/formal_study/hardening_t28_t31_preparation.json",
-      "next_human_action": "Confirm new frozen v2 live request budget;do not repeat completed six-case adjudication.",
-      "judge_v2_status": "24requests_prepared_approval_pending",
+      "next_human_action": "No repeated adjudication requested. Resolve429. Eight never-issued payloads remain under original policy;retrying two failed requests/full26attempt recovery needs explicit additional approval.",
+      "judge_v2_status": "16attempts_14valid_channels_6full_pairs_two_HTTP429_stops_no_failed_retries",
       "actual_adjudications": 6,
-      "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json"
+      "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json",
+      "judge_attempts_by_version": {
+        "v1": 6,
+        "v2": 16
+      },
+      "valid_judge_channel_decisions_scope": "Active v2 only;v1five retained separately,not pooled.",
+      "valid_judge_channels_by_version": {
+        "v1": 5,
+        "v2": 14
+      },
+      "judge_v2_evidence": "project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json"
     },
     {
       "task_id": "T29",
@@ -498,9 +508,9 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "Obtain new manifest-bound v2 model approval and execute up to24 standard requests with no retry.",
-    "Preserve separate blind-first-pass and nonblind-adjudicated comparisons;resolve interpretations without automatic relabeling.",
-    "Then plan natural20 judging and complete T31 unsupported capabilities/spec review."
+    "Resolve429 before more model traffic;preserve14same-version valid decisions.",
+    "Eight never-issued requests remain approved within24cap;two failed retries are not authorized. Full recovery requires at least26total attempts.",
+    "Prepare complete natural20 evidence partitions/render coverage and separate budget;metadata lower bound alone is not a budget."
   ],
   "review_case_status": {
     "R12": {

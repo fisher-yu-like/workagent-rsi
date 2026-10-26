@@ -1,0 +1,86 @@
+{
+  "schema_version": "standard-judge-v2-diagnostic-v1",
+  "status": "incomplete",
+  "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+  "evaluator_identity": "48a378a644acf48ef1313d35f3725bec0e5194b4e316480c76b87a2ec63ddde8",
+  "model": "gpt-6.1-sol",
+  "attempted_requests": 11,
+  "valid_channel_decisions": 10,
+  "complete_case_pairs": 5,
+  "planned_requests": 24,
+  "not_issued_requests": 13,
+  "valid_decisions_still_needed": 14,
+  "stop_reason": "HTTP429 Too Many Requests on request11;no automatic retry or budget expansion.",
+  "actual_tool_calls": 0,
+  "elapsed_seconds": 192.51782559999265,
+  "charged_wall_seconds": 199,
+  "known_usage": {
+    "input_tokens": 167549,
+    "cached_input_tokens": 38912,
+    "output_tokens": 5058,
+    "reasoning_output_tokens": 54
+  },
+  "unknown_usage_calls": 1,
+  "first_pass_comparison_scope": "Only fully returned case pairs;provisional references;no evaluator-accuracy claim.",
+  "first_pass_paired_cases": 5,
+  "first_pass_equal_labels": 4,
+  "adjudicated_paired_cases": 1,
+  "controlled_fully_returned_matches": 5,
+  "controlled_tested_defects": 1,
+  "quality_qualified": false,
+  "cases": [
+    {
+      "case_id": "review-ec20117491502820",
+      "channel_statuses": {
+        "semantic": "PASS",
+        "visual": "PASS"
+      },
+      "declared_scope_acceptance": "PASS",
+      "both_channels_returned": true
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "channel_statuses": {
+        "semantic": "PASS",
+        "visual": "PARTIAL"
+      },
+      "declared_scope_acceptance": "FAIL",
+      "both_channels_returned": true
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "channel_statuses": {
+        "semantic": "PASS",
+        "visual": "PASS"
+      },
+      "declared_scope_acceptance": "PASS",
+      "both_channels_returned": true
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "channel_statuses": {
+        "semantic": "PASS",
+        "visual": "PASS"
+      },
+      "declared_scope_acceptance": "PASS",
+      "both_channels_returned": true
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "channel_statuses": {
+        "semantic": "NEEDS_REVIEW",
+        "visual": "PASS"
+      },
+      "declared_scope_acceptance": "INCOMPLETE",
+      "both_channels_returned": true
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "channel_statuses": {
+        "semantic": null
+      },
+      "declared_scope_acceptance": "INCOMPLETE",
+      "both_channels_returned": false
+    }
+  ]
+}

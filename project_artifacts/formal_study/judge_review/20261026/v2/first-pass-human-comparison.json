@@ -1,0 +1,67 @@
+{
+  "status": "blocked",
+  "accepted_human_labels": 32,
+  "required_cases": 32,
+  "missing_human_cases": [],
+  "missing_judge_cases": [
+    "review-0db11ab1e4e3d5e1",
+    "review-13f025d2d6d2afe3",
+    "review-1ae87e464aa68a9b",
+    "review-262d29941e093887",
+    "review-2e562d78e43f4a93",
+    "review-3dfbb6e577ab463f",
+    "review-44158a7fd630cae5",
+    "review-4a85dc3e1d4675c8",
+    "review-6be86bb781998c57",
+    "review-6cda065fb91529a5",
+    "review-7fa353cc90101d8e",
+    "review-85c3776978b97315",
+    "review-8c91b91efb85a0a5",
+    "review-9058f58c36b4c7ae",
+    "review-9741b22fc5ad5268",
+    "review-9e0e9f65e6b4c39c",
+    "review-c0ea6a3781224c9e",
+    "review-cbbf830c8da29ae6",
+    "review-ccfa7110e2ffbd7e",
+    "review-d69312f31c49fcab",
+    "review-d8fa947266fa7b8e",
+    "review-d9adcabcf825a07b",
+    "review-e7c94efbec0677c3",
+    "review-eae3e39d4eebdc00",
+    "review-f1a51e11aea9fca8",
+    "review-f730abc3d56ac9f6"
+  ],
+  "agreement": {
+    "numerator": 4,
+    "denominator": 6,
+    "value": 0.6666666666666666,
+    "interval_95": [
+      0.299993315138392,
+      0.9032285888942195
+    ]
+  },
+  "critical_false_accepts": null,
+  "human_fail_judge_pass": 0,
+  "reference_status": "provisional",
+  "reference_gate_passed": false,
+  "disagreement_interpretation": "Unadjudicated human/judge differences; neither side is assumed correct.",
+  "quality_qualified": false,
+  "critical_gate_passed": false,
+  "disagreements": [
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "human": "PASS",
+      "judge": "INCOMPLETE",
+      "human_locations": []
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "human": "PASS",
+      "judge": "FAIL",
+      "human_locations": []
+    }
+  ],
+  "rubric_hash": "bd95df9c9a5f586502ec279f1eb001e6384c98cd1470fb69796696e83d8174b1",
+  "evaluator_identity": "48a378a644acf48ef1313d35f3725bec0e5194b4e316480c76b87a2ec63ddde8",
+  "interval_scope": "Descriptive paired-case agreement; no population accuracy or inter-rater reliability claim."
+}

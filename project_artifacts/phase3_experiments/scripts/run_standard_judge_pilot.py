@@ -140,7 +140,22 @@ def prepare(pack,output):
     return plan
 
 
-def execute(prepared,policy_path,output):
+def continuation_rows(manifest,previous,budget):
+    """Continue only never-issued payloads; failed requests remain attempted."""
+    if previous.get('manifest_hash')!=manifest['manifest_hash']:
+        raise ValueError('continuation belongs to a different request cohort')
+    rows=previous['rows']
+    if not rows or len(rows)>=len(manifest['calls']):
+        raise ValueError('no unissued continuation requests')
+    for row,call in zip(rows,manifest['calls']):
+        if any(row.get(k)!=v for k,v in call.items()):
+            raise ValueError('continuation history is not the frozen attempted prefix')
+    if len(budget.get('calls',[]))!=len(rows) or budget.get('quarantined'):
+        raise ValueError('continuation history differs from shared budget ledger')
+    return list(rows),manifest['calls'][len(rows):]
+
+
+def execute(prepared,policy_path,output,continue_from=None):
     manifest=json.loads((prepared/'pilot-manifest.json').read_text(encoding='utf-8'))
     if canonical_json_hash({k:v for k,v in manifest.items() if k!='manifest_hash'})!=manifest['manifest_hash']:
         raise ValueError('pilot manifest changed')
@@ -158,22 +173,36 @@ def execute(prepared,policy_path,output):
     if (receipt.get('policy_sha256')!=sha256_file(policy_path)
             or receipt.get('manifest_sha256')!=sha256_file(prepared/'pilot-manifest.json')):
         raise ValueError('approval does not bind this pilot manifest and policy')
+    previous=None;rows=[];pending=manifest['calls']
+    state_path=policy_path.with_name('budget-state.json')
+    if continue_from is not None:
+        previous=json.loads(continue_from.read_text(encoding='utf-8'))
+        state=json.loads(state_path.read_text(encoding='utf-8'))
+        rows,pending=continuation_rows(manifest,previous,state)
+    elif state_path.exists() and json.loads(state_path.read_text(encoding='utf-8')).get('calls'):
+        raise ValueError('existing budget requires explicit unissued-only continuation')
     path=Path(__file__).with_name('qualification_cli.py')
     spec=importlib.util.spec_from_file_location('pilot_qualified_cli',path)
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     runner=module.QualificationCLI(policy_path)
     if runner.policy.max_model_calls>24 or runner.policy.max_wall_seconds>1200 or runner.policy.max_tool_calls!=0:
         raise ValueError('approved policy exceeds frozen pilot caps')
-    output.mkdir(parents=True,exist_ok=False)
     provider=ModelJudgementProvider(manifest['model_config'],runner=runner)
-    rows=[]
-    for call in manifest['calls']:
+    if previous is not None and previous.get('provider')!=provider.identity_config():
+        raise ValueError('continuation provider identity changed')
+    output.mkdir(parents=True,exist_ok=False)
+    inherited=len(rows)
+    for call in pending:
         request=json.loads((prepared/call['request']).read_text(encoding='utf-8'))
         decision,telemetry=provider.judge(request,output/call['case_id']/call['modality'])
         rows.append({**call,'decision':decision.model_dump(mode='json') if decision is not None else None,'telemetry':telemetry})
         result={'manifest_hash':manifest['manifest_hash'],
             'provider':provider.identity_config(),'rows':rows,'quality_qualified':False,
             'status':'completed' if len(rows)==24 and all(r['decision'] is not None for r in rows) else 'incomplete'}
+        if continue_from is not None:
+            result['continuation']={'prior_results_sha256':sha256_file(continue_from),
+                'prior_results':str(continue_from),'inherited_attempted_rows':inherited,
+                'new_attempted_rows':len(rows)-inherited,'failed_requests_retried':False}
         if manifest['schema_version']==REQUEST_VERSION:
             channels={}
             for row in rows:channels.setdefault(row['case_id'],{})[row['modality']]=row['decision']
@@ -191,11 +220,12 @@ def main():
     parser.add_argument('--prepared',type=Path)
     parser.add_argument('--policy',type=Path)
     parser.add_argument('--output',type=Path)
+    parser.add_argument('--continue-from',type=Path,help='Explicit same-cohort continuation of never-issued requests only; shared budget retained')
     args=parser.parse_args()
     if args.prepare and args.pack:
         result=prepare(args.pack,args.prepare);print(json.dumps({k:v for k,v in result.items() if k!='calls'}));return 0
     if not(args.prepared and args.policy and args.output):parser.error('prepare requires pack; execution requires prepared,policy,output')
-    result=execute(args.prepared,args.policy,args.output);print(json.dumps(result))
+    result=execute(args.prepared,args.policy,args.output,args.continue_from);print(json.dumps(result))
     return 0 if result['status']=='completed' else 2
 
 if __name__=='__main__':raise SystemExit(main())

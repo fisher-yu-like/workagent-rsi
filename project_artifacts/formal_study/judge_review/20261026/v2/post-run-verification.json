@@ -1,0 +1,11 @@
+{
+  "exit_code": 0,
+  "distinct_approved_requests": 16,
+  "shared_budget_count": 16,
+  "failed_requests_retried": false,
+  "tool_calls": 0,
+  "charged_seconds": 295,
+  "all_public_assets_unchanged": true,
+  "actual_adjudication_unchanged": true,
+  "scope": "Post-run counters/request identities and frozen source checks;no new model/server calls."
+}
