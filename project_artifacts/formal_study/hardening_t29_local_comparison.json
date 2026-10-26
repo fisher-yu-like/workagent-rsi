@@ -1,0 +1,34 @@
+{
+  "task_id": "T29",
+  "status": "partial",
+  "local_status": "offline_comparison_core_completed",
+  "production_integration": "pending",
+  "scope": "Only local statistical comparison and fail-closed controls;not a completed repeated evaluation controller.",
+  "synthetic_example": "project_artifacts/results/hardening-v2/T29-local/20261026/paired-comparison.json",
+  "synthetic_example_source": "authored engineering observations,not actual agent executions",
+  "policy": "project_artifacts/results/hardening-v2/T29-local/20261026/statistical-policy.json",
+  "research_qualified": false,
+  "actual_model_calls": 0,
+  "actual_judge_calls": 0,
+  "server_operations": 0,
+  "focused_validation": {
+    "passed": 23,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T26-T29-local-focused/20261026T024540624023Z",
+    "scope": "T26 supplement/corpus and T29 offline comparison/promotion controls;not a full-suite rerun"
+  },
+  "remaining": [
+    "Controller and RSI integration",
+    "Verify actual execution/judge provenance,matching budgets andtime windows",
+    "Interleaved repeated execution scheduling",
+    "Execution andjudge variance analysis",
+    "Cross-batch regression gates",
+    "Qualified data/evaluator actual paired repeats"
+  ],
+  "source_hashes": {
+    "src/workagent_rsi/statistical_promotion.py": "6a3eb0af02f3b894a899dfc945d6a349eb1cdaaf825c3913a21a64ad3ecea7ba",
+    "tests/test_statistical_promotion.py": "3ebb7e452a2737a29b6525ceaf39c4cfcef38c7ef06fa96c4e1b61775e5b8357"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-25T09:13:38.847436+00:00",
+  "updated_at": "2026-10-26T02:53:13.560624+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -230,13 +230,15 @@
       "task_id": "T26",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
-      "note": "User waived equal-domain counts. Admitted inputs:Excel1251 bases/3065 instances,Word10/10,PPT4/4. Revised allocation and protected untouched final corpus/separate evaluator principal still pending.",
+      "note": "2026-10-26 balanced candidate material preparation completed:24Excel/24Word/24PPT,72 native inputs,72 connected groups;173T28-reserved tasks excluded. Original216-instance and sealed untouched final/principal requirements remain incomplete.",
       "local_status": "completed",
-      "data_scale_status": "unequal-domain inventory admitted; qualified final allocation pending",
+      "data_scale_status": "balanced_candidate_materials_complete;full_T26_acceptance_incomplete",
       "evaluator_service_status": "unprovisioned",
       "manifest": "project_artifacts/formal_study/hardening_t26_family_splits.json",
       "server_boundary_status": "qualified",
-      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
+      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+      "balanced_materials": "project_artifacts/formal_study/hardening_t26_balanced_materials.json",
+      "active_candidate_manifest": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/evaluator-only/task-manifest.json"
     },
     {
       "task_id": "T27",
@@ -264,8 +266,10 @@
     {
       "task_id": "T29",
       "status": "pending",
-      "evidence": null,
-      "note": ""
+      "evidence": "project_artifacts/results/hardening-v2/T29-local/20261026",
+      "note": "User authorized a small local follow-up while deferring human review. Local paired cluster-bootstrap core and fail-closed controls completed;production integration and real repeated comparisons pending. No research qualification or actual model/server run.",
+      "local_status": "offline_comparison_core_completed_integration_pending",
+      "manifest": "project_artifacts/formal_study/hardening_t29_local_comparison.json"
     },
     {
       "task_id": "T30",
