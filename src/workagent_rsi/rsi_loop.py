@@ -221,7 +221,8 @@ class RSILoop:
             "content_hash": champion.content_hash,
             "evidence_refs": list(champion.evidence_refs),
         }
-        baseline = self._evaluate_all(tasks_by_split, champion_config, contract, root / "baseline")
+        baseline = self._evaluate_all(tasks_by_split, champion_config, contract,
+            root / ('feedback-baseline' if contract.comparison_policy else 'baseline'))
         artifact_mode = contract.assessment_mode == "artifact-v1"
         from .assessment_contracts import RSIFeedback
         from .rsi_feedback import feedback_with_requirements
@@ -305,7 +306,8 @@ class RSILoop:
             return result
 
         patch_hash = canonical_json_hash([edit.model_dump(mode="json") for edit in candidate.atomic_edits])
-        if self.registry.has_negative_evidence(skill_id=skill_id, candidate_id=candidate.candidate_id, patch_hash=patch_hash):
+        if self.registry.has_negative_evidence(skill_id=skill_id, patch_hash=patch_hash,
+                parent_hash=champion.content_hash, cohort_hash=contract.dataset_hash):
             result = {
                 "status": "completed",
                 "round_index": round_index,
@@ -327,25 +329,33 @@ class RSILoop:
             self._write_round_summary(root, result)
             return result
 
+        version = self.registry.next_version(skill_id, champion.version)
         verification = self.verifier.verify(candidate, workspace, verification_policy,
             skill_model=self.skill_model, parent_package=champion_package,
-            parent_version=champion.version, edit_budget=edit_budget)
+            parent_version=champion.version, edit_budget=edit_budget, candidate_version=version)
+        candidate_package = dict(champion_package)
+        if 'version' in candidate_package:
+            candidate_package['version'] = version
         if verification.passed:
-            candidate_package = dict(champion_package)
             for edit in candidate.atomic_edits:
                 candidate_package.update(json.loads(edit.patch))
             candidate_config = self.skill_model.model_validate(candidate_package)
-            candidate_reports = self._evaluate_all(tasks_by_split, candidate_config, contract, root / "candidate")
+            if contract.comparison_policy:
+                from .repeated_evaluation import evaluate_paired
+                baseline, candidate_reports, statistical = evaluate_paired(self.evaluator, tasks_by_split,
+                    champion_config, candidate_config, contract, root)
+            else:
+                candidate_reports = self._evaluate_all(tasks_by_split, candidate_config, contract, root / "candidate")
         else:
-            candidate_package = dict(champion_package)
             candidate_reports = {}
         if artifact_mode:
             from .rsi_feedback import comparison_metrics
             metrics = comparison_metrics(baseline, candidate_reports, root, contract)
         else:
             metrics = self._metrics(baseline, candidate_reports, verification.passed)
+        if contract.comparison_policy:
+            metrics['statistical_comparison'] = statistical if verification.passed else {'eligible':False}
         decision = self.promotion.decide(candidate.candidate_id, verification, metrics, contract)
-        version = self.registry.next_version(skill_id, champion.version)
         record = self.registry.register(
             skill_id=skill_id,
             version=version,
@@ -365,6 +375,8 @@ class RSILoop:
                 patch_hash=patch_hash,
                 reason=decision.decision,
                 evidence_refs=decision.evidence_refs,
+                parent_hash=champion.content_hash,
+                cohort_hash=contract.dataset_hash,
             )
             negative_evidence = {
                 "evidence_id": negative_id,
@@ -466,6 +478,10 @@ class RSILoop:
             "provider_identity": {
                 "class": f"{self.provider.__class__.__module__}.{self.provider.__class__.__qualname__}",
                 "version": str(getattr(self.provider, "provider_version", "unknown")),
+                "config_hash": canonical_json_hash({name: getattr(self.provider, name) for name in (
+                    'model', 'api_base_url', 'api_key_env', 'timeout_seconds', 'max_retries',
+                    'retry_delay_seconds', 'executable', 'max_context_bytes') if hasattr(self.provider, name)
+                    and isinstance(getattr(self.provider, name), (str, int, float, bool, list, dict, type(None)))}),
             },
             "skill_model": f"{self.skill_model.__module__}.{self.skill_model.__qualname__}",
             "model_identity": model_identity or getattr(self.provider, "model_identity", None),
@@ -484,6 +500,10 @@ class RSILoop:
                         "behavior_probe.py",
                         "rsi_contracts.py",
                         "workagent_experiment.py",
+                        "registry.py",
+                        "statistical_promotion.py",
+                        "repeated_evaluation.py",
+                        "run_budget.py",
                     )
                 }
             ),

@@ -138,9 +138,10 @@ class FrozenEvaluator:
                 for row in repeats)
             agreement = len(repeats) >= 2 and independent and all(signature(row) == signature(repeats[0]) for row in repeats[1:])
             repeat_agreement.append(agreement)
-            rows.append({**repeats[0], "repeat_count": len(repeats), "repeat_agreement": agreement})
-        complete = bool(rows) and all(row["assessment_complete"] for row in rows)
-        quality = sum(row["score"] for row in rows) / len(rows) if rows and all(row["score"] is not None for row in rows) else None
+            rows.append({**repeats[0], "repeat_count": len(repeats), "repeat_agreement": agreement, 'repeats':repeats})
+        all_repeats = [r for row in rows for r in row['repeats']]
+        complete = bool(rows) and len(all_repeats)==len(tasks)*contract.repeats and all(row["assessment_complete"] for row in all_repeats)
+        quality = sum(row["score"] for row in all_repeats) / len(all_repeats) if complete and all(row["score"] is not None for row in all_repeats) else None
         dimensions = sorted({d for row in rows for d in row["score_report"]["dimension_scores"]})
         dimension_scores = {}
         for dimension in dimensions:

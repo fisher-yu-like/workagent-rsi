@@ -31,8 +31,10 @@ class WorkAgentExperimentRunner:
         assessment_config=None,
         repair_policy=None,
         run_budget=None,
+        behavior_probe=None,
     ) -> None:
         self.repair_policy=repair_policy
+        self.behavior_probe=behavior_probe
         self.run_budget=run_budget
         self.workagent_config = workagent_config
         self.input_base = input_base
@@ -49,6 +51,8 @@ class WorkAgentExperimentRunner:
         mode: str = 'qualification',
         legacy_hidden_mapping: str | None = None,
         family_manifest=None,
+        resume: bool = False,
+        comparison_policy=None,
     ) -> dict:
         from .execution_policy import require_production
         if mode not in {'qualification','formal'}:
@@ -76,17 +80,27 @@ class WorkAgentExperimentRunner:
         if self.repair_policy is not None and self.run_budget is None:
             policy=RepairPolicy.model_validate(self.repair_policy)
             self.run_budget=RunBudget(max_repairs=policy.max_repairs,max_wall_seconds=policy.total_deadline_seconds)
+        if resume and self.run_budget is not None:
+            self.run_budget = RunBudget.from_ledger(Path(output_root)/'budget-ledger.json',
+                expected_limits=self.run_budget.limits.model_dump())
         context=self.run_budget.activate(Path(output_root)/'budget-ledger.json') if self.run_budget else nullcontext()
         # Preserve the existing nonempty-root guard before creating the ledger.
-        if Path(output_root).exists() and any(Path(output_root).iterdir()):
+        if not resume and Path(output_root).exists() and any(Path(output_root).iterdir()):
             raise FileExistsError(output_root)
+        if resume and not (Path(output_root)/'rounds'/'checkpoint.json').is_file():
+            raise ValueError('resume requires an existing experiment checkpoint')
+        task_families = {v:r.family_id for r in (family_manifest or []) for v in r.variant_ids}
         with context:
             Path(output_root).mkdir(parents=True, exist_ok=True)
-            (Path(output_root) / 'split-roles.json').write_text(
-                json.dumps(split_roles, indent=2) + '\n', encoding='utf-8')
-            return self._run(tasks_by_split,initial_skill,provider,output_root,rounds=rounds)
+            roles_path=Path(output_root)/'split-roles.json'
+            if resume and json.loads(roles_path.read_text(encoding='utf-8')) != split_roles:
+                raise ValueError('split roles changed on resume')
+            if not resume:
+                roles_path.write_text(json.dumps(split_roles, indent=2)+'\n', encoding='utf-8')
+            return self._run(tasks_by_split,initial_skill,provider,output_root,rounds=rounds,
+                resume=resume, comparison_policy=comparison_policy, task_families=task_families)
 
-    def _run(self,tasks_by_split,initial_skill,provider,output_root,*,rounds):
+    def _run(self,tasks_by_split,initial_skill,provider,output_root,*,rounds,resume=False,comparison_policy=None,task_families=None):
         required = {"develop", "regression", "hidden", "ood_transfer"}
         if set(tasks_by_split) != required or any(not tasks_by_split[split] for split in required):
             raise ValueError("WorkAgent RSI requires nonempty develop, regression, hidden, and ood_transfer splits")
@@ -118,13 +132,17 @@ class WorkAgentExperimentRunner:
             ).strip()
         except (OSError, subprocess.CalledProcessError):
             git_commit = "unavailable"
+        if comparison_policy is not None:
+            from dataclasses import asdict
+            from .statistical_promotion import ComparisonPolicy
+            comparison_policy=asdict(ComparisonPolicy(**comparison_policy))
         contract = EvaluationContract(
             contract_id="general-office-rsi-v1",
             dataset_hash=canonical_json_hash(split_hashes),
             split_hashes=split_hashes,
             evaluator_hash=evaluator.evaluator_hash,
             provider_policy="workagent-config:" + canonical_json_hash(workagent_config.model_dump(mode="json")),
-            seeds=[20260930], repeats=2, timeout_seconds=workagent_config.timeout_seconds,
+            seeds=[20260930], repeats=comparison_policy['required_repeats'] if comparison_policy else 2, timeout_seconds=workagent_config.timeout_seconds,
             thresholds={
                 "quality_gain": 0.05,
                 "success_tolerance": 0.01,
@@ -135,7 +153,14 @@ class WorkAgentExperimentRunner:
             assessment_mode="artifact-v1",
             assessment_identity=evaluator.assessment_identity,
             acceptance_hashes=acceptance_hashes,
+            comparison_policy=comparison_policy,
+            task_families=task_families or {},
         )
+        if resume:
+            previous=EvaluationContract.model_validate_json((root/'contract.json').read_text(encoding='utf-8'))
+            if contract.model_copy(update={'git_commit':previous.git_commit}) != previous:
+                raise ValueError('experiment contract changed on resume')
+            contract=previous
         if self.run_budget is not None:
             (root/'budget-policy.json').write_text(json.dumps(self.run_budget.limits.model_dump(mode='json'),indent=2)+'\n',encoding='utf-8')
         (root / "contract.json").write_text(json.dumps(contract.model_dump(mode="json"), indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -146,11 +171,15 @@ class WorkAgentExperimentRunner:
             candidate_id=None, status="champion", evidence_refs=[contract.dataset_hash],
         )
         source = root / "source"
-        source.mkdir()
-        (source / "skill.json").write_text(json.dumps(initial_skill.model_dump(), indent=2) + "\n", encoding="utf-8")
+        source.mkdir(exist_ok=resume)
+        if resume:
+            if json.loads((source/'skill.json').read_text(encoding='utf-8')) != initial_skill.model_dump():
+                raise ValueError('initial skill changed on resume')
+        else:
+            (source / "skill.json").write_text(json.dumps(initial_skill.model_dump(), indent=2) + "\n", encoding="utf-8")
         loop = RSILoop(
             registry=registry, workspace_builder=CandidateWorkspaceBuilder(), provider=provider,
-            verifier=CandidateVerifier(), evaluator=evaluator,
+            verifier=CandidateVerifier(behavior_probe=self.behavior_probe), evaluator=evaluator,
             promotion=PromotionController(), skill_model=WorkAgentSkill,
         )
         summary = loop.run(
@@ -176,6 +205,7 @@ class WorkAgentExperimentRunner:
                 ),
             ),
             rounds=rounds,
+            resume_root=root/'rounds' if resume else None,
         )
         (root / "summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         return summary

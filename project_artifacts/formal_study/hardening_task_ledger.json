@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-26T02:53:13.560624+00:00",
+  "updated_at": "2026-10-26T08:15:49.933239+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -265,17 +265,19 @@
     },
     {
       "task_id": "T29",
-      "status": "pending",
-      "evidence": "project_artifacts/results/hardening-v2/T29-local/20261026",
-      "note": "User authorized a small local follow-up while deferring human review. Local paired cluster-bootstrap core and fail-closed controls completed;production integration and real repeated comparisons pending. No research qualification or actual model/server run.",
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T29-T32-focused/20261026T081038957014Z",
+      "note": "Optional interleaved three-repeat execution and family bootstrap now gate artifact promotion. Every repeat is retained; quality uses all repeats; cached judges and missing execution snapshots block. Actual qualified model comparisons and human-calibrated research evidence remain pending.",
       "local_status": "offline_comparison_core_completed_integration_pending",
-      "manifest": "project_artifacts/formal_study/hardening_t29_local_comparison.json"
+      "manifest": "project_artifacts/formal_study/hardening_t29_local_comparison.json",
+      "local_engineering_complete": true
     },
     {
       "task_id": "T30",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T29-T32-focused/20261026T081038957014Z",
+      "note": "Scoped negative evidence by parent/cohort/patch; trusted candidate version bound before behavior verification; registry/package consistency; develop-only allowlisted lesson records; endpoint/config identity and budget-ledger restoration. Offline verification only, not a real model resume claim.",
+      "local_engineering_complete": true
     },
     {
       "task_id": "T31",

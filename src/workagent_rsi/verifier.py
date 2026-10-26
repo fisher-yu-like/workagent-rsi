@@ -45,7 +45,7 @@ class CandidateVerifier:
                 None if probe is None else 'unversioned-trusted-callback'}
 
     def verify(self, candidate, workspace, policy, *, skill_model=None, parent_package=None,
-               parent_version=None, edit_budget=None, behavior_probe=None):
+               parent_version=None, edit_budget=None, behavior_probe=None, candidate_version=None):
         checks, violations, warnings = ['path_policy'], [], []
         schema = safety = 'not_run'
         behavior, required = 'not_run', False
@@ -109,6 +109,8 @@ class CandidateVerifier:
                 proposed = deepcopy(parent)
                 for payload in payloads:
                     proposed.update(payload)
+                if candidate_version is not None and 'version' in proposed:
+                    proposed['version'] = candidate_version
                 model.model_validate_json(json.dumps(proposed), strict=True)
                 schema = 'passed'
                 checks.extend(['parent_version', 'edit_budget', 'skill_model', 'artifact_execution_config', 'leakage'])

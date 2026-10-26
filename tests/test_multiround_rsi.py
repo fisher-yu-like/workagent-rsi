@@ -185,7 +185,7 @@ class UniqueCandidateProvider:
         return candidate.model_copy(update={"candidate_id": f"candidate-{self.calls}"}), record
 
 
-def test_rejected_sibling_candidates_receive_unique_registry_versions(tmp_path: Path):
+def test_new_parent_is_evaluated_and_renamed_rejected_patch_is_pruned(tmp_path: Path):
     task = _task()
     loop = _loop(tmp_path, UniqueCandidateProvider())
     result = loop.run(
@@ -199,7 +199,11 @@ def test_rejected_sibling_candidates_receive_unique_registry_versions(tmp_path: 
     )
 
     assert result["status"] == "completed"
-    assert [row["registered_version"]["version"] for row in result["rounds"]] == ["0.2.0", "0.3.0", "0.4.0"]
+    # Renaming an identical patch does not evade the scoped rejection cache.
+    assert result['rounds'][0]['registered_version']['version'] == '0.2.0'
+    assert result['rounds'][1]['registered_version']['version'] == '0.3.0'
+    assert result['rounds'][2]['candidate_status'] == 'pruned_negative_evidence'
+    assert loop.registry.next_version('office.marker') == '0.4.0'
 
 
 def test_resume_retries_only_incomplete_round_and_uses_latest_champion(tmp_path: Path):

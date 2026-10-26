@@ -4,6 +4,7 @@ import json
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 from .hashing import canonical_json_hash
 from .rsi_contracts import SkillVersion
@@ -55,6 +56,14 @@ class SkillRegistry:
                     created_at TEXT NOT NULL,
                     UNIQUE(skill_id, candidate_id, patch_hash)
                 );
+                CREATE TABLE IF NOT EXISTS negative_evidence_v2 (
+                    skill_id TEXT NOT NULL,
+                    parent_hash TEXT NOT NULL,
+                    cohort_hash TEXT NOT NULL,
+                    patch_hash TEXT NOT NULL,
+                    evidence_json TEXT NOT NULL,
+                    PRIMARY KEY (skill_id, parent_hash, cohort_hash, patch_hash)
+                );
                 """
             )
 
@@ -73,6 +82,8 @@ class SkillRegistry:
         status: str,
         evidence_refs: list[str],
     ) -> SkillVersion:
+        if 'version' in package and package['version'] != version:
+            raise ValueError('package version must match registry version')
         content_hash = canonical_json_hash(package)
         manifest_hash = canonical_json_hash(manifest)
         created_at = datetime.now(timezone.utc)
@@ -195,9 +206,13 @@ class SkillRegistry:
         patch_hash: str,
         reason: str,
         evidence_refs: list[str],
+        parent_hash: str | None = None,
+        cohort_hash: str | None = None,
     ) -> str:
         """Persist a rejected candidate so an identical patch can be pruned."""
 
+        if (parent_hash is None) != (cohort_hash is None):
+            raise ValueError('parent_hash and cohort_hash must be supplied together')
         evidence_id = canonical_json_hash(
             {
                 "skill_id": skill_id,
@@ -206,9 +221,16 @@ class SkillRegistry:
                 "patch_hash": patch_hash,
                 "reason": reason,
                 "evidence_refs": evidence_refs,
+                "parent_hash": parent_hash,
+                "cohort_hash": cohort_hash,
             }
         )
         with self._connect() as conn:
+            if parent_hash is not None:
+                conn.execute('INSERT OR IGNORE INTO negative_evidence_v2 VALUES (?, ?, ?, ?, ?)',
+                    (skill_id, parent_hash, cohort_hash, patch_hash,
+                     json.dumps({'evidence_id': evidence_id, 'candidate_id': candidate_id,
+                                 'reason': reason, 'evidence_refs': evidence_refs}, sort_keys=True)))
             conn.execute(
                 "INSERT OR IGNORE INTO negative_evidence(skill_id, candidate_id, parent_version, patch_hash, reason, evidence_json, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
                 (
@@ -223,7 +245,16 @@ class SkillRegistry:
             )
         return evidence_id
 
-    def has_negative_evidence(self, *, skill_id: str, candidate_id: str | None = None, patch_hash: str | None = None) -> bool:
+    def has_negative_evidence(self, *, skill_id: str, candidate_id: str | None = None, patch_hash: str | None = None,
+                              parent_hash: str | None = None, cohort_hash: str | None = None) -> bool:
+        if (parent_hash is None) != (cohort_hash is None):
+            raise ValueError('parent_hash and cohort_hash must be supplied together')
+        if parent_hash is not None:
+            if not patch_hash:
+                raise ValueError('scoped evidence requires patch_hash')
+            with self._connect() as conn:
+                return conn.execute('SELECT 1 FROM negative_evidence_v2 WHERE skill_id=? AND parent_hash=? AND cohort_hash=? AND patch_hash=?',
+                                    (skill_id, parent_hash, cohort_hash, patch_hash)).fetchone() is not None
         if candidate_id is None and patch_hash is None:
             raise ValueError("candidate_id or patch_hash is required")
         clauses = ["skill_id = ?"]

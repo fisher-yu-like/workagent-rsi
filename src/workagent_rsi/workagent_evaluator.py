@@ -172,15 +172,17 @@ class WorkAgentFrozenEvaluator:
             row.get("assessment_complete") and "score" in row
             and all(r['assessment_complete'] for r in row['repeats']) for row in rows
         )
+        all_repeats = [r for row in rows for r in row['repeats']]
+        complete = complete and len(all_repeats) == len(tasks) * contract.repeats
         quality = (
-            sum(row["score"] for row in rows) / len(rows)
+            sum(row["score"] for row in all_repeats) / len(all_repeats)
             if complete
             else None
         )
         dimensions = sorted(
             {
                 name
-                for row in rows
+                for row in all_repeats
                 for name in (row.get("score_report") or {}).get("dimension_scores", {})
             }
         )
@@ -188,7 +190,7 @@ class WorkAgentFrozenEvaluator:
         for dimension in dimensions:
             values = [
                 (row.get("score_report") or {}).get("dimension_scores", {}).get(dimension)
-                for row in rows
+                for row in all_repeats
                 if row.get("score_report") is not None
             ]
             dimension_scores[dimension] = (
@@ -232,6 +234,10 @@ class WorkAgentFrozenEvaluator:
             "evaluator_hash": live_evaluator_hash,
             "split_hash": split_hash,
             "rows": rows,
+            'repeated_observation_count':len(all_repeats),
+            'expected_observation_count':len(tasks)*contract.repeats,
+            'repeated_task_success_rate':sum(r.get('task_success') is True for r in all_repeats)/len(all_repeats) if outcomes_complete else None,
+            'repeated_execution_success_rate':sum(r.get('execution_success') is True for r in all_repeats)/len(all_repeats) if execution_complete else None,
         }
         (root / "evaluation_full.json").write_text(
             json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"

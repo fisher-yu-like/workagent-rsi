@@ -156,6 +156,8 @@ class EvaluationContract(StrictModel):
     assessment_mode: Literal["legacy", "artifact-v1"] = "legacy"
     assessment_identity: str | None = None
     acceptance_hashes: dict[str, str] = Field(default_factory=dict)
+    comparison_policy: dict[str, Any] | None = None
+    task_families: dict[str, str] = Field(default_factory=dict)
 
 
 class ProviderRecord(StrictModel):

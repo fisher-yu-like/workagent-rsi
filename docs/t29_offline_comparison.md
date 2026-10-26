@@ -1,6 +1,6 @@
 # T29 offline comparison core
 
-The user authorized a small amount of later local work while deferring human review. `workagent_rsi.statistical_promotion` implements only the local paired comparison core. It is not connected to `PromotionController`, the RSI loop, real providers or the evaluator. T29 remains incomplete.
+The optional frozen `EvaluationContract.comparison_policy` now connects the pure calculation to `repeated_evaluation`, `RSILoop` and the artifact promotion controller. Historical contracts retain their original protocol. Actual qualified repeated model comparisons remain pending.
 
 `RepeatedObservation` preserves task, family, domain, repeat, execution identity, execution validity, score qualification, judge observation identity and protocol identity. `compare_repeated_runs` requires matching task/repeat pairs, unchanged source identities, three independent execution identities per task and a matching declared protocol. Missing pairs, invalid executions or reused judge observations leave the comparison inconclusive. A hash supplied to this local function is a declaration; later integration must verify its provenance.
 
@@ -10,4 +10,6 @@ Critical regressions, unsafe actions and any protected-domain regression reject 
 
 The saved example at `project_artifacts/results/hardening-v2/T29-local/20261026/` uses explicitly synthetic observations. It demonstrates local calculations, not actual agent performance or human agreement. Focused tests cover denominators, execution failures, uncertainty, protected domains, repeated cached judgements and the qualification boundary.
 
-Remaining T29 work includes controller integration, actual execution/judge provenance, comparable budget and time-window validation, interleaved baseline/candidate scheduling, execution-versus-judge variance, cross-batch regression gates and actual repeated comparisons under qualified data and evaluators. No model, worker or judge is called by this delivery.
+The controller alternates arms by repeat, verifies executed-script snapshots against tool logs, preserves every observation and keeps the feedback baseline separately. All four adaptive splits must cover all three domains. Quality means use all repeats; legacy conservative per-task success remains available alongside new repeated success rates. Valid agent failures switch to task success, including artifact failures. Critical requirements are compared on matching repeats. Unsupported execution seeds are recorded as not_supported; the bootstrap seed is used. Execution and quality variance are reported. Judge-only variance remains null because repeated execution does not identify it. Engineering champion selection can use the statistical gate; research qualification remains false.
+
+Remaining actual acceptance includes qualified model repeats, evaluator/human calibration, independent sealed final data and matched native scoring environments. Offline fixtures cannot qualify these claims. No model, worker or judge is called by this delivery.

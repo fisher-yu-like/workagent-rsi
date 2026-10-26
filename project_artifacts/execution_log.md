@@ -455,3 +455,7 @@ All120 exported input hashes verified;24XLSX and24DOCX reopened;24 reference PNG
 T26 material preparation is complete for this72-instance development cohort. Original216 distinct instances and an untouched evaluator-side final corpus/separate principal remain incomplete. Word fixtures and scientific PPT diagrams have a narrower scope than general enterprise work.
 
 The separately authorized smallT29 local comparison core handles all repeats,valid execution failures,family-level bootstrap,domain/critical regression andcached judgement rejection. It is not wired into production promotion and never claims research qualification. Saved examples are explicitly synthetic. Final focused23 checks passed;no full-suite rerun. Receipts:hardening_t26_balanced_materials.json andhardening_t29_local_comparison.json.
+
+# 2026-10-26 T29/T30 engineering integration
+
+Added optional paired three-repeat scheduling and family-level statistical promotion, all-repeat quality aggregation, scoped rejection evidence, verified package version binding, develop-only lessons, provider configuration identity and explicit budget-preserving resume. The feedback baseline and failed attempts remain separate evidence. Judge-only variance stays unidentified; research qualification remains false. Focused verification:49 passed,0 failures at `results/hardening-v2/T29-T32-focused/20261026T081038957014Z`. Earlier failing attempts are retained. No live model, server or human labels were used. T29 actual qualification is blocked; T30 engineering is complete.

@@ -1,8 +1,8 @@
-"""T29 offline comparison core; deliberately not wired into production promotion.
+"""T29 comparison mathematics, used by the paired engineering controller.
 
 An eligible statistical signal is not research qualification. Source admission,
 evaluator qualification, real repeats and execution provenance require the later
-controller integration. This module never runs models, workers or promotions.
+release validation. This pure module never runs models, workers or promotions.
 """
 from __future__ import annotations
 
@@ -48,6 +48,7 @@ class RepeatedObservation:
     protocol_hash: str
     critical_regressions: int = 0
     unsafe_actions: int = 0
+    task_succeeded: bool | None = None
 
     def __post_init__(self):
         if not all((self.task_id, self.family_id, self.execution_id, self.protocol_hash)):
@@ -117,7 +118,7 @@ def compare_repeated_runs(baseline: list[RepeatedObservation], candidate: list[R
             blockers.append('cached_or_reused_judgement')
     if blockers:
         return report
-    value = (lambda r: float(r.execution_succeeded)) if metric == 'task_success_rate' else (lambda r: r.quality_score)
+    value = (lambda r: float(r.execution_succeeded if r.task_succeeded is None else r.task_succeeded)) if metric == 'task_success_rate' else (lambda r: r.quality_score)
     deltas = [(b.family_id, b.domain, value(b) - value(a)) for a, b in pairs]
     effect = sum(d for _, _, d in deltas) / len(deltas)
     family, domains = defaultdict(list), defaultdict(list)

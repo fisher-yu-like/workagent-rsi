@@ -18,10 +18,22 @@ from .view_safety import ordinary_file
 PUBLIC_LESSON = 'Verify every declared requirement against the saved artifact before returning it.'
 
 
+class LessonRecord(RunContract):
+    """Only evaluator-authored general rules can enter candidate memory."""
+    source_split: Literal['develop'] = 'develop'
+    evidence_refs: list[str] = Field(min_length=1)
+    generalized_rule: Literal[PUBLIC_LESSON] = PUBLIC_LESSON
+    failure_class: Literal['artifact_verification'] = 'artifact_verification'
+    applicability: list[Literal['excel', 'word', 'powerpoint']] = Field(
+        default_factory=lambda: ['excel', 'word', 'powerpoint'])
+    excluded_values: list[str] = Field(default_factory=list, max_length=0)
+
+
 class PublicLesson(RunContract):
     source_split: Literal['develop'] = 'develop'
     source_feedback_hash: str = Field(pattern=r'^[0-9a-f]{64}$')
     statement: Literal[PUBLIC_LESSON] = PUBLIC_LESSON
+    record: LessonRecord | None = None
 
 
 class CandidateContext(RunContract):
@@ -77,7 +89,8 @@ def build_candidate_context(workspace, parent_version, edit_budget, *, feedback=
             fingerprint = canonical_json_hash(prior.model_dump(mode='json'))
             if fingerprint not in seen:
                 seen.add(fingerprint)
-                lessons.append(PublicLesson(source_feedback_hash=fingerprint))
+                lessons.append(PublicLesson(source_feedback_hash=fingerprint,
+                    record=LessonRecord(evidence_refs=[fingerprint])))
     if sha256_file(source) != digest:
         raise ValueError('champion changed during context preparation')
     return CandidateContext(parent_version=parent_version, champion_package=package, champion_hash=content_hash,

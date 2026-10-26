@@ -49,6 +49,38 @@ class RunBudget:
             remaining=min(remaining, _deadline.get()-self.clock())
         return max(0.0,remaining)
 
+    @classmethod
+    def from_ledger(cls, path, *, expected_limits=None, clock=time.monotonic):
+        """Resume charged and interrupted reservations without replenishing caps.
+
+        Prior active wall time is charged; time spent while the process was
+        stopped is excluded. An interrupted reservation remains charged.
+        """
+        import json
+        import math
+        from pathlib import Path
+        data = json.loads(Path(path).read_text(encoding='utf-8'))
+        limits = _Limits.model_validate(data['limits'])
+        if data.get('schema_version') != 'run-budget-v1' or (expected_limits is not None and limits.model_dump() != expected_limits):
+            raise ValueError('budget policy identity changed')
+        result = cls(clock=clock, **limits.model_dump())
+        entries = data['entries']
+        used = {k:0 for k in result.used}
+        for index, entry in enumerate(entries):
+            if entry['ticket'] != index or entry['kind'] not in used or entry['status'] not in {'reserved','charged'}:
+                raise ValueError('invalid budget reservation history')
+            used[entry['kind']] += 1
+        elapsed, cost = data['wall_seconds'], data['cost_reserved_usd']
+        if used != data['used'] or any(type(v) not in {int,float} or not math.isfinite(v) or v < 0 for v in (elapsed,cost)):
+            raise ValueError('invalid budget counters')
+        for kind, maximum in [('model',limits.max_model_calls),('tool',limits.max_tool_calls),('repair',limits.max_repairs)]:
+            if used[kind] > maximum:
+                raise ValueError('budget history exceeds policy')
+        result.started = clock()-elapsed
+        result.used, result.entries, result.cost_reserved = used, entries, cost
+        result.violations = list(data['violations'])
+        return result
+
     def check(self):
         if self.violations or self.remaining_seconds() <= 0:
             raise BudgetExceeded('run budget deadline or accounting violation')

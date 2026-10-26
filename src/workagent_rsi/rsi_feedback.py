@@ -229,6 +229,18 @@ def decide_artifact(candidate_id, verification, metrics, contract):
         "observed_repeat_agreement": metrics["repeat_agreement"],
         "measured_evaluation_budget": metrics["evaluation_seconds"] <= t["max_evaluation_seconds"],
     }
+    if contract.comparison_policy:
+        statistical = metrics.get('statistical_comparison', {})
+        gates['paired_family_comparison'] = statistical.get('eligible') is True
+        # Stochastic execution is assessed through paired confidence intervals,
+        # not by requiring identical outcomes in every independent execution.
+        gates.pop('observed_repeat_agreement')
+        uses_success = statistical.get('splits', {}).get('develop', {}).get('primary_metric') == 'task_success_rate'
+        if uses_success:
+            gates.pop('quality')
+            gates.pop('complete')
+            gates.pop('comparable')
+            gates['complete_task_outcomes'] = metrics.get('task_comparable') is True
     return PromotionDecision(candidate_id=candidate_id, decision="accept" if all(gates.values()) else "reject", gate_results=gates,
         develop_delta=metrics["quality_delta"], cost_delta=None,
         evidence_refs=[canonical_json_hash({"verification": verification.model_dump(mode="json"), "metrics": metrics, "contract": contract.model_dump(mode="json"), "gates": gates})])
