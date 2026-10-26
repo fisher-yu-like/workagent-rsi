@@ -1,0 +1,93 @@
+{
+  "schema_version": "t26-balanced-material-delivery-v1",
+  "recorded_at": "2026-10-26T02:53:13.369067+00:00",
+  "status": "candidate_materials_complete_original_t26_acceptance_incomplete",
+  "active_candidate_manifest": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/evaluator-only/task-manifest.json",
+  "task_index": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/task-index.csv",
+  "execution_views": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/execution-views",
+  "per_domain_base_tasks": {
+    "excel": 24,
+    "powerpoint": 24,
+    "word": 24
+  },
+  "selected_base_tasks": 72,
+  "selected_native_instances": 72,
+  "domain_count_ratio": 1.0,
+  "connected_source_groups": 72,
+  "selected_source_counts": {
+    "spreadsheetbench-2": 24,
+    "pptbench-editable-diagrams": 24,
+    "word-editing-benchmark": 24
+  },
+  "new_source_pool": {
+    "word_tasks": 50,
+    "word_native_documents": 31,
+    "ppt_tasks": 24,
+    "task_groups_before_selection": {
+      "word": 31,
+      "powerpoint": 24
+    }
+  },
+  "historical_plus_supplement_task_inventory": {
+    "excel": 1251,
+    "word": 60,
+    "powerpoint": 28
+  },
+  "historical_caches_are_not_the_selected_cohort": true,
+  "prior_t28_reserved_tasks_excluded": 173,
+  "t28_review_pack_unchanged": true,
+  "office_inputs_reopened": 48,
+  "frozen_reference_images_verified": 24,
+  "input_file_hash_checks": 120,
+  "exported_input_bytes": 20882488,
+  "local_source_archive_bytes": 144141555,
+  "ppt_availability_exclusions": [
+    {
+      "task_id": "task_0004",
+      "reason": "ValueError: source figure missing, ambiguous or hash mismatch"
+    },
+    {
+      "task_id": "task_0107",
+      "reason": "ValueError: source archive exceeds size/time budget"
+    }
+  ],
+  "word_scope": "externally authored synthetic benchmark fixture edits,not private enterprise ground truth",
+  "ppt_scope": "source scientific diagrams with editable PPTX as required output;not24 existing input decks",
+  "model_calls": 0,
+  "judge_calls": 0,
+  "server_operations": 0,
+  "final_test_count": 0,
+  "untouched_final_claim": false,
+  "original_target_instances": 216,
+  "missing_distinct_native_instances": 144,
+  "original_t26_status": "blocked",
+  "remaining": [
+    "Three distinct original input variants per base are not supplied by these sources.",
+    "Untouched evaluator-side final corpus and separate evaluator principal required."
+  ],
+  "focused_validation": {
+    "passed": 23,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T26-T29-local-focused/20261026T024540624023Z",
+    "scope": "T26 supplement/corpus and T29 offline comparison/promotion controls;not a full-suite rerun"
+  },
+  "evidence_hashes": {
+    "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/cohort-report.json": "2e5da3b9d840bb5348b0b06658880cdd05f6bd4393945e0158a74e3b3dde61a5",
+    "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/delivery-validation.json": "bcfc7fab6a765929daf897a97764a8765036b1a2ac2e15b56bb1600300cac7dd",
+    "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/evaluator-only/task-manifest.json": "1868fbf4cf977e82a0b37e565c1cb0cd5d674137a474c0f7570eb5871aa03d8f",
+    "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/run.json": "a724a413fd58ff830bf241682e3d0efb7015848a342df50a9748a89508b37131",
+    "project_artifacts/results/hardening-v2/T26-balanced/20261026/source-pool-v1/source-admission.json": "c96811cfe30778f8cf442d19b826d4b4242fad990c2720d6e5d3377ee5b81247",
+    "project_artifacts/results/hardening-v2/T26-balanced/20261026/source-pool-v1/evaluator-only/task-manifest.frozen.json": "76029e6c8b168bf609373815babacc6e5be0b2f4d57a7f49cc69fc8e413ace31",
+    "project_artifacts/phase3_experiments/configs/benchmark_sources_v2_supplement.json": "bb4635b09b3bad51240e697e4408c531e413fb5b6505dc6b88d59a61dadba37c",
+    "project_artifacts/phase3_experiments/configs/benchmark_balanced_cohort_v1.json": "3e0522498820c5c846d539e97c3d627b574bac574d6848b6fe8fd088a4f36f15",
+    "project_artifacts/results/hardening-v2/T26-T29-local-focused/20261026T024540624023Z/run.json": "de88c9e8259e8eeb49b39dbafd90260f47c5b87602400a777e7b8cd503f6d138"
+  },
+  "superseded_cohort": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v1",
+  "superseded_reason": "Reference alpha compositing and dimension-bound hash corrected;source archives and initial records preserved.",
+  "unadmitted_candidates": [
+    "GDPval:data license not explicit in pinned card/root",
+    "PresentBench:background-source permissions not reviewed"
+  ]
+}

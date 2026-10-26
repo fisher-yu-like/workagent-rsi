@@ -233,7 +233,8 @@ def execution_task(task: dict, variant_id: str) -> TaskSpec:
     variant = next(v for v in task['variants'] if v['variant_id'] == variant_id)
     return TaskSpec(task_id=variant_id, domain=task['domain'], instruction=task['instruction'],
                     input_files=tuple(r['path'] for r in variant['inputs']),
-                    execution_mode='create' if task['benchmark'] == 'workspace-bench-lite' else 'edit')
+                    execution_mode=task.get('execution_mode',
+                        'create' if task['benchmark'] == 'workspace-bench-lite' else 'edit'))
 
 
 def export_execution_inputs(task: dict, variant_id: str, source_root: Path, output: Path) -> TaskSpec:

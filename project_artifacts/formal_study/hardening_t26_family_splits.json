@@ -2,7 +2,7 @@
   "task_id": "T26",
   "status": "blocked",
   "local_status": "completed",
-  "data_scale_status": "User waived equal-domain counts;72/216 total target, revised qualified allocation and protected final corpus still pending",
+  "data_scale_status": "Balanced candidate materials complete:24 tasks/domain,72 native instances;216-instance target and protected final data still pending",
   "evaluator_service_status": "same-owner mount boundary qualified; separate principal unprovisioned",
   "delivery_level": "local_engineering",
   "evidence_bundle": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
@@ -239,5 +239,13 @@
   "server_boundary_bundle": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json",
   "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
   "domain_inventory": "project_artifacts/formal_study/hardening_t26_domain_inventory.json",
-  "equal_domain_counts_required": false
+  "equal_domain_counts_required": false,
+  "balanced_materials": "project_artifacts/formal_study/hardening_t26_balanced_materials.json",
+  "active_candidate_manifest": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/evaluator-only/task-manifest.json",
+  "active_candidate_per_domain": {
+    "excel": 24,
+    "powerpoint": 24,
+    "word": 24
+  },
+  "inventory_scope": "The existing inventory field is historical early pilot evidence;active candidate totals are in balanced_materials."
 }

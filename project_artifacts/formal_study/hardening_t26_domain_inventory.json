@@ -31,5 +31,12 @@
   "allocation_status": "pending revised qualified allocation; fixed-quota historical checks are not the amended acceptance",
   "final_test_count": 0,
   "protected_final_and_separate_evaluator_principal_required": true,
-  "claim_boundary": "Input task counts; not generated output counts or independent population samples. Connected families may cross domains; group counts are not additive."
+  "claim_boundary": "Input task counts; not generated output counts or independent population samples. Connected families may cross domains; group counts are not additive.",
+  "snapshot_scope": "Historical2026-10-25 pre-supplement input inventory",
+  "current_balanced_materials": "project_artifacts/formal_study/hardening_t26_balanced_materials.json",
+  "current_selected_per_domain": {
+    "excel": 24,
+    "powerpoint": 24,
+    "word": 24
+  }
 }

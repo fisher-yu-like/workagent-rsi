@@ -1,0 +1,52 @@
+{
+  "schema_version": "benchmark-supplement-sources-v1",
+  "recorded_at": "2026-10-26",
+  "model_calls_authorized": false,
+  "server_downloads": false,
+  "sources": [
+    {
+      "id": "word-editing-benchmark",
+      "revision": "498a49465d95fce7c0a0b61ac2da6dbd70629d0e",
+      "repository": "https://github.com/nberk/llm-docx-editing",
+      "data_license": "MIT",
+      "scope": "Project-authored benchmark fixtures;generator sources retained as authorship evidence. Not claimed to be private enterprise files.",
+      "license_evidence_sha256": "1126322e2cc8d165adc4c792eeb195717de2bcc7b39be1ce77959d78e87ef685",
+      "definitions_sha256": {
+        "smoke": "f64b057343b42524b764b611f846ce051a7ff8ac3ff63caa3192ff84ea054fe6",
+        "features": "669e9c29361723374ab06d86537c5216b405ebfd9fcede13d0012453aa7a6d91",
+        "capabilities": "2cd46e27c8c933a5a192e4f1c52a1ad3d9e132ee5970f891957b887f64ad09ae"
+      },
+      "fixture_generators_sha256": {
+        "generate-test-docs.ts": "a098b71e0de202d41ff7a059460fcaeac06a7a3c9f20592a822fb4734f15400a",
+        "generate-feature-test-docs.ts": "561a140c1222996941d252baa1f1cbc150841a8727a27a8b62227d4757e21d01",
+        "generate-capability-test-docs.ts": "b406ac3e599474ffc773000dd08657d82494c3afef6d1d14e9ff038762cefcf4"
+      }
+    },
+    {
+      "id": "pptbench-editable-diagrams",
+      "revision": "d64c09f10a4376fa46532dc82048d1b5228e8b76",
+      "repository": "https://github.com/Einsia/PPTBench",
+      "metadata_license": "CC-BY-4.0",
+      "source_license_allowlist": [
+        "cc-by",
+        "cc-by-sa",
+        "cc0"
+      ],
+      "source_license_evidence": "Pinned exact-arXiv-version audit plus hash-verified original figure PDF",
+      "license_audit_sha256": "4d593437d251239720fb3600115714335f87681ce5f87f8b905fdf1fb7d339fc",
+      "materialization_manifest_sha256": "8fc70d2a12fcb848ba800f53b37a152d5d538e1043d33213e7068586e3f4732e",
+      "data_license_explanation_sha256": "a5893401c525978e2cd8c638a160e7bda34dfb5c4ee0b6cf2b2e900eefb50e05",
+      "source_license_obligations": "Retain per-task attribution;ShareAlike applies where recorded. Raw assets stay local."
+    }
+  ],
+  "not_admitted": [
+    {
+      "id": "gdpval",
+      "reason": "No explicit data license in pinned dataset card/root;metadata only retained."
+    },
+    {
+      "id": "presentbench",
+      "reason": "Per-background-material source permission review not completed;not counted."
+    }
+  ]
+}

@@ -59,7 +59,7 @@
     "skipped": 0,
     "evidence": "project_artifacts/results/hardening-v2/T26-T28-benchmark-focused/20261025T063329032021Z"
   },
-  "t26_status": "blocked: revised unequal-domain allocation, native variant qualification, untouched sealed final corpus and separate evaluator principal pending",
+  "t26_status": "balanced development material preparation complete24/domain;original216-instance requirement and untouched final/evaluator principal remain incomplete",
   "t27_status": "completed for deterministic development calibration; both native scorers integration-qualified",
   "t28_status": "32 review materials complete; actual human labels and later authorized judge calibration pending",
   "approval_request": "3 model repairs approved and consumed; additional deterministic PPT execution/render approved and completed. No judge approval.",
@@ -79,5 +79,8 @@
   "generation_delivery": "project_artifacts/formal_study/hardening_t28_benchmark_generation.json",
   "repaired_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
   "equal_domain_counts_required": false,
-  "domain_inventory": "project_artifacts/formal_study/hardening_t26_domain_inventory.json"
+  "domain_inventory": "project_artifacts/formal_study/hardening_t26_domain_inventory.json",
+  "active_balanced_t26_materials": "project_artifacts/formal_study/hardening_t26_balanced_materials.json",
+  "active_balanced_t26_manifest": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/evaluator-only/task-manifest.json",
+  "initial_inventory_scope": "Source counts and metadata totals above describe the initial2026-10-25 intake,not the new selected cohort."
 }
