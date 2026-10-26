@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Literal
+from typing import Literal, Annotated
 
 from pydantic import Field, model_validator
 
@@ -21,7 +21,7 @@ PUBLIC_LESSON = 'Verify every declared requirement against the saved artifact be
 class LessonRecord(RunContract):
     """Only evaluator-authored general rules can enter candidate memory."""
     source_split: Literal['develop'] = 'develop'
-    evidence_refs: list[str] = Field(min_length=1)
+    evidence_refs: list[Annotated[str, Field(pattern=r'^[0-9a-f]{64}$')]] = Field(min_length=1)
     generalized_rule: Literal[PUBLIC_LESSON] = PUBLIC_LESSON
     failure_class: Literal['artifact_verification'] = 'artifact_verification'
     applicability: list[Literal['excel', 'word', 'powerpoint']] = Field(

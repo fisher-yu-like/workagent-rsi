@@ -120,9 +120,11 @@ def evaluate_paired(evaluator, tasks_by_split, baseline_config, candidate_config
                 for task, row in zip(batch, report['rows'], strict=True):
                     observations[side][split].append(_observation(row['repeats'][0], task, repeat, contract))
     comparisons = {}
+    if policy.primary_metric=='auto' and any(not row.execution_succeeded
+            for side in observations.values() for batch in side.values() for row in batch):
+        policy=replace(policy,primary_metric='task_success_rate')
     for split in tasks_by_split:
         left, right = observations['baseline'][split], observations['candidate'][split]
-        old = {(r.task_id,r.repeat):r for r in left}
         # Critical requirements are compared on the same repeat, never just the representative task.
         for repeat in range(policy.required_repeats):
             a = collected['baseline'][split][repeat]['rows']

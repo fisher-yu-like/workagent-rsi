@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-26T08:15:49.933239+00:00",
+  "updated_at": "2026-10-26T08:31:43.621713+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -281,33 +281,38 @@
     },
     {
       "task_id": "T31",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
+      "note": "Default-off qualification CLI, frozen input/config/capability/budget preflight, real metered API runner path, explicit resume and natural repair evidence reporting implemented. Zero live calls. New approved policy, qualified endpoint/sandbox, admitted task specs and real three-domain execution remain required.",
+      "local_engineering_complete": true
     },
     {
       "task_id": "T32",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
+      "note": "Equal-cap B0/B1/B2/B3 preregistration, immutable complete-arm receipts, fixed-reference reassessment, resumable trusted-backend dispatch and sealed-final one-use gate implemented/tested offline. CLI actual dispatch blocked: no qualified production token-budget backend, no current paid allowance and no sealed final cohort. No RSI benefit claim.",
+      "local_engineering_complete": false
     },
     {
       "task_id": "T33",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
+      "note": "Versioned external admission checks and separate native/custom score channels implemented. Missing permission/hash/primary provenance/boundary/parity prevents formal readiness. Current native Office environment parity and separate evaluator principal remain unqualified; no official benchmark score.",
+      "local_engineering_complete": true
     },
     {
       "task_id": "T34",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "in_progress",
+      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
+      "note": "Initial broad suite 764 passed; portable replay was strengthened afterward to relocate hash-bound inputs and verify fresh check results. Three-domain moved-bundle replay passed; 90-case calibration passed; 12 documented commands verified. Final source-bound suite and release gate pending; Linux SSH target forwarding refused.",
+      "local_engineering_complete": false
     },
     {
       "task_id": "T35",
-      "status": "pending",
-      "evidence": null,
-      "note": ""
+      "status": "in_progress",
+      "evidence": "project_artifacts/results/hardening-v2/T31-T34-focused/20261026T081631845138Z",
+      "note": "Chinese operations/handoff guide and root/package/skill documentation updated; final evidence and commit references pending.",
+      "local_engineering_complete": false
     }
   ],
   "review_cases": {

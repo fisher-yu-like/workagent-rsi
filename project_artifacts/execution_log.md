@@ -459,3 +459,7 @@ The separately authorized smallT29 local comparison core handles all repeats,val
 # 2026-10-26 T29/T30 engineering integration
 
 Added optional paired three-repeat scheduling and family-level statistical promotion, all-repeat quality aggregation, scoped rejection evidence, verified package version binding, develop-only lessons, provider configuration identity and explicit budget-preserving resume. The feedback baseline and failed attempts remain separate evidence. Judge-only variance stays unidentified; research qualification remains false. Focused verification:49 passed,0 failures at `results/hardening-v2/T29-T32-focused/20261026T081038957014Z`. Earlier failing attempts are retained. No live model, server or human labels were used. T29 actual qualification is blocked; T30 engineering is complete.
+
+# 2026-10-26 T31-T33 default-off entrypoints and external gates
+
+Added frozen T31 qualification preparation and a metered API runner/resume path; T32 equal-cap four-arm preregistration, immutable receipts, trusted-backend dispatch and one-use final protocol; T33 source/license/hash/boundary/native-parity admission with separate native/custom scores. The shipped configs disable all live calls. No qualified production total-token backend exists, so comparison CLI execution remains explicitly blocked. Focused T31-T34 checks:54 passed at `results/hardening-v2/T31-T34-focused/20261026T081631845138Z`. Added endpoint/version-binding/dispatch coverage also passes locally. Real model/human/external results are not claimed.
