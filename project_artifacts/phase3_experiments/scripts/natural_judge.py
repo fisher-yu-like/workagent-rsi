@@ -52,12 +52,15 @@ def prepare(public,evidence_root,recovery,output):
     for row in rows:
         cid=row['case_id'];artifact=bind(public/relative_reference(row['artifact']))
         if sha256_file(artifact)!=row['artifact_hash']:raise ValueError('artifact changed')
-        compact=[];sources=[];limits=[];native_sources=[]
+        compact=[];sources=[];limits=[];native_sources=[];requires_cjk=False
         for n,f in enumerate(evidence[cid]['files']):
             path=bind(public/relative_reference(f['file']));prepared=bind(evidence_root/f['evidence'])
             if sha256_file(path)!=f['source_sha256'] or sha256_file(prepared)!=f['evidence_sha256']:raise ValueError('evidence changed')
             value=read(prepared)
             if not value['text_partition_complete']:raise ValueError('incomplete text partitions')
+            if n==0:
+                requires_cjk=any('\u3400'<=char<='\u9fff' for part in value['partition']['partitions']
+                    for observation in part['items'] for char in observation['text'])
             item=compact_observations(value)
             if f.get('parser_warnings'):
                 native=native_warning_parts(path);item['native_warning_xml']=native
@@ -98,6 +101,11 @@ def prepare(public,evidence_root,recovery,output):
             render=renders[cid]
             if render['status']!='available':raise ValueError('render unavailable')
             pages=[{**p,'path':str(public/p['file'])} for p in render['pages']]
+        if requires_cjk:
+            environment=render.get('environment',{})
+            if (environment.get('task_cjk_font_sha256')!='2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b'
+                    or not environment.get('cjk_font_probe','').startswith('/task/inputs/fonts/')):
+                raise ValueError('CJK output requires a qualified Chinese-font render; do not grade missing system glyphs as artifact defects')
         if [p['page'] for p in pages]!=list(range(1,len(pages)+1)):raise ValueError('nonconsecutive actual pages')
         from PIL import Image
         for number,batch in enumerate(page_batches(pages),1):

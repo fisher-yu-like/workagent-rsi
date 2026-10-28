@@ -80,6 +80,18 @@ def test_modified_artifact_rejected_before_live_provider(tmp_path):
     with pytest.raises(ValueError,match='artifact changed'):mod.prepare(public,evidence,recovery,tmp_path/'rejected')
 
 
+def test_chinese_output_requires_font_qualified_pages_before_any_model_call(tmp_path):
+    mod=module();public,evidence,recovery=prepared_fixture(tmp_path)
+    file=evidence/'case-0-0.json';data=json.loads(file.read_text(encoding='utf-8'))
+    data['partition']['partitions'][0]['items'][0]['text']='中文标题'
+    file.write_text(json.dumps(data),encoding='utf-8')
+    manifest=json.loads((evidence/'report.json').read_text(encoding='utf-8'))
+    manifest['cases'][0]['files'][0]['evidence_sha256']=sha256_file(file)
+    (evidence/'report.json').write_text(json.dumps(manifest),encoding='utf-8')
+    with pytest.raises(ValueError,match='qualified Chinese-font render'):
+        mod.prepare(public,evidence,recovery,tmp_path/'rejected')
+
+
 @pytest.mark.parametrize('fail_at',[None,5])
 @pytest.mark.parametrize('historical',[0,1])
 def test_execution_keeps_failed_requests_and_frozen_parent_dependencies(tmp_path,monkeypatch,fail_at,historical):

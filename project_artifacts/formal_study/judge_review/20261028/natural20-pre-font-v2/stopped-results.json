@@ -1,0 +1,2112 @@
+{
+  "manifest_hash": "29e01f76e6be2dbbabe56e2d95950905e429fc694df3a48416b7c5c8fa5f90e7",
+  "provider": {
+    "backend": "model-judge-v1",
+    "config": {
+      "provider": "codex-cli",
+      "model": "gpt-6.1-sol",
+      "codex_executable": "codex",
+      "api_base_url": "https://api.openai.com/v1",
+      "api_key_env": "OPENAI_API_KEY",
+      "timeout_seconds": 120,
+      "retries": 0,
+      "repeats": 1,
+      "disagreement_tolerance": 0.25,
+      "max_text_chars": 600000,
+      "max_text_items": 2000,
+      "max_images": 8,
+      "max_image_bytes": 20000000,
+      "max_output_tokens": 4096,
+      "cache_enabled": false,
+      "independent_review": true,
+      "semantic_enabled": true,
+      "visual_enabled": true
+    },
+    "prompt_version": "office-quality-judge-v2-evidence-scope",
+    "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+    "cli_version": "codex-cli 0.159.3",
+    "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+  },
+  "rows": [
+    {
+      "call_id": "review-4a85dc3e1d4675c8-semantic",
+      "case_id": "review-4a85dc3e1d4675c8",
+      "modality": "semantic",
+      "phase": "local",
+      "request": "review-4a85dc3e1d4675c8-semantic.json",
+      "sha256": "97b7a2e512300cfb0793b26838ce095be3e08da3371866c7b7a49d738410a2d2",
+      "parents": [],
+      "decision": null,
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 68.76241709990427,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:36:34.910712+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "status": "error",
+            "error": "invalid response or transport failure: ValueError",
+            "elapsed_seconds": 68.75942949997261,
+            "ended_at": "2026-10-28T08:37:43.672866+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2\\review-4a85dc3e1d4675c8-semantic\\call-23b00f6e35b9",
+        "status": "error",
+        "error": "invalid response or transport failure: ValueError",
+        "judge_result": {
+          "decision": null,
+          "reviews": [],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "0686440d2f5f098830f1fc83ce1d342fd9f3a52dcb269e7adb2e1e8b73c238de"
+    },
+    {
+      "call_id": "review-4a85dc3e1d4675c8-visual-01",
+      "case_id": "review-4a85dc3e1d4675c8",
+      "modality": "visual",
+      "phase": "local",
+      "request": "review-4a85dc3e1d4675c8-visual-01.json",
+      "sha256": "6f08f60ebfcd8b3a1185855bd86a188c80996298e14e5cc21256f83bb94ec027",
+      "parents": [],
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.25,
+        "observed": "Serious layout and readability defects affect the supplied subset: the dashboard is excessively reduced, financial row labels and values are split across pages, the financial title is clipped, and two pages contain only decorative rules. Operating-case tables remain legible but are inefficiently paginated.",
+        "confidence": 0.99,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Entire dashboard, especially central financial tables and bottom sensitivity tables",
+            "observation": "The \"LBO Dashboard\" is compressed into very small text on a portrait page. Most table labels and figures are difficult to read at the supplied scale, despite visible section bands and consistent numeric columns."
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Top title and financial statement label column",
+            "observation": "The top of \"Financials Input\" is visibly clipped. Labels including \"Total Net Revenue\" and \"Adj. EBITDA\" occupy this page without their corresponding year columns, making the statement difficult to follow."
+          },
+          {
+            "image_id": "page-3",
+            "artifact_location": "output/page/3",
+            "region": "Financial table beneath 2022A–2027E headers",
+            "observation": "Figures such as \"$995.6\" and \"$168.5\" are clear and aligned, but their metric labels are absent from this page. The horizontal page split separates values from the labels visible on page-2."
+          },
+          {
+            "image_id": "page-4",
+            "artifact_location": "output/page/4",
+            "region": "2028E–2031E and CAGR table",
+            "observation": "Headers \"2028E\" and \"CAGR\" and the numeric rows are readable, but the table again lacks metric labels and a descriptive title. Readers must cross-reference another page to identify each row."
+          },
+          {
+            "image_id": "page-5",
+            "artifact_location": "output/page/5",
+            "region": "Whole page, including horizontal rules near the top",
+            "observation": "Only a thin black rule and a green band appear; the rest of the page is empty. This is an uninformative page within the supplied output."
+          },
+          {
+            "image_id": "page-6",
+            "artifact_location": "output/page/6",
+            "region": "Upper-left rules and remaining page area",
+            "observation": "A short black rule and green band occupy the upper-left area, with no visible text or table content. The isolated decorative fragments indicate poor pagination."
+          },
+          {
+            "image_id": "page-7",
+            "artifact_location": "output/page/7",
+            "region": "Operating Cases title and four case tables",
+            "observation": "\"Operating Cases\" has a clear heading, readable year columns, and aligned case rows. Pale fills and borders distinguish inputs. The final D&A section is separated onto page-8."
+          },
+          {
+            "image_id": "page-8",
+            "artifact_location": "output/page/8",
+            "region": "Top D&A table and large blank area below",
+            "observation": "\"Memo: D&A (% of Revenue)\" and its case values are legible, but this small continuation table occupies only the top of an otherwise empty page and does not repeat the year headers."
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 40.54592960001901,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:43:37.494792+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 24177,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 641,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 40.54286600020714,
+            "ended_at": "2026-10-28T08:44:18.039343+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-4a85dc3e1d4675c8-visual-01\\call-10ca1c1929b3",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.25,
+            "observed": "Serious layout and readability defects affect the supplied subset: the dashboard is excessively reduced, financial row labels and values are split across pages, the financial title is clipped, and two pages contain only decorative rules. Operating-case tables remain legible but are inefficiently paginated.",
+            "confidence": 0.99,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Entire dashboard, especially central financial tables and bottom sensitivity tables",
+                "observation": "The \"LBO Dashboard\" is compressed into very small text on a portrait page. Most table labels and figures are difficult to read at the supplied scale, despite visible section bands and consistent numeric columns."
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Top title and financial statement label column",
+                "observation": "The top of \"Financials Input\" is visibly clipped. Labels including \"Total Net Revenue\" and \"Adj. EBITDA\" occupy this page without their corresponding year columns, making the statement difficult to follow."
+              },
+              {
+                "image_id": "page-3",
+                "artifact_location": "output/page/3",
+                "region": "Financial table beneath 2022A–2027E headers",
+                "observation": "Figures such as \"$995.6\" and \"$168.5\" are clear and aligned, but their metric labels are absent from this page. The horizontal page split separates values from the labels visible on page-2."
+              },
+              {
+                "image_id": "page-4",
+                "artifact_location": "output/page/4",
+                "region": "2028E–2031E and CAGR table",
+                "observation": "Headers \"2028E\" and \"CAGR\" and the numeric rows are readable, but the table again lacks metric labels and a descriptive title. Readers must cross-reference another page to identify each row."
+              },
+              {
+                "image_id": "page-5",
+                "artifact_location": "output/page/5",
+                "region": "Whole page, including horizontal rules near the top",
+                "observation": "Only a thin black rule and a green band appear; the rest of the page is empty. This is an uninformative page within the supplied output."
+              },
+              {
+                "image_id": "page-6",
+                "artifact_location": "output/page/6",
+                "region": "Upper-left rules and remaining page area",
+                "observation": "A short black rule and green band occupy the upper-left area, with no visible text or table content. The isolated decorative fragments indicate poor pagination."
+              },
+              {
+                "image_id": "page-7",
+                "artifact_location": "output/page/7",
+                "region": "Operating Cases title and four case tables",
+                "observation": "\"Operating Cases\" has a clear heading, readable year columns, and aligned case rows. Pale fills and borders distinguish inputs. The final D&A section is separated onto page-8."
+              },
+              {
+                "image_id": "page-8",
+                "artifact_location": "output/page/8",
+                "region": "Top D&A table and large blank area below",
+                "observation": "\"Memo: D&A (% of Revenue)\" and its case values are legible, but this small continuation table occupies only the top of an otherwise empty page and does not repeat the year headers."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-10ca1c1929b3:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.25,
+                "observed": "Serious layout and readability defects affect the supplied subset: the dashboard is excessively reduced, financial row labels and values are split across pages, the financial title is clipped, and two pages contain only decorative rules. Operating-case tables remain legible but are inefficiently paginated.",
+                "confidence": 0.99,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Entire dashboard, especially central financial tables and bottom sensitivity tables",
+                    "observation": "The \"LBO Dashboard\" is compressed into very small text on a portrait page. Most table labels and figures are difficult to read at the supplied scale, despite visible section bands and consistent numeric columns."
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Top title and financial statement label column",
+                    "observation": "The top of \"Financials Input\" is visibly clipped. Labels including \"Total Net Revenue\" and \"Adj. EBITDA\" occupy this page without their corresponding year columns, making the statement difficult to follow."
+                  },
+                  {
+                    "image_id": "page-3",
+                    "artifact_location": "output/page/3",
+                    "region": "Financial table beneath 2022A–2027E headers",
+                    "observation": "Figures such as \"$995.6\" and \"$168.5\" are clear and aligned, but their metric labels are absent from this page. The horizontal page split separates values from the labels visible on page-2."
+                  },
+                  {
+                    "image_id": "page-4",
+                    "artifact_location": "output/page/4",
+                    "region": "2028E–2031E and CAGR table",
+                    "observation": "Headers \"2028E\" and \"CAGR\" and the numeric rows are readable, but the table again lacks metric labels and a descriptive title. Readers must cross-reference another page to identify each row."
+                  },
+                  {
+                    "image_id": "page-5",
+                    "artifact_location": "output/page/5",
+                    "region": "Whole page, including horizontal rules near the top",
+                    "observation": "Only a thin black rule and a green band appear; the rest of the page is empty. This is an uninformative page within the supplied output."
+                  },
+                  {
+                    "image_id": "page-6",
+                    "artifact_location": "output/page/6",
+                    "region": "Upper-left rules and remaining page area",
+                    "observation": "A short black rule and green band occupy the upper-left area, with no visible text or table content. The isolated decorative fragments indicate poor pagination."
+                  },
+                  {
+                    "image_id": "page-7",
+                    "artifact_location": "output/page/7",
+                    "region": "Operating Cases title and four case tables",
+                    "observation": "\"Operating Cases\" has a clear heading, readable year columns, and aligned case rows. Pale fills and borders distinguish inputs. The final D&A section is separated onto page-8."
+                  },
+                  {
+                    "image_id": "page-8",
+                    "artifact_location": "output/page/8",
+                    "region": "Top D&A table and large blank area below",
+                    "observation": "\"Memo: D&A (% of Revenue)\" and its case values are legible, but this small continuation table occupies only the top of an otherwise empty page and does not repeat the year headers."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1",
+                "page-2",
+                "page-3",
+                "page-4",
+                "page-5",
+                "page-6",
+                "page-7",
+                "page-8"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "b217880ae4496f60b532e9570bc09c4440ae19b062651777331ba87d52258440"
+    },
+    {
+      "call_id": "review-4a85dc3e1d4675c8-visual-02",
+      "case_id": "review-4a85dc3e1d4675c8",
+      "modality": "visual",
+      "phase": "local",
+      "request": "review-4a85dc3e1d4675c8-visual-02.json",
+      "sha256": "8ec93425066d8e2f479d698c5bdca0b2b3425a61274ed7c48e2af90bd7211d74",
+      "parents": [],
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.25,
+        "observed": "Text and percentages are legible, with no visible overlap, but the attached pages show severe table fragmentation and excessive empty space. Row labels, year headers, and the EBITDA CAGR heading are separated from related values, impairing readability.",
+        "confidence": 0.97,
+        "observations": [
+          {
+            "image_id": "page-8",
+            "artifact_location": "output/page/8",
+            "region": "Top table, approximately x119–899, y89–205",
+            "observation": "The heading \"Memo: D&A (% of Revenue)\" and scenario labels are readable and aligned. However, this short table occupies only a small strip at the top, leaving most of the page empty."
+          },
+          {
+            "image_id": "page-9",
+            "artifact_location": "output/page/9",
+            "region": "Main table and right-side heading, approximately x67–957, y175–739",
+            "observation": "Year headers \"2025E\" through \"2031E\" and percentages are legible, with consistent cell boundaries. Four vertically separated data blocks lack visible metric and scenario labels on this page. The heading \"EBITDA CAGR\" sits at the far right without its associated values alongside it."
+          },
+          {
+            "image_id": "page-10",
+            "artifact_location": "output/page/10",
+            "region": "Top-left table, approximately x67–759, y89–205",
+            "observation": "The block beginning \"4.3%\" is readable but appears without year headers or metric/scenario labels. It occupies only the upper portion of an otherwise empty page, making the continuation difficult to interpret independently."
+          },
+          {
+            "image_id": "page-11",
+            "artifact_location": "output/page/11",
+            "region": "Top rules and isolated lower-left value column, approximately x67–957, y120–603",
+            "observation": "A single column headed \"8.2%\" appears far below the top rules, followed by values including \"5.6%\" and \"(5.0%)\". Its heading and scenario labels are absent here; the \"EBITDA CAGR\" heading is on page-9. This separation and the large unused area indicate a serious pagination/layout problem."
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 33.43610990000889,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:44:18.052675+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 19205,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 448,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 33.43419239996001,
+            "ended_at": "2026-10-28T08:44:51.488074+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-4a85dc3e1d4675c8-visual-02\\call-b00870049bae",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.25,
+            "observed": "Text and percentages are legible, with no visible overlap, but the attached pages show severe table fragmentation and excessive empty space. Row labels, year headers, and the EBITDA CAGR heading are separated from related values, impairing readability.",
+            "confidence": 0.97,
+            "observations": [
+              {
+                "image_id": "page-8",
+                "artifact_location": "output/page/8",
+                "region": "Top table, approximately x119–899, y89–205",
+                "observation": "The heading \"Memo: D&A (% of Revenue)\" and scenario labels are readable and aligned. However, this short table occupies only a small strip at the top, leaving most of the page empty."
+              },
+              {
+                "image_id": "page-9",
+                "artifact_location": "output/page/9",
+                "region": "Main table and right-side heading, approximately x67–957, y175–739",
+                "observation": "Year headers \"2025E\" through \"2031E\" and percentages are legible, with consistent cell boundaries. Four vertically separated data blocks lack visible metric and scenario labels on this page. The heading \"EBITDA CAGR\" sits at the far right without its associated values alongside it."
+              },
+              {
+                "image_id": "page-10",
+                "artifact_location": "output/page/10",
+                "region": "Top-left table, approximately x67–759, y89–205",
+                "observation": "The block beginning \"4.3%\" is readable but appears without year headers or metric/scenario labels. It occupies only the upper portion of an otherwise empty page, making the continuation difficult to interpret independently."
+              },
+              {
+                "image_id": "page-11",
+                "artifact_location": "output/page/11",
+                "region": "Top rules and isolated lower-left value column, approximately x67–957, y120–603",
+                "observation": "A single column headed \"8.2%\" appears far below the top rules, followed by values including \"5.6%\" and \"(5.0%)\". Its heading and scenario labels are absent here; the \"EBITDA CAGR\" heading is on page-9. This separation and the large unused area indicate a serious pagination/layout problem."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-b00870049bae:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.25,
+                "observed": "Text and percentages are legible, with no visible overlap, but the attached pages show severe table fragmentation and excessive empty space. Row labels, year headers, and the EBITDA CAGR heading are separated from related values, impairing readability.",
+                "confidence": 0.97,
+                "observations": [
+                  {
+                    "image_id": "page-8",
+                    "artifact_location": "output/page/8",
+                    "region": "Top table, approximately x119–899, y89–205",
+                    "observation": "The heading \"Memo: D&A (% of Revenue)\" and scenario labels are readable and aligned. However, this short table occupies only a small strip at the top, leaving most of the page empty."
+                  },
+                  {
+                    "image_id": "page-9",
+                    "artifact_location": "output/page/9",
+                    "region": "Main table and right-side heading, approximately x67–957, y175–739",
+                    "observation": "Year headers \"2025E\" through \"2031E\" and percentages are legible, with consistent cell boundaries. Four vertically separated data blocks lack visible metric and scenario labels on this page. The heading \"EBITDA CAGR\" sits at the far right without its associated values alongside it."
+                  },
+                  {
+                    "image_id": "page-10",
+                    "artifact_location": "output/page/10",
+                    "region": "Top-left table, approximately x67–759, y89–205",
+                    "observation": "The block beginning \"4.3%\" is readable but appears without year headers or metric/scenario labels. It occupies only the upper portion of an otherwise empty page, making the continuation difficult to interpret independently."
+                  },
+                  {
+                    "image_id": "page-11",
+                    "artifact_location": "output/page/11",
+                    "region": "Top rules and isolated lower-left value column, approximately x67–957, y120–603",
+                    "observation": "A single column headed \"8.2%\" appears far below the top rules, followed by values including \"5.6%\" and \"(5.0%)\". Its heading and scenario labels are absent here; the \"EBITDA CAGR\" heading is on page-9. This separation and the large unused area indicate a serious pagination/layout problem."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-8",
+                "page-9",
+                "page-10",
+                "page-11"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "8000ae746f5c7429b11c5b9c34506c7b838fe60038fc1e3665832ec75a15d70e"
+    },
+    {
+      "call_id": "review-4a85dc3e1d4675c8-consistency",
+      "case_id": "review-4a85dc3e1d4675c8",
+      "modality": "semantic",
+      "phase": "consistency",
+      "request": "review-4a85dc3e1d4675c8-consistency.json",
+      "sha256": "89acc9a6ebb62faa43bb9ef55d8bb377a860f6ee3ab34933362d52e2d764d177",
+      "parents": [
+        "review-4a85dc3e1d4675c8-semantic",
+        "review-4a85dc3e1d4675c8-visual-01",
+        "review-4a85dc3e1d4675c8-visual-02"
+      ],
+      "decision": null,
+      "attempted": false,
+      "telemetry": {
+        "status": "unavailable",
+        "reason": "parent judgement missing;no model call"
+      }
+    },
+    {
+      "call_id": "review-f730abc3d56ac9f6-semantic",
+      "case_id": "review-f730abc3d56ac9f6",
+      "modality": "semantic",
+      "phase": "local",
+      "request": "review-f730abc3d56ac9f6-semantic.json",
+      "sha256": "d0c2b2cd8ce8f13cc1e2f9f3adb87c04638f74c470b63ada3f2c37e3f1c7e3ca",
+      "parents": [],
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "The report accurately extracts the available customer and supplier concentration data, provides a clear comparison and qualified dependence analysis, and explicitly identifies the source’s lack of individual entity records. It does not fabricate the unavailable names, transaction amounts or individual ratios.",
+        "confidence": 0.98,
+        "observations": [
+          {
+            "evidence_id": "output-complete-data",
+            "quote": "前五大客户销售占比为18.74%，前五大供应商采购占比为50.53%。上游前五大主体占比比下游高31.79个百分点，为下游的2.70倍。",
+            "observation": "Both concentration figures match the authorized source. The percentage-point difference and rounded multiple are correct and support the conclusion that procurement is more concentrated than sales.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+              },
+              {
+                "source_id": "input-1",
+                "quote": "前五名供应商采购额合计占比 50.53%。"
+              }
+            ]
+          },
+          {
+            "evidence_id": "output-complete-data",
+            "quote": "若年度销售总额与营业收入口径一致，则前五大客户销售额约为118,801,685.67元（营业收入×18.74%）。这是条件估算，原占比已四舍五入，不属于原文披露金额，更不能拆分为五家实际销售额。",
+            "observation": "The estimated customer total is arithmetically correct and clearly distinguished from disclosed transactions. The supplied source provides aggregate ratios but no individual customer or supplier records; explicitly reporting this boundary appropriately addresses the unavailable entity-level information.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "营业收入：633,947,095.38 元，同比增长 10.69%"
+              },
+              {
+                "source_id": "input-1",
+                "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+              },
+              {
+                "source_id": "input-1",
+                "quote": "前五名供应商采购额合计占比 50.53%。"
+              }
+            ]
+          },
+          {
+            "evidence_id": "output-complete-data",
+            "quote": "该比较使用的是各端自身总额为分母，不能解释为采购金额高于销售金额，也不能据此认定存在单一主体依赖。",
+            "observation": "The report compares upstream and downstream cooperation structures without conflating their denominators or overstating single-entity dependence. Its discussion of potential operating exposures and further verification needs is relevant, clearly qualified, and professionally expressed.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+              },
+              {
+                "source_id": "input-1",
+                "quote": "前五名供应商采购额合计占比 50.53%。"
+              }
+            ]
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 29.753841900033876,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:44:51.496833+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 20364,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 676,
+              "reasoning_output_tokens": 64
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 29.751084099989384,
+            "ended_at": "2026-10-28T08:45:21.249233+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-f730abc3d56ac9f6-semantic\\call-0e239ff9b00c",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "The report accurately extracts the available customer and supplier concentration data, provides a clear comparison and qualified dependence analysis, and explicitly identifies the source’s lack of individual entity records. It does not fabricate the unavailable names, transaction amounts or individual ratios.",
+            "confidence": 0.98,
+            "observations": [
+              {
+                "evidence_id": "output-complete-data",
+                "quote": "前五大客户销售占比为18.74%，前五大供应商采购占比为50.53%。上游前五大主体占比比下游高31.79个百分点，为下游的2.70倍。",
+                "observation": "Both concentration figures match the authorized source. The percentage-point difference and rounded multiple are correct and support the conclusion that procurement is more concentrated than sales.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "前五名供应商采购额合计占比 50.53%。"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "output-complete-data",
+                "quote": "若年度销售总额与营业收入口径一致，则前五大客户销售额约为118,801,685.67元（营业收入×18.74%）。这是条件估算，原占比已四舍五入，不属于原文披露金额，更不能拆分为五家实际销售额。",
+                "observation": "The estimated customer total is arithmetically correct and clearly distinguished from disclosed transactions. The supplied source provides aggregate ratios but no individual customer or supplier records; explicitly reporting this boundary appropriately addresses the unavailable entity-level information.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "营业收入：633,947,095.38 元，同比增长 10.69%"
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "前五名供应商采购额合计占比 50.53%。"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "output-complete-data",
+                "quote": "该比较使用的是各端自身总额为分母，不能解释为采购金额高于销售金额，也不能据此认定存在单一主体依赖。",
+                "observation": "The report compares upstream and downstream cooperation structures without conflating their denominators or overstating single-entity dependence. Its discussion of potential operating exposures and further verification needs is relevant, clearly qualified, and professionally expressed.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "前五名供应商采购额合计占比 50.53%。"
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-0e239ff9b00c:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "The report accurately extracts the available customer and supplier concentration data, provides a clear comparison and qualified dependence analysis, and explicitly identifies the source’s lack of individual entity records. It does not fabricate the unavailable names, transaction amounts or individual ratios.",
+                "confidence": 0.98,
+                "observations": [
+                  {
+                    "evidence_id": "output-complete-data",
+                    "quote": "前五大客户销售占比为18.74%，前五大供应商采购占比为50.53%。上游前五大主体占比比下游高31.79个百分点，为下游的2.70倍。",
+                    "observation": "Both concentration figures match the authorized source. The percentage-point difference and rounded multiple are correct and support the conclusion that procurement is more concentrated than sales.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "前五名供应商采购额合计占比 50.53%。"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "output-complete-data",
+                    "quote": "若年度销售总额与营业收入口径一致，则前五大客户销售额约为118,801,685.67元（营业收入×18.74%）。这是条件估算，原占比已四舍五入，不属于原文披露金额，更不能拆分为五家实际销售额。",
+                    "observation": "The estimated customer total is arithmetically correct and clearly distinguished from disclosed transactions. The supplied source provides aggregate ratios but no individual customer or supplier records; explicitly reporting this boundary appropriately addresses the unavailable entity-level information.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "营业收入：633,947,095.38 元，同比增长 10.69%"
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "前五名供应商采购额合计占比 50.53%。"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "output-complete-data",
+                    "quote": "该比较使用的是各端自身总额为分母，不能解释为采购金额高于销售金额，也不能据此认定存在单一主体依赖。",
+                    "observation": "The report compares upstream and downstream cooperation structures without conflating their denominators or overstating single-entity dependence. Its discussion of potential operating exposures and further verification needs is relevant, clearly qualified, and professionally expressed.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "前五名客户销售额合计占比 18.74%，客户集中度适中。"
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "前五名供应商采购额合计占比 50.53%。"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "output-complete-data",
+                "output-complete-data",
+                "output-complete-data"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "a0b12ddd5898e07f42cc46d23935dcb50a53b664006e2f2b2b3a0e89e7677f2a"
+    },
+    {
+      "call_id": "review-f730abc3d56ac9f6-visual-01",
+      "case_id": "review-f730abc3d56ac9f6",
+      "modality": "visual",
+      "phase": "local",
+      "request": "review-f730abc3d56ac9f6-visual-01.json",
+      "sha256": "b69aaa4baba9c8a19f230dde11eb256337699e22d9bf793f4f729916e1ca3a7c",
+      "parents": [],
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.25,
+        "observed": "Both pages have orderly margins, blue heading hierarchy and aligned tables without obvious clipping or overlap. However, pervasive square replacement glyphs make nearly all Chinese headings, prose and table labels unreadable, seriously impairing use of the report. Readable numbers alone do not resolve this defect.",
+        "confidence": 0.99,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Title, body paragraphs and all three tables",
+            "observation": "Most Chinese characters appear as square glyphs throughout the title, narrative and table labels. Exact readable fragments include “2024”, “18.74%” and “50.53%”, but their surrounding labels are illegible. Tables fit within the margins and have clear borders; the dominant defect is text readability."
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Upper narrative and blue section headings through the final paragraph",
+            "observation": "Square glyphs obscure nearly all Chinese prose and headings. Exact readable fragments include “CR1”, “CR5”, “18.74%” and “50.53%”. Paragraphs and headings are separated cleanly, with no apparent overlap or clipping, but the missing readable characters prevent comprehension of the analysis."
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 29.807855400023982,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:45:21.257881+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 16708,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 280,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 29.80453269998543,
+            "ended_at": "2026-10-28T08:45:51.064482+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-f730abc3d56ac9f6-visual-01\\call-33ed5f9c4be4",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.25,
+            "observed": "Both pages have orderly margins, blue heading hierarchy and aligned tables without obvious clipping or overlap. However, pervasive square replacement glyphs make nearly all Chinese headings, prose and table labels unreadable, seriously impairing use of the report. Readable numbers alone do not resolve this defect.",
+            "confidence": 0.99,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Title, body paragraphs and all three tables",
+                "observation": "Most Chinese characters appear as square glyphs throughout the title, narrative and table labels. Exact readable fragments include “2024”, “18.74%” and “50.53%”, but their surrounding labels are illegible. Tables fit within the margins and have clear borders; the dominant defect is text readability."
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Upper narrative and blue section headings through the final paragraph",
+                "observation": "Square glyphs obscure nearly all Chinese prose and headings. Exact readable fragments include “CR1”, “CR5”, “18.74%” and “50.53%”. Paragraphs and headings are separated cleanly, with no apparent overlap or clipping, but the missing readable characters prevent comprehension of the analysis."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-33ed5f9c4be4:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.25,
+                "observed": "Both pages have orderly margins, blue heading hierarchy and aligned tables without obvious clipping or overlap. However, pervasive square replacement glyphs make nearly all Chinese headings, prose and table labels unreadable, seriously impairing use of the report. Readable numbers alone do not resolve this defect.",
+                "confidence": 0.99,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Title, body paragraphs and all three tables",
+                    "observation": "Most Chinese characters appear as square glyphs throughout the title, narrative and table labels. Exact readable fragments include “2024”, “18.74%” and “50.53%”, but their surrounding labels are illegible. Tables fit within the margins and have clear borders; the dominant defect is text readability."
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Upper narrative and blue section headings through the final paragraph",
+                    "observation": "Square glyphs obscure nearly all Chinese prose and headings. Exact readable fragments include “CR1”, “CR5”, “18.74%” and “50.53%”. Paragraphs and headings are separated cleanly, with no apparent overlap or clipping, but the missing readable characters prevent comprehension of the analysis."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1",
+                "page-2"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "770f5fc80c7533981758d5c0987fe72c75905e7a087f44799177176859747b2a"
+    },
+    {
+      "call_id": "review-f730abc3d56ac9f6-consistency",
+      "case_id": "review-f730abc3d56ac9f6",
+      "modality": "semantic",
+      "phase": "consistency",
+      "request": "review-f730abc3d56ac9f6-consistency.json",
+      "sha256": "1caa13d468fcf662cb9600a8e3e08b745ffb077877ed6735b8c5af01736dc4ae",
+      "parents": [
+        "review-f730abc3d56ac9f6-semantic",
+        "review-f730abc3d56ac9f6-visual-01"
+      ],
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.25,
+        "observed": "The reports support aggregate concentration analysis but do not establish fulfillment of the requested entity-level extraction. The semantic PASS overstates completeness, while the visual report establishes serious readability shortcomings. The established PARTIAL is retained; original-source accuracy cannot be independently confirmed from these summaries.",
+        "confidence": 0.96,
+        "observations": [
+          {
+            "evidence_id": "review-f730abc3d56ac9f6-semantic",
+            "quote": "The supplied source provides aggregate ratios but no individual customer or supplier records; explicitly reporting this boundary appropriately addresses the unavailable entity-level information.",
+            "observation": "This summary acknowledges that individual records were unavailable, yet assigns full completion. Transparently identifying unavailable information is appropriate, but does not establish delivery of the requested transaction amounts and revenue/procurement ratios for each of the five customers and five suppliers. Its aggregate comparison and qualified dependence analysis support partial fulfillment. The summary alone cannot establish what the original source contains.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-f730abc3d56ac9f6-visual-01",
+            "quote": "Both pages have orderly margins, blue heading hierarchy and aligned tables without obvious clipping or overlap. However, pervasive square replacement glyphs make nearly all Chinese headings, prose and table labels unreadable, seriously impairing use of the report.",
+            "observation": "The prior visual review reports serious readability defects on output/page/1 in the title, body paragraphs and tables, and on output/page/2 in the upper narrative, section headings and final paragraph. Orderly layout does not resolve the reported illegibility. This established PARTIAL cannot be upgraded to PASS on the basis of the semantic report. No images are supplied here for independent visual reassessment.",
+            "source_citations": []
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 35.97352030011825,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:45:51.070218+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 15274,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 450,
+              "reasoning_output_tokens": 82
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 35.97188059985638,
+            "ended_at": "2026-10-28T08:46:27.043161+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-f730abc3d56ac9f6-consistency\\call-1dc4d5572cf6",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.25,
+            "observed": "The reports support aggregate concentration analysis but do not establish fulfillment of the requested entity-level extraction. The semantic PASS overstates completeness, while the visual report establishes serious readability shortcomings. The established PARTIAL is retained; original-source accuracy cannot be independently confirmed from these summaries.",
+            "confidence": 0.96,
+            "observations": [
+              {
+                "evidence_id": "review-f730abc3d56ac9f6-semantic",
+                "quote": "The supplied source provides aggregate ratios but no individual customer or supplier records; explicitly reporting this boundary appropriately addresses the unavailable entity-level information.",
+                "observation": "This summary acknowledges that individual records were unavailable, yet assigns full completion. Transparently identifying unavailable information is appropriate, but does not establish delivery of the requested transaction amounts and revenue/procurement ratios for each of the five customers and five suppliers. Its aggregate comparison and qualified dependence analysis support partial fulfillment. The summary alone cannot establish what the original source contains.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-f730abc3d56ac9f6-visual-01",
+                "quote": "Both pages have orderly margins, blue heading hierarchy and aligned tables without obvious clipping or overlap. However, pervasive square replacement glyphs make nearly all Chinese headings, prose and table labels unreadable, seriously impairing use of the report.",
+                "observation": "The prior visual review reports serious readability defects on output/page/1 in the title, body paragraphs and tables, and on output/page/2 in the upper narrative, section headings and final paragraph. Orderly layout does not resolve the reported illegibility. This established PARTIAL cannot be upgraded to PASS on the basis of the semantic report. No images are supplied here for independent visual reassessment.",
+                "source_citations": []
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-1dc4d5572cf6:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.25,
+                "observed": "The reports support aggregate concentration analysis but do not establish fulfillment of the requested entity-level extraction. The semantic PASS overstates completeness, while the visual report establishes serious readability shortcomings. The established PARTIAL is retained; original-source accuracy cannot be independently confirmed from these summaries.",
+                "confidence": 0.96,
+                "observations": [
+                  {
+                    "evidence_id": "review-f730abc3d56ac9f6-semantic",
+                    "quote": "The supplied source provides aggregate ratios but no individual customer or supplier records; explicitly reporting this boundary appropriately addresses the unavailable entity-level information.",
+                    "observation": "This summary acknowledges that individual records were unavailable, yet assigns full completion. Transparently identifying unavailable information is appropriate, but does not establish delivery of the requested transaction amounts and revenue/procurement ratios for each of the five customers and five suppliers. Its aggregate comparison and qualified dependence analysis support partial fulfillment. The summary alone cannot establish what the original source contains.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-f730abc3d56ac9f6-visual-01",
+                    "quote": "Both pages have orderly margins, blue heading hierarchy and aligned tables without obvious clipping or overlap. However, pervasive square replacement glyphs make nearly all Chinese headings, prose and table labels unreadable, seriously impairing use of the report.",
+                    "observation": "The prior visual review reports serious readability defects on output/page/1 in the title, body paragraphs and tables, and on output/page/2 in the upper narrative, section headings and final paragraph. Orderly layout does not resolve the reported illegibility. This established PARTIAL cannot be upgraded to PASS on the basis of the semantic report. No images are supplied here for independent visual reassessment.",
+                    "source_citations": []
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "review-f730abc3d56ac9f6-semantic",
+                "review-f730abc3d56ac9f6-visual-01"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "2dc554b9c04f906282af2a7821b1c9cf136feb84cd62440e47b944ccc971ecd7"
+    },
+    {
+      "call_id": "review-262d29941e093887-semantic",
+      "case_id": "review-262d29941e093887",
+      "modality": "semantic",
+      "phase": "local",
+      "request": "review-262d29941e093887-semantic.json",
+      "sha256": "8f36fdf873d0815373fb5928b239fb621588c791bd329b733c148be3321b083c",
+      "parents": [],
+      "decision": {
+        "status": "NEEDS_REVIEW",
+        "completion": null,
+        "observed": "The extracted document fulfills the substantive content obligations: it summarizes the supplied reports accurately, identifies improvement areas, and provides an actionable 90-day plan. The evidence cannot establish that the artifact was saved on the desktop as Data_Security_Improvement_Plan.docx.",
+        "confidence": 0.98,
+        "observations": [
+          {
+            "evidence_id": "output-complete-data",
+            "quote": "53.6 / 114.2 / 293.8 minutes; unweighted means of report averages.",
+            "observation": "The baseline calculations are accurate across the five sources: 29 reported incidents, 4 serious entries, 11 leaks, 27,002 user-impact entries, mean score 80.4, mean coverage 88.6%, and RMB 16.27 million in budget entries. The document appropriately distinguishes summed entries from unique incidents and identifies inconsistent subtotals. Its improvement plan includes priorities, proposed owners, deadlines, measurable targets, resource oversight and compliance review. Proposed targets are explicitly distinguished from source facts. However, body-text evidence does not verify the required desktop location, filename or native DOCX format; this is an evidence gap, not an established artifact defect.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Detection Time: Average 72 minutes\nResponse Time: Average 176 minutes\nRepair Time: Average 218 minutes\nUser Impact: 3432 people"
+              },
+              {
+                "source_id": "input-2",
+                "quote": "Detection Time: Average 34 minutes\nResponse Time: Average 60 minutes\nRepair Time: Average 273 minutes\nUser Impact: 4288 people"
+              },
+              {
+                "source_id": "input-3",
+                "quote": "Detection Time: Average 54 minutes\nResponse Time: Average 94 minutes\nRepair Time: Average 337 minutes\nUser Impact: 9918 people"
+              },
+              {
+                "source_id": "input-4",
+                "quote": "Detection Time: Average 53 minutes\nResponse Time: Average 166 minutes\nRepair Time: Average 349 minutes\nUser Impact: 7652 people"
+              },
+              {
+                "source_id": "input-5",
+                "quote": "Detection Time: Average 55 minutes\nResponse Time: Average 75 minutes\nRepair Time: Average 292 minutes\nUser Impact: 1712 people"
+              }
+            ]
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 20.52361309994012,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:46:27.050030+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 20398,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 567,
+              "reasoning_output_tokens": 95
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 20.513225400121883,
+            "ended_at": "2026-10-28T08:46:47.572753+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-262d29941e093887-semantic\\call-3b9caed87273",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "NEEDS_REVIEW",
+            "completion": null,
+            "observed": "The extracted document fulfills the substantive content obligations: it summarizes the supplied reports accurately, identifies improvement areas, and provides an actionable 90-day plan. The evidence cannot establish that the artifact was saved on the desktop as Data_Security_Improvement_Plan.docx.",
+            "confidence": 0.98,
+            "observations": [
+              {
+                "evidence_id": "output-complete-data",
+                "quote": "53.6 / 114.2 / 293.8 minutes; unweighted means of report averages.",
+                "observation": "The baseline calculations are accurate across the five sources: 29 reported incidents, 4 serious entries, 11 leaks, 27,002 user-impact entries, mean score 80.4, mean coverage 88.6%, and RMB 16.27 million in budget entries. The document appropriately distinguishes summed entries from unique incidents and identifies inconsistent subtotals. Its improvement plan includes priorities, proposed owners, deadlines, measurable targets, resource oversight and compliance review. Proposed targets are explicitly distinguished from source facts. However, body-text evidence does not verify the required desktop location, filename or native DOCX format; this is an evidence gap, not an established artifact defect.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Detection Time: Average 72 minutes\nResponse Time: Average 176 minutes\nRepair Time: Average 218 minutes\nUser Impact: 3432 people"
+                  },
+                  {
+                    "source_id": "input-2",
+                    "quote": "Detection Time: Average 34 minutes\nResponse Time: Average 60 minutes\nRepair Time: Average 273 minutes\nUser Impact: 4288 people"
+                  },
+                  {
+                    "source_id": "input-3",
+                    "quote": "Detection Time: Average 54 minutes\nResponse Time: Average 94 minutes\nRepair Time: Average 337 minutes\nUser Impact: 9918 people"
+                  },
+                  {
+                    "source_id": "input-4",
+                    "quote": "Detection Time: Average 53 minutes\nResponse Time: Average 166 minutes\nRepair Time: Average 349 minutes\nUser Impact: 7652 people"
+                  },
+                  {
+                    "source_id": "input-5",
+                    "quote": "Detection Time: Average 55 minutes\nResponse Time: Average 75 minutes\nRepair Time: Average 292 minutes\nUser Impact: 1712 people"
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-3b9caed87273:repeat-1",
+              "decision": {
+                "status": "NEEDS_REVIEW",
+                "completion": null,
+                "observed": "The extracted document fulfills the substantive content obligations: it summarizes the supplied reports accurately, identifies improvement areas, and provides an actionable 90-day plan. The evidence cannot establish that the artifact was saved on the desktop as Data_Security_Improvement_Plan.docx.",
+                "confidence": 0.98,
+                "observations": [
+                  {
+                    "evidence_id": "output-complete-data",
+                    "quote": "53.6 / 114.2 / 293.8 minutes; unweighted means of report averages.",
+                    "observation": "The baseline calculations are accurate across the five sources: 29 reported incidents, 4 serious entries, 11 leaks, 27,002 user-impact entries, mean score 80.4, mean coverage 88.6%, and RMB 16.27 million in budget entries. The document appropriately distinguishes summed entries from unique incidents and identifies inconsistent subtotals. Its improvement plan includes priorities, proposed owners, deadlines, measurable targets, resource oversight and compliance review. Proposed targets are explicitly distinguished from source facts. However, body-text evidence does not verify the required desktop location, filename or native DOCX format; this is an evidence gap, not an established artifact defect.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Detection Time: Average 72 minutes\nResponse Time: Average 176 minutes\nRepair Time: Average 218 minutes\nUser Impact: 3432 people"
+                      },
+                      {
+                        "source_id": "input-2",
+                        "quote": "Detection Time: Average 34 minutes\nResponse Time: Average 60 minutes\nRepair Time: Average 273 minutes\nUser Impact: 4288 people"
+                      },
+                      {
+                        "source_id": "input-3",
+                        "quote": "Detection Time: Average 54 minutes\nResponse Time: Average 94 minutes\nRepair Time: Average 337 minutes\nUser Impact: 9918 people"
+                      },
+                      {
+                        "source_id": "input-4",
+                        "quote": "Detection Time: Average 53 minutes\nResponse Time: Average 166 minutes\nRepair Time: Average 349 minutes\nUser Impact: 7652 people"
+                      },
+                      {
+                        "source_id": "input-5",
+                        "quote": "Detection Time: Average 55 minutes\nResponse Time: Average 75 minutes\nRepair Time: Average 292 minutes\nUser Impact: 1712 people"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "output-complete-data"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "2b4fc57b9411e2bb6602328dd3eaf5d1d80b0242e2a0bd13d79479452fb81dd4"
+    },
+    {
+      "call_id": "review-262d29941e093887-visual-01",
+      "case_id": "review-262d29941e093887",
+      "modality": "visual",
+      "phase": "local",
+      "request": "review-262d29941e093887-visual-01.json",
+      "sha256": "418533187ed1cf6553c25e76ed56d4dcc19ee168ffd96f7399e985fcbcce8e93",
+      "parents": [],
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.75,
+        "observed": "The pages have clear heading hierarchy, consistent margins and readable text, with no visible clipping or overlap. Minor layout shortcomings include uneven page utilization and a source entry split across pages 4–5.",
+        "confidence": 0.98,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Title, section headings and baseline table",
+            "observation": "“Data Security Improvement Plan” is prominent, and “1. Overall data security status” establishes a clear hierarchy. The baseline table has aligned columns and alternating shading; its text fits within the cells without visible clipping."
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Roadmap table in lower half",
+            "observation": "“3. Proposed improvement roadmap” clearly introduces the three-column table. Wrapped text stays within the cells and remains readable, although the final row sits close to the footer."
+          },
+          {
+            "image_id": "page-3",
+            "artifact_location": "output/page/3",
+            "region": "Upper text block and remaining page area",
+            "observation": "“4. Resources, measurement and oversight” and its paragraphs are readable and unobstructed. Content ends above the page midpoint, leaving a large blank area and producing uneven visual density compared with pages 1–2 and 4."
+          },
+          {
+            "image_id": "page-4",
+            "artifact_location": "output/page/4",
+            "region": "Source register, especially bottom entry",
+            "observation": "Bold headings such as “SEC-0005 | 2024-09” make individual records easy to locate. However, this entry reaches the bottom of the content area and continues on the next page, weakening record grouping."
+          },
+          {
+            "image_id": "page-5",
+            "artifact_location": "output/page/5",
+            "region": "Top continuation and source entry",
+            "observation": "The page opens with “Reconciliation check: severity sum 10, category sum 8, stated total 4.” detached from its record heading on page 4. “SEC-0003 | 2024-10” is clearly formatted below, but the short content block leaves most of the page blank."
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 36.332149600144476,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:46:47.581153+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 20367,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 564,
+              "reasoning_output_tokens": 23
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 36.32867409987375,
+            "ended_at": "2026-10-28T08:47:23.912210+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-262d29941e093887-visual-01\\call-44874b145303",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.75,
+            "observed": "The pages have clear heading hierarchy, consistent margins and readable text, with no visible clipping or overlap. Minor layout shortcomings include uneven page utilization and a source entry split across pages 4–5.",
+            "confidence": 0.98,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Title, section headings and baseline table",
+                "observation": "“Data Security Improvement Plan” is prominent, and “1. Overall data security status” establishes a clear hierarchy. The baseline table has aligned columns and alternating shading; its text fits within the cells without visible clipping."
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Roadmap table in lower half",
+                "observation": "“3. Proposed improvement roadmap” clearly introduces the three-column table. Wrapped text stays within the cells and remains readable, although the final row sits close to the footer."
+              },
+              {
+                "image_id": "page-3",
+                "artifact_location": "output/page/3",
+                "region": "Upper text block and remaining page area",
+                "observation": "“4. Resources, measurement and oversight” and its paragraphs are readable and unobstructed. Content ends above the page midpoint, leaving a large blank area and producing uneven visual density compared with pages 1–2 and 4."
+              },
+              {
+                "image_id": "page-4",
+                "artifact_location": "output/page/4",
+                "region": "Source register, especially bottom entry",
+                "observation": "Bold headings such as “SEC-0005 | 2024-09” make individual records easy to locate. However, this entry reaches the bottom of the content area and continues on the next page, weakening record grouping."
+              },
+              {
+                "image_id": "page-5",
+                "artifact_location": "output/page/5",
+                "region": "Top continuation and source entry",
+                "observation": "The page opens with “Reconciliation check: severity sum 10, category sum 8, stated total 4.” detached from its record heading on page 4. “SEC-0003 | 2024-10” is clearly formatted below, but the short content block leaves most of the page blank."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-44874b145303:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.75,
+                "observed": "The pages have clear heading hierarchy, consistent margins and readable text, with no visible clipping or overlap. Minor layout shortcomings include uneven page utilization and a source entry split across pages 4–5.",
+                "confidence": 0.98,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Title, section headings and baseline table",
+                    "observation": "“Data Security Improvement Plan” is prominent, and “1. Overall data security status” establishes a clear hierarchy. The baseline table has aligned columns and alternating shading; its text fits within the cells without visible clipping."
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Roadmap table in lower half",
+                    "observation": "“3. Proposed improvement roadmap” clearly introduces the three-column table. Wrapped text stays within the cells and remains readable, although the final row sits close to the footer."
+                  },
+                  {
+                    "image_id": "page-3",
+                    "artifact_location": "output/page/3",
+                    "region": "Upper text block and remaining page area",
+                    "observation": "“4. Resources, measurement and oversight” and its paragraphs are readable and unobstructed. Content ends above the page midpoint, leaving a large blank area and producing uneven visual density compared with pages 1–2 and 4."
+                  },
+                  {
+                    "image_id": "page-4",
+                    "artifact_location": "output/page/4",
+                    "region": "Source register, especially bottom entry",
+                    "observation": "Bold headings such as “SEC-0005 | 2024-09” make individual records easy to locate. However, this entry reaches the bottom of the content area and continues on the next page, weakening record grouping."
+                  },
+                  {
+                    "image_id": "page-5",
+                    "artifact_location": "output/page/5",
+                    "region": "Top continuation and source entry",
+                    "observation": "The page opens with “Reconciliation check: severity sum 10, category sum 8, stated total 4.” detached from its record heading on page 4. “SEC-0003 | 2024-10” is clearly formatted below, but the short content block leaves most of the page blank."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1",
+                "page-2",
+                "page-3",
+                "page-4",
+                "page-5"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "384ba2cb0866c063ec017fb4b3b35475a3543fa53918bc8825b73143a6e55ddc"
+    },
+    {
+      "call_id": "review-262d29941e093887-consistency",
+      "case_id": "review-262d29941e093887",
+      "modality": "semantic",
+      "phase": "consistency",
+      "request": "review-262d29941e093887-consistency.json",
+      "sha256": "78d9daeebc4a95ee3c63df5784238a7d9890259367cf0a5aea7fc0e7f74457c1",
+      "parents": [
+        "review-262d29941e093887-semantic",
+        "review-262d29941e093887-visual-01"
+      ],
+      "decision": {
+        "status": "NEEDS_REVIEW",
+        "completion": null,
+        "observed": "The reports do not contradict each other: the semantic review supports substantive content fulfillment, while the visual review identifies minor layout defects. Overall fulfillment remains unresolved because the required desktop location, filename and DOCX format are unverified. The established visual PARTIAL remains applicable. Source accuracy cannot be independently established from these summaries.",
+        "confidence": 0.98,
+        "observations": [
+          {
+            "evidence_id": "review-262d29941e093887-semantic",
+            "quote": "The evidence cannot establish that the artifact was saved on the desktop as Data_Security_Improvement_Plan.docx.",
+            "observation": "This explicitly identifies an unresolved task obligation. The report's positive content assessment does not establish delivery at the required location with the required filename and format, and its factual claims cannot be independently verified from the supplied summaries.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-262d29941e093887-visual-01",
+            "quote": "Minor layout shortcomings include uneven page utilization and a source entry split across pages 4–5.",
+            "observation": "The reported layout defects support retaining the prior visual PARTIAL assessment. They are compatible with the semantic report's content assessment; neither report justifies an overall PASS.",
+            "source_citations": []
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 22.018045300152153,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:47:23.920402+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 15267,
+              "cached_input_tokens": 12544,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 300,
+              "reasoning_output_tokens": 29
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 22.016289900057018,
+            "ended_at": "2026-10-28T08:47:45.937548+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-262d29941e093887-consistency\\call-30ce8a243149",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "NEEDS_REVIEW",
+            "completion": null,
+            "observed": "The reports do not contradict each other: the semantic review supports substantive content fulfillment, while the visual review identifies minor layout defects. Overall fulfillment remains unresolved because the required desktop location, filename and DOCX format are unverified. The established visual PARTIAL remains applicable. Source accuracy cannot be independently established from these summaries.",
+            "confidence": 0.98,
+            "observations": [
+              {
+                "evidence_id": "review-262d29941e093887-semantic",
+                "quote": "The evidence cannot establish that the artifact was saved on the desktop as Data_Security_Improvement_Plan.docx.",
+                "observation": "This explicitly identifies an unresolved task obligation. The report's positive content assessment does not establish delivery at the required location with the required filename and format, and its factual claims cannot be independently verified from the supplied summaries.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-262d29941e093887-visual-01",
+                "quote": "Minor layout shortcomings include uneven page utilization and a source entry split across pages 4–5.",
+                "observation": "The reported layout defects support retaining the prior visual PARTIAL assessment. They are compatible with the semantic report's content assessment; neither report justifies an overall PASS.",
+                "source_citations": []
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-30ce8a243149:repeat-1",
+              "decision": {
+                "status": "NEEDS_REVIEW",
+                "completion": null,
+                "observed": "The reports do not contradict each other: the semantic review supports substantive content fulfillment, while the visual review identifies minor layout defects. Overall fulfillment remains unresolved because the required desktop location, filename and DOCX format are unverified. The established visual PARTIAL remains applicable. Source accuracy cannot be independently established from these summaries.",
+                "confidence": 0.98,
+                "observations": [
+                  {
+                    "evidence_id": "review-262d29941e093887-semantic",
+                    "quote": "The evidence cannot establish that the artifact was saved on the desktop as Data_Security_Improvement_Plan.docx.",
+                    "observation": "This explicitly identifies an unresolved task obligation. The report's positive content assessment does not establish delivery at the required location with the required filename and format, and its factual claims cannot be independently verified from the supplied summaries.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-262d29941e093887-visual-01",
+                    "quote": "Minor layout shortcomings include uneven page utilization and a source entry split across pages 4–5.",
+                    "observation": "The reported layout defects support retaining the prior visual PARTIAL assessment. They are compatible with the semantic report's content assessment; neither report justifies an overall PASS.",
+                    "source_citations": []
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "review-262d29941e093887-semantic",
+                "review-262d29941e093887-visual-01"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "ec920bd040f5a1a78c9bb770ce11f1910fcf34a2172215801a750332d8160240"
+    },
+    {
+      "call_id": "review-9e0e9f65e6b4c39c-semantic",
+      "case_id": "review-9e0e9f65e6b4c39c",
+      "modality": "semantic",
+      "phase": "local",
+      "request": "review-9e0e9f65e6b4c39c-semantic.json",
+      "sha256": "fbe67f6c8b473316dd1e01342da03f976e783813d20a8bb439bf8ac66ee958d5",
+      "parents": [],
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.75,
+        "observed": "报告提供两个月、全部8名员工的计件提成表，并按部门和工序分析产量、登记质量及标准工时，主要内容完整。核心限制是应付金额采用未获源数据支持的暂定扣减政策，只能作为估算，尚不能确认为实际应付工资。现有正文证据也不足以确认.docx格式及指定保存目录。",
+        "confidence": 0.92,
+        "observations": [
+          {
+            "evidence_id": "output-complete-data",
+            "quote": "系统说明规定：合格率≥95%提成10%，90%≤合格率<95%提成8%，低于90%提成5%。",
+            "observation": "提成档位与原始使用说明一致。报告分别列示2024年1月和2月的员工核算、部门生产指标、工序质量及原因分布，符合月度、多维关联分析的主要内容要求，并明确区分标准工时与实际劳动效率。",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "提成计算规则：根据员工完成金额和合格率确定提成比例（合格率≥95%提10%，90%-95%提8%，<90%提5%），结果在【员工提成汇总表】中展示。"
+              }
+            ]
+          },
+          {
+            "evidence_id": "output-complete-data",
+            "quote": "本报告采用待审批的统一估算：不合格价值=不合格数量×对应单价；净计件产值=max(完成金额−不合格价值,0)；应付计件提成=净计件产值×月度质量档提成比例，逐人四舍五入至分。",
+            "observation": "报告透明披露了估算公式，但原始规则仅支持按完成金额和合格率确定提成，未授权将所有不合格处置统一扣减产值。因此表中金额可作为明确假设下的测算，不能完成“实际应付”金额的确认。返工、报废、让步接收是否采用相同扣减政策仍待确定。",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "提成计算规则：根据员工完成金额和合格率确定提成比例（合格率≥95%提10%，90%-95%提8%，<90%提5%），结果在【员工提成汇总表】中展示。"
+              }
+            ]
+          }
+        ]
+      },
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 46.060226999921724,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:47:45.947363+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 102331,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 698,
+              "reasoning_output_tokens": 145
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 46.05447759991512,
+            "ended_at": "2026-10-28T08:48:32.006736+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-literal-v2-unissued-1\\review-9e0e9f65e6b4c39c-semantic\\call-69bf37654412",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.75,
+            "observed": "报告提供两个月、全部8名员工的计件提成表，并按部门和工序分析产量、登记质量及标准工时，主要内容完整。核心限制是应付金额采用未获源数据支持的暂定扣减政策，只能作为估算，尚不能确认为实际应付工资。现有正文证据也不足以确认.docx格式及指定保存目录。",
+            "confidence": 0.92,
+            "observations": [
+              {
+                "evidence_id": "output-complete-data",
+                "quote": "系统说明规定：合格率≥95%提成10%，90%≤合格率<95%提成8%，低于90%提成5%。",
+                "observation": "提成档位与原始使用说明一致。报告分别列示2024年1月和2月的员工核算、部门生产指标、工序质量及原因分布，符合月度、多维关联分析的主要内容要求，并明确区分标准工时与实际劳动效率。",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "提成计算规则：根据员工完成金额和合格率确定提成比例（合格率≥95%提10%，90%-95%提8%，<90%提5%），结果在【员工提成汇总表】中展示。"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "output-complete-data",
+                "quote": "本报告采用待审批的统一估算：不合格价值=不合格数量×对应单价；净计件产值=max(完成金额−不合格价值,0)；应付计件提成=净计件产值×月度质量档提成比例，逐人四舍五入至分。",
+                "observation": "报告透明披露了估算公式，但原始规则仅支持按完成金额和合格率确定提成，未授权将所有不合格处置统一扣减产值。因此表中金额可作为明确假设下的测算，不能完成“实际应付”金额的确认。返工、报废、让步接收是否采用相同扣减政策仍待确定。",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "提成计算规则：根据员工完成金额和合格率确定提成比例（合格率≥95%提10%，90%-95%提8%，<90%提5%），结果在【员工提成汇总表】中展示。"
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-69bf37654412:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.75,
+                "observed": "报告提供两个月、全部8名员工的计件提成表，并按部门和工序分析产量、登记质量及标准工时，主要内容完整。核心限制是应付金额采用未获源数据支持的暂定扣减政策，只能作为估算，尚不能确认为实际应付工资。现有正文证据也不足以确认.docx格式及指定保存目录。",
+                "confidence": 0.92,
+                "observations": [
+                  {
+                    "evidence_id": "output-complete-data",
+                    "quote": "系统说明规定：合格率≥95%提成10%，90%≤合格率<95%提成8%，低于90%提成5%。",
+                    "observation": "提成档位与原始使用说明一致。报告分别列示2024年1月和2月的员工核算、部门生产指标、工序质量及原因分布，符合月度、多维关联分析的主要内容要求，并明确区分标准工时与实际劳动效率。",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "提成计算规则：根据员工完成金额和合格率确定提成比例（合格率≥95%提10%，90%-95%提8%，<90%提5%），结果在【员工提成汇总表】中展示。"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "output-complete-data",
+                    "quote": "本报告采用待审批的统一估算：不合格价值=不合格数量×对应单价；净计件产值=max(完成金额−不合格价值,0)；应付计件提成=净计件产值×月度质量档提成比例，逐人四舍五入至分。",
+                    "observation": "报告透明披露了估算公式，但原始规则仅支持按完成金额和合格率确定提成，未授权将所有不合格处置统一扣减产值。因此表中金额可作为明确假设下的测算，不能完成“实际应付”金额的确认。返工、报废、让步接收是否采用相同扣减政策仍待确定。",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "提成计算规则：根据员工完成金额和合格率确定提成比例（合格率≥95%提10%，90%-95%提8%，<90%提5%），结果在【员工提成汇总表】中展示。"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "output-complete-data",
+                "output-complete-data"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "d04e38dfb01f72c50ccd13cf46deebdae8c0d50696bbc74acfae0001ade33fd2"
+    },
+    {
+      "call_id": "review-9e0e9f65e6b4c39c-visual-01",
+      "case_id": "review-9e0e9f65e6b4c39c",
+      "modality": "visual",
+      "phase": "local",
+      "request": "review-9e0e9f65e6b4c39c-visual-01.json",
+      "sha256": "167b34e563cf97079d067b7592c7c5ea0b95de19c782170cf1485c193172a3ad",
+      "parents": [],
+      "decision": null,
+      "attempted": true,
+      "telemetry": {
+        "status": "interrupted_environment_audit",
+        "reason": "Owner process tree stopped after verifying missing Chinese glyphs. Reserved request remains fully charged. Actual token/tool usage unknown for interrupted call."
+      }
+    }
+  ],
+  "declared_scope_results": {
+    "review-9e0e9f65e6b4c39c": "FAIL",
+    "review-8c91b91efb85a0a5": "INCOMPLETE",
+    "review-f730abc3d56ac9f6": "FAIL",
+    "review-f1a51e11aea9fca8": "INCOMPLETE",
+    "review-d8fa947266fa7b8e": "INCOMPLETE",
+    "review-262d29941e093887": "FAIL",
+    "review-6be86bb781998c57": "INCOMPLETE",
+    "review-cbbf830c8da29ae6": "INCOMPLETE",
+    "review-c0ea6a3781224c9e": "INCOMPLETE",
+    "review-1ae87e464aa68a9b": "INCOMPLETE",
+    "review-2e562d78e43f4a93": "INCOMPLETE",
+    "review-9058f58c36b4c7ae": "INCOMPLETE",
+    "review-4a85dc3e1d4675c8": "FAIL",
+    "review-7fa353cc90101d8e": "INCOMPLETE",
+    "review-d69312f31c49fcab": "INCOMPLETE",
+    "review-e7c94efbec0677c3": "INCOMPLETE",
+    "review-13f025d2d6d2afe3": "INCOMPLETE",
+    "review-9741b22fc5ad5268": "INCOMPLETE",
+    "review-d9adcabcf825a07b": "INCOMPLETE",
+    "review-85c3776978b97315": "INCOMPLETE"
+  },
+  "quality_qualified": false,
+  "interruption": {
+    "reason": "CJK font environment gap",
+    "cumulative_attempts_charged": 12,
+    "cumulative_seconds_charged": 545,
+    "active_processes_confirmed_stopped": true,
+    "old_budget_unchanged": true
+  }
+}

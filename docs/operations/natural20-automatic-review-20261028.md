@@ -1,5 +1,7 @@
 # Natural20 automatic review
 
+Current update:font qualification exposed and fixed missing Chinese glyphs. See `natural20-cjk-rendering.md`. The user approved a fresh92-request cohort,manifest af7f6da0...a6121c0,with104cumulativeattempts/5400seconds including12historicalattempts/545seconds. Earlier plans below are historical.
+
 The user requested completion of evidence preparation and automatic judging.
 The additional manual follow-up remains waived. Historical human labels stay
 provisional and are not supplied to the model.

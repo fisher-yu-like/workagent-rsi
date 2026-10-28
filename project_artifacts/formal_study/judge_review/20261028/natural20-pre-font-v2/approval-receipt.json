@@ -1,0 +1,16 @@
+{
+  "approved_by_user": true,
+  "approval_source": "Actual user message approving revised natural20 manifest29e01f76 and cumulative93attempts",
+  "approved_at": "2026-10-28T08:36:29.735690+00:00",
+  "manifest_sha256": "28b04cee994d5b6bcf487931eb185bb6a21262c7c1a286c2ed3e84e727c5b90f",
+  "policy_sha256": "9f95ff79d96e601c0569f16bf8241f4a6b2580a4002ee2c3a18048dbf32fcefe",
+  "historical_attempts": 1,
+  "historical_budget_path": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final\\budget-state.json",
+  "historical_budget_sha256": "45ba74747486d0a6545e7b21f4531d1ba2888d716a0c5566b89fc931e54af15a",
+  "no_old_judgements_reused": true,
+  "max_new_calls": 92,
+  "max_cumulative_calls": 93,
+  "max_total_seconds": 5400,
+  "max_tool_calls": 0,
+  "automatic_retries": 0
+}

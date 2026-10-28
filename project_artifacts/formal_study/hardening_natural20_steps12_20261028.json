@@ -92,7 +92,7 @@
   },
   "recorded_at": "2026-10-28T08:13:40.186892+00:00",
   "step1_status": "completed_with_explicit_native_limits",
-  "step2_status": "first_call_failed_exact_citation_validation;revised_manifest_prepared_waiting_approval",
+  "step2_status": "font_qualified_full_run_approved_and_running",
   "first_attempts": 1,
   "valid_decisions": 0,
   "charged_wall_seconds": 59,
@@ -120,5 +120,12 @@
     "new_exact_source_citations": 6,
     "total_source_citations": 6,
     "old_opinion_admitted": false
-  }
+  },
+  "approved_manifest_hash": "af7f6da042e7d172c8e22e4eec8c769af8e6ca4b9250c3b1f00a84c72a6121c0",
+  "cumulative_attempt_cap": 104,
+  "approval_source": "Actual user message approving revised natural20 manifest and93cumulativeattempts",
+  "actual_results": "project_artifacts/results/hardening-v2/T28-natural-judge/20261028/actual-cjk-v3/results.json",
+  "historical_attempts": 12,
+  "historical_charged_seconds": 545,
+  "font_qualification_receipt": "project_artifacts/formal_study/hardening_natural20_cjk_20261028.json"
 }
