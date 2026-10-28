@@ -1,6 +1,6 @@
 # Remaining work on 2026-10-28
 
-Current scope change:the user waived the natural20 manual follow-up. No further manual submission is requested for that step. Its page and instructions below are historical;preserve original provisional labels and do not claim accuracy against reliable human ground truth. Continue automatic evidence preparation.
+The user waived the natural20 manual follow-up. No further manual submission is requested. Preserve the original provisional labels and do not claim accuracy against reliable human ground truth. The latest automatic diagnostic status and case findings are in [natural20 results](natural20-automatic-results-20261028.md).
 
 The task ledger still has six unfinished tasks: T26, T28, T29, T31, T32 and T33.
 The latest continuation receipt is
@@ -20,7 +20,7 @@ remain intact. Recovery records are under
 `project_artifacts/formal_study/judge_review/20261028/v2-recovered/`.
 The recovered effective comparison cites the original results and separate
 recovery results. The historical disabled proposal is preserved; its later
-approval is documented separately. Natural-20 judging remains unauthorized.
+approval is documented separately. Natural20 judging received separate approval and retains its own cumulative budget records.
 
 The full Windows regression passed 798 tests with zero failures, errors or skips.
 The receipt binds all tested source hashes; these were verified after the run.
@@ -64,22 +64,19 @@ enforce token reservations and trustworthy usage accounting; a prompt asking for
 Real repeated comparisons and repair experiments require these prerequisites
 and their own approved live-call budgets.
 
-## Human follow-up for the natural cohort
+## Historical human follow-up preparation
 
 The two standard interpretations were clarified by the user in conversation,
 separately from their original labels. No label was silently overwritten.
 The twenty initial natural labels were described by the user as quick visual
-impressions, so a requirements-based follow-up is needed before treating them
-as reliable comparison references. This is nonblind follow-up on existing
-cases, not twenty new independent human observations.
+impressions. They remain provisional. The user subsequently waived the
+follow-up, so these labels cannot qualify human agreement or judge accuracy.
 
-Open the local page:
+The preserved historical page is:
 `project_artifacts/results/hardening-v2/T28-adjudication/20261028/natural20-v2/index.html`.
-Each case includes its original task, original inputs, output and available
-render pages. Two unavailable renders have explicit warnings and original
-workbook links. Select INCOMPLETE for requirements that cannot be verified;
-do not guess. The page exports `office-human-adjudication.json` after each
-case has a decision, a reason and the requirements-check confirmation.
+The page contains the earlier render snapshot, including its two missing-render
+warnings. Both workbook renders have since been recovered. No further
+submission from this page is requested.
 
 The request receipt is
 `project_artifacts/formal_study/hardening_natural20_review_request_20261028.json`.
@@ -92,7 +89,7 @@ The read-only default-extraction audit found 28 file-level extraction gaps,
 including unsupported text/JSON wrappers in that audit and large-workbook
 limits. Parser warnings also limit chart and validation coverage. This is a
 preflight diagnosis, not an assertion that those 28 files are defective or
-unusable. No natural judge request was issued or budget estimated as complete.
+unusable. At that earlier audit, no natural judge request had been issued.
 
 ## Automatic text preparation after the manual-follow-up waiver
 
@@ -103,5 +100,9 @@ text partitioned without truncation:zero file-level text partition gaps,
 153 partitions across inputs and outputs, and four files with parser warnings.
 The warnings remain recorded. This does not establish native object coverage,
 formula correctness, rendering completeness or complete task acceptance.
-The partition count is not a count of model requests. No model call was made.
-The two workbook render gaps and complete live request/budget planning remain.
+The partition count is not a count of model requests. This preparation itself
+made no model calls. Subsequent work recovered both workbook renders, qualified
+four CJK renders with a task-local font, and prepared 92 judge channels covering
+311 pages. See the linked current diagnostic report and the separate
+[clock audit](natural20-clock-audit.md). Earlier failed and invalid responses
+remain preserved; actual elapsed wait is charged without resetting history.

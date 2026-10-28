@@ -1,0 +1,70 @@
+{
+  "schema_version": "natural20-final-archive-v1",
+  "valid_channels": 91,
+  "required_channels": 92,
+  "final_two_approved": true,
+  "model_calls_in_this_resume": 2,
+  "scope": "Automatic diagnostic only;no human accuracy or whole-task benchmark admission.",
+  "files": {
+    "results.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\results.json",
+      "sha256": "77194ac06e3ac752a25765c58f69acfee45f882396acfe20cbc8908c224e7bd7"
+    },
+    "budget-state.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\budget-state.json",
+      "sha256": "945bdc2c922e3f24c891fc778b2cfb934185c507eb9d0155f3a1669a32e64a27"
+    },
+    "live-policy.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\live-policy.json",
+      "sha256": "9131d28bc232b7efb1ed2bd70f9bd633fd08bbd9dd61b00ae9abda6d30eff27c"
+    },
+    "approval-receipt.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\approval-receipt.json",
+      "sha256": "634631bdb65f80e6e5866883957137bbc7109f9d20dfbab0e5d9af9926ff6f36"
+    },
+    "completion-proposal.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\prepared-completion-v4\\proposal.json",
+      "sha256": "0268201ee4a60fc00587897229483bfa6bbe9d3206bc75f6482ee588751ebf07"
+    },
+    "completion-approval.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-completion-v4\\approval-receipt.json",
+      "sha256": "4d2bf855a42ecc98f8de28bc61faa011567b0d43d4f8a3e1b9de8baaf49366d2"
+    },
+    "completion-policy.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-completion-v4\\live-policy.json",
+      "sha256": "0497fe9c31cf4501be659eda5dca0b79db70286ea5b6cd0ae25193d590ed612b"
+    },
+    "final-two-proposal.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\prepared-final-two\\proposal.json",
+      "sha256": "754583c0f154b4dd805a37f810c63a2f6578644ccfc01ac9e09342e712795a89"
+    },
+    "final-two-approval.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\approval-receipt.json",
+      "sha256": "634631bdb65f80e6e5866883957137bbc7109f9d20dfbab0e5d9af9926ff6f36"
+    },
+    "final-two-policy.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\live-policy.json",
+      "sha256": "9131d28bc232b7efb1ed2bd70f9bd633fd08bbd9dd61b00ae9abda6d30eff27c"
+    },
+    "continue_completion.py": {
+      "original_path": ".planning\\2026-10-28-natural-judge\\continue_completion.py",
+      "sha256": "566ffb75e6ca5c73c476bbdf1725fe6afb1d0918aa019e9ade8ccebec928e221"
+    },
+    "verify_effective.py": {
+      "original_path": ".planning\\2026-10-28-natural-judge\\verify_effective.py",
+      "sha256": "e759404973f893650e6abd3db28dd9769d6ec348093fe4a2e068ff6e1ecb8532"
+    },
+    "verification.txt": {
+      "original_path": ".planning\\2026-10-28-natural-judge\\verification-final.log",
+      "sha256": "2819e500bd2248186cc2f9d6a2f59f5c8b1e7f5086ed55ad92c2a5b353ea0785"
+    },
+    "invalid-consistency-raw.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\review-2e562d78e43f4a93-consistency\\call-c7528547dcff\\repeat-1-attempt-1\\raw_decision.json",
+      "sha256": "a0033f811a38244b5c4d91d3335eac77e1180a3bfa9fba67ba5e597e14ba2863"
+    },
+    "invalid-consistency-request.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\review-2e562d78e43f4a93-consistency\\call-c7528547dcff\\repeat-1-attempt-1\\request.json",
+      "sha256": "78b9f5dfe529d7462548abad67d9d6672339500a57accba724cdde117ab1ad6e"
+    }
+  }
+}

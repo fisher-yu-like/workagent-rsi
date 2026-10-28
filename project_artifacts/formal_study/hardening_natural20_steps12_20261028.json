@@ -92,7 +92,7 @@
   },
   "recorded_at": "2026-10-28T08:13:40.186892+00:00",
   "step1_status": "completed_with_explicit_native_limits",
-  "step2_status": "approved_targeted_completion_running",
+  "step2_status": "91valid_one_consistency_gap",
   "first_attempts": 1,
   "valid_decisions": 0,
   "charged_wall_seconds": 59,
@@ -102,7 +102,7 @@
   "proposed_manifest": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\prepared-literal-v2\\manifest.json",
   "proposed_manifest_hash": "29e01f76e6be2dbbabe56e2d95950905e429fc694df3a48416b7c5c8fa5f90e7",
   "proposed_cumulative_attempt_cap": 93,
-  "cumulative_seconds_cap": 5400,
+  "cumulative_seconds_cap": 7200,
   "manual_followup_required": false,
   "latest_focused_tests": {
     "passed": 23,
@@ -122,15 +122,15 @@
     "old_opinion_admitted": false
   },
   "approved_manifest_hash": "af7f6da042e7d172c8e22e4eec8c769af8e6ca4b9250c3b1f00a84c72a6121c0",
-  "cumulative_attempt_cap": 104,
+  "cumulative_attempt_cap": 110,
   "approval_source": "Actual user message approving revised natural20 manifest and93cumulativeattempts",
-  "actual_results": "project_artifacts/results/hardening-v2/T28-natural-judge/20261028/actual-cjk-v3/results.json",
+  "actual_results": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\results.json",
   "historical_attempts": 12,
   "historical_charged_seconds": 545,
   "font_qualification_receipt": "project_artifacts/formal_study/hardening_natural20_cjk_20261028.json",
-  "current_cumulative_attempts": 82,
-  "current_corrected_seconds": 5177,
-  "current_valid_channels": 65,
+  "current_cumulative_attempts": 110,
+  "current_corrected_seconds": 6206,
+  "current_valid_channels": 91,
   "completion_calls_proposed": 27,
   "clock_audit": "project_artifacts/formal_study/hardening_natural20_clock_audit_20261028.json",
   "completion_approval": {
@@ -140,5 +140,17 @@
     "cumulative_calls": 109,
     "cumulative_seconds": 7200,
     "historical_seconds_preserved": 5177
+  },
+  "effective_valid_channels": 91,
+  "total_required_channels": 92,
+  "final_two_proposal_hash": "9f408f18978b2103c9cfff794ef60e4fc62d79b7ab9675970dd6621876075b8f",
+  "automatic_results": "project_artifacts/formal_study/hardening_natural20_automatic_results_20261028.json",
+  "current_archive": "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-final\\index.json",
+  "final_two_approval": {
+    "approved": true,
+    "source": "call_d525488d7a8643988e9ac903eb4c0e86",
+    "new_requests": 2,
+    "max_cumulative_calls": 110,
+    "max_cumulative_seconds": 7200
   }
 }

@@ -23,7 +23,7 @@
   "proposed_new_calls": 27,
   "proposed_cumulative_cap": 109,
   "proposed_time_cap": 7200,
-  "approval_status": "approved;targeted_completion_running",
+  "approval_status": "approved;27completion_slots_processed;see_latest_automatic_results_for_remaining_gap",
   "focused_validation": {
     "passed": 18,
     "failed": 0,

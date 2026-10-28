@@ -1,0 +1,14 @@
+{
+  "approved_by_user": true,
+  "approval_source": "call_75f35881f4e14a5d9db06d052bef8292",
+  "manifest_sha256": "0268201ee4a60fc00587897229483bfa6bbe9d3206bc75f6482ee588751ebf07",
+  "policy_sha256": "0497fe9c31cf4501be659eda5dca0b79db70286ea5b6cd0ae25193d590ed612b",
+  "historical_budget_path": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\clock-audit\\corrected-budget-state.json",
+  "historical_budget_sha256": "08cd671bb1f26a0b81b372bf80cc7cadb61b23f85c94431136822fc92b330b98",
+  "max_cumulative_calls": 109,
+  "max_cumulative_seconds": 7200,
+  "max_new_calls": 27,
+  "max_tool_calls": 0,
+  "per_call_seconds": 120,
+  "automatic_retries": 0
+}

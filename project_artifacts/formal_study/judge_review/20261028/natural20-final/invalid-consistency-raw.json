@@ -1,0 +1,98 @@
+{
+  "status": "PARTIAL",
+  "completion": 0.5,
+  "observed": "All 15 reports were reviewed. They consistently report partial fulfillment, with no material contradictions across overlapping page reviews. The semantic report identifies an incorrect warehousing base and defective consolidated depreciation. Visual reports consistently describe fragmented pagination and clipping, but cannot establish whether the original workbook layout was preserved without a baseline comparison. These summaries do not independently verify formulas, factual accuracy or complete-task fulfillment; the established PARTIAL findings remain.",
+  "confidence": 0.96,
+  "observations": [
+    {
+      "evidence_id": "review-2e562d78e43f4a93-semantic",
+      "quote": "Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE.",
+      "observation": "The report covers all five calculation and linking obligations, identifying two substantive defects while distinguishing correct IS links from defective upstream depreciation. Its PARTIAL conclusion must be retained. Original cell evidence is unavailable here for independent verification.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-01",
+      "quote": "Columns and headings are split across pages, leaving detached values and clipped labels.",
+      "observation": "Reported pagination defects support the report's partial readability assessment. They do not establish a change from the original workbook's structure or formatting.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-02",
+      "quote": "All row descriptions are absent from this page, so the numeric blocks and percentage rows require cross-page interpretation.",
+      "observation": "The page-8 finding agrees with visual-01. The report appropriately limits its conclusions to supplied-page layout rather than missing model content or formula accuracy.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-03",
+      "quote": "Only the first year accompanies the labels, with subsequent years separated onto other pages.",
+      "observation": "The page-15 assessment is consistent with visual-02's readable balance-sheet labels and its broader description of horizontal pagination.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-04",
+      "quote": "This page has no accompanying row labels, limiting interpretation of the values.",
+      "observation": "The page-22 finding agrees with visual-03. Reported forecast inputs including 35.0 do not contradict the semantic report's incorrect warehousing-base finding, but cannot independently verify that cell's meaning.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-05",
+      "quote": "This page contains row labels and only FY21A, leaving later-year values on separate pages.",
+      "observation": "The page-29 description agrees with visual-04. Readable labels and detached forecast columns are compatible findings, not contradictory claims.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-06",
+      "quote": "Headers \"FY20A\" and \"FY24A\" and numeric rows are legible with strong contrast.",
+      "observation": "The page-36 description agrees with visual-05. Readable 15% debt entries are consistent with the semantic report, while visual legibility alone does not verify the interest formulas.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-07",
+      "quote": "The numeric blocks have no row labels on this page, making interpretation dependent on adjoining pages.",
+      "observation": "The page-43 finding agrees with visual-06. The report also correctly distinguishes a blank rendered page from evidence of missing model content.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-08",
+      "quote": "The heading \"EV/ Revenue\" and numeric columns are readable, but \"FY2019\" sits in a detached block with no visible metric title.",
+      "observation": "This agrees with visual-07's page-50 assessment. The additional low-contrast summary-row finding supplements rather than contradicts the preceding report.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-09",
+      "quote": "The right title is visibly truncated to \"Net Marg\", while \"EBITDA Margins\" is readable.",
+      "observation": "The page-57 clipping and contrast findings agree with visual-08. Locally readable tables elsewhere do not negate the reported fragmentation.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-10",
+      "quote": "The title \"Gross Profit(USD Mn)\" and FY2019–FY2023 values are readable with consistent alignment and clear contrast.",
+      "observation": "The shared page-64 assessment agrees with visual-09. Additional date-header and description clipping findings remain layout observations, not evidence about calculation correctness.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-11",
+      "quote": "The headers “FY2024”, “FY2025” and “Beta” are readable with white text on navy.",
+      "observation": "Readable headers coexist consistently with the page-71 description clipping reported by visual-10. Business-description excerpts are not authorized factual sources.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-12",
+      "quote": "Multiple lines are clipped at both ends",
+      "observation": "The page-78 finding agrees with visual-11. Reported chart clipping extends the same pagination concern without establishing that workbook formatting changed during completion.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-13",
+      "quote": "The title \"EBITDA (USd in Mn) & EBITDA M\" is cut off at the right boundary",
+      "observation": "The page-85 assessment agrees with visual-12, including clipped chart content and overlapping labels. Its PARTIAL result remains supported as a prior-review conclusion.",
+      "source_citations": []
+    },
+    {
+      "evidence_id": "review-2e562d78e43f4a93-visual-14",
+      "quote": "The heading is visibly clipped, beginning with \"udgeted for F.Y. 2027-28\".",
+      "observation": "The page-92 finding agrees with visual-13. Later reports of totals displayed as ### concern unreadable rendered values, not proof that underlying calculations or content are absent.",
+      "source_citations": []
+    }
+  ]
+}
