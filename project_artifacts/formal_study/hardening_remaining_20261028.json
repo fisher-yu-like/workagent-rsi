@@ -237,5 +237,12 @@
     "findings": [],
     "scope": "Tracked files up to 5 MB; pattern scan, not a guarantee of credential absence."
   },
-  "retry_authorization": "call_75e0628b1c0640cbb8ea489ef7c84799"
+  "retry_authorization": "call_75e0628b1c0640cbb8ea489ef7c84799",
+  "interpretation_clarifications": {
+    "file": "project_artifacts\\formal_study\\human_review\\20261028\\interpretation-clarifications.json",
+    "sha256": "2894b7066646e932f729f44b6f7b5d612f0eac6356781f09cc5aa5de1a962058",
+    "received": 2,
+    "new_independent_labels": 0,
+    "original_labels_unchanged": true
+  }
 }

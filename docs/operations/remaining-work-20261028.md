@@ -11,7 +11,7 @@ The user then approved two additional attempts for the two earlier HTTP 429
 failures. Both returned successfully. The frozen v2 diagnostic now has 26
 attempts, 24 valid channel decisions and twelve complete case pairs. All twelve
 match the exposed development references. This does not establish population
-accuracy or resolve the two recorded human/reference interpretation differences.
+accuracy or independently validate natural task quality. The user later clarified both disputed interpretations:the Word Total row is an allowed alternative;the undefined important Excel result stays INCOMPLETE. Original labels remain unchanged and no independent blind samples were added.
 
 The budget records 567 charged seconds and zero tool calls. Original failures
 remain intact. Recovery records are under

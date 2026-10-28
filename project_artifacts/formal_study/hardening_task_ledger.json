@@ -253,7 +253,7 @@
       "task_id": "T28",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
-      "note": "2026-10-28 standard v2 diagnostics completed:26attempts/24valid/12pairs,12exposed-reference matches,567charged seconds/0tools. Prior failures retained. This is not population accuracy;natural20 and2human/reference interpretations remain pending.",
+      "note": "Standard v2 diagnostics complete:26attempts/24valid/12pairs;12exposed-reference matches,567charged seconds/0tools. User clarified allowed Word Total row and unresolved Excel importance requirement on2026-10-28;original labels unchanged. Not population accuracy;naturals20still pending.",
       "local_status": "completed",
       "server_render_status": "30_available_2_coverage_gaps",
       "human_status": "32first_pass_provisional_6nonblind_adjudications_received_2reference_disputes",
@@ -268,7 +268,7 @@
       "current_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
       "latest_offline_preparation": "project_artifacts/formal_study/hardening_t28_t31_preparation.json",
       "next_human_action": "No repeated adjudication requested. Resolve429. Eight never-issued payloads remain under original policy;retrying two failed requests/full26attempt recovery needs explicit additional approval.",
-      "judge_v2_status": "26attempts_24valid_12complete_pairs_recovery_approved_and_completed;natural20_and_reference_interpretations_pending",
+      "judge_v2_status": "26attempts_24valid_12complete_pairs;2human_interpretations_clarified_nonblind;natural20_pending",
       "actual_adjudications": 6,
       "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json",
       "judge_attempts_by_version": {

@@ -1,0 +1,23 @@
+{
+  "schema_version": "human-interpretation-clarifications-v1",
+  "source_kind": "user_conversation_followup",
+  "question_id": "call_a966c8a6d09c4bbb999998623c655e90",
+  "independent_blind_review": false,
+  "new_independent_cases": 0,
+  "original_labels_overwritten": false,
+  "whole_artifact_labels_created": false,
+  "clarifications": [
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "scope": "The explicitly allowed final Total row does not violate preservation of the three ordered ledger entries or the permitted Total placement.",
+      "answer": "接受明确允许的 Total 行",
+      "resolution": "The user accepts the original instruction's explicit alternative; this does not independently reassess every artifact requirement."
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "scope": "An undefined important result remains an unresolved requirement instead of an established marking defect.",
+      "answer": "保留 INCOMPLETE，先明确要求再判断",
+      "resolution": "Retain INCOMPLETE until the requirement is specified. No task text or original historical label is changed."
+    }
+  ]
+}
