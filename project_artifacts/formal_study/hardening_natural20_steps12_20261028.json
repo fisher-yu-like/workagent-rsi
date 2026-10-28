@@ -112,6 +112,13 @@
   "preserved_first_attempt": {
     "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\approval-receipt.json": "19db6b14e3d449d91c68898e2b85d92765ea0714f97aeb384f6da2354743a653",
     "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\budget-state.json": "45ba74747486d0a6545e7b21f4531d1ba2888d716a0c5566b89fc931e54af15a",
-    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\results.json": "7dcb073a236e765051f2083217e8694218db60bc6a430f1b6c60b66b0b9544d5"
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\results.json": "7dcb073a236e765051f2083217e8694218db60bc6a430f1b6c60b66b0b9544d5",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\raw-invalid-decision.json": "517adc542623fbbe7b9ba3b1deb7beeeed9273ee94e9dc8411cf8b6aa188452f"
+  },
+  "offline_quote_format_diagnostic": {
+    "old_exact_source_citations": 4,
+    "new_exact_source_citations": 6,
+    "total_source_citations": 6,
+    "old_opinion_admitted": false
   }
 }
