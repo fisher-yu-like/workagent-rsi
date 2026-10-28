@@ -70,3 +70,26 @@ def test_existing_owner_lock_is_preserved(cli_module,tmp_path):
     lock=tmp_path/'budget.lock';lock.write_text('other owner')
     with pytest.raises(FileExistsError):runner(['authored','--model','gpt-6.1-sol','-'],tmp_path,2,'authored')
     assert lock.read_text()=='other owner'
+
+
+def test_wait_beyond_timeout_is_fully_charged_and_blocks_next_request(cli_module,tmp_path,monkeypatch):
+    clock=iter([0,35,36]);monkeypatch.setattr(cli_module.time,'monotonic',lambda:next(clock))
+    seen=[]
+    def delayed(*args):seen.append(args);raise subprocess.TimeoutExpired('authored',10)
+    runner=cli_module.QualificationCLI(policy(tmp_path),runner=delayed)
+    command=['authored','--model','gpt-6.1-sol','-']
+    with pytest.raises(subprocess.TimeoutExpired):runner(command,tmp_path,10,'authored')
+    state=json.loads((tmp_path/'budget-state.json').read_text())
+    assert state['reserved_wall_seconds']==35 and state['calls'][0]['charged_wall_seconds']==35
+    assert state['calls'][0]['elapsed_limit_exceeded']
+    with pytest.raises(ValueError,match='wall budget exhausted'):runner(command,tmp_path,10,'authored')
+    assert len(seen)==1
+
+
+def test_late_success_is_rejected_instead_of_admitted(cli_module,tmp_path,monkeypatch):
+    clock=iter([0,35,35]);monkeypatch.setattr(cli_module.time,'monotonic',lambda:next(clock))
+    def late(*args):return subprocess.CompletedProcess(args[0],0,stdout='',stderr='')
+    runner=cli_module.QualificationCLI(policy(tmp_path,max_wall_seconds=100),runner=late)
+    with pytest.raises(TimeoutError,match='actual request elapsed'):runner(['authored','--model','gpt-6.1-sol','-'],tmp_path,10,'authored')
+    state=json.loads((tmp_path/'budget-state.json').read_text())
+    assert state['reserved_wall_seconds']==35 and state['calls'][0]['status']=='failed'

@@ -92,7 +92,7 @@
   },
   "recorded_at": "2026-10-28T08:13:40.186892+00:00",
   "step1_status": "completed_with_explicit_native_limits",
-  "step2_status": "font_qualified_full_run_approved_and_running",
+  "step2_status": "approved_targeted_completion_running",
   "first_attempts": 1,
   "valid_decisions": 0,
   "charged_wall_seconds": 59,
@@ -127,5 +127,18 @@
   "actual_results": "project_artifacts/results/hardening-v2/T28-natural-judge/20261028/actual-cjk-v3/results.json",
   "historical_attempts": 12,
   "historical_charged_seconds": 545,
-  "font_qualification_receipt": "project_artifacts/formal_study/hardening_natural20_cjk_20261028.json"
+  "font_qualification_receipt": "project_artifacts/formal_study/hardening_natural20_cjk_20261028.json",
+  "current_cumulative_attempts": 82,
+  "current_corrected_seconds": 5177,
+  "current_valid_channels": 65,
+  "completion_calls_proposed": 27,
+  "clock_audit": "project_artifacts/formal_study/hardening_natural20_clock_audit_20261028.json",
+  "completion_approval": {
+    "source": "call_75f35881f4e14a5d9db06d052bef8292",
+    "proposal_hash": "ed5a6ca903f28f80208de7754c50fd2c7a4a1c14ae85f297152d1ecb64dcc513",
+    "approved": true,
+    "cumulative_calls": 109,
+    "cumulative_seconds": 7200,
+    "historical_seconds_preserved": 5177
+  }
 }

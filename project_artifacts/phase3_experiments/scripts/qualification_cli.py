@@ -76,6 +76,8 @@ class QualificationCLI:
                 if tools:
                     state['quarantined']=True
                     raise ValueError('qualification invoked an unexpected tool; result rejected')
+                if time.monotonic()-started>timeout:
+                    raise TimeoutError('actual request elapsed time exceeded its approved timeout')
                 return result
             except BaseException as exc:
                 call.update(status='failed',error_type=type(exc).__name__)
@@ -85,8 +87,9 @@ class QualificationCLI:
                 call.update(ended_at=datetime.now(timezone.utc).isoformat(),elapsed_seconds=elapsed)
                 # Retain the full reservation for failed/unknown calls; never
                 # automatically reclaim possibly consumed external work.
-                if call['status']=='completed':
-                    state['reserved_wall_seconds']-=max(0,timeout-min(timeout,math.ceil(elapsed)))
+                charge=math.ceil(elapsed) if call['status']=='completed' else max(timeout,math.ceil(elapsed))
+                call.update(charged_wall_seconds=charge,elapsed_limit_exceeded=elapsed>timeout)
+                state['reserved_wall_seconds']+=charge-timeout
                 self._save(state)
         finally:
             lock.unlink()
