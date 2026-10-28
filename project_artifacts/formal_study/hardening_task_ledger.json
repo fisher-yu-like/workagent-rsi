@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-28T06:59:37.043973+00:00",
+  "updated_at": "2026-10-28T07:26:07.021936+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -253,7 +253,7 @@
       "task_id": "T28",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
-      "note": "Standard v2 diagnostics complete:26attempts/24valid/12pairs;12exposed-reference matches,567charged seconds/0tools. User clarified allowed Word Total row and unresolved Excel importance requirement on2026-10-28;original labels unchanged. Not population accuracy;naturals20still pending.",
+      "note": "Standard v2 diagnostic complete:26attempts/24valid/12pairs. Two interpretation clarifications received. User waived natural20 manual follow-up;do not request it again. Original labels remain provisional;no reliable human-ground-truth accuracy claim. Automatic natural evidence and judging remain pending.",
       "local_status": "completed",
       "server_render_status": "30_available_2_coverage_gaps",
       "human_status": "32first_pass_provisional_6nonblind_adjudications_received_2reference_disputes",
@@ -281,7 +281,10 @@
         "v2": 14
       },
       "judge_v2_evidence": "project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json",
-      "latest_continuation": "project_artifacts/formal_study/hardening_remaining_20261028.json"
+      "latest_continuation": "project_artifacts/formal_study/hardening_remaining_20261028.json",
+      "human_followup_status": "waived_by_user;not_a_completion_gate_for_further_development",
+      "human_followup_waiver": "project_artifacts/formal_study/hardening_manual_followup_waiver_20261028.json",
+      "latest_text_preparation": "project_artifacts/formal_study/hardening_mixed_evidence_20261028.json"
     },
     {
       "task_id": "T29",

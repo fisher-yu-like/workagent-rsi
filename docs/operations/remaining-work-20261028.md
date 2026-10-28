@@ -1,5 +1,7 @@
 # Remaining work on 2026-10-28
 
+Current scope change:the user waived the natural20 manual follow-up. No further manual submission is requested for that step. Its page and instructions below are historical;preserve original provisional labels and do not claim accuracy against reliable human ground truth. Continue automatic evidence preparation.
+
 The task ledger still has six unfinished tasks: T26, T28, T29, T31, T32 and T33.
 The latest continuation receipt is
 `project_artifacts/formal_study/hardening_remaining_20261028.json`.
@@ -91,3 +93,15 @@ including unsupported text/JSON wrappers in that audit and large-workbook
 limits. Parser warnings also limit chart and validation coverage. This is a
 preflight diagnosis, not an assertion that those 28 files are defective or
 unusable. No natural judge request was issued or budget estimated as complete.
+
+## Automatic text preparation after the manual-follow-up waiver
+
+The default-extraction preflight is now superseded for text preparation by the
+mixed-file preparation receipt `hardening_mixed_evidence_20261028.json` under
+`project_artifacts/formal_study/`. All twenty natural cases have their extracted
+text partitioned without truncation:zero file-level text partition gaps,
+153 partitions across inputs and outputs, and four files with parser warnings.
+The warnings remain recorded. This does not establish native object coverage,
+formula correctness, rendering completeness or complete task acceptance.
+The partition count is not a count of model requests. No model call was made.
+The two workbook render gaps and complete live request/budget planning remain.

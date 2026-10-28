@@ -1,5 +1,7 @@
 # 下一步人工复核
 
+Current scope change:the user waived the natural20 manual follow-up. No further manual submission is requested for that step. Its page and instructions below are historical;preserve original provisional labels and do not claim accuracy against reliable human ground truth. Continue automatic evidence preparation.
+
 Current update (2026-10-28): see [remaining work](remaining-work-20261028.md). The approved recovery is complete:26 attempts,24 valid decisions,12 full case pairs;567charged seconds/0tools. Natural20 requirements-based follow-up and judging remain pending;both standard interpretations have been clarified. Earlier run descriptions below are historical snapshots.
 
 更新：用户已提交六例复核文件，接收结果为 3 FAIL、3 INCOMPLETE。原始文件和独立回执已保存，六例无需重新提交。随后批准的 judge v2 累计发出 16 次请求，取得 14 个有效判定、6 个完整双通道案例。第 11、16 次出现 HTTP 429，失败项均未重试。以下复核步骤保留作为操作记录。
