@@ -112,7 +112,6 @@
     "coverage_scope": "Lossless instruction spans with proposed checks. Draft segmentation is not independent review or proof that every unit is atomic."
   },
   "evidence_hashes": {
-    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-continuation\\.gitattributes": "7a0dcf4cf4eb96278b0f0b6882eeebc232235fa0581a9ce8450860a395675f36",
     "project_artifacts\\formal_study\\judge_review\\20261028\\v2-continuation\\budget-state.json": "65a4aa37ff04c8e0bc6ff6f3e303f03893c6b6ee47710dd9d3979d0820be6434",
     "project_artifacts\\formal_study\\judge_review\\20261028\\v2-continuation\\pilot-results.json": "9b6ecd678ed99f7a97f8287cbece2e29c3965cfb6635337d0dc673e3857b78c4",
     "project_artifacts\\formal_study\\judge_review\\20261028\\v2-continuation\\recovery-proposal.json": "075f674d75a1dee3222c47b12d099393cee0a3fa3c96155b511ffd6e6d08970a"
@@ -226,7 +225,6 @@
     "writes": 0
   },
   "recovery_evidence_hashes": {
-    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\.gitattributes": "731dfd660ab2ab102a613818a6beede916a4ea0aa19935cb4468bbc756d9733d",
     "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\approval-receipt.json": "d839265961b79762e4578dce3a3d9b62f1a30debce999639147560014406c163",
     "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\budget-state.json": "fb1b75f711566475b8d129c6ea82e1ddb9dc2c324b3b50d4fb284357f94cbc13",
     "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\effective-comparison.json": "b16d02273d77925a8e97a1b4627de0992aa098e7179e49f7ccf67f351159d0a3",
