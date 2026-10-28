@@ -35,7 +35,9 @@ document.getElementById('export').onclick=()=>{
 '''
 
 
-def prepare(pack,intake,notes_file,output):
+def prepare(pack,intake,notes_file,output,*,cohort='standards-12'):
+    if cohort not in {'standards-12','natural-blind'}:
+        raise ValueError('unsupported follow-up cohort')
     public=pack/'blind-review-pack'
     read=lambda p:json.loads(p.read_text(encoding='utf-8'))
     review=read(public/'review-manifest.json');receipt=read(intake/'submission-receipt.json')
@@ -52,10 +54,12 @@ def prepare(pack,intake,notes_file,output):
         return html.escape(quote(os.path.relpath(path,output).replace('\\','/'),safe='/.-_'),quote=True)
     for index,note in enumerate(notes,1):
         row=cases[note['case_id']];cid=row['case_id']
-        if cid not in labels or row['cohort']!='standards-12':raise ValueError('follow-up requires an existing standard label')
+        if cid not in labels or row['cohort']!=cohort:raise ValueError('follow-up requires an existing label in the selected cohort')
         if sha256_file(public/row['artifact'])!=row['artifact_hash']:raise ValueError('artifact changed')
         links=' '.join(f'<a href="{asset(name)}">打开原输入 {i}</a>' for i,name in enumerate(row['inputs'],1))
         images=[]
+        if pages[cid]['status']!='available':
+            images.append('<p role="alert">本例渲染不完整。请打开输入与成品原文件检查；不能确认的要求请选 INCOMPLETE，勿仅凭外观选 PASS。</p>')
         for page in pages[cid]['pages']:
             url=asset(page['file'])
             if bindings[page['file']]!=page['sha256']:raise ValueError('render page changed')
@@ -80,6 +84,13 @@ def prepare(pack,intake,notes_file,output):
 <p>你已看过诊断提示，本轮属于复核裁定，不属于新的独立盲标。初次 32 条标签会保留，本页不会覆盖它们。页面不会联网或自动提交。</p>'''+''.join(cards)+'''
 <section><h2>下载复核结果</h2><label>姓名或昵称 <input id="reviewer"></label> <button id="export">下载复核 JSON</button><p>下载文件名为 office-human-adjudication.json。完成后在聊天中告诉我保存路径。</p></section>
 <script id="review-data" type="application/json">'''+encoded+'</script><script>'+SCRIPT+'</script></html>'
+    if cohort=='natural-blind':
+        style=page[page.index('<style>'):page.index('</style>')+8]
+        page=f'''<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>自然成品逐项复核</title>{style}
+<h1>{len(notes)} 份自然成品逐项复核</h1>
+<p>本轮用于核实初次快速浏览的判断。每例先读“原任务说明”，逐项核对输入和成品。Excel 需要查看公式及计算依据；Word/PPT 需要核对内容、对象和布局。不要因为外观大致正常就选择 PASS。</p>
+<p>不确定、缺乏证据或要求含糊时，请选择 INCOMPLETE 并说明哪一点无法核实。缺少渲染页的两份工作簿需要打开原文件。这里没有模型评分或参考答案，也没有预选标签。</p>
+<p>本轮是对已有案例的复核，不增加独立盲标样本数，不覆盖原始标签。可以暂时保留待复核项，无须猜测正确答案。</p>'''+''.join(cards)+page[page.index('<section>'):]
     output.mkdir(parents=True,exist_ok=False)
     (output/'index.html').write_text(page,encoding='utf-8')
     (output/'adjudication-request.json').write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
@@ -90,4 +101,5 @@ def prepare(pack,intake,notes_file,output):
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     for name in ('pack','intake','notes','output'):parser.add_argument('--'+name,type=Path,required=True)
-    args=parser.parse_args();print(json.dumps(prepare(args.pack,args.intake,args.notes,args.output)))
+    parser.add_argument('--cohort',choices=['standards-12','natural-blind'],default='standards-12')
+    args=parser.parse_args();print(json.dumps(prepare(args.pack,args.intake,args.notes,args.output,cohort=args.cohort)))

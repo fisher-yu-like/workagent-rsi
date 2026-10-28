@@ -11,20 +11,25 @@ from workagent_rsi.hashing import sha256_file
 from workagent_rsi.human_calibration import intake_human_submission
 
 
-def test_followup_has_empty_choices_and_exports_only_nonblind_adjudication(tmp_path):
+@pytest.mark.parametrize('cohort',['standards-12','natural-blind'])
+def test_followup_has_empty_choices_and_exports_only_nonblind_adjudication(tmp_path,cohort):
     module=load_script('prepare_targeted_adjudication.py');pack=tmp_path/'pack';pack_fixture(pack)
     public=pack/'blind-review-pack';manifest=json.loads((public/'review-manifest.json').read_text(encoding='utf-8'))
     manifest['case_ids']=[r['case_id'] for r in manifest['cases']]
+    for row in manifest['cases']:row['cohort']=cohort
     (public/'review-manifest.json').write_text(json.dumps(manifest),encoding='utf-8')
     intake=tmp_path/'intake';intake.mkdir();(intake/'external-submission.json').write_text('authored human-intake fixture',encoding='utf-8')
     (intake/'submission-receipt.json').write_text(json.dumps({'rubric_hash':'a'*64,'submission_hash':sha256_file(intake/'external-submission.json')}),encoding='utf-8')
     (intake/'human-labels.jsonl').write_text('\n'.join(json.dumps({'case_id':f'case-{i}','label':'PASS'}) for i in range(6)),encoding='utf-8')
     notes=tmp_path/'notes.json';notes.write_text(json.dumps([{'case_id':f'case-{i}','focus':'Check source <and> output.'} for i in range(6)]),encoding='utf-8')
-    result=module.prepare(pack,intake,notes,tmp_path/'followup')
+    result=module.prepare(pack,intake,notes,tmp_path/'followup',cohort=cohort)
     page=Path(result['page']).read_text(encoding='utf-8')
     assert result['labels_generated']==0 and page.count('<option value="">')==6
     assert page.count('<h3>原任务说明</h3>')==6 and ' selected' not in page
     assert 'Check source &lt;and&gt; output.' in page
+    if cohort=='natural-blind':
+        assert '6 份自然成品逐项复核' in page
+        assert '不要因为外观大致正常就选择 PASS' in page
     node=shutil.which('node');assert node,'Node is required for the offline form behavior check'
     data=json.loads((tmp_path/'followup/adjudication-request.json').read_text(encoding='utf-8'))
     # Inject data as named constants rather than replacing identifiers in expressions.

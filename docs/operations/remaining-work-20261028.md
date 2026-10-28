@@ -61,3 +61,33 @@ enforce token reservations and trustworthy usage accounting; a prompt asking for
 4096 output tokens is not a hard limit. T33 still needs native environment parity.
 Real repeated comparisons and repair experiments require these prerequisites
 and their own approved live-call budgets.
+
+## Human follow-up for the natural cohort
+
+The two standard interpretations were clarified by the user in conversation,
+separately from their original labels. No label was silently overwritten.
+The twenty initial natural labels were described by the user as quick visual
+impressions, so a requirements-based follow-up is needed before treating them
+as reliable comparison references. This is nonblind follow-up on existing
+cases, not twenty new independent human observations.
+
+Open the local page:
+`project_artifacts/results/hardening-v2/T28-adjudication/20261028/natural20-v2/index.html`.
+Each case includes its original task, original inputs, output and available
+render pages. Two unavailable renders have explicit warnings and original
+workbook links. Select INCOMPLETE for requirements that cannot be verified;
+do not guess. The page exports `office-human-adjudication.json` after each
+case has a decision, a reason and the requirements-check confirmation.
+
+The request receipt is
+`project_artifacts/formal_study/hardening_natural20_review_request_20261028.json`.
+All asset hashes and twenty empty selectors were checked. The follow-up helper
+and human-label provenance tests passed eleven focused tests. This later UI
+helper/test change was not followed by another full-suite run; the preceding
+798-pass result remains a distinct engineering snapshot.
+
+The read-only default-extraction audit found 28 file-level extraction gaps,
+including unsupported text/JSON wrappers in that audit and large-workbook
+limits. Parser warnings also limit chart and validation coverage. This is a
+preflight diagnosis, not an assertion that those 28 files are defective or
+unusable. No natural judge request was issued or budget estimated as complete.

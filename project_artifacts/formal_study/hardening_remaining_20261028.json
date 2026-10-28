@@ -216,7 +216,8 @@
     "evaluator_identity": "3e1ebbe4fece23cc3fbee464cd650557a5e5d9ce10dcf84caa0087b258dbce02",
     "run": "project_artifacts\\results\\hardening-v2\\T31-native-release\\20261028T065019248695Z\\run.json",
     "sha256": "a64e35588c5173dac72b34fca160f16faab4fc4b9736d52c9163ae65b7f1cfe5",
-    "linux_rerun": false
+    "linux_rerun": false,
+    "scope": "798pass snapshot before subsequent review-page helper/test extension;not rerun after that extension"
   },
   "server_read_only_probe": {
     "ssh_reachable": true,
@@ -244,5 +245,11 @@
     "received": 2,
     "new_independent_labels": 0,
     "original_labels_unchanged": true
-  }
+  },
+  "natural_review_focused": {
+    "passed": 11,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-natural-review/20261028T071254252054Z/run.json"
+  },
+  "natural_review_request": "project_artifacts/formal_study/hardening_natural20_review_request_20261028.json"
 }

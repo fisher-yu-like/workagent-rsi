@@ -2,7 +2,7 @@
 
 ## Project
 
-Current hardening status (2026-10-28): see [remaining work](docs/operations/remaining-work-20261028.md) and the task ledger. Approved v2 recovery completed:26attempts,24valid decisions,12complete pairs;567charged seconds/0tools. All12match exposed development references;no population accuracy claim. Original failures retained. Natural20 judging and two human/reference interpretations remain pending. New filename/native-PPT structural checks are implemented;all72T31 specs remain unreviewed/incomplete with262uncovered units. Full Windows regression798passed,source hashes verified;no fresh Linux or full release qualification. Earlier descriptions below are historical snapshots.
+Current hardening status (2026-10-28): see [remaining work](docs/operations/remaining-work-20261028.md) and the task ledger. Approved v2 recovery completed:26attempts,24valid decisions,12complete pairs;567charged seconds/0tools. All12match exposed development references;no population accuracy claim. Original failures retained. Both human interpretations were clarified separately;original labels remain intact. Natural20 requirements-based human follow-up and live judging remain pending. New filename/native-PPT structural checks are implemented;all72T31 specs remain unreviewed/incomplete with262uncovered units. Windows snapshot798passed;later review-page helper/test extension11focused passed,no new full/Linux/release qualification. Earlier descriptions below are historical snapshots.
 
 WorkAgent-RSI is a benchmark-driven recursive skill improvement framework for Office agents. In this repository, RSI means **Recursive Skill Improvement**. It does not mean unrestricted model-weight self-modification.
 
