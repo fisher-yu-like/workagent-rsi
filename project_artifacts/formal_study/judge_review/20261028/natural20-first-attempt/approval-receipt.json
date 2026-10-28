@@ -1,0 +1,11 @@
+{
+  "approved_by_user": true,
+  "approval_source": "call_8044fc08f1ee4b0a832013b2d9dba911",
+  "manifest_sha256": "05e6e6a8ebad6942ef6a4a1c8290381dc56ad7181c5fcdc589be6f87520de7d9",
+  "policy_sha256": "e28acbfbe37d8b4fc34e4665c83edfcc4a64210f8047ab3295fcaaee52baf812",
+  "max_model_calls": 92,
+  "max_tool_calls": 0,
+  "max_total_seconds": 5400,
+  "per_call_seconds": 120,
+  "automatic_retries": 0
+}

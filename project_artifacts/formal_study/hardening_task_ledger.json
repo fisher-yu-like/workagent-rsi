@@ -284,7 +284,10 @@
       "latest_continuation": "project_artifacts/formal_study/hardening_remaining_20261028.json",
       "human_followup_status": "waived_by_user;not_a_completion_gate_for_further_development",
       "human_followup_waiver": "project_artifacts/formal_study/hardening_manual_followup_waiver_20261028.json",
-      "latest_text_preparation": "project_artifacts/formal_study/hardening_mixed_evidence_20261028.json"
+      "latest_text_preparation": "project_artifacts/formal_study/hardening_mixed_evidence_20261028.json",
+      "latest_natural_delivery": "project_artifacts/formal_study/hardening_natural20_steps12_20261028.json",
+      "natural_render_status": "all20cases_311actualpages;two_original_render_gaps_recovered_48and96pages",
+      "natural_judge_status": "1attempt_0valid_exactquote_failure;revised_literal_manifest_approval_pending"
     },
     {
       "task_id": "T29",
