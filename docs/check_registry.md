@@ -18,9 +18,11 @@ Preflight runs before artifact parsing. Unknown checks, invalid types/locations 
 | excel.sheets | excel | optional scope | texts | parser |
 | facts.consistent | excel, word, powerpoint | optional scope | scalar | parser |
 | file.format | excel, word, powerpoint | optional scope | domain | parser |
+| file.name | excel, word, powerpoint | optional scope | filename | parser |
 | file.readable | excel, word, powerpoint | optional scope | boolean | parser |
 | powerpoint.bounds | powerpoint | slide | list | parser |
 | powerpoint.chart_values | powerpoint | slide, object_id | matrix | parser |
+| powerpoint.native_objects | powerpoint | optional scope | native_policy | parser |
 | powerpoint.object_text | powerpoint | slide, object_id | text | parser |
 | powerpoint.overlap | powerpoint | slide | list | parser |
 | powerpoint.slide_count | powerpoint | optional scope | count | parser |

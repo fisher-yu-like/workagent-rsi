@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-26T14:29:46.989045+00:00",
+  "updated_at": "2026-10-28T06:59:37.043973+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -253,7 +253,7 @@
       "task_id": "T28",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
-      "note": "32actual human labels imported with exact-byte provenance:29PASS/2FAIL/1PARTIAL. User disclosed quick visual/uncertain review; references remain provisional. Repetition audit:24 distinct instruction texts,5shared groups/13cases,0identical artifact hashes. Approved24-request standard pilot attempted6,returned5channel decisions,stopped on HTTP429 without retry;natural20 complete model judge calibration still pending.10natural Excel target diagnostics:6mismatches/4unavailable,not official or whole-task scores.",
+      "note": "2026-10-28 standard v2 diagnostics completed:26attempts/24valid/12pairs,12exposed-reference matches,567charged seconds/0tools. Prior failures retained. This is not population accuracy;natural20 and2human/reference interpretations remain pending.",
       "local_status": "completed",
       "server_render_status": "30_available_2_coverage_gaps",
       "human_status": "32first_pass_provisional_6nonblind_adjudications_received_2reference_disputes",
@@ -268,7 +268,7 @@
       "current_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
       "latest_offline_preparation": "project_artifacts/formal_study/hardening_t28_t31_preparation.json",
       "next_human_action": "No repeated adjudication requested. Resolve429. Eight never-issued payloads remain under original policy;retrying two failed requests/full26attempt recovery needs explicit additional approval.",
-      "judge_v2_status": "16attempts_14valid_channels_6full_pairs_two_HTTP429_stops_no_failed_retries",
+      "judge_v2_status": "26attempts_24valid_12complete_pairs_recovery_approved_and_completed;natural20_and_reference_interpretations_pending",
       "actual_adjudications": 6,
       "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json",
       "judge_attempts_by_version": {
@@ -280,7 +280,8 @@
         "v1": 5,
         "v2": 14
       },
-      "judge_v2_evidence": "project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json"
+      "judge_v2_evidence": "project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json",
+      "latest_continuation": "project_artifacts/formal_study/hardening_remaining_20261028.json"
     },
     {
       "task_id": "T29",
@@ -304,9 +305,9 @@
       "evidence": "project_artifacts/results/hardening-v2/T31-prepared/20261026",
       "note": "Default-off CLI, frozen preflight/config/input identities, real metered API runner path, explicit resume and natural repair evidence reporting implemented.72 existing input tasks prepared with family/hash bindings, but all72 whole-task acceptance specs are SPEC_INCOMPLETE. New approved budget, qualified API/sandbox, admitted specs and real three-domain repair execution remain blocked.",
       "local_engineering_complete": true,
-      "latest_offline_preparation": "project_artifacts/formal_study/hardening_t28_t31_preparation.json",
-      "spec_preparation_status": "72unreviewed_drafts_405source_units_286explicit_uncovered_units;all_SPEC_INCOMPLETE",
-      "spec_preparation_report": "project_artifacts/results/hardening-v2/T31-spec-preparation/20261026/drafts-v1/preparation-report.json"
+      "latest_offline_preparation": "project_artifacts/formal_study/hardening_remaining_20261028.json",
+      "spec_preparation_status": "72unreviewed_drafts_405source_units_262uncovered_24deterministic_filename_units;all_SPEC_INCOMPLETE",
+      "spec_preparation_report": "project_artifacts/results/hardening-v2/T31-spec-preparation/20261028/drafts-v2/preparation-report.json"
     },
     {
       "task_id": "T32",

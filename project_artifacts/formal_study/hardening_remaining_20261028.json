@@ -1,0 +1,243 @@
+{
+  "schema_version": "remaining-work-continuation-v1",
+  "recorded_at": "2026-10-28T06:59:37.043973+00:00",
+  "attempted_requests": 26,
+  "new_attempts": 10,
+  "valid_channel_decisions": 24,
+  "complete_case_pairs": 12,
+  "failed_requests_retried": true,
+  "unissued_requests": 0,
+  "tools": 0,
+  "charged_wall_seconds": 567,
+  "controlled_comparison": [
+    {
+      "case_id": "review-ec20117491502820",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "reference": "FAIL",
+      "judge": "FAIL",
+      "same": true
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "reference": "INCOMPLETE",
+      "judge": "INCOMPLETE",
+      "same": true
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "reference": "FAIL",
+      "judge": "FAIL",
+      "same": true
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-eae3e39d4eebdc00",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-44158a7fd630cae5",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "reference": "FAIL",
+      "judge": "FAIL",
+      "same": true
+    }
+  ],
+  "controlled_matches": 12,
+  "quality_qualified": false,
+  "current_full_evaluator_requalified": false,
+  "identity_scope": "Same frozen v2 judge request manifest; new structural checks change full evaluator identity and are not qualified by these model decisions.",
+  "recovery_proposal_hash": "59018f4ef2d32ca731e484e8280286e473b1f439481124a4daadbc5f88800e89",
+  "needs_new_approval": false,
+  "t31_report": {
+    "schema_version": "t31-requirement-preparation-v1",
+    "source_bundle": "project_artifacts\\results\\hardening-v2\\T31-prepared\\20261026\\task-bundle.draft.json",
+    "source_bundle_sha256": "8f6bc8fe72a744447d27c2d406a98aae1f6e04de5fa6e79d0efeb62d9d0ebe25",
+    "task_count": 72,
+    "domain_counts": {
+      "excel": 24,
+      "powerpoint": 24,
+      "word": 24
+    },
+    "obligation_count": 405,
+    "proposed_check_routes": {
+      "uncovered": 262,
+      "visual": 34,
+      "deterministic": 24,
+      "semantic": 85
+    },
+    "gap_counts": {
+      "spreadsheet_scope_and_recalculation": 63,
+      "edit_preservation_scope": 7,
+      "spreadsheet_requirement_review": 17,
+      "native_object_editability": 72,
+      "source_figure_comparison": 82,
+      "word_package_and_preservation": 21
+    },
+    "admission_counts": {
+      "SPEC_INCOMPLETE": 72
+    },
+    "live_ready": false,
+    "model_calls": 0,
+    "server_jobs": 0,
+    "reviewer_signatures_created": 0,
+    "coverage_scope": "Lossless instruction spans with proposed checks. Draft segmentation is not independent review or proof that every unit is atomic."
+  },
+  "evidence_hashes": {
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-continuation\\.gitattributes": "7a0dcf4cf4eb96278b0f0b6882eeebc232235fa0581a9ce8450860a395675f36",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-continuation\\budget-state.json": "65a4aa37ff04c8e0bc6ff6f3e303f03893c6b6ee47710dd9d3979d0820be6434",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-continuation\\pilot-results.json": "9b6ecd678ed99f7a97f8287cbece2e29c3965cfb6635337d0dc673e3857b78c4",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-continuation\\recovery-proposal.json": "075f674d75a1dee3222c47b12d099393cee0a3fa3c96155b511ffd6e6d08970a"
+  },
+  "recovery_completed": {
+    "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+    "prior_results_sha256": "9b6ecd678ed99f7a97f8287cbece2e29c3965cfb6635337d0dc673e3857b78c4",
+    "recovery_results_sha256": "1f50460073e85f23c660f24157c808be6341c0bb82072a75d8ca8ce2a93a55ec",
+    "complete_pairs": 12,
+    "comparison": [
+      {
+        "case_id": "review-ec20117491502820",
+        "reference": "PASS",
+        "judge": "PASS",
+        "same": true
+      },
+      {
+        "case_id": "review-201d371b1160838f",
+        "reference": "FAIL",
+        "judge": "FAIL",
+        "same": true
+      },
+      {
+        "case_id": "review-19988a00ef040b43",
+        "reference": "PASS",
+        "judge": "PASS",
+        "same": true
+      },
+      {
+        "case_id": "review-8a0f33aa1247b0b8",
+        "reference": "PASS",
+        "judge": "PASS",
+        "same": true
+      },
+      {
+        "case_id": "review-01c7eae4091c4f6e",
+        "reference": "INCOMPLETE",
+        "judge": "INCOMPLETE",
+        "same": true
+      },
+      {
+        "case_id": "review-3dfbb6e577ab463f",
+        "reference": "INCOMPLETE",
+        "judge": "INCOMPLETE",
+        "same": true
+      },
+      {
+        "case_id": "review-070bf88a4446ba8f",
+        "reference": "FAIL",
+        "judge": "FAIL",
+        "same": true
+      },
+      {
+        "case_id": "review-6cda065fb91529a5",
+        "reference": "INCOMPLETE",
+        "judge": "INCOMPLETE",
+        "same": true
+      },
+      {
+        "case_id": "review-0db11ab1e4e3d5e1",
+        "reference": "PASS",
+        "judge": "PASS",
+        "same": true
+      },
+      {
+        "case_id": "review-eae3e39d4eebdc00",
+        "reference": "PASS",
+        "judge": "PASS",
+        "same": true
+      },
+      {
+        "case_id": "review-44158a7fd630cae5",
+        "reference": "PASS",
+        "judge": "PASS",
+        "same": true
+      },
+      {
+        "case_id": "review-ccfa7110e2ffbd7e",
+        "reference": "FAIL",
+        "judge": "FAIL",
+        "same": true
+      }
+    ],
+    "matched_exposed_references": 12,
+    "attempts": 26,
+    "effective_valid_decisions": 24,
+    "charged_wall_seconds": 567,
+    "tool_calls": 0,
+    "failed_attempt_records_preserved": true,
+    "quality_qualified": false,
+    "natural20_judged": false
+  },
+  "scope": "Recovery approval completed only; natural20 judging still requires a separately frozen plan and budget.",
+  "full_regression": {
+    "counts": {
+      "passed": 798,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0
+    },
+    "source_hashes_verified": true,
+    "evaluator_identity": "3e1ebbe4fece23cc3fbee464cd650557a5e5d9ce10dcf84caa0087b258dbce02",
+    "run": "project_artifacts\\results\\hardening-v2\\T31-native-release\\20261028T065019248695Z\\run.json",
+    "sha256": "a64e35588c5173dac72b34fca160f16faab4fc4b9736d52c9163ae65b7f1cfe5",
+    "linux_rerun": false
+  },
+  "server_read_only_probe": {
+    "ssh_reachable": true,
+    "apptainer_version": "1.4.5",
+    "user_quota_verified": false,
+    "writes": 0
+  },
+  "recovery_evidence_hashes": {
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\.gitattributes": "731dfd660ab2ab102a613818a6beede916a4ea0aa19935cb4468bbc756d9733d",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\approval-receipt.json": "d839265961b79762e4578dce3a3d9b62f1a30debce999639147560014406c163",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\budget-state.json": "fb1b75f711566475b8d129c6ea82e1ddb9dc2c324b3b50d4fb284357f94cbc13",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\effective-comparison.json": "b16d02273d77925a8e97a1b4627de0992aa098e7179e49f7ccf67f351159d0a3",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\live-policy.json": "abb28dae2b9db9a033f0273fb3bcb0d1f002b91a03ae5d1bff664c6835f3a35a",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\recovery-orchestration.py.txt": "db52748cd628288a5e64dfad313f733b011668e50c42aae450b5018449f8f0ad",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\v2-recovered\\recovery-results.json": "1f50460073e85f23c660f24157c808be6341c0bb82072a75d8ca8ce2a93a55ec"
+  },
+  "credential_scan": {
+    "exit_code": 0,
+    "findings": [],
+    "scope": "Tracked files up to 5 MB; pattern scan, not a guarantee of credential absence."
+  },
+  "retry_authorization": "call_75e0628b1c0640cbb8ea489ef7c84799"
+}

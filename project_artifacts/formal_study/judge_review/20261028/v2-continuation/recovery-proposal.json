@@ -1,0 +1,35 @@
+{
+  "schema_version": "standard-judge-two-failure-recovery-proposal-v1",
+  "allow_live_calls": false,
+  "approved_by_user": false,
+  "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+  "previous_results_sha256": "9b6ecd678ed99f7a97f8287cbece2e29c3965cfb6635337d0dc673e3857b78c4",
+  "previous_budget_sha256": "65a4aa37ff04c8e0bc6ff6f3e303f03893c6b6ee47710dd9d3979d0820be6434",
+  "requests": [
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "modality": "semantic",
+      "request": "review-3dfbb6e577ab463f-semantic.json",
+      "sha256": "7c91e0127dd8dee475d8a747a4c920c5eb056b548b7b029f9cf7dcb91f1b5c3b"
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "modality": "visual",
+      "request": "review-6cda065fb91529a5-visual.json",
+      "sha256": "604e2a66121d009dc374e93f46b2ffe3cb2f9683213dbc585203bdda9977021d"
+    }
+  ],
+  "new_attempts": 2,
+  "cumulative_attempt_cap": 26,
+  "cumulative_wall_seconds_cap": 1200,
+  "per_call_seconds_cap": 120,
+  "model": "gpt-6.1-sol",
+  "provider": "codex-cli",
+  "tools": 0,
+  "automatic_retries": 0,
+  "output_limit": "4096 requested only; not a server-enforced hard cap",
+  "prior_charged_wall_seconds": 512,
+  "preserve_prior_successful_decisions": true,
+  "natural20_included": false,
+  "proposal_hash": "59018f4ef2d32ca731e484e8280286e473b1f439481124a4daadbc5f88800e89"
+}

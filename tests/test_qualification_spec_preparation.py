@@ -42,6 +42,21 @@ def task_bundle(tmp_path):
     return path
 
 
+def test_ppt_filename_is_covered_but_native_presence_cannot_approve_reconstruction(tmp_path):
+    module=load_script('prepare_qualification_specs.py')
+    source=tmp_path/'source.txt';source.write_text('Public reference',encoding='utf-8')
+    task=TaskSpec(task_id='ppt-structure',domain='powerpoint',input_files=[str(source)],instruction=
+        'Reconstruct one editable PowerPoint slide. Use native editable text, shapes and connectors; preserve semantics. '
+        'No external raster resources are authorized. Save the result as output.pptx.')
+    draft=module.draft_task(task)
+    checks={r['check'] for r in draft['spec']['requirements']}
+    assert {'file.name','powerpoint.native_objects'}<=checks
+    assert draft['admission']['status']=='SPEC_INCOMPLETE'
+    assert not draft['spec']['requirement_inventory']['reviewed']
+    assert any(o['proposed_method']=='uncovered' for o in draft['obligations'])
+    assert sum(o['proposed_method']=='deterministic' for o in draft['obligations'])==1
+
+
 def test_all_inputs_are_frozen_before_drafts_and_drafts_cannot_self_approve(tmp_path):
     module=load_script('prepare_qualification_specs.py');bundle=task_bundle(tmp_path)
     report=module.prepare(bundle,tmp_path/'drafts')

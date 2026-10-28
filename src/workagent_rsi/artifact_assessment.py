@@ -26,7 +26,7 @@ JSON_VALUE = TypeAdapter(Any)
 
 def assessment_identity(config: dict | None = None) -> str:
     root = Path(__file__).resolve().parents[2]
-    names = ("artifact_feedback.py", "rsi_feedback.py", "orchestrator.py", "cli.py", "contracts.py", "run_contracts.py", "check.py", "harness_artifact_evaluator.py", "harness.py", "run.py", "evidence_partition.py", "visibility_checks.py", "assessment_contracts.py", "preservation_checks.py", "formula_checks.py", "spreadsheet_recalc.py", "libreoffice_recalc_worker.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
+    names = ("artifact_feedback.py", "rsi_feedback.py", "orchestrator.py", "cli.py", "contracts.py", "run_contracts.py", "check.py", "harness_artifact_evaluator.py", "harness.py", "run.py", "evidence_partition.py", "visibility_checks.py", "assessment_contracts.py", "preservation_checks.py", "formula_checks.py", "spreadsheet_recalc.py", "libreoffice_recalc_worker.py", "requirement_coverage.py", "check_registry.py", "artifact_locations.py", "native_presentation_checks.py", "artifact_assessment.py", "artifact_evaluator.py", "artifact_verifier.py", "sales_assessment.py", "office_checks.py", "artifact_renderer.py", "libreoffice_worker.py", "view_safety.py", "artifact_com.py", "office_capabilities.py", "judgement_provider.py", "semantic_assessment.py", "model_judgement.py")
     files = {name: sha256_file(Path(__file__).with_name(name)) for name in names if Path(__file__).with_name(name).exists()}
     for skill in ("office-artifact-evaluator", "office-artifact-verifier"):
         for path in sorted((root / "skills" / skill).rglob("*")):
@@ -180,6 +180,11 @@ class SharedAssessment:
         elif r.check == "file.format":
             reverse_suffixes = {suffix: domain for domain, suffix in EXPECTED_SUFFIXES.items()}
             actual = reverse_suffixes.get(paths[loc.artifact].suffix.lower(), "unknown")
+        elif r.check == "file.name":
+            actual = paths[loc.artifact].name
+        elif r.check == "powerpoint.native_objects":
+            from .native_presentation_checks import inspect_native_objects
+            return inspect_native_objects(obj, loc, r.expected)
         elif r.check == "excel.sheets":
             actual = list(obj.sheetnames)
             return self._fraction(r, [name in actual for name in r.expected], actual, loc)

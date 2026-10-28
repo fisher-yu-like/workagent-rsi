@@ -22,6 +22,7 @@ ALL = ['excel','word','powerpoint']
 _definitions = [
     ('file.readable',ALL,[],'boolean',[]),
     ('file.format',ALL,[],'domain',[]),
+    ('file.name',ALL,[],'filename',[]),
     ('text.contains',ALL,[],'text',[]),
     ('excel.sheets',['excel'],[],'texts',[]),
     ('excel.cell',['excel'],['sheet','cell'],'scalar',[]),
@@ -40,6 +41,7 @@ _definitions = [
     ('word.table_cell',['word'],['table','row','column'],'text',[]),
     ('powerpoint.object_text',['powerpoint'],['slide','object_id'],'text',[]),
     ('powerpoint.slide_count',['powerpoint'],[],'count',[]),
+    ('powerpoint.native_objects',['powerpoint'],[],'native_policy',[]),
     ('powerpoint.texts',['powerpoint'],[],'texts',[]),
     ('powerpoint.chart_values',['powerpoint'],['slide','object_id'],'matrix',[]),
     ('powerpoint.bounds',['powerpoint'],['slide'],'list',[]),
@@ -110,6 +112,10 @@ def _expected(value, schema):
         'any':lambda:True, 'boolean':lambda:type(value) is bool,
         'domain':lambda:value in ALL if isinstance(value,str) else False,
         'text':lambda:text(value), 'formula':lambda:text(value) and value.startswith('='),
+        'filename':lambda:text(value) and value not in {'.','..'} and not any(c in value for c in '/\\:*?"<>|') and value==value.strip() and not value.endswith('.'),
+        'native_policy':lambda:isinstance(value,dict) and set(value)=={'min_text_shapes','min_shapes','min_connectors','forbid_images'}
+            and all(type(value[k]) is int and value[k]>=0 for k in ('min_text_shapes','min_shapes','min_connectors'))
+            and type(value['forbid_images']) is bool,
         'texts':lambda:isinstance(value,list) and bool(value) and all(text(v) for v in value),
         'scalar':lambda:value is None or type(value) in {str,int,float,bool},
         'count':lambda:type(value) is int and value>=0,
@@ -152,6 +158,10 @@ def validate_acceptance_spec(spec, capabilities) -> SpecAdmissionReport:
             if r.location.cell and ':' in r.location.cell and r.check in {'excel.cell','excel.formula','excel.formula_exact','excel.formula_present','excel.cached_value','excel.recalculated_value','excel.number_format'}:
                 raise ValueError('single-cell check cannot use a range')
             _expected(r.expected,definition.expected_schema)
+            if r.check=='file.name' and any(v is not None for k,v in r.location.model_dump().items() if k!='artifact'):
+                raise ValueError('filename check requires artifact scope')
+            if r.check=='powerpoint.native_objects' and any(v is not None for k,v in r.location.model_dump().items() if k not in {'artifact','slide'}):
+                raise ValueError('native object check supports whole deck or slide scope')
             if r.check in {'excel.formula','excel.formula_exact','excel.formula_present','excel.recalculated_value'}:
                 from .formula_checks import validate_formula_options
                 validate_formula_options(r)

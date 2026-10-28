@@ -1,0 +1,8 @@
+{
+  "approved_by_user": true,
+  "approved_at": "2026-10-28T06:55:40.239132+00:00",
+  "approval_source": "call_75e0628b1c0640cbb8ea489ef7c84799",
+  "proposal_sha256": "075f674d75a1dee3222c47b12d099393cee0a3fa3c96155b511ffd6e6d08970a",
+  "policy_sha256": "abb28dae2b9db9a033f0273fb3bcb0d1f002b91a03ae5d1bff664c6835f3a35a",
+  "scope": "Only the two failed frozen channels; cumulative26requests/1200seconds/0tools;no automatic retry."
+}

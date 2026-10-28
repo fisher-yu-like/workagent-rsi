@@ -1,0 +1,57 @@
+import json, sys, importlib.util
+from pathlib import Path
+from datetime import datetime, timezone
+sys.path.insert(0,str(Path.cwd()/'src'))
+from workagent_rsi.hashing import sha256_file, canonical_json_hash
+from workagent_rsi.model_judgement import ModelJudgementProvider
+from workagent_rsi.run_contracts import LiveCallPolicy
+
+root=Path('project_artifacts/results/hardening-v2/T28-judge-pilot/20261026')
+proposal_path=Path('project_artifacts/formal_study/judge_review/20261028/v2-continuation/recovery-proposal.json')
+proposal=json.loads(proposal_path.read_text(encoding='utf-8'))
+assert proposal['proposal_hash']=='59018f4ef2d32ca731e484e8280286e473b1f439481124a4daadbc5f88800e89'
+assert canonical_json_hash({k:v for k,v in proposal.items() if k!='proposal_hash'})==proposal['proposal_hash']
+prior=root/'actual-v2-unissued-20261028/pilot-results.json'
+state_path=root/'approved-v2/budget-state.json'
+assert sha256_file(prior)==proposal['previous_results_sha256']
+assert sha256_file(state_path)==proposal['previous_budget_sha256']
+data=json.loads(prior.read_text(encoding='utf-8'))
+state=json.loads(state_path.read_text(encoding='utf-8'))
+prepared=root/'prepared-v2-final'
+manifest=json.loads((prepared/'pilot-manifest.json').read_text(encoding='utf-8'))
+assert canonical_json_hash({k:v for k,v in manifest.items() if k!='manifest_hash'})==proposal['manifest_hash']
+assert len(state['calls'])==24 and state['reserved_wall_seconds']==512 and not state.get('quarantined')
+assert not (root/'approved-v2/budget.lock').exists()
+for name,digest in manifest['input_bindings'].items():assert sha256_file(Path(name))==digest
+failed=[{k:r[k] for k in ['case_id','modality','request','sha256']} for r in data['rows'] if r['decision'] is None]
+assert failed==proposal['requests'] and len(failed)==2
+for call in failed:assert sha256_file(prepared/call['request'])==call['sha256']
+dest=root/'approved-recovery-20261028'
+dest.mkdir(exist_ok=False)
+policy=LiveCallPolicy.model_validate_json((root/'approved-v2/live-policy.json').read_text(encoding='utf-8')).model_copy(update={'max_model_calls':26})
+policy_path=dest/'live-policy.json';policy_path.write_text(policy.model_dump_json(indent=2)+'\n',encoding='utf-8')
+state['policy_sha256']=sha256_file(policy_path)
+state['budget_extension']={'previous_budget_sha256':proposal['previous_budget_sha256'],
+    'proposal_hash':proposal['proposal_hash'],'approval_source':'call_75e0628b1c0640cbb8ea489ef7c84799',
+    'old_cap':24,'new_cap':26,'no_reset':True}
+(dest/'budget-state.json').write_text(json.dumps(state,indent=2)+'\n',encoding='utf-8')
+(dest/'approval-receipt.json').write_text(json.dumps({'approved_by_user':True,
+    'approved_at':datetime.now(timezone.utc).isoformat(),'approval_source':'call_75e0628b1c0640cbb8ea489ef7c84799',
+    'proposal_sha256':sha256_file(proposal_path),'policy_sha256':sha256_file(policy_path),
+    'scope':'Only the two failed frozen channels; cumulative26requests/1200seconds/0tools;no automatic retry.'},indent=2)+'\n',encoding='utf-8')
+path=Path('project_artifacts/phase3_experiments/scripts/qualification_cli.py')
+spec=importlib.util.spec_from_file_location('recovery_cli',path);module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+runner=module.QualificationCLI(policy_path)
+provider=ModelJudgementProvider(manifest['model_config'],runner=runner)
+assert provider.identity_config()==data['provider']
+out=root/'actual-recovery-20261028';out.mkdir(exist_ok=False)
+rows=[]
+for call in failed:
+    request=json.loads((prepared/call['request']).read_text(encoding='utf-8'))
+    decision,telemetry=provider.judge(request,out/call['case_id']/call['modality'])
+    rows.append({**call,'decision':decision.model_dump(mode='json') if decision else None,'telemetry':telemetry})
+    (out/'recovery-results.json').write_text(json.dumps({'manifest_hash':manifest['manifest_hash'],
+        'proposal_hash':proposal['proposal_hash'],'provider':provider.identity_config(),
+        'prior_results_sha256':sha256_file(prior),'rows':rows,'quality_qualified':False},ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    if telemetry.get('status') in {'timeout','unavailable','error'}:break
+print(json.dumps({'new_attempts':len(rows),'valid':sum(r['decision'] is not None for r in rows),'quality_qualified':False}))

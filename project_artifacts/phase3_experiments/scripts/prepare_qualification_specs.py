@@ -44,6 +44,8 @@ def route(domain,quote):
     """Conservative proposed routes based on current registered channel limits."""
     text=quote.lower()
     if domain=='powerpoint':
+        if re.fullmatch(r'Save the result as output\.pptx\.', quote):
+            return 'deterministic',None,None
         if any(term in text for term in ('editable','native','raster','flat slide')):
             return 'uncovered','native_object_editability','Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these.'
         if 'output.pptx' in text:
@@ -74,14 +76,21 @@ def draft_task(task):
         checks.append(Requirement(requirement_id='single-slide',description='The task explicitly requests one slide.',
             check='powerpoint.slide_count',location=Location(artifact='output'),expected=1,critical=True,
             dimension='correctness',evidence_source='Public task instruction'))
+    if (task.domain=='powerpoint' and 'Use native editable text, shapes and connectors' in task.instruction
+            and 'No external raster resources are authorized' in task.instruction):
+        checks.append(Requirement(requirement_id='native-structure',description='Native objects with no slide/layout/master/chart image resources.',
+            check='powerpoint.native_objects',location=Location(artifact='output'),
+            expected={'min_text_shapes':1,'min_shapes':1,'min_connectors':1,'forbid_images':True},critical=True,
+            dimension='correctness',evidence_source='Public task instruction',
+            repair_hint='Use editable text, shapes and connectors. Keep visual reconstruction and source comparison requirements separate.'))
     inventory=[];obligations=[]
     for index,span in enumerate(instruction_spans(task.instruction),1):
         quote=span['source_quote'];rid=f'obligation-{index:03d}'
         method,gap,reason=route(task.domain,quote);ids=[]
         if method!='uncovered':
             cid=f'check-{index:03d}';ids=[cid]
-            checks.append(Requirement(requirement_id=cid,description=quote,check=method,
-                location=Location(artifact='output'),expected={'obligation':quote,'full_task_instruction':task.instruction},
+            checks.append(Requirement(requirement_id=cid,description=quote,check='file.name' if method=='deterministic' else method,
+                location=Location(artifact='output'),expected='output.pptx' if method=='deterministic' else {'obligation':quote,'full_task_instruction':task.instruction},
                 options={'verify_sources':True,'required_content_channels':['body_text']} if method=='semantic' else {},
                 critical=True,dimension='correctness',evidence_source='Exact public task instruction quote; input hashes frozen'))
         inventory.append(TaskRequirement(requirement_id=rid,source_quote=quote,source_ref='task.instruction',

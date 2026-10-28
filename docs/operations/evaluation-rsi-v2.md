@@ -1,5 +1,7 @@
 # 评估与 RSI 的执行和交接
 
+Current update (2026-10-28): see [remaining work](remaining-work-20261028.md). The approved recovery is complete:26 attempts,24 valid decisions,12 full case pairs;567charged seconds/0tools. Natural20 judging and reference interpretation review remain pending. Earlier run descriptions below are historical snapshots.
+
 本文对应 2026-10-26 的本地工程交付。原始计划是 `docs/superpowers/plans/2026-10-16-evaluation-rsi-hardening.md`，共 T00 至 T35。实际状态以 `project_artifacts/formal_study/hardening_task_ledger.json` 和对应证据为准。
 
 当前已冻结 judge v2 请求，整理 72 个 T31 未审阅验收草案，并接收用户完成的六例复核。13 项接收与来源校验测试、4 项未发送请求续跑测试通过。用户批准 v2 后累计运行 16 次请求，取得 14 个有效判定、6 个完整案例，第 11、16 次 HTTP 429。续跑只发送原清单中未尝试的请求，共用原账本，失败项均未重试；未运行服务器作业。当前结果见 `project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json`；T28 仍未完成，六例无需重复复核。
