@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-28T13:33:52.775668+00:00",
+  "updated_at": "2026-10-29T02:16:58.592657+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -253,11 +253,11 @@
       "task_id": "T28",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
-      "note": "Standard v2 diagnostic complete:26attempts/24valid/12pairs. Natural20 evidence complete:311pages;4CJKrenders qualified. Automatic diagnostic:91/92valid channels,18FAIL/2INCOMPLETE in declared scope. Manual follow-up waived;original human labels remain provisional. Whole-task acceptance, human accuracy and official benchmark parity are not qualified.",
+      "note": "Standard v2 diagnostic complete:26attempts/24valid/12pairs. Natural20 evidence complete:311pages;4CJKrenders qualified. Automatic diagnostic:92/92valid channels,18FAIL/2INCOMPLETE in declared scope. Manual follow-up waived;original human labels remain provisional. Whole-task acceptance, human accuracy and official benchmark parity are not qualified.",
       "local_status": "completed",
       "server_render_status": "30_available_2_coverage_gaps",
       "human_status": "32first_pass_provisional_6nonblind_adjudications_received_2reference_disputes",
-      "natural_cohort_status": "evidence_complete_automatic_diagnostic_one_consistency_gap;manual_followup_waived;whole_task_admission_unqualified",
+      "natural_cohort_status": "evidence_and_automatic_diagnostic_complete;manual_followup_waived;whole_task_admission_unqualified",
       "manifest": "project_artifacts/formal_study/hardening_t28_human_calibration.json",
       "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
       "generation_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
@@ -287,7 +287,7 @@
       "latest_text_preparation": "project_artifacts/formal_study/hardening_mixed_evidence_20261028.json",
       "latest_natural_delivery": "project_artifacts/formal_study/hardening_natural20_steps12_20261028.json",
       "natural_render_status": "all20cases_311pages;4CJKartifacts_re_rendered_with_task_local_verified_font;originalfilesunchanged",
-      "natural_judge_status": "91of92_valid;19of20_cases_fully_returned;110attempts_6206corrected_seconds",
+      "natural_judge_status": "92of92_valid;20of20_cases_fully_returned;111attempts_6256corrected_seconds",
       "font_qualification": "project_artifacts/formal_study/hardening_natural20_cjk_20261028.json",
       "automatic_diagnostic_receipt": "project_artifacts/formal_study/hardening_natural20_automatic_results_20261028.json"
     },
@@ -517,7 +517,6 @@
   },
   "bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "One consistency gap remains;no live retry without new approval. All91valid decisions retained.",
     "Complete T31 acceptance specs/native checks before real repair or promotion experiments.",
     "Complete T26 qualified variants,untouched final cohort and independent evaluator principal.",
     "Qualify hard-token-metered backend and native Office parity;any new live experiment requires its own budget."

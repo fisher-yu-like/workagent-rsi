@@ -92,7 +92,7 @@
   },
   "recorded_at": "2026-10-28T08:13:40.186892+00:00",
   "step1_status": "completed_with_explicit_native_limits",
-  "step2_status": "91valid_one_consistency_gap",
+  "step2_status": "completed_declared_scope_automatic_diagnostic",
   "first_attempts": 1,
   "valid_decisions": 0,
   "charged_wall_seconds": 59,
@@ -122,15 +122,15 @@
     "old_opinion_admitted": false
   },
   "approved_manifest_hash": "af7f6da042e7d172c8e22e4eec8c769af8e6ca4b9250c3b1f00a84c72a6121c0",
-  "cumulative_attempt_cap": 110,
+  "cumulative_attempt_cap": 111,
   "approval_source": "Actual user message approving revised natural20 manifest and93cumulativeattempts",
-  "actual_results": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\results.json",
+  "actual_results": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\results.json",
   "historical_attempts": 12,
   "historical_charged_seconds": 545,
   "font_qualification_receipt": "project_artifacts/formal_study/hardening_natural20_cjk_20261028.json",
-  "current_cumulative_attempts": 110,
-  "current_corrected_seconds": 6206,
-  "current_valid_channels": 91,
+  "current_cumulative_attempts": 111,
+  "current_corrected_seconds": 6256,
+  "current_valid_channels": 92,
   "completion_calls_proposed": 27,
   "clock_audit": "project_artifacts/formal_study/hardening_natural20_clock_audit_20261028.json",
   "completion_approval": {
@@ -141,7 +141,7 @@
     "cumulative_seconds": 7200,
     "historical_seconds_preserved": 5177
   },
-  "effective_valid_channels": 91,
+  "effective_valid_channels": 92,
   "total_required_channels": 92,
   "final_two_proposal_hash": "9f408f18978b2103c9cfff794ef60e4fc62d79b7ab9675970dd6621876075b8f",
   "automatic_results": "project_artifacts/formal_study/hardening_natural20_automatic_results_20261028.json",
@@ -152,5 +152,19 @@
     "new_requests": 2,
     "max_cumulative_calls": 110,
     "max_cumulative_seconds": 7200
+  },
+  "final_one_approval": {
+    "approved_by_user": true,
+    "approval_source": "user-20261029-request-close-automatic-stage-under-final-one-proposal",
+    "manifest_sha256": "0621536592b7a161a46d68e8cfd4affa0a9e86cc454e4b934bf355d8bf2662cf",
+    "policy_sha256": "1effe7d0077d9fb2875bfc68c965e86f93b97ef999c9837b218f8081eeaf3a74",
+    "historical_budget_path": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\budget-state.json",
+    "historical_budget_sha256": "945bdc2c922e3f24c891fc778b2cfb934185c507eb9d0155f3a1669a32e64a27",
+    "max_cumulative_calls": 111,
+    "max_cumulative_seconds": 7200,
+    "max_new_calls": 1,
+    "max_tool_calls": 0,
+    "per_call_seconds": 120,
+    "automatic_retries": 0
   }
 }

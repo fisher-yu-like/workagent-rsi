@@ -1,290 +1,6 @@
 {
-  "proposal_hash": "9f408f18978b2103c9cfff794ef60e4fc62d79b7ab9675970dd6621876075b8f",
+  "proposal_hash": "45e07a67812368e2d5d750c9ded6b813cfe5f315d6533a4f991a1e3411f917df",
   "rows": [
-    {
-      "call_id": "review-2e562d78e43f4a93-visual-11",
-      "case_id": "review-2e562d78e43f4a93",
-      "phase": "local",
-      "modality": "visual",
-      "parents": [],
-      "request": "review-2e562d78e43f4a93-visual-11.json",
-      "sha256": "1589a4cdfbd5930020b41b6848b9552ef8519ee94dee5f4a376ccb310d3db03c",
-      "prior_attempted": true,
-      "decision": {
-        "status": "PARTIAL",
-        "completion": 0.25,
-        "observed": "The supplied pages have legible text and strong contrast, but serious horizontal clipping and fragmented layout impair readability. Business descriptions continue across pages as narrow slices with cut-off words, while most of each page is blank. This assessment covers only pages 71–78.",
-        "confidence": 0.99,
-        "observations": [
-          {
-            "image_id": "page-71",
-            "artifact_location": "output/page/71",
-            "region": "Header and table, x67–727, y112–383",
-            "observation": "The headers “FY2024”, “FY2025” and “Beta” are readable with white text on navy. However, “Bus Des” is awkwardly split across lines, and the description beginning “Accuracy Shipping Limited provides third party logistics” is cut off at the right boundary."
-          },
-          {
-            "image_id": "page-72",
-            "artifact_location": "output/page/72",
-            "region": "Description rows, x67–744, y250–383",
-            "observation": "Rows begin and end mid-sentence at clipped boundaries. The readable phrase “company in India. The company operates through Cargo Handling and Freight Forwarding” lacks its company identifier on this page. The content occupies only a shallow band with extensive blank space below."
-          },
-          {
-            "image_id": "page-73",
-            "artifact_location": "output/page/73",
-            "region": "Description rows, x67–704, y250–383",
-            "observation": "Both edges truncate text, including the left-edge fragment “house clearance” and the right-edge fragment “It offers less than co”. Seven isolated continuation rows provide poor reading continuity."
-          },
-          {
-            "image_id": "page-74",
-            "artifact_location": "output/page/74",
-            "region": "Description rows, x67–715, y250–383",
-            "observation": "Text remains horizontally clipped, with the left-edge fragment “rvices, inland transportation” and rows ending mid-word. The phrase “The company was founded in 1959” is readable, but its surrounding description is fragmented across page boundaries."
-          },
-          {
-            "image_id": "page-75",
-            "artifact_location": "output/page/75",
-            "region": "Description rows, x67–722, y250–383",
-            "observation": "The sentence “Tiger Logistics (India) Limited was incorporated in 2000 and is based in New Delhi, India.” is readable. Other rows have clipped beginnings or endings, including “ased in Mumbai, India.”, undermining consistent readability."
-          },
-          {
-            "image_id": "page-76",
-            "artifact_location": "output/page/76",
-            "region": "Description rows, x67–722, y250–383",
-            "observation": "The visible phrase “motor vehicles. It serves marbles and granite, ceramic tiles” begins as a continuation, and its row is cut off on the right. Large gaps between remaining rows and extensive blank page area reinforce the fragmented layout."
-          },
-          {
-            "image_id": "page-77",
-            "artifact_location": "output/page/77",
-            "region": "Description rows, x67–704, y250–383",
-            "observation": "The readable phrase “The company was incorporated in 2000” appears within a row clipped on both sides. Other rows start with fragments such as “hibition and event logistics” and “ading facilities”, leaving incomplete descriptions separated by blank rows."
-          },
-          {
-            "image_id": "page-78",
-            "artifact_location": "output/page/78",
-            "region": "Description rows, x67–685, y250–383",
-            "observation": "Only a few continuation fragments remain, including “in Anjar, India.” and “Total Transport Systems Limited was founded in 199”. The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading."
-          }
-        ]
-      },
-      "attempted": true,
-      "telemetry": {
-        "model_calls": 1,
-        "elapsed_seconds": 40.81886740000027,
-        "cost": null,
-        "cost_status": "unavailable",
-        "attempts": [
-          {
-            "started_at": "2026-10-28T13:28:42.894563+00:00",
-            "provider": {
-              "backend": "model-judge-v1",
-              "config": {
-                "provider": "codex-cli",
-                "model": "gpt-6.1-sol",
-                "codex_executable": "codex",
-                "api_base_url": "https://api.openai.com/v1",
-                "api_key_env": "OPENAI_API_KEY",
-                "timeout_seconds": 120,
-                "retries": 0,
-                "repeats": 1,
-                "disagreement_tolerance": 0.25,
-                "max_text_chars": 600000,
-                "max_text_items": 2000,
-                "max_images": 8,
-                "max_image_bytes": 20000000,
-                "max_output_tokens": 4096,
-                "cache_enabled": false,
-                "independent_review": true,
-                "semantic_enabled": true,
-                "visual_enabled": true
-              },
-              "prompt_version": "office-quality-judge-v2-evidence-scope",
-              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
-              "cli_version": "codex-cli 0.159.3",
-              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
-            },
-            "repeat": 1,
-            "attempt": 1,
-            "model_call_started": true,
-            "exit_code": 0,
-            "usage": {
-              "input_tokens": 24218,
-              "cached_input_tokens": 0,
-              "cache_write_input_tokens": 0,
-              "output_tokens": 743,
-              "reasoning_output_tokens": 0
-            },
-            "model": "gpt-6.1-sol",
-            "status": "completed",
-            "elapsed_seconds": 40.81529740000042,
-            "ended_at": "2026-10-28T13:29:23.711423+00:00"
-          }
-        ],
-        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\review-2e562d78e43f4a93-visual-11\\call-ea1bb5c9680c",
-        "status": "completed",
-        "independent_reviews": 1,
-        "agreement": true,
-        "judge_result": {
-          "decision": {
-            "status": "PARTIAL",
-            "completion": 0.25,
-            "observed": "The supplied pages have legible text and strong contrast, but serious horizontal clipping and fragmented layout impair readability. Business descriptions continue across pages as narrow slices with cut-off words, while most of each page is blank. This assessment covers only pages 71–78.",
-            "confidence": 0.99,
-            "observations": [
-              {
-                "image_id": "page-71",
-                "artifact_location": "output/page/71",
-                "region": "Header and table, x67–727, y112–383",
-                "observation": "The headers “FY2024”, “FY2025” and “Beta” are readable with white text on navy. However, “Bus Des” is awkwardly split across lines, and the description beginning “Accuracy Shipping Limited provides third party logistics” is cut off at the right boundary."
-              },
-              {
-                "image_id": "page-72",
-                "artifact_location": "output/page/72",
-                "region": "Description rows, x67–744, y250–383",
-                "observation": "Rows begin and end mid-sentence at clipped boundaries. The readable phrase “company in India. The company operates through Cargo Handling and Freight Forwarding” lacks its company identifier on this page. The content occupies only a shallow band with extensive blank space below."
-              },
-              {
-                "image_id": "page-73",
-                "artifact_location": "output/page/73",
-                "region": "Description rows, x67–704, y250–383",
-                "observation": "Both edges truncate text, including the left-edge fragment “house clearance” and the right-edge fragment “It offers less than co”. Seven isolated continuation rows provide poor reading continuity."
-              },
-              {
-                "image_id": "page-74",
-                "artifact_location": "output/page/74",
-                "region": "Description rows, x67–715, y250–383",
-                "observation": "Text remains horizontally clipped, with the left-edge fragment “rvices, inland transportation” and rows ending mid-word. The phrase “The company was founded in 1959” is readable, but its surrounding description is fragmented across page boundaries."
-              },
-              {
-                "image_id": "page-75",
-                "artifact_location": "output/page/75",
-                "region": "Description rows, x67–722, y250–383",
-                "observation": "The sentence “Tiger Logistics (India) Limited was incorporated in 2000 and is based in New Delhi, India.” is readable. Other rows have clipped beginnings or endings, including “ased in Mumbai, India.”, undermining consistent readability."
-              },
-              {
-                "image_id": "page-76",
-                "artifact_location": "output/page/76",
-                "region": "Description rows, x67–722, y250–383",
-                "observation": "The visible phrase “motor vehicles. It serves marbles and granite, ceramic tiles” begins as a continuation, and its row is cut off on the right. Large gaps between remaining rows and extensive blank page area reinforce the fragmented layout."
-              },
-              {
-                "image_id": "page-77",
-                "artifact_location": "output/page/77",
-                "region": "Description rows, x67–704, y250–383",
-                "observation": "The readable phrase “The company was incorporated in 2000” appears within a row clipped on both sides. Other rows start with fragments such as “hibition and event logistics” and “ading facilities”, leaving incomplete descriptions separated by blank rows."
-              },
-              {
-                "image_id": "page-78",
-                "artifact_location": "output/page/78",
-                "region": "Description rows, x67–685, y250–383",
-                "observation": "Only a few continuation fragments remain, including “in Anjar, India.” and “Total Transport Systems Limited was founded in 199”. The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading."
-              }
-            ]
-          },
-          "reviews": [
-            {
-              "review_id": "call-ea1bb5c9680c:repeat-1",
-              "decision": {
-                "status": "PARTIAL",
-                "completion": 0.25,
-                "observed": "The supplied pages have legible text and strong contrast, but serious horizontal clipping and fragmented layout impair readability. Business descriptions continue across pages as narrow slices with cut-off words, while most of each page is blank. This assessment covers only pages 71–78.",
-                "confidence": 0.99,
-                "observations": [
-                  {
-                    "image_id": "page-71",
-                    "artifact_location": "output/page/71",
-                    "region": "Header and table, x67–727, y112–383",
-                    "observation": "The headers “FY2024”, “FY2025” and “Beta” are readable with white text on navy. However, “Bus Des” is awkwardly split across lines, and the description beginning “Accuracy Shipping Limited provides third party logistics” is cut off at the right boundary."
-                  },
-                  {
-                    "image_id": "page-72",
-                    "artifact_location": "output/page/72",
-                    "region": "Description rows, x67–744, y250–383",
-                    "observation": "Rows begin and end mid-sentence at clipped boundaries. The readable phrase “company in India. The company operates through Cargo Handling and Freight Forwarding” lacks its company identifier on this page. The content occupies only a shallow band with extensive blank space below."
-                  },
-                  {
-                    "image_id": "page-73",
-                    "artifact_location": "output/page/73",
-                    "region": "Description rows, x67–704, y250–383",
-                    "observation": "Both edges truncate text, including the left-edge fragment “house clearance” and the right-edge fragment “It offers less than co”. Seven isolated continuation rows provide poor reading continuity."
-                  },
-                  {
-                    "image_id": "page-74",
-                    "artifact_location": "output/page/74",
-                    "region": "Description rows, x67–715, y250–383",
-                    "observation": "Text remains horizontally clipped, with the left-edge fragment “rvices, inland transportation” and rows ending mid-word. The phrase “The company was founded in 1959” is readable, but its surrounding description is fragmented across page boundaries."
-                  },
-                  {
-                    "image_id": "page-75",
-                    "artifact_location": "output/page/75",
-                    "region": "Description rows, x67–722, y250–383",
-                    "observation": "The sentence “Tiger Logistics (India) Limited was incorporated in 2000 and is based in New Delhi, India.” is readable. Other rows have clipped beginnings or endings, including “ased in Mumbai, India.”, undermining consistent readability."
-                  },
-                  {
-                    "image_id": "page-76",
-                    "artifact_location": "output/page/76",
-                    "region": "Description rows, x67–722, y250–383",
-                    "observation": "The visible phrase “motor vehicles. It serves marbles and granite, ceramic tiles” begins as a continuation, and its row is cut off on the right. Large gaps between remaining rows and extensive blank page area reinforce the fragmented layout."
-                  },
-                  {
-                    "image_id": "page-77",
-                    "artifact_location": "output/page/77",
-                    "region": "Description rows, x67–704, y250–383",
-                    "observation": "The readable phrase “The company was incorporated in 2000” appears within a row clipped on both sides. Other rows start with fragments such as “hibition and event logistics” and “ading facilities”, leaving incomplete descriptions separated by blank rows."
-                  },
-                  {
-                    "image_id": "page-78",
-                    "artifact_location": "output/page/78",
-                    "region": "Description rows, x67–685, y250–383",
-                    "observation": "Only a few continuation fragments remain, including “in Anjar, India.” and “Total Transport Systems Limited was founded in 199”. The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading."
-                  }
-                ]
-              },
-              "evidence_refs": [
-                "page-71",
-                "page-72",
-                "page-73",
-                "page-74",
-                "page-75",
-                "page-76",
-                "page-77",
-                "page-78"
-              ]
-            }
-          ],
-          "model_identity": {
-            "backend": "model-judge-v1",
-            "config": {
-              "provider": "codex-cli",
-              "model": "gpt-6.1-sol",
-              "codex_executable": "codex",
-              "api_base_url": "https://api.openai.com/v1",
-              "api_key_env": "OPENAI_API_KEY",
-              "timeout_seconds": 120,
-              "retries": 0,
-              "repeats": 1,
-              "disagreement_tolerance": 0.25,
-              "max_text_chars": 600000,
-              "max_text_items": 2000,
-              "max_images": 8,
-              "max_image_bytes": 20000000,
-              "max_output_tokens": 4096,
-              "cache_enabled": false,
-              "independent_review": true,
-              "semantic_enabled": true,
-              "visual_enabled": true
-            },
-            "prompt_version": "office-quality-judge-v2-evidence-scope",
-            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
-            "cli_version": "codex-cli 0.159.3",
-            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
-          },
-          "actual_model_calls": 1,
-          "disagreement": false,
-          "confidence_basis": "uncalibrated_self_report"
-        }
-      },
-      "actual_request_hash": "7c6fd1c8bf442c4cd4110da121c8abc627a62c6c8637682efaf50a012aff2a14"
-    },
     {
       "call_id": "review-2e562d78e43f4a93-consistency",
       "case_id": "review-2e562d78e43f4a93",
@@ -310,16 +26,113 @@
       "request": "review-2e562d78e43f4a93-consistency.json",
       "sha256": "25542aa90657e9ca32c5ec24d8de9c83798abb2242329e4761344beaa1d0c4dc",
       "prior_attempted": false,
-      "decision": null,
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.25,
+        "observed": "All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries.",
+        "confidence": 0.95,
+        "observations": [
+          {
+            "evidence_id": "review-2e562d78e43f4a93-semantic",
+            "quote": "Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE.",
+            "observation": "These reported defects conflict with the required USD 28 warehousing base and consolidated PPE depreciation calculation. The reported IS links can be correct while carrying defective upstream depreciation. Retain PARTIAL; the summary alone does not independently verify formulas or recalculated values.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-01",
+            "quote": "Columns and headings are split across pages, leaving detached values and clipped labels.",
+            "observation": "The reported page-8 continuation agrees with visual-02. These are output readability findings; without an original-layout comparison they do not establish a failure to preserve existing formatting.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-02",
+            "quote": "This assessment concerns layout on the supplied pages only, not missing model content or formula accuracy.",
+            "observation": "The scope limitation appropriately avoids treating detached row labels as missing workbook content. Reported page-8 and page-15 findings agree with adjacent reviews.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-03",
+            "quote": "However, horizontal pagination separates financial values from their row labels across several pages, substantially weakening readability and leaving excessive unused space.",
+            "observation": "This agrees with the neighboring page-15 and page-22 reports. It supports the prior readability concern but supplies no comparison establishing whether pagination changed.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-04",
+            "quote": "However, rows containing \"25,000\", \"35.0\" and \"90%\" lack adjacent labels, so their meaning depends on separate label pages.",
+            "observation": "The detached 35.0 value does not independently verify the warehousing-base defect because its label is absent here. The semantic report provides that interpretation; no contradiction is established.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-05",
+            "quote": "This page contains row labels and only FY21A, leaving later-year values on separate pages.",
+            "observation": "The page-29 description agrees with visual-04, and the page-36 continuation agrees with visual-06. No additional evidence of formula correctness or original-format preservation is supplied.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-06",
+            "quote": "\"FY26E\" through \"FY28E\" and the italic \"15%\" entries are readable and aligned.",
+            "observation": "The displayed rates are compatible with the semantic interest-rate finding, but visible percentages alone do not establish the interest formulas or all forecast years. The page-43 readability findings agree with visual-07.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-07",
+            "quote": "The supplied page is visibly blank. This adds an empty page within the reviewed layout; it does not establish that model content is missing.",
+            "observation": "The report correctly distinguishes a blank rendered page from missing model content. Its page-50 fragmentation finding agrees with visual-08.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-08",
+            "quote": "The highlighted \"32.8x\" uses white text on yellow with weak contrast.",
+            "observation": "This localized contrast concern supplements visual-07's generally readable page-50 description without necessarily contradicting it. Page-57 clipping and contrast findings agree with visual-09.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-09",
+            "quote": "\"Gross Profit(USD Mn)\" and the five displayed year labels are readable, with clear numeric spacing.",
+            "observation": "This page-64 finding agrees with visual-10. Locally readable tables are compatible with the broader fragmentation concerns; neither establishes source accuracy.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-10",
+            "quote": "The \"Share Price\" section has readable numeric rows, but two date headers appear as \"###\", preventing identification of those columns.",
+            "observation": "The report distinguishes readable numbers from unreadable headers. Its page-71 description truncation agrees with visual-11, but these observations do not establish whether the original workbook had the same defects.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-11",
+            "quote": "The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading.",
+            "observation": "The page-78 finding agrees with visual-12. Fragmented business descriptions support a readability concern, not an inference that workbook text or requested financial calculations are absent.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-12",
+            "quote": "The upper title ends at \"EBITDA (USd in Mn) & EBITDA M\", and later categories and values are missing from view.",
+            "observation": "The page-85 clipping finding agrees with visual-13. Missing content from the visible chart region does not establish missing underlying chart data.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-13",
+            "quote": "The header is clipped to \"udgeted for F.Y. 2027-28\".",
+            "observation": "The page-92 finding agrees with visual-14. Reported chart and table defects preserve the prior PARTIAL outcome, while their relationship to the original layout remains unverified.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-14",
+            "quote": "Multiple Total cells display \"###\", hiding their values.",
+            "observation": "Unreadable displayed totals support the reported readability shortcoming but do not prove absent or incorrect calculations. The report supplies no baseline comparison for the explicit structure, layout and formatting preservation obligation.",
+            "source_citations": []
+          }
+        ]
+      },
       "attempted": true,
       "telemetry": {
         "model_calls": 1,
-        "elapsed_seconds": 44.12033270000029,
+        "elapsed_seconds": 49.85739240000112,
         "cost": null,
         "cost_status": "unavailable",
         "attempts": [
           {
-            "started_at": "2026-10-28T13:29:23.733892+00:00",
+            "started_at": "2026-10-29T02:15:46.647347+00:00",
             "provider": {
               "backend": "model-judge-v1",
               "config": {
@@ -352,25 +165,241 @@
             "model_call_started": true,
             "exit_code": 0,
             "usage": {
-              "input_tokens": 30788,
+              "input_tokens": 30790,
               "cached_input_tokens": 0,
               "cache_write_input_tokens": 0,
-              "output_tokens": 1654,
-              "reasoning_output_tokens": 51
+              "output_tokens": 1713,
+              "reasoning_output_tokens": 50
             },
             "model": "gpt-6.1-sol",
-            "status": "error",
-            "error": "invalid response or transport failure: ValueError",
-            "elapsed_seconds": 44.11870660000022,
-            "ended_at": "2026-10-28T13:30:07.853524+00:00"
+            "status": "completed",
+            "elapsed_seconds": 49.848316999996314,
+            "ended_at": "2026-10-29T02:16:36.500964+00:00"
           }
         ],
-        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\review-2e562d78e43f4a93-consistency\\call-c7528547dcff",
-        "status": "error",
-        "error": "invalid response or transport failure: ValueError",
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\review-2e562d78e43f4a93-consistency\\call-aaa03d69ddab",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
         "judge_result": {
-          "decision": null,
-          "reviews": [],
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.25,
+            "observed": "All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries.",
+            "confidence": 0.95,
+            "observations": [
+              {
+                "evidence_id": "review-2e562d78e43f4a93-semantic",
+                "quote": "Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE.",
+                "observation": "These reported defects conflict with the required USD 28 warehousing base and consolidated PPE depreciation calculation. The reported IS links can be correct while carrying defective upstream depreciation. Retain PARTIAL; the summary alone does not independently verify formulas or recalculated values.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-01",
+                "quote": "Columns and headings are split across pages, leaving detached values and clipped labels.",
+                "observation": "The reported page-8 continuation agrees with visual-02. These are output readability findings; without an original-layout comparison they do not establish a failure to preserve existing formatting.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-02",
+                "quote": "This assessment concerns layout on the supplied pages only, not missing model content or formula accuracy.",
+                "observation": "The scope limitation appropriately avoids treating detached row labels as missing workbook content. Reported page-8 and page-15 findings agree with adjacent reviews.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-03",
+                "quote": "However, horizontal pagination separates financial values from their row labels across several pages, substantially weakening readability and leaving excessive unused space.",
+                "observation": "This agrees with the neighboring page-15 and page-22 reports. It supports the prior readability concern but supplies no comparison establishing whether pagination changed.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-04",
+                "quote": "However, rows containing \"25,000\", \"35.0\" and \"90%\" lack adjacent labels, so their meaning depends on separate label pages.",
+                "observation": "The detached 35.0 value does not independently verify the warehousing-base defect because its label is absent here. The semantic report provides that interpretation; no contradiction is established.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-05",
+                "quote": "This page contains row labels and only FY21A, leaving later-year values on separate pages.",
+                "observation": "The page-29 description agrees with visual-04, and the page-36 continuation agrees with visual-06. No additional evidence of formula correctness or original-format preservation is supplied.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-06",
+                "quote": "\"FY26E\" through \"FY28E\" and the italic \"15%\" entries are readable and aligned.",
+                "observation": "The displayed rates are compatible with the semantic interest-rate finding, but visible percentages alone do not establish the interest formulas or all forecast years. The page-43 readability findings agree with visual-07.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-07",
+                "quote": "The supplied page is visibly blank. This adds an empty page within the reviewed layout; it does not establish that model content is missing.",
+                "observation": "The report correctly distinguishes a blank rendered page from missing model content. Its page-50 fragmentation finding agrees with visual-08.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-08",
+                "quote": "The highlighted \"32.8x\" uses white text on yellow with weak contrast.",
+                "observation": "This localized contrast concern supplements visual-07's generally readable page-50 description without necessarily contradicting it. Page-57 clipping and contrast findings agree with visual-09.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-09",
+                "quote": "\"Gross Profit(USD Mn)\" and the five displayed year labels are readable, with clear numeric spacing.",
+                "observation": "This page-64 finding agrees with visual-10. Locally readable tables are compatible with the broader fragmentation concerns; neither establishes source accuracy.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-10",
+                "quote": "The \"Share Price\" section has readable numeric rows, but two date headers appear as \"###\", preventing identification of those columns.",
+                "observation": "The report distinguishes readable numbers from unreadable headers. Its page-71 description truncation agrees with visual-11, but these observations do not establish whether the original workbook had the same defects.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-11",
+                "quote": "The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading.",
+                "observation": "The page-78 finding agrees with visual-12. Fragmented business descriptions support a readability concern, not an inference that workbook text or requested financial calculations are absent.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-12",
+                "quote": "The upper title ends at \"EBITDA (USd in Mn) & EBITDA M\", and later categories and values are missing from view.",
+                "observation": "The page-85 clipping finding agrees with visual-13. Missing content from the visible chart region does not establish missing underlying chart data.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-13",
+                "quote": "The header is clipped to \"udgeted for F.Y. 2027-28\".",
+                "observation": "The page-92 finding agrees with visual-14. Reported chart and table defects preserve the prior PARTIAL outcome, while their relationship to the original layout remains unverified.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-14",
+                "quote": "Multiple Total cells display \"###\", hiding their values.",
+                "observation": "Unreadable displayed totals support the reported readability shortcoming but do not prove absent or incorrect calculations. The report supplies no baseline comparison for the explicit structure, layout and formatting preservation obligation.",
+                "source_citations": []
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-aaa03d69ddab:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.25,
+                "observed": "All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries.",
+                "confidence": 0.95,
+                "observations": [
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-semantic",
+                    "quote": "Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE.",
+                    "observation": "These reported defects conflict with the required USD 28 warehousing base and consolidated PPE depreciation calculation. The reported IS links can be correct while carrying defective upstream depreciation. Retain PARTIAL; the summary alone does not independently verify formulas or recalculated values.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-01",
+                    "quote": "Columns and headings are split across pages, leaving detached values and clipped labels.",
+                    "observation": "The reported page-8 continuation agrees with visual-02. These are output readability findings; without an original-layout comparison they do not establish a failure to preserve existing formatting.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-02",
+                    "quote": "This assessment concerns layout on the supplied pages only, not missing model content or formula accuracy.",
+                    "observation": "The scope limitation appropriately avoids treating detached row labels as missing workbook content. Reported page-8 and page-15 findings agree with adjacent reviews.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-03",
+                    "quote": "However, horizontal pagination separates financial values from their row labels across several pages, substantially weakening readability and leaving excessive unused space.",
+                    "observation": "This agrees with the neighboring page-15 and page-22 reports. It supports the prior readability concern but supplies no comparison establishing whether pagination changed.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-04",
+                    "quote": "However, rows containing \"25,000\", \"35.0\" and \"90%\" lack adjacent labels, so their meaning depends on separate label pages.",
+                    "observation": "The detached 35.0 value does not independently verify the warehousing-base defect because its label is absent here. The semantic report provides that interpretation; no contradiction is established.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-05",
+                    "quote": "This page contains row labels and only FY21A, leaving later-year values on separate pages.",
+                    "observation": "The page-29 description agrees with visual-04, and the page-36 continuation agrees with visual-06. No additional evidence of formula correctness or original-format preservation is supplied.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-06",
+                    "quote": "\"FY26E\" through \"FY28E\" and the italic \"15%\" entries are readable and aligned.",
+                    "observation": "The displayed rates are compatible with the semantic interest-rate finding, but visible percentages alone do not establish the interest formulas or all forecast years. The page-43 readability findings agree with visual-07.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-07",
+                    "quote": "The supplied page is visibly blank. This adds an empty page within the reviewed layout; it does not establish that model content is missing.",
+                    "observation": "The report correctly distinguishes a blank rendered page from missing model content. Its page-50 fragmentation finding agrees with visual-08.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-08",
+                    "quote": "The highlighted \"32.8x\" uses white text on yellow with weak contrast.",
+                    "observation": "This localized contrast concern supplements visual-07's generally readable page-50 description without necessarily contradicting it. Page-57 clipping and contrast findings agree with visual-09.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-09",
+                    "quote": "\"Gross Profit(USD Mn)\" and the five displayed year labels are readable, with clear numeric spacing.",
+                    "observation": "This page-64 finding agrees with visual-10. Locally readable tables are compatible with the broader fragmentation concerns; neither establishes source accuracy.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-10",
+                    "quote": "The \"Share Price\" section has readable numeric rows, but two date headers appear as \"###\", preventing identification of those columns.",
+                    "observation": "The report distinguishes readable numbers from unreadable headers. Its page-71 description truncation agrees with visual-11, but these observations do not establish whether the original workbook had the same defects.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-11",
+                    "quote": "The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading.",
+                    "observation": "The page-78 finding agrees with visual-12. Fragmented business descriptions support a readability concern, not an inference that workbook text or requested financial calculations are absent.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-12",
+                    "quote": "The upper title ends at \"EBITDA (USd in Mn) & EBITDA M\", and later categories and values are missing from view.",
+                    "observation": "The page-85 clipping finding agrees with visual-13. Missing content from the visible chart region does not establish missing underlying chart data.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-13",
+                    "quote": "The header is clipped to \"udgeted for F.Y. 2027-28\".",
+                    "observation": "The page-92 finding agrees with visual-14. Reported chart and table defects preserve the prior PARTIAL outcome, while their relationship to the original layout remains unverified.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-14",
+                    "quote": "Multiple Total cells display \"###\", hiding their values.",
+                    "observation": "Unreadable displayed totals support the reported readability shortcoming but do not prove absent or incorrect calculations. The report supplies no baseline comparison for the explicit structure, layout and formatting preservation obligation.",
+                    "source_citations": []
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "review-2e562d78e43f4a93-semantic",
+                "review-2e562d78e43f4a93-visual-01",
+                "review-2e562d78e43f4a93-visual-02",
+                "review-2e562d78e43f4a93-visual-03",
+                "review-2e562d78e43f4a93-visual-04",
+                "review-2e562d78e43f4a93-visual-05",
+                "review-2e562d78e43f4a93-visual-06",
+                "review-2e562d78e43f4a93-visual-07",
+                "review-2e562d78e43f4a93-visual-08",
+                "review-2e562d78e43f4a93-visual-09",
+                "review-2e562d78e43f4a93-visual-10",
+                "review-2e562d78e43f4a93-visual-11",
+                "review-2e562d78e43f4a93-visual-12",
+                "review-2e562d78e43f4a93-visual-13",
+                "review-2e562d78e43f4a93-visual-14"
+              ]
+            }
+          ],
           "model_identity": {
             "backend": "model-judge-v1",
             "config": {
@@ -21780,16 +21809,113 @@
       "request": "review-2e562d78e43f4a93-consistency.json",
       "sha256": "25542aa90657e9ca32c5ec24d8de9c83798abb2242329e4761344beaa1d0c4dc",
       "prior_attempted": false,
-      "decision": null,
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.25,
+        "observed": "All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries.",
+        "confidence": 0.95,
+        "observations": [
+          {
+            "evidence_id": "review-2e562d78e43f4a93-semantic",
+            "quote": "Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE.",
+            "observation": "These reported defects conflict with the required USD 28 warehousing base and consolidated PPE depreciation calculation. The reported IS links can be correct while carrying defective upstream depreciation. Retain PARTIAL; the summary alone does not independently verify formulas or recalculated values.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-01",
+            "quote": "Columns and headings are split across pages, leaving detached values and clipped labels.",
+            "observation": "The reported page-8 continuation agrees with visual-02. These are output readability findings; without an original-layout comparison they do not establish a failure to preserve existing formatting.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-02",
+            "quote": "This assessment concerns layout on the supplied pages only, not missing model content or formula accuracy.",
+            "observation": "The scope limitation appropriately avoids treating detached row labels as missing workbook content. Reported page-8 and page-15 findings agree with adjacent reviews.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-03",
+            "quote": "However, horizontal pagination separates financial values from their row labels across several pages, substantially weakening readability and leaving excessive unused space.",
+            "observation": "This agrees with the neighboring page-15 and page-22 reports. It supports the prior readability concern but supplies no comparison establishing whether pagination changed.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-04",
+            "quote": "However, rows containing \"25,000\", \"35.0\" and \"90%\" lack adjacent labels, so their meaning depends on separate label pages.",
+            "observation": "The detached 35.0 value does not independently verify the warehousing-base defect because its label is absent here. The semantic report provides that interpretation; no contradiction is established.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-05",
+            "quote": "This page contains row labels and only FY21A, leaving later-year values on separate pages.",
+            "observation": "The page-29 description agrees with visual-04, and the page-36 continuation agrees with visual-06. No additional evidence of formula correctness or original-format preservation is supplied.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-06",
+            "quote": "\"FY26E\" through \"FY28E\" and the italic \"15%\" entries are readable and aligned.",
+            "observation": "The displayed rates are compatible with the semantic interest-rate finding, but visible percentages alone do not establish the interest formulas or all forecast years. The page-43 readability findings agree with visual-07.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-07",
+            "quote": "The supplied page is visibly blank. This adds an empty page within the reviewed layout; it does not establish that model content is missing.",
+            "observation": "The report correctly distinguishes a blank rendered page from missing model content. Its page-50 fragmentation finding agrees with visual-08.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-08",
+            "quote": "The highlighted \"32.8x\" uses white text on yellow with weak contrast.",
+            "observation": "This localized contrast concern supplements visual-07's generally readable page-50 description without necessarily contradicting it. Page-57 clipping and contrast findings agree with visual-09.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-09",
+            "quote": "\"Gross Profit(USD Mn)\" and the five displayed year labels are readable, with clear numeric spacing.",
+            "observation": "This page-64 finding agrees with visual-10. Locally readable tables are compatible with the broader fragmentation concerns; neither establishes source accuracy.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-10",
+            "quote": "The \"Share Price\" section has readable numeric rows, but two date headers appear as \"###\", preventing identification of those columns.",
+            "observation": "The report distinguishes readable numbers from unreadable headers. Its page-71 description truncation agrees with visual-11, but these observations do not establish whether the original workbook had the same defects.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-11",
+            "quote": "The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading.",
+            "observation": "The page-78 finding agrees with visual-12. Fragmented business descriptions support a readability concern, not an inference that workbook text or requested financial calculations are absent.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-12",
+            "quote": "The upper title ends at \"EBITDA (USd in Mn) & EBITDA M\", and later categories and values are missing from view.",
+            "observation": "The page-85 clipping finding agrees with visual-13. Missing content from the visible chart region does not establish missing underlying chart data.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-13",
+            "quote": "The header is clipped to \"udgeted for F.Y. 2027-28\".",
+            "observation": "The page-92 finding agrees with visual-14. Reported chart and table defects preserve the prior PARTIAL outcome, while their relationship to the original layout remains unverified.",
+            "source_citations": []
+          },
+          {
+            "evidence_id": "review-2e562d78e43f4a93-visual-14",
+            "quote": "Multiple Total cells display \"###\", hiding their values.",
+            "observation": "Unreadable displayed totals support the reported readability shortcoming but do not prove absent or incorrect calculations. The report supplies no baseline comparison for the explicit structure, layout and formatting preservation obligation.",
+            "source_citations": []
+          }
+        ]
+      },
       "attempted": true,
       "telemetry": {
         "model_calls": 1,
-        "elapsed_seconds": 44.12033270000029,
+        "elapsed_seconds": 49.85739240000112,
         "cost": null,
         "cost_status": "unavailable",
         "attempts": [
           {
-            "started_at": "2026-10-28T13:29:23.733892+00:00",
+            "started_at": "2026-10-29T02:15:46.647347+00:00",
             "provider": {
               "backend": "model-judge-v1",
               "config": {
@@ -21822,25 +21948,241 @@
             "model_call_started": true,
             "exit_code": 0,
             "usage": {
-              "input_tokens": 30788,
+              "input_tokens": 30790,
               "cached_input_tokens": 0,
               "cache_write_input_tokens": 0,
-              "output_tokens": 1654,
-              "reasoning_output_tokens": 51
+              "output_tokens": 1713,
+              "reasoning_output_tokens": 50
             },
             "model": "gpt-6.1-sol",
-            "status": "error",
-            "error": "invalid response or transport failure: ValueError",
-            "elapsed_seconds": 44.11870660000022,
-            "ended_at": "2026-10-28T13:30:07.853524+00:00"
+            "status": "completed",
+            "elapsed_seconds": 49.848316999996314,
+            "ended_at": "2026-10-29T02:16:36.500964+00:00"
           }
         ],
-        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\review-2e562d78e43f4a93-consistency\\call-c7528547dcff",
-        "status": "error",
-        "error": "invalid response or transport failure: ValueError",
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\review-2e562d78e43f4a93-consistency\\call-aaa03d69ddab",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
         "judge_result": {
-          "decision": null,
-          "reviews": [],
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.25,
+            "observed": "All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries.",
+            "confidence": 0.95,
+            "observations": [
+              {
+                "evidence_id": "review-2e562d78e43f4a93-semantic",
+                "quote": "Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE.",
+                "observation": "These reported defects conflict with the required USD 28 warehousing base and consolidated PPE depreciation calculation. The reported IS links can be correct while carrying defective upstream depreciation. Retain PARTIAL; the summary alone does not independently verify formulas or recalculated values.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-01",
+                "quote": "Columns and headings are split across pages, leaving detached values and clipped labels.",
+                "observation": "The reported page-8 continuation agrees with visual-02. These are output readability findings; without an original-layout comparison they do not establish a failure to preserve existing formatting.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-02",
+                "quote": "This assessment concerns layout on the supplied pages only, not missing model content or formula accuracy.",
+                "observation": "The scope limitation appropriately avoids treating detached row labels as missing workbook content. Reported page-8 and page-15 findings agree with adjacent reviews.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-03",
+                "quote": "However, horizontal pagination separates financial values from their row labels across several pages, substantially weakening readability and leaving excessive unused space.",
+                "observation": "This agrees with the neighboring page-15 and page-22 reports. It supports the prior readability concern but supplies no comparison establishing whether pagination changed.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-04",
+                "quote": "However, rows containing \"25,000\", \"35.0\" and \"90%\" lack adjacent labels, so their meaning depends on separate label pages.",
+                "observation": "The detached 35.0 value does not independently verify the warehousing-base defect because its label is absent here. The semantic report provides that interpretation; no contradiction is established.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-05",
+                "quote": "This page contains row labels and only FY21A, leaving later-year values on separate pages.",
+                "observation": "The page-29 description agrees with visual-04, and the page-36 continuation agrees with visual-06. No additional evidence of formula correctness or original-format preservation is supplied.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-06",
+                "quote": "\"FY26E\" through \"FY28E\" and the italic \"15%\" entries are readable and aligned.",
+                "observation": "The displayed rates are compatible with the semantic interest-rate finding, but visible percentages alone do not establish the interest formulas or all forecast years. The page-43 readability findings agree with visual-07.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-07",
+                "quote": "The supplied page is visibly blank. This adds an empty page within the reviewed layout; it does not establish that model content is missing.",
+                "observation": "The report correctly distinguishes a blank rendered page from missing model content. Its page-50 fragmentation finding agrees with visual-08.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-08",
+                "quote": "The highlighted \"32.8x\" uses white text on yellow with weak contrast.",
+                "observation": "This localized contrast concern supplements visual-07's generally readable page-50 description without necessarily contradicting it. Page-57 clipping and contrast findings agree with visual-09.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-09",
+                "quote": "\"Gross Profit(USD Mn)\" and the five displayed year labels are readable, with clear numeric spacing.",
+                "observation": "This page-64 finding agrees with visual-10. Locally readable tables are compatible with the broader fragmentation concerns; neither establishes source accuracy.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-10",
+                "quote": "The \"Share Price\" section has readable numeric rows, but two date headers appear as \"###\", preventing identification of those columns.",
+                "observation": "The report distinguishes readable numbers from unreadable headers. Its page-71 description truncation agrees with visual-11, but these observations do not establish whether the original workbook had the same defects.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-11",
+                "quote": "The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading.",
+                "observation": "The page-78 finding agrees with visual-12. Fragmented business descriptions support a readability concern, not an inference that workbook text or requested financial calculations are absent.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-12",
+                "quote": "The upper title ends at \"EBITDA (USd in Mn) & EBITDA M\", and later categories and values are missing from view.",
+                "observation": "The page-85 clipping finding agrees with visual-13. Missing content from the visible chart region does not establish missing underlying chart data.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-13",
+                "quote": "The header is clipped to \"udgeted for F.Y. 2027-28\".",
+                "observation": "The page-92 finding agrees with visual-14. Reported chart and table defects preserve the prior PARTIAL outcome, while their relationship to the original layout remains unverified.",
+                "source_citations": []
+              },
+              {
+                "evidence_id": "review-2e562d78e43f4a93-visual-14",
+                "quote": "Multiple Total cells display \"###\", hiding their values.",
+                "observation": "Unreadable displayed totals support the reported readability shortcoming but do not prove absent or incorrect calculations. The report supplies no baseline comparison for the explicit structure, layout and formatting preservation obligation.",
+                "source_citations": []
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-aaa03d69ddab:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.25,
+                "observed": "All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries.",
+                "confidence": 0.95,
+                "observations": [
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-semantic",
+                    "quote": "Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE.",
+                    "observation": "These reported defects conflict with the required USD 28 warehousing base and consolidated PPE depreciation calculation. The reported IS links can be correct while carrying defective upstream depreciation. Retain PARTIAL; the summary alone does not independently verify formulas or recalculated values.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-01",
+                    "quote": "Columns and headings are split across pages, leaving detached values and clipped labels.",
+                    "observation": "The reported page-8 continuation agrees with visual-02. These are output readability findings; without an original-layout comparison they do not establish a failure to preserve existing formatting.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-02",
+                    "quote": "This assessment concerns layout on the supplied pages only, not missing model content or formula accuracy.",
+                    "observation": "The scope limitation appropriately avoids treating detached row labels as missing workbook content. Reported page-8 and page-15 findings agree with adjacent reviews.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-03",
+                    "quote": "However, horizontal pagination separates financial values from their row labels across several pages, substantially weakening readability and leaving excessive unused space.",
+                    "observation": "This agrees with the neighboring page-15 and page-22 reports. It supports the prior readability concern but supplies no comparison establishing whether pagination changed.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-04",
+                    "quote": "However, rows containing \"25,000\", \"35.0\" and \"90%\" lack adjacent labels, so their meaning depends on separate label pages.",
+                    "observation": "The detached 35.0 value does not independently verify the warehousing-base defect because its label is absent here. The semantic report provides that interpretation; no contradiction is established.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-05",
+                    "quote": "This page contains row labels and only FY21A, leaving later-year values on separate pages.",
+                    "observation": "The page-29 description agrees with visual-04, and the page-36 continuation agrees with visual-06. No additional evidence of formula correctness or original-format preservation is supplied.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-06",
+                    "quote": "\"FY26E\" through \"FY28E\" and the italic \"15%\" entries are readable and aligned.",
+                    "observation": "The displayed rates are compatible with the semantic interest-rate finding, but visible percentages alone do not establish the interest formulas or all forecast years. The page-43 readability findings agree with visual-07.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-07",
+                    "quote": "The supplied page is visibly blank. This adds an empty page within the reviewed layout; it does not establish that model content is missing.",
+                    "observation": "The report correctly distinguishes a blank rendered page from missing model content. Its page-50 fragmentation finding agrees with visual-08.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-08",
+                    "quote": "The highlighted \"32.8x\" uses white text on yellow with weak contrast.",
+                    "observation": "This localized contrast concern supplements visual-07's generally readable page-50 description without necessarily contradicting it. Page-57 clipping and contrast findings agree with visual-09.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-09",
+                    "quote": "\"Gross Profit(USD Mn)\" and the five displayed year labels are readable, with clear numeric spacing.",
+                    "observation": "This page-64 finding agrees with visual-10. Locally readable tables are compatible with the broader fragmentation concerns; neither establishes source accuracy.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-10",
+                    "quote": "The \"Share Price\" section has readable numeric rows, but two date headers appear as \"###\", preventing identification of those columns.",
+                    "observation": "The report distinguishes readable numbers from unreadable headers. Its page-71 description truncation agrees with visual-11, but these observations do not establish whether the original workbook had the same defects.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-11",
+                    "quote": "The latter is visibly truncated, and the sparse rows lack headers or identifiers to support independent reading.",
+                    "observation": "The page-78 finding agrees with visual-12. Fragmented business descriptions support a readability concern, not an inference that workbook text or requested financial calculations are absent.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-12",
+                    "quote": "The upper title ends at \"EBITDA (USd in Mn) & EBITDA M\", and later categories and values are missing from view.",
+                    "observation": "The page-85 clipping finding agrees with visual-13. Missing content from the visible chart region does not establish missing underlying chart data.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-13",
+                    "quote": "The header is clipped to \"udgeted for F.Y. 2027-28\".",
+                    "observation": "The page-92 finding agrees with visual-14. Reported chart and table defects preserve the prior PARTIAL outcome, while their relationship to the original layout remains unverified.",
+                    "source_citations": []
+                  },
+                  {
+                    "evidence_id": "review-2e562d78e43f4a93-visual-14",
+                    "quote": "Multiple Total cells display \"###\", hiding their values.",
+                    "observation": "Unreadable displayed totals support the reported readability shortcoming but do not prove absent or incorrect calculations. The report supplies no baseline comparison for the explicit structure, layout and formatting preservation obligation.",
+                    "source_citations": []
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "review-2e562d78e43f4a93-semantic",
+                "review-2e562d78e43f4a93-visual-01",
+                "review-2e562d78e43f4a93-visual-02",
+                "review-2e562d78e43f4a93-visual-03",
+                "review-2e562d78e43f4a93-visual-04",
+                "review-2e562d78e43f4a93-visual-05",
+                "review-2e562d78e43f4a93-visual-06",
+                "review-2e562d78e43f4a93-visual-07",
+                "review-2e562d78e43f4a93-visual-08",
+                "review-2e562d78e43f4a93-visual-09",
+                "review-2e562d78e43f4a93-visual-10",
+                "review-2e562d78e43f4a93-visual-11",
+                "review-2e562d78e43f4a93-visual-12",
+                "review-2e562d78e43f4a93-visual-13",
+                "review-2e562d78e43f4a93-visual-14"
+              ]
+            }
+          ],
           "model_identity": {
             "backend": "model-judge-v1",
             "config": {
@@ -23647,26 +23989,26 @@
     }
   ],
   "declared_scope_results": {
-    "review-9058f58c36b4c7ae": "FAIL",
-    "review-d69312f31c49fcab": "FAIL",
-    "review-e7c94efbec0677c3": "FAIL",
-    "review-f1a51e11aea9fca8": "FAIL",
-    "review-8c91b91efb85a0a5": "FAIL",
-    "review-d8fa947266fa7b8e": "FAIL",
-    "review-c0ea6a3781224c9e": "FAIL",
-    "review-262d29941e093887": "FAIL",
-    "review-6be86bb781998c57": "FAIL",
-    "review-4a85dc3e1d4675c8": "FAIL",
-    "review-9741b22fc5ad5268": "FAIL",
-    "review-d9adcabcf825a07b": "FAIL",
-    "review-f730abc3d56ac9f6": "INCOMPLETE",
-    "review-cbbf830c8da29ae6": "FAIL",
-    "review-13f025d2d6d2afe3": "FAIL",
-    "review-2e562d78e43f4a93": "FAIL",
-    "review-1ae87e464aa68a9b": "FAIL",
     "review-85c3776978b97315": "INCOMPLETE",
+    "review-d8fa947266fa7b8e": "FAIL",
+    "review-13f025d2d6d2afe3": "FAIL",
+    "review-4a85dc3e1d4675c8": "FAIL",
+    "review-8c91b91efb85a0a5": "FAIL",
+    "review-1ae87e464aa68a9b": "FAIL",
+    "review-6be86bb781998c57": "FAIL",
+    "review-d69312f31c49fcab": "FAIL",
+    "review-2e562d78e43f4a93": "FAIL",
+    "review-e7c94efbec0677c3": "FAIL",
+    "review-7fa353cc90101d8e": "FAIL",
+    "review-f730abc3d56ac9f6": "INCOMPLETE",
     "review-9e0e9f65e6b4c39c": "FAIL",
-    "review-7fa353cc90101d8e": "FAIL"
+    "review-c0ea6a3781224c9e": "FAIL",
+    "review-9058f58c36b4c7ae": "FAIL",
+    "review-262d29941e093887": "FAIL",
+    "review-9741b22fc5ad5268": "FAIL",
+    "review-cbbf830c8da29ae6": "FAIL",
+    "review-d9adcabcf825a07b": "FAIL",
+    "review-f1a51e11aea9fca8": "FAIL"
   },
   "quality_qualified": false
 }

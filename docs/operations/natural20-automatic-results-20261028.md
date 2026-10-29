@@ -1,8 +1,8 @@
 # Natural20 automatic diagnostic results
 
-Status: partial_1_channels_pending. Valid channel decisions: 91/92. Complete cases: 19/20.
+Status: completed_declared_scope_diagnostic. Valid channel decisions: 92/92. Complete cases: 20/20.
 
-Declared-scope counts: {'FAIL': 18, 'INCOMPLETE': 2}. Attempts: 110. Corrected charged seconds: 6206.
+Declared-scope counts: {'FAIL': 18, 'INCOMPLETE': 2}. Attempts: 111. Corrected charged seconds: 6256.
 
 These are model diagnostic outcomes. Mandatory PARTIAL rejects acceptance, but does not mean the entire artifact is unusable. Whole-task admission, human accuracy and official native benchmark parity are not qualified. Manual follow-up was waived.
 
@@ -25,7 +25,7 @@ These are model diagnostic outcomes. Mandatory PARTIAL rejects acceptance, but d
 | review-85c3776978b97315 | word | INCOMPLETE | 3/3 |
 | review-8c91b91efb85a0a5 | excel | FAIL | 3/3 |
 | review-9058f58c36b4c7ae | word | FAIL | 3/3 |
-| review-2e562d78e43f4a93 | excel | FAIL | 15/16 |
+| review-2e562d78e43f4a93 | excel | FAIL | 16/16 |
 | review-e7c94efbec0677c3 | word | FAIL | 3/3 |
 | review-cbbf830c8da29ae6 | powerpoint | FAIL | 4/4 |
 
@@ -259,8 +259,6 @@ In the Input Sheet, define Transport Revenue growth (10% FY26, 30% FY27–FY30),
 
 Artifact: `D:\ws\Projects\WorkAgent-RSI\project_artifacts\results\hardening-v2\T28-benchmarks\20261025\complete-human-pack-v1\blind-review-pack\review-2e562d78e43f4a93.xlsx`.
 
-Missing channels: review-2e562d78e43f4a93-consistency.
-
 - PARTIAL / review-2e562d78e43f4a93-semantic: Transport growth, transport revenue formulas, 15% borrowing interest and IS depreciation links are implemented. Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE.
 
 - PARTIAL / review-2e562d78e43f4a93-visual-01: Text and section formatting are generally legible, but horizontal pagination seriously disrupts the valuation tables, sensitivity table and chart. Columns and headings are split across pages, leaving detached values and clipped labels.
@@ -290,6 +288,8 @@ Missing channels: review-2e562d78e43f4a93-consistency.
 - PARTIAL / review-2e562d78e43f4a93-visual-13: The supplied pages retain readable financial values and table styling, but severe horizontal pagination clips chart titles, axes, legends, hyperlinks and table headers. Some chart labels overlap, and one table value displays as "###". These defects substantially impair readability within the selected subset.
 
 - PARTIAL / review-2e562d78e43f4a93-visual-14: The supplied pages have serious layout and readability defects: clipped labels, totals displayed as ###, and tables split across both columns and pages. Text contrast and table borders are generally clear, but the fragmentation makes financial tables difficult to follow.
+
+- PARTIAL / review-2e562d78e43f4a93-consistency: All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries.
 
 ## review-e7c94efbec0677c3 (word)
 

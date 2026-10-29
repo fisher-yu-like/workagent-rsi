@@ -1,11 +1,11 @@
 {
   "schema_version": "natural20-automatic-diagnostic-delivery-v1",
-  "recorded_at": "2026-10-28T13:32:19.681170+00:00",
-  "status": "partial_1_channels_pending",
+  "recorded_at": "2026-10-29T02:16:56.840307+00:00",
+  "status": "completed_declared_scope_diagnostic",
   "case_count": 20,
-  "valid_channels": 91,
+  "valid_channels": 92,
   "required_channels": 92,
-  "fully_returned_cases": 19,
+  "fully_returned_cases": 20,
   "declared_scope_counts": {
     "FAIL": 18,
     "INCOMPLETE": 2
@@ -15,22 +15,22 @@
   "whole_task_admission_qualified": false,
   "official_benchmark_score_claim": false,
   "known_model_usage": {
-    "input_tokens": 3187297,
+    "input_tokens": 3218087,
     "cached_input_tokens": 482176,
     "cache_write_input_tokens": 0,
-    "output_tokens": 65855,
-    "reasoning_output_tokens": 3263
+    "output_tokens": 67568,
+    "reasoning_output_tokens": 3313
   },
   "usage_unknown_calls": 6,
   "recorded_tool_calls": 0,
   "historical_interrupted_tool_usage": "unknown;not recorded as observed zero",
-  "cumulative_model_attempts": 110,
-  "corrected_charged_seconds": 6206,
+  "cumulative_model_attempts": 111,
+  "corrected_charged_seconds": 6256,
   "observed_cost_usd": null,
-  "source_results": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\results.json",
-  "source_results_sha256": "77194ac06e3ac752a25765c58f69acfee45f882396acfe20cbc8908c224e7bd7",
-  "budget_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\budget-state.json",
-  "budget_sha256": "945bdc2c922e3f24c891fc778b2cfb934185c507eb9d0155f3a1669a32e64a27",
+  "source_results": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\results.json",
+  "source_results_sha256": "1d700671139ecb014b79a3ab8bf62f533b59868cc0d197cc937bf55076d3d3f7",
+  "budget_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-one\\budget-state.json",
+  "budget_sha256": "468e0bff00277a1bfe81a28c3c506f476d24c527bcc9f2a531d7849bd438c3f3",
   "cases": [
     {
       "case_id": "review-4a85dc3e1d4675c8",
@@ -542,7 +542,7 @@
       "instruction": "Complete the financial model based on the provided assumptions. Ensure the existing structure, layout, and formatting of the model are preserved throughout the process.\nIn the Input Sheet, define Transport Revenue growth (10% FY26, 30% FY27–FY30), then in the Revenue Drivers tab calculate Transport Revenue for FY26–FY30. Also in the Input Sheet, calculate Warehousing Rate per Square Feet for FY27–FY30 escalating from FY26 base of 28 USD. In the Debt Schedule, calculate Long Term Borrowings interest at 15% from FY26. In the Asset Sch. tab, calculate Consolidated PPE Depreciation for FY26–FY30. In the IS tab, link Depreciation & Amortization from Asset Sch sheet.",
       "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-2e562d78e43f4a93.xlsx",
       "declared_scope_result": "FAIL",
-      "valid_channels": 15,
+      "valid_channels": 16,
       "required_channels": 16,
       "findings": [
         {
@@ -619,11 +619,14 @@
           "channel": "review-2e562d78e43f4a93-visual-14",
           "status": "PARTIAL",
           "summary": "The supplied pages have serious layout and readability defects: clipped labels, totals displayed as ###, and tables split across both columns and pages. Text contrast and table borders are generally clear, but the fragmentation makes financial tables difficult to follow."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-consistency",
+          "status": "PARTIAL",
+          "summary": "All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries."
         }
       ],
-      "missing_calls": [
-        "review-2e562d78e43f4a93-consistency"
-      ]
+      "missing_calls": []
     },
     {
       "case_id": "review-e7c94efbec0677c3",

@@ -5,10 +5,10 @@
   "provider": "codex-cli",
   "model": "gpt-6.1-sol",
   "endpoint": null,
-  "max_model_calls": 110,
+  "max_model_calls": 111,
   "max_tool_calls": 0,
   "max_wall_seconds": 7200,
   "max_cost_usd": null,
-  "approved_at": "2026-10-28T13:28:33.202199Z",
-  "approval_source": "call_d525488d7a8643988e9ac903eb4c0e86"
+  "approved_at": "2026-10-29T02:15:28.288332Z",
+  "approval_source": "user-20261029-request-close-automatic-stage-under-final-one-proposal"
 }

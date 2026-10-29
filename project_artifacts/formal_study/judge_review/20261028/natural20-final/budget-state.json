@@ -1,5 +1,5 @@
 {
-  "policy_sha256": "9131d28bc232b7efb1ed2bd70f9bd633fd08bbd9dd61b00ae9abda6d30eff27c",
+  "policy_sha256": "1effe7d0077d9fb2875bfc68c965e86f93b97ef999c9837b218f8081eeaf3a74",
   "calls": [
     {
       "index": 1,
@@ -9457,9 +9457,90 @@
       "elapsed_seconds": 44.10164970000005,
       "charged_wall_seconds": 45,
       "elapsed_limit_exceeded": false
+    },
+    {
+      "index": 111,
+      "started_at": "2026-10-29T02:15:46.690025+00:00",
+      "status": "completed",
+      "timeout_seconds": 120,
+      "argv": [
+        "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE",
+        "exec",
+        "--ignore-user-config",
+        "--ephemeral",
+        "--skip-git-repo-check",
+        "--sandbox",
+        "read-only",
+        "--model",
+        "gpt-6.1-sol",
+        "--json",
+        "--color",
+        "never",
+        "--output-schema",
+        "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\review-2e562d78e43f4a93-consistency\\call-aaa03d69ddab\\repeat-1-attempt-1\\schema.json",
+        "--output-last-message",
+        "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\review-2e562d78e43f4a93-consistency\\call-aaa03d69ddab\\repeat-1-attempt-1\\output.json",
+        "-C",
+        "C:\\Users\\Lenovo\\AppData\\Local\\Temp\\office-judge-0gy4rvad",
+        "-c",
+        "approval_policy=\"never\"",
+        "-c",
+        "web_search=\"disabled\"",
+        "-c",
+        "features.shell_tool=false",
+        "-c",
+        "features.multi_agent=false",
+        "-c",
+        "model_reasoning_effort=\"low\"",
+        "-c",
+        "project_doc_max_bytes=0",
+        "-c",
+        "features.apps=false",
+        "-c",
+        "features.plugins=false",
+        "-c",
+        "features.hooks=false",
+        "-c",
+        "features.browser_use=false",
+        "-c",
+        "features.computer_use=false",
+        "-c",
+        "features.image_generation=false",
+        "-c",
+        "features.view_image=false",
+        "-c",
+        "features.skill_search=false",
+        "-c",
+        "features.skip_host_skill_discovery=true",
+        "-c",
+        "model_provider=\"wrsi_qualification\"",
+        "-c",
+        "model_providers.wrsi_qualification={name=\"OpenAI qualification\", requires_openai_auth=true, wire_api=\"responses\", request_max_retries=0, stream_max_retries=0, supports_websockets=true}",
+        "-"
+      ],
+      "prompt_sha256": "266f072883aadf09679ce33b6633c06fcb064518348bc521e1c9de889b19aa36",
+      "exit_code": 0,
+      "tool_calls": 0,
+      "item_types": [
+        "error",
+        "agent_message"
+      ],
+      "usage": [
+        {
+          "input_tokens": 30790,
+          "cached_input_tokens": 0,
+          "cache_write_input_tokens": 0,
+          "output_tokens": 1713,
+          "reasoning_output_tokens": 50
+        }
+      ],
+      "ended_at": "2026-10-29T02:16:36.473787+00:00",
+      "elapsed_seconds": 49.79352690000087,
+      "charged_wall_seconds": 50,
+      "elapsed_limit_exceeded": false
     }
   ],
-  "reserved_wall_seconds": 6206,
+  "reserved_wall_seconds": 6256,
   "actual_tool_calls": 0,
   "budget_extension": {
     "historical_budget_sha256": "dad45b408293a3a99a4785ba730dd90b50127cea91b05063792f552196ec7c61",
@@ -9494,9 +9575,9 @@
     "successes_preserved": 65
   },
   "final_two_extension": {
-    "approval_source": "call_d525488d7a8643988e9ac903eb4c0e86",
-    "historical_budget_sha256": "a90e3e50068d37b996661f8143ca22c00e965876369e4e8ab5690487faab32a5",
-    "historical_attempts": 108,
-    "historical_charged_seconds": 6120
+    "approval_source": "user-20261029-request-close-automatic-stage-under-final-one-proposal",
+    "historical_budget_sha256": "945bdc2c922e3f24c891fc778b2cfb934185c507eb9d0155f3a1669a32e64a27",
+    "historical_attempts": 110,
+    "historical_charged_seconds": 6206
   }
 }

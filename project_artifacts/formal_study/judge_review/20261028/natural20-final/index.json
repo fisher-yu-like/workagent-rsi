@@ -1,26 +1,26 @@
 {
   "schema_version": "natural20-final-archive-v1",
-  "valid_channels": 91,
+  "valid_channels": 92,
   "required_channels": 92,
   "final_two_approved": true,
-  "model_calls_in_this_resume": 2,
+  "model_calls_in_this_resume": 3,
   "scope": "Automatic diagnostic only;no human accuracy or whole-task benchmark admission.",
   "files": {
     "results.json": {
-      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\results.json",
-      "sha256": "77194ac06e3ac752a25765c58f69acfee45f882396acfe20cbc8908c224e7bd7"
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\results.json",
+      "sha256": "1d700671139ecb014b79a3ab8bf62f533b59868cc0d197cc937bf55076d3d3f7"
     },
     "budget-state.json": {
-      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\budget-state.json",
-      "sha256": "945bdc2c922e3f24c891fc778b2cfb934185c507eb9d0155f3a1669a32e64a27"
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-one\\budget-state.json",
+      "sha256": "468e0bff00277a1bfe81a28c3c506f476d24c527bcc9f2a531d7849bd438c3f3"
     },
     "live-policy.json": {
-      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\live-policy.json",
-      "sha256": "9131d28bc232b7efb1ed2bd70f9bd633fd08bbd9dd61b00ae9abda6d30eff27c"
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-one\\live-policy.json",
+      "sha256": "1effe7d0077d9fb2875bfc68c965e86f93b97ef999c9837b218f8081eeaf3a74"
     },
     "approval-receipt.json": {
-      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\approval-receipt.json",
-      "sha256": "634631bdb65f80e6e5866883957137bbc7109f9d20dfbab0e5d9af9926ff6f36"
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-one\\approval-receipt.json",
+      "sha256": "e6941756480ddad4df742c4ac70ad873205476dfe35fba955da7bafc81d008db"
     },
     "completion-proposal.json": {
       "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\prepared-completion-v4\\proposal.json",
@@ -56,7 +56,7 @@
     },
     "verification.txt": {
       "original_path": ".planning\\2026-10-28-natural-judge\\verification-final.log",
-      "sha256": "2819e500bd2248186cc2f9d6a2f59f5c8b1e7f5086ed55ad92c2a5b353ea0785"
+      "sha256": "2a7dff15193c24c85de27b9768f65c09e6ddc7fecd5f4e359b67091eb3b6469c"
     },
     "invalid-consistency-raw.json": {
       "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\review-2e562d78e43f4a93-consistency\\call-c7528547dcff\\repeat-1-attempt-1\\raw_decision.json",
@@ -65,6 +65,10 @@
     "invalid-consistency-request.json": {
       "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-two\\review-2e562d78e43f4a93-consistency\\call-c7528547dcff\\repeat-1-attempt-1\\request.json",
       "sha256": "78b9f5dfe529d7462548abad67d9d6672339500a57accba724cdde117ab1ad6e"
+    },
+    "final-one-proposal.json": {
+      "original_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\prepared-final-one\\proposal.json",
+      "sha256": "0621536592b7a161a46d68e8cfd4affa0a9e86cc454e4b934bf355d8bf2662cf"
     }
   }
 }
