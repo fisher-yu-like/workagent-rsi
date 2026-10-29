@@ -8,7 +8,6 @@ import re
 import shutil
 import stat
 import subprocess
-import sys
 import time
 import urllib.error
 import urllib.request
@@ -20,7 +19,11 @@ from uuid import uuid4
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .hashing import canonical_json_hash, sha256_file
+from .execution_sandbox import SandboxExecutor, SandboxPolicy
+from .apptainer_sandbox import ApptainerPolicy, ApptainerSSHExecutor
 from .rsi_contracts import ProviderRecord
+from .run_contracts import FailureOrigin
+from .run_budget import BudgetExceeded, active_budget, budgeted_urlopen, budgeted_tool
 
 
 _RELATIVE_POSIX_PATH_PATTERN = r"^(?!/)(?!.*[:\\])(?!.*(?:^|/)\.{1,2}(?:/|$))[^/]+(?:/[^/]+)*$"
@@ -42,6 +45,7 @@ class WorkAgentConfig(BaseModel):
     api_max_retries: int = Field(default=3, ge=0, le=8)
     api_retry_delay_seconds: float = Field(default=2.0, ge=0.0, le=60.0)
     verify_com: bool = True
+    sandbox_policy: SandboxPolicy | ApptainerPolicy = Field(default_factory=SandboxPolicy)
 
 
 class WorkAgentSkill(BaseModel):
@@ -82,6 +86,7 @@ class ProviderOutcome(BaseModel):
     response: AgentResponse | None = None
     record: ProviderRecord | None = None
     error: str | None = None
+    failure_origin: FailureOrigin | None = None
 
 
 def build_agent_response_schema() -> dict[str, object]:
@@ -90,9 +95,17 @@ def build_agent_response_schema() -> dict[str, object]:
 
 
 class CodexOfficeProvider:
-    def __init__(self, config: WorkAgentConfig) -> None:
+    def __init__(self, config: WorkAgentConfig, *, sandbox: SandboxExecutor | ApptainerSSHExecutor | None = None) -> None:
         self.config = config
+        self.sandbox = sandbox or (ApptainerSSHExecutor(config.sandbox_policy) if isinstance(config.sandbox_policy, ApptainerPolicy)
+                                   else SandboxExecutor(config.sandbox_policy))
         self.schema_path = (Path(__file__).parent / "schemas" / "agent_response.schema.json").resolve()
+
+    def execution_capabilities(self) -> dict:
+        if self.config.backend == "codex-cli":
+            return {"backend": "codex-cli-workspace-write", "t04_qualified": False,
+                    "scope": "CLI-owned sandbox; not the native Docker boundary"}
+        return {"backend": self.config.sandbox_policy.backend, **self.sandbox.probe()}
 
     @property
     def model_identity(self) -> str:
@@ -123,6 +136,11 @@ class CodexOfficeProvider:
         ]
 
     def run(self, prompt: str, workspace: Path, record_root: Path) -> ProviderOutcome:
+        if active_budget() is not None and self.config.backend == 'codex-cli':
+            # This CLI owns an opaque internal tool loop. Reject before launch;
+            # post-hoc event counting cannot enforce a hard call/tool budget.
+            return ProviderOutcome(status='unavailable', failure_origin='environment',
+                error='run budget cannot bound this CLI execution tool loop; use a native metered backend')
         workspace = Path(workspace).resolve()
         records = Path(record_root).resolve()
         workspace_hash = canonical_json_hash({
@@ -150,6 +168,7 @@ class CodexOfficeProvider:
         status = "failed"
         response = None
         error = None
+        failure_origin = None
         exit_code = None
         stdout = ""
         stderr = ""
@@ -172,24 +191,30 @@ class CodexOfficeProvider:
                 error = f"provider exited with code {exit_code}"
                 if _environment_failure(stdout, stderr, self.config.model):
                     status = "unavailable"
+                    failure_origin = 'environment'
                     error += ": required CLI/provider/model capability unavailable (see stdout/stderr)"
             elif not response_path.exists():
                 error = "provider did not write structured output"
+                failure_origin='agent_execution'
             else:
                 try:
                     response = AgentResponse.model_validate_json(response_path.read_text(encoding="utf-8"))
                     status = response.status
+                    failure_origin=None if status=='completed' else 'agent_execution'
                     shutil.copyfile(response_path, canonical_response_path)
                     shutil.copyfile(response_path, records / "agent_response.json")
                 except ValueError as exc:
                     error = f"invalid provider response: {exc}"
+                    failure_origin='agent_execution'
         except subprocess.TimeoutExpired as exc:
             status = "timeout"
+            failure_origin='model_transport'
             error = f"provider timeout after {exc.timeout} seconds"
             stdout = _decode_process_output(exc.stdout)
             stderr = _decode_process_output(exc.stderr)
         except OSError as exc:
             status = "unavailable"
+            failure_origin='environment'
             error = str(exc)
 
         (records / "provider.stdout.jsonl").write_text(stdout, encoding="utf-8", newline="\n")
@@ -206,6 +231,7 @@ class CodexOfficeProvider:
             ended_at=ended,
             exit_code=exit_code,
             status=status,
+            failure_origin=failure_origin,
             output_ref=sha256_file(response_path) if response is not None else None,
             error=error,
         )
@@ -214,7 +240,7 @@ class CodexOfficeProvider:
             encoding="utf-8",
             newline="\n",
         )
-        return ProviderOutcome(status=status, response=response, record=record, error=error)
+        return ProviderOutcome(status=status, response=response, record=record, error=error,failure_origin=failure_origin)
 
     def _run_openai_chat(
         self,
@@ -243,6 +269,7 @@ class CodexOfficeProvider:
                 status="unavailable", response=None, error=f"missing environment variable {self.config.api_key_env}",
                 command=command, prompt=prompt, workspace_hash=workspace_hash, response_path=response_path,
                 records=records, started=started,
+                failure_origin='model_transport',
             )
         system = (
             "You are an Office WorkAgent in an isolated workspace. Use the provided tools to create the requested "
@@ -259,6 +286,7 @@ class CodexOfficeProvider:
         response: AgentResponse | None = None
         status: Literal["completed", "failed", "unavailable", "timeout"] = "failed"
         error: str | None = None
+        failure_origin = None
         exit_code: int | None = 0
         force_finalize = False
         format_corrections = 0
@@ -286,7 +314,7 @@ class CodexOfficeProvider:
                     if remaining <= 0:
                         raise TimeoutError
                     try:
-                        with urllib.request.urlopen(request, timeout=max(1, int(remaining))) as http_response:
+                        with budgeted_urlopen(urllib.request.urlopen, request, timeout=max(1, int(remaining))) as http_response:
                             raw = http_response.read()
                         break
                     except urllib.error.HTTPError as exc:
@@ -299,6 +327,8 @@ class CodexOfficeProvider:
                             delay = self.config.api_retry_delay_seconds * (2 ** api_attempt)
                         delay = min(delay, max(0.0, deadline - time.monotonic()))
                         stderr_lines.append(f"HTTP 429 on turn {turn}; retry {api_attempt + 1}/{self.config.api_max_retries} after {delay:.1f}s")
+                        if active_budget() is not None:
+                            delay=min(delay,active_budget().remaining_seconds())
                         if delay <= 0:
                             raise
                         time.sleep(delay)
@@ -325,13 +355,17 @@ class CodexOfficeProvider:
                             arguments = json.loads(function.get("arguments") or "{}")
                         except json.JSONDecodeError:
                             arguments = {"_raw": function.get("arguments")}
-                        result = _execute_native_tool(name, arguments, workspace, timeout_seconds=max(1, int(remaining)))
+                        result = _execute_native_tool(name, arguments, workspace, timeout_seconds=max(1, int(remaining)), sandbox=self.sandbox,records=records)
                         event = {"turn": turn, "index": index, "name": name, "arguments": arguments, "result": result}
                         with tool_log.open("a", encoding="utf-8", newline="\n") as handle:
                             handle.write(json.dumps(event, ensure_ascii=False) + "\n")
                         messages.append({"role": "tool", "tool_call_id": str(call.get("id") or f"call-{turn}-{index}"), "content": json.dumps(result, ensure_ascii=False)})
                         if not result.get("ok"):
                             failed.append(event)
+                    if any(event["result"].get("execution", {}).get("status") == "unavailable" for event in failed):
+                        status, error = "unavailable", "required execution sandbox unavailable; no host fallback"
+                        failure_origin='environment'
+                        break
                     if failed:
                         messages.append({"role": "user", "content": "A tool action failed. Inspect the exact tool result, repair the full script or manifest, and continue. Do not claim completion until the output is verified."})
                     if _native_manifest_ready(workspace):
@@ -372,33 +406,45 @@ class CodexOfficeProvider:
                 messages.append({"role": "user", "content": "Your previous response reported failure. Use the tools to fix it and only then return completed JSON."})
             else:
                 error = f"provider exceeded {self.config.max_tool_turns} tool turns"
+        except BudgetExceeded as exc:
+            status, failure_origin, error = 'unavailable', 'environment', str(exc)
         except urllib.error.HTTPError as exc:
+            failure_origin='model_transport'
             status = "unavailable" if exc.code in (404, 408, 429, 500, 502, 503, 504) else "failed"
             error = f"OpenAI-compatible HTTP error {exc.code}: {exc.reason}"
             stderr_lines.append(error)
             exit_code = exc.code
         except urllib.error.URLError as exc:
+            failure_origin='model_transport'
             status, error = "unavailable", f"OpenAI-compatible connection failed: {exc.reason}"
             stderr_lines.append(error)
         except TimeoutError:
+            failure_origin='model_transport'
             status, error = "timeout", f"provider timeout after {self.config.timeout_seconds} seconds"
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
+        except json.JSONDecodeError as exc:
+            status,failure_origin,error='unavailable','model_transport','provider returned malformed transport JSON'
+            stderr_lines.append(error)
+        except OSError as exc:
+            status,failure_origin,error='unavailable','environment',str(exc)
+            stderr_lines.append(error)
+        except ValueError as exc:
             error = str(exc)
             stderr_lines.append(error)
         if status == "failed" and error is None:
             error = "provider did not produce a completed response"
         (records / "provider.stdout.jsonl").write_text("\n".join(stdout_lines) + ("\n" if stdout_lines else ""), encoding="utf-8", newline="\n")
         (records / "provider.stderr.txt").write_text("\n".join(stderr_lines) + ("\n" if stderr_lines else ""), encoding="utf-8", newline="\n")
-        return self._openai_outcome(status=status, response=response, error=error, command=command, prompt=prompt, workspace_hash=workspace_hash, response_path=response_path, records=records, started=started, exit_code=exit_code)
+        return self._openai_outcome(status=status, response=response, error=error, command=command, prompt=prompt, workspace_hash=workspace_hash, response_path=response_path, records=records, started=started, exit_code=exit_code,failure_origin=failure_origin)
 
-    def _openai_outcome(self, *, status, response, error, command, prompt, workspace_hash, response_path, records, started, exit_code=None):
+    def _openai_outcome(self, *, status, response, error, command, prompt, workspace_hash, response_path, records, started, exit_code=None,failure_origin=None):
+        failure_origin=None if status=='completed' else failure_origin or ('agent_execution' if status=='failed' else 'model_transport')
         ended = datetime.now(timezone.utc)
         record = ProviderRecord(provider="openai-compatible-api", provider_version="openai-chat-v1", model_identity=self.model_identity,
             command=command, prompt_hash=canonical_json_hash({"prompt": prompt}), workspace_hash=workspace_hash,
-            started_at=started, ended_at=ended, exit_code=exit_code, status=status,
+            started_at=started, ended_at=ended, exit_code=exit_code, status=status,failure_origin=failure_origin,
             output_ref=sha256_file(response_path) if response is not None and response_path.exists() else None, error=error)
         (records / "provider_record.json").write_text(json.dumps(record.model_dump(mode="json"), indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
-        return ProviderOutcome(status=status, response=response, record=record, error=error)
+        return ProviderOutcome(status=status, response=response, record=record, error=error,failure_origin=failure_origin)
 
     def _run_native_ollama(
         self,
@@ -416,6 +462,7 @@ class CodexOfficeProvider:
         status: Literal["completed", "failed", "unavailable", "timeout"] = "failed"
         response: AgentResponse | None = None
         error: str | None = None
+        failure_origin = None
         stdout_lines: list[str] = []
         stderr_lines: list[str] = []
         tool_log = records / "tool_events.jsonl"
@@ -486,7 +533,7 @@ class CodexOfficeProvider:
                     headers={"Content-Type": "application/json"},
                     method="POST",
                 )
-                with urllib.request.urlopen(request, timeout=max(1, int(remaining))) as http_response:
+                with budgeted_urlopen(urllib.request.urlopen, request, timeout=max(1, int(remaining))) as http_response:
                     raw = http_response.read()
                 response_path_for_turn = records / f"ollama_response_{turn:02d}.json"
                 response_path_for_turn.write_bytes(raw)
@@ -504,7 +551,7 @@ class CodexOfficeProvider:
                     failed_tools: list[dict[str, object]] = []
                     for index, call in enumerate(tool_calls):
                         if not isinstance(call, dict):
-                            result = {"ok": False, "error": "malformed tool call"}
+                            result = _execute_native_tool('unknown', {}, workspace, timeout_seconds=max(1,int(remaining)), records=records)
                             name = "unknown"
                             arguments: object = {}
                         else:
@@ -522,6 +569,8 @@ class CodexOfficeProvider:
                                 arguments,
                                 workspace,
                                 timeout_seconds=max(1, int(remaining)),
+                                sandbox=self.sandbox,
+                                records=records,
                             )
                         event = {"turn": turn, "index": index, "name": name, "arguments": arguments, "result": result}
                         with tool_log.open("a", encoding="utf-8", newline="\n") as handle:
@@ -529,6 +578,10 @@ class CodexOfficeProvider:
                         messages.append({"role": "tool", "content": json.dumps(result, ensure_ascii=False)})
                         if result.get("ok") is False:
                             failed_tools.append({"name": name, "result": result})
+                    if any(event["result"].get("execution", {}).get("status") == "unavailable" for event in failed_tools):
+                        status, error = "unavailable", "required execution sandbox unavailable; no host fallback"
+                        failure_origin='environment'
+                        break
                     if failed_tools:
                         failure_details = json.dumps(failed_tools, ensure_ascii=False)
                         messages.append({
@@ -719,18 +772,29 @@ class CodexOfficeProvider:
                 break
             else:
                 error = f"provider exceeded {self.config.max_tool_turns} tool turns"
+        except BudgetExceeded as exc:
+            status, failure_origin, error = 'unavailable', 'environment', str(exc)
         except urllib.error.HTTPError as exc:
             status = "unavailable" if exc.code in (404, 408, 429, 500, 502, 503, 504) else "failed"
             error = f"Ollama HTTP error {exc.code}: {exc.reason}"
+            failure_origin='model_transport'
             stderr_lines.append(error)
         except urllib.error.URLError as exc:
             status = "unavailable"
             error = f"Ollama connection failed: {exc.reason}"
+            failure_origin='model_transport'
             stderr_lines.append(error)
         except TimeoutError:
             status = "timeout"
             error = f"provider timeout after {self.config.timeout_seconds} seconds"
-        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            failure_origin='model_transport'
+        except json.JSONDecodeError as exc:
+            status,failure_origin,error='unavailable','model_transport','provider returned malformed transport JSON'
+            stderr_lines.append(error)
+        except OSError as exc:
+            status,failure_origin,error='unavailable','environment',str(exc)
+            stderr_lines.append(error)
+        except ValueError as exc:
             error = str(exc)
             stderr_lines.append(error)
 
@@ -739,6 +803,7 @@ class CodexOfficeProvider:
         (records / "provider.stdout.jsonl").write_text("\n".join(stdout_lines) + ("\n" if stdout_lines else ""), encoding="utf-8", newline="\n")
         (records / "provider.stderr.txt").write_text("\n".join(stderr_lines) + ("\n" if stderr_lines else ""), encoding="utf-8", newline="\n")
         ended = datetime.now(timezone.utc)
+        failure_origin=None if status=='completed' else failure_origin or ('agent_execution' if status=='failed' else 'model_transport')
         record = ProviderRecord(
             provider="ollama-api",
             provider_version="local-1",
@@ -750,6 +815,7 @@ class CodexOfficeProvider:
             ended_at=ended,
             exit_code=exit_code,
             status=status,
+            failure_origin=failure_origin,
             output_ref=sha256_file(response_path) if response is not None else None,
             error=error,
         )
@@ -758,7 +824,7 @@ class CodexOfficeProvider:
             encoding="utf-8",
             newline="\n",
         )
-        return ProviderOutcome(status=status, response=response, record=record, error=error)
+        return ProviderOutcome(status=status, response=response, record=record, error=error,failure_origin=failure_origin)
 
 def _native_completion_errors(
     workspace: Path,
@@ -921,6 +987,12 @@ def _native_tool_definitions(*, include_read_file: bool = True) -> list[dict[str
             },
         },
     ]
+    tools.append({'type':'function','function':{'name':'inspect_office',
+        'description':'Inspect one authorized staged Office file in the execution sandbox; returns bounded actual structure and read evidence. Optional operations and verification plans are declarations, not proof.',
+        'parameters':{'type':'object','properties':{'path':{'type':'string'},
+            'chosen_operations':{'type':'array','items':{'type':'string'},'maxItems':16},
+            'verification_plan':{'type':'array','items':{'type':'string'},'maxItems':16}},
+            'required':['path'],'additionalProperties':False}}})
     if not include_read_file:
         tools = [tool for tool in tools if tool["function"]["name"] != "read_file"]
     return tools
@@ -960,17 +1032,23 @@ def _native_tool_path(workspace: Path, value: object, *, write: bool = False) ->
     return candidate
 
 
+@budgeted_tool
 def _execute_native_tool(
     name: str,
     arguments: object,
     workspace: Path,
     *,
     timeout_seconds: int = 60,
+    sandbox: SandboxExecutor | ApptainerSSHExecutor | None = None,
+    records: Path | None = None,
 ) -> dict[str, object]:
     """Execute one bounded native tool call and return JSON-serializable evidence."""
     if not isinstance(arguments, dict):
         return {"ok": False, "error": "tool arguments must be an object"}
     try:
+        if name == 'inspect_office':
+            from .task_observations import inspect_input_tool
+            return inspect_input_tool(arguments,workspace,timeout_seconds=timeout_seconds,sandbox=sandbox,records=records)
         if name == "write_file":
             path = _native_tool_path(workspace, arguments.get("path"), write=True)
             content = arguments.get("content")
@@ -1041,41 +1119,28 @@ def _execute_native_tool(
             script = _native_tool_path(workspace, arguments.get("path"), write=True)
             if script.suffix.lower() != ".py" or not script.is_file():
                 raise ValueError("run_python requires an existing .py script")
-            before_office = {
-                path.name
-                for path in workspace.iterdir()
-                if path.is_file() and path.suffix.lower() in {".xlsx", ".docx", ".pptx"}
-            }
-            completed = subprocess.run(
-                [sys.executable, str(script)],
-                cwd=workspace,
-                capture_output=True,
-                text=True,
-                encoding="utf-8",
-                errors="replace",
-                timeout=max(1, timeout_seconds),
-                check=False,
-            )
-            normalized_outputs: list[str] = []
-            if completed.returncode == 0:
-                outputs = workspace / "outputs"
-                outputs.mkdir(parents=True, exist_ok=True)
-                for candidate in sorted(workspace.iterdir()):
-                    if (
-                        candidate.is_file()
-                        and candidate.name not in before_office
-                        and candidate.suffix.lower() in {".xlsx", ".docx", ".pptx"}
-                    ):
-                        destination = outputs / candidate.name
-                        if not destination.exists():
-                            candidate.replace(destination)
-                            normalized_outputs.append(destination.relative_to(workspace).as_posix())
+            digest=sha256_file(script)
+            snapshot_ref=None
+            if records is not None and script.stat().st_size<=100000:
+                from .view_safety import checked_path,ordinary_file
+                snapshot_ref='executed-scripts/'+digest+'.py'
+                snapshot=checked_path(Path(records)/snapshot_ref)
+                snapshot.parent.mkdir(parents=True,exist_ok=True)
+                if not snapshot.exists():
+                    with snapshot.open('xb') as target:target.write(script.read_bytes())
+                if sha256_file(ordinary_file(snapshot))!=digest:raise ValueError('executed script snapshot hash mismatch')
+            outcome = (sandbox or SandboxExecutor()).run(script, workspace, max(1, timeout_seconds))
+            evidence = {}
+            if outcome.trace_refs:
+                evidence = json.loads((workspace / outcome.trace_refs[0]).read_text(encoding="utf-8"))
             return {
-                "ok": completed.returncode == 0,
-                "returncode": completed.returncode,
-                "stdout": completed.stdout[-20000:],
-                "stderr": completed.stderr[-20000:],
-                "normalized_outputs": normalized_outputs,
+                "ok": outcome.status == "succeeded",
+                "returncode": evidence.get("returncode"),
+                "stdout": evidence.get("stdout", ""), "stderr": evidence.get("stderr", ""),
+                "normalized_outputs": [],
+                "execution": outcome.model_dump(mode="json"),
+                'script_sha256':digest,'script_snapshot_ref':snapshot_ref,
+                "error": evidence.get("error") or (None if outcome.status == "succeeded" else "sandbox execution did not succeed"),
             }
 
         return {"ok": False, "error": f"unknown tool: {name}"}

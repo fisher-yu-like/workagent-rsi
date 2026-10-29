@@ -1,0 +1,723 @@
+{
+  "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+  "proposal_hash": "59018f4ef2d32ca731e484e8280286e473b1f439481124a4daadbc5f88800e89",
+  "provider": {
+    "backend": "model-judge-v1",
+    "config": {
+      "provider": "codex-cli",
+      "model": "gpt-6.1-sol",
+      "codex_executable": "codex",
+      "api_base_url": "https://api.openai.com/v1",
+      "api_key_env": "OPENAI_API_KEY",
+      "timeout_seconds": 120,
+      "retries": 0,
+      "repeats": 1,
+      "disagreement_tolerance": 0.25,
+      "max_text_chars": 60000,
+      "max_text_items": 2000,
+      "max_images": 8,
+      "max_image_bytes": 20000000,
+      "max_output_tokens": 4096,
+      "cache_enabled": false,
+      "independent_review": true,
+      "semantic_enabled": true,
+      "visual_enabled": true
+    },
+    "prompt_version": "office-quality-judge-v2-evidence-scope",
+    "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+    "cli_version": "codex-cli 0.159.3",
+    "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+  },
+  "prior_results_sha256": "9b6ecd678ed99f7a97f8287cbece2e29c3965cfb6635337d0dc673e3857b78c4",
+  "rows": [
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "modality": "semantic",
+      "request": "review-3dfbb6e577ab463f-semantic.json",
+      "sha256": "7c91e0127dd8dee475d8a747a4c920c5eb056b548b7b029f9cf7dcb91f1b5c3b",
+      "decision": {
+        "status": "NEEDS_REVIEW",
+        "completion": null,
+        "observed": "Source text, headers and all three ledger rows are preserved in order. Total 45 correctly equals 5 + 17 + 23 and appears in the normal body paragraph immediately after Summary. However, the instruction to mark the “important result” does not define which result or what marking is required, leaving a nonvisual acceptance ambiguity.",
+        "confidence": 1.0,
+        "observations": [
+          {
+            "evidence_id": "e1",
+            "quote": "Preserve source ledger 2.",
+            "observation": "Paragraph 1 preserves the source text exactly.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Preserve source ledger 2."
+              }
+            ]
+          },
+          {
+            "evidence_id": "e2",
+            "quote": "Summary",
+            "observation": "The Summary heading is preserved at paragraph 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Summary"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e3",
+            "quote": "Total 45",
+            "observation": "Paragraph 3 is a normal body paragraph after Summary. Its total is correct: 5 + 17 + 23 = 45. Compliance with the undefined instruction to mark the important result cannot be determined.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"5\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"17\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"23\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e4",
+            "quote": "Item",
+            "observation": "The first table header is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Item\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e5",
+            "quote": "Amount",
+            "observation": "The second table header is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Amount\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e6",
+            "quote": "North",
+            "observation": "North remains the first ledger entry, in table row 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"North\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e7",
+            "quote": "5",
+            "observation": "North's amount remains 5 in row 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"5\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e8",
+            "quote": "South",
+            "observation": "South remains the second ledger entry, in table row 3.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"South\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e9",
+            "quote": "17",
+            "observation": "South's amount remains 17 in row 3.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"17\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e10",
+            "quote": "West",
+            "observation": "West remains the third ledger entry, in table row 4.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"West\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e11",
+            "quote": "23",
+            "observation": "West's amount remains 23 in row 4.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"23\""
+              }
+            ]
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 33.000811300007626,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T06:55:40.389388+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 15356,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 688,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 32.996543100103736,
+            "ended_at": "2026-10-28T06:56:13.390523+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-recovery-20261028\\review-3dfbb6e577ab463f\\semantic\\call-61a94200fe08",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "NEEDS_REVIEW",
+            "completion": null,
+            "observed": "Source text, headers and all three ledger rows are preserved in order. Total 45 correctly equals 5 + 17 + 23 and appears in the normal body paragraph immediately after Summary. However, the instruction to mark the “important result” does not define which result or what marking is required, leaving a nonvisual acceptance ambiguity.",
+            "confidence": 1.0,
+            "observations": [
+              {
+                "evidence_id": "e1",
+                "quote": "Preserve source ledger 2.",
+                "observation": "Paragraph 1 preserves the source text exactly.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Preserve source ledger 2."
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e2",
+                "quote": "Summary",
+                "observation": "The Summary heading is preserved at paragraph 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Summary"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e3",
+                "quote": "Total 45",
+                "observation": "Paragraph 3 is a normal body paragraph after Summary. Its total is correct: 5 + 17 + 23 = 45. Compliance with the undefined instruction to mark the important result cannot be determined.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"5\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"17\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"23\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e4",
+                "quote": "Item",
+                "observation": "The first table header is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Item\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e5",
+                "quote": "Amount",
+                "observation": "The second table header is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Amount\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e6",
+                "quote": "North",
+                "observation": "North remains the first ledger entry, in table row 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"North\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e7",
+                "quote": "5",
+                "observation": "North's amount remains 5 in row 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"5\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e8",
+                "quote": "South",
+                "observation": "South remains the second ledger entry, in table row 3.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"South\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e9",
+                "quote": "17",
+                "observation": "South's amount remains 17 in row 3.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"17\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e10",
+                "quote": "West",
+                "observation": "West remains the third ledger entry, in table row 4.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"West\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e11",
+                "quote": "23",
+                "observation": "West's amount remains 23 in row 4.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"23\""
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-61a94200fe08:repeat-1",
+              "decision": {
+                "status": "NEEDS_REVIEW",
+                "completion": null,
+                "observed": "Source text, headers and all three ledger rows are preserved in order. Total 45 correctly equals 5 + 17 + 23 and appears in the normal body paragraph immediately after Summary. However, the instruction to mark the “important result” does not define which result or what marking is required, leaving a nonvisual acceptance ambiguity.",
+                "confidence": 1.0,
+                "observations": [
+                  {
+                    "evidence_id": "e1",
+                    "quote": "Preserve source ledger 2.",
+                    "observation": "Paragraph 1 preserves the source text exactly.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Preserve source ledger 2."
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e2",
+                    "quote": "Summary",
+                    "observation": "The Summary heading is preserved at paragraph 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Summary"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e3",
+                    "quote": "Total 45",
+                    "observation": "Paragraph 3 is a normal body paragraph after Summary. Its total is correct: 5 + 17 + 23 = 45. Compliance with the undefined instruction to mark the important result cannot be determined.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"5\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"17\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"23\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e4",
+                    "quote": "Item",
+                    "observation": "The first table header is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Item\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e5",
+                    "quote": "Amount",
+                    "observation": "The second table header is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Amount\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e6",
+                    "quote": "North",
+                    "observation": "North remains the first ledger entry, in table row 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"North\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e7",
+                    "quote": "5",
+                    "observation": "North's amount remains 5 in row 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"5\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e8",
+                    "quote": "South",
+                    "observation": "South remains the second ledger entry, in table row 3.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"South\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e9",
+                    "quote": "17",
+                    "observation": "South's amount remains 17 in row 3.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"17\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e10",
+                    "quote": "West",
+                    "observation": "West remains the third ledger entry, in table row 4.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"West\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e11",
+                    "quote": "23",
+                    "observation": "West's amount remains 23 in row 4.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"23\""
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "e1",
+                "e2",
+                "e3",
+                "e4",
+                "e5",
+                "e6",
+                "e7",
+                "e8",
+                "e9",
+                "e10",
+                "e11"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "modality": "visual",
+      "request": "review-6cda065fb91529a5-visual.json",
+      "sha256": "604e2a66121d009dc374e93f46b2ffe3cb2f9683213dbc585203bdda9977021d",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "Both pages are readable, with no clipping or overlap. All three ledger rows appear in order. The result 45 is identified by “Total” and separated from the rows by whitespace, a reasonable visible marking given the undefined meaning of “important.” Formula logic is outside this visual review.",
+        "confidence": 0.93,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Upper-left ledger, approximately x=73–231, y=99–213",
+            "observation": "The headers, ordered rows and total are fully visible in dark text on white. The separate “Total” row identifies the result clearly. Supplied evidence references: e1 “Worksheet: Ledger”; e2 “Item”; e3 “Amount”; e4 “North”; e5 “5”; e6 “South”; e7 “17”; e8 “West”; e9 “23”; e10 “Total”. Worksheet identity and formula placement cannot be established from this rendered page."
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Upper-left note, approximately x=73–264, y=99–114",
+            "observation": "“Preserve source ledger 2.” is fully visible, readable and unobstructed. Supplied evidence references: e11 “Worksheet: Notes”; e12 “Preserve source ledger 2.” The rendered page establishes note visibility, but does not display the worksheet name."
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 21.122244599973783,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T06:56:13.408075+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 17361,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 480,
+              "reasoning_output_tokens": 160
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 21.11497429991141,
+            "ended_at": "2026-10-28T06:56:34.530479+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-recovery-20261028\\review-6cda065fb91529a5\\visual\\call-4e9b542c590b",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "Both pages are readable, with no clipping or overlap. All three ledger rows appear in order. The result 45 is identified by “Total” and separated from the rows by whitespace, a reasonable visible marking given the undefined meaning of “important.” Formula logic is outside this visual review.",
+            "confidence": 0.93,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Upper-left ledger, approximately x=73–231, y=99–213",
+                "observation": "The headers, ordered rows and total are fully visible in dark text on white. The separate “Total” row identifies the result clearly. Supplied evidence references: e1 “Worksheet: Ledger”; e2 “Item”; e3 “Amount”; e4 “North”; e5 “5”; e6 “South”; e7 “17”; e8 “West”; e9 “23”; e10 “Total”. Worksheet identity and formula placement cannot be established from this rendered page."
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Upper-left note, approximately x=73–264, y=99–114",
+                "observation": "“Preserve source ledger 2.” is fully visible, readable and unobstructed. Supplied evidence references: e11 “Worksheet: Notes”; e12 “Preserve source ledger 2.” The rendered page establishes note visibility, but does not display the worksheet name."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-4e9b542c590b:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "Both pages are readable, with no clipping or overlap. All three ledger rows appear in order. The result 45 is identified by “Total” and separated from the rows by whitespace, a reasonable visible marking given the undefined meaning of “important.” Formula logic is outside this visual review.",
+                "confidence": 0.93,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Upper-left ledger, approximately x=73–231, y=99–213",
+                    "observation": "The headers, ordered rows and total are fully visible in dark text on white. The separate “Total” row identifies the result clearly. Supplied evidence references: e1 “Worksheet: Ledger”; e2 “Item”; e3 “Amount”; e4 “North”; e5 “5”; e6 “South”; e7 “17”; e8 “West”; e9 “23”; e10 “Total”. Worksheet identity and formula placement cannot be established from this rendered page."
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Upper-left note, approximately x=73–264, y=99–114",
+                    "observation": "“Preserve source ledger 2.” is fully visible, readable and unobstructed. Supplied evidence references: e11 “Worksheet: Notes”; e12 “Preserve source ledger 2.” The rendered page establishes note visibility, but does not display the worksheet name."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1",
+                "page-2"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    }
+  ],
+  "quality_qualified": false
+}

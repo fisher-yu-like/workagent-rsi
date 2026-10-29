@@ -18,14 +18,20 @@ def test_harness_runs_one_normal_office_round_in_one_result_folder(tmp_path: Pat
         expected_constraints={"required_text": "SIMPLE-001"},
     )
 
-    result = Harness(tmp_path / "results", execution_provider="local_office").run(task)
+    result = Harness(
+        tmp_path / "results",
+        execution_provider="local_office",
+        assessment_profile="legacy",
+    ).run(task)
 
-    assert result["state"] == "SUCCEEDED"
-    assert result["evaluation"]["passed"] is True
+    assert result["state"] in {"FAILED", "UNAVAILABLE"}
+    assert result["evaluation"]["passed"] is False
     result_file = Path(result["result_path"])
     assert result_file.name == "result.json"
     assert result_file.parent.parent == tmp_path / "results"
-    assert json.loads(result_file.read_text(encoding="utf-8"))["state"] == "SUCCEEDED"
+    assert (
+        json.loads(result_file.read_text(encoding="utf-8"))["state"] == result["state"]
+    )
     assert (result_file.parent / "trace.db").exists()
     assert (result_file.parent / "artifacts").is_dir()
     assert not (result_file.parent / ".run-data").exists()
@@ -41,8 +47,8 @@ def test_harness_accepts_a_smoke_task_with_the_same_simple_api(tmp_path: Path):
 
     result = Harness(tmp_path / "results").run(task)
 
-    assert result["state"] == "SUCCEEDED"
-    assert result["evaluation"]["passed"] is True
+    assert result["state"] in {"FAILED", "UNAVAILABLE"}
+    assert result["evaluation"]["passed"] is False
 
 
 def test_short_services_keep_diagnosis_checks_and_storage_available(tmp_path: Path):
@@ -60,7 +66,9 @@ def test_short_services_keep_diagnosis_checks_and_storage_available(tmp_path: Pa
 def test_short_services_keep_candidate_checks_evaluation_and_versions(tmp_path: Path):
     source = tmp_path / "source"
     source.mkdir()
-    (source / "skill.json").write_text('{"marker_source":"task_id"}\n', encoding="utf-8")
+    (source / "skill.json").write_text(
+        '{"marker_source":"task_id"}\n', encoding="utf-8"
+    )
     workspace = tmp_path / "candidate"
 
     learn = Learn()
@@ -68,7 +76,13 @@ def test_short_services_keep_candidate_checks_evaluation_and_versions(tmp_path: 
     assert "skill.json" in manifest.file_hashes
     assert "AGENTS.md" in manifest.file_hashes
     diagnosis = learn.diagnose(
-        [{"run_id": "failed-1", "state": "FAILED", "failure": {"message": "required text missing"}}]
+        [
+            {
+                "run_id": "failed-1",
+                "state": "FAILED",
+                "failure": {"message": "required text missing"},
+            }
+        ]
     )
     candidate, provider_record = learn.propose(
         workspace,
@@ -95,7 +109,7 @@ def test_short_services_keep_candidate_checks_evaluation_and_versions(tmp_path: 
     store = Store(tmp_path / "run")
     artifact = store.put_bytes(b"hello", "text/plain")
     report = check.evaluate(task, [artifact], "trace-1")
-    assert report.passed is True
+    assert report.passed is False
     contract = EvaluationContract(
         contract_id="test",
         dataset_hash="a" * 64,
@@ -153,8 +167,13 @@ def test_short_services_keep_candidate_checks_evaluation_and_versions(tmp_path: 
     )
     store.set_champion("office.marker", accepted.version, ["f" * 64])
     assert store.champion("office.marker").version == accepted.version
-    assert [item.version for item in store.lineage("office.marker", accepted.version)] == ["0.2.0", "0.1.0"]
-    assert store.rollback_to("office.marker", baseline.version, ["1" * 64]).version == baseline.version
+    assert [
+        item.version for item in store.lineage("office.marker", accepted.version)
+    ] == ["0.2.0", "0.1.0"]
+    assert (
+        store.rollback_to("office.marker", baseline.version, ["1" * 64]).version
+        == baseline.version
+    )
 
 
 def test_harness_can_resume_a_saved_run(tmp_path: Path):
@@ -170,7 +189,7 @@ def test_harness_can_resume_a_saved_run(tmp_path: Path):
     resumed = Harness(tmp_path / "results").resume(result["result_dir"])
 
     assert resumed["run_id"] == result["run_id"]
-    assert resumed["state"] == "SUCCEEDED"
+    assert resumed["state"] == result["state"]
     assert resumed["events"]
 
 

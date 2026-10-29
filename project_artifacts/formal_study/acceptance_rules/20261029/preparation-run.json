@@ -1,0 +1,32 @@
+{
+  "command": [
+    "D:\\ws\\Projects\\WorkAgent-RSI\\.venv\\Scripts\\python.exe",
+    "project_artifacts/phase3_experiments/scripts/complete_qualification_specs.py",
+    "--tasks",
+    "project_artifacts/results/hardening-v2/T31-prepared/20261026/task-bundle.draft.json",
+    "--output",
+    "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T31-acceptance-rules\\20261029\\source-bound-final-v4"
+  ],
+  "cwd": "D:\\ws\\Projects\\WorkAgent-RSI",
+  "started_at": "2026-10-29T02:38:37.934477+00:00",
+  "ended_at": "2026-10-29T02:39:23.798357+00:00",
+  "elapsed_seconds": 45.86388289999741,
+  "exit_code": 0,
+  "python": "3.13.6",
+  "base_commit": "d0609c7a1117faefb7b0b9ae818e180132cf6363",
+  "source_hashes": {
+    "src/workagent_rsi/word_package_checks.py": "91a0acdfd45e5899e6c5cc2b9b2b76a29e85aa6096178d5fbc6c53bb91fb0261",
+    "src/workagent_rsi/judgement_provider.py": "52c0b8208d50b45e8f7309929655862d90671496cac5398c5d5edbfea2a0005e",
+    "src/workagent_rsi/check_registry.py": "6a703785b8eaaa0a539f008ea5b190f277b1cc73471260a126f6b95729625e94",
+    "src/workagent_rsi/artifact_assessment.py": "b6d8d5b0eacf0d209080f822a9473b7bda927c9b2381dc5f8b400527f5524655",
+    "project_artifacts/phase3_experiments/scripts/complete_qualification_specs.py": "3db7d089bab40798ff4f0c8342eb6f82566107b93fdb4809392ac91fd3cb7c66",
+    "project_artifacts/phase3_experiments/scripts/prepare_qualification_specs.py": "a0be7e88db0273087b64a3a6e1f09e9c0b05f6631ce74415c1bfd660ec99a0df",
+    "project_artifacts/phase3_experiments/configs/t31_instruction_bindings.json": "1da2710cee33c6e5f9cb73ce4205fc9a513097f786e824c87c6fd66f83187618"
+  },
+  "sources_unchanged": true,
+  "model_calls": 0,
+  "server_jobs": 0,
+  "stdout_sha256": "6942acc0c5efa4fdf53acb4491d4837708275d2e05cda7615f8c8ffde97592ce",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "report_sha256": "cb9ca6497b8d3dfe3b546700a2f205c7d3646444b90cbed4ad9af8decd94f550"
+}

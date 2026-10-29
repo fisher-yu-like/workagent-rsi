@@ -1,0 +1,14 @@
+{
+  "schema_version": "live-call-policy-v1",
+  "allow_live_calls": true,
+  "approved_by_user": true,
+  "provider": "codex-cli",
+  "model": "gpt-6.1-sol",
+  "endpoint": null,
+  "max_model_calls": 26,
+  "max_tool_calls": 0,
+  "max_wall_seconds": 1200,
+  "max_cost_usd": null,
+  "approved_at": "2026-10-26T14:02:40.470956Z",
+  "approval_source": "Actual user reply approving frozen v2 proposal;question call_c734ec6a009f4f69813f026d46980ec0"
+}

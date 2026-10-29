@@ -1,0 +1,10 @@
+{
+  "question_id": "call_c734ec6a009f4f69813f026d46980ec0",
+  "answer": "User explicitly approved this configuration and caps.",
+  "recorded_at": "2026-10-26T14:02:40.472069+00:00",
+  "policy_sha256": "a02b406297975e7660d17dc323895ad894f845b521d70b2bb8b66ba1602683d8",
+  "manifest_sha256": "c7c7a886a2e100506ba89550216d67f6896c7c741a952946cba4a7413325d1f7",
+  "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+  "authorization_scope": "12standard cases,24requests,gpt-6.1-sol,zero tools,total1200seconds,120perrequest,no retries/no automatic expansion;natural20 excluded.",
+  "output_tokens_limit": "4096 prompt request,not server hard cap;actual usage retained."
+}

@@ -1,0 +1,16 @@
+{
+  "case_count": 20,
+  "labels_generated": 0,
+  "independent_blind_review": false,
+  "page": "project_artifacts\\results\\hardening-v2\\T28-adjudication\\20261028\\natural20-v2\\index.html",
+  "request_manifest_hash": "a6bd562f1011ac9625a9e2c75bc2a7cfb300655d2c86ebc70bb2db99b81aca2c",
+  "request_file": "project_artifacts\\results\\hardening-v2\\T28-adjudication\\20261028\\natural20-v2\\adjudication-request.json",
+  "request_sha256": "77f4ab3a6da03a9053464ff907025cd8c644d88b6cbe7804608c4c7542076641",
+  "page_sha256": "5e5f4fbc412b71265a240aaba901065fc7e1189f993419b3c55ba6de72069923",
+  "empty_choices": 20,
+  "render_gap_warnings": 2,
+  "asset_hashes_verified": true,
+  "model_calls": 0,
+  "server_jobs": 0,
+  "first_draft_replaced": "natural20-v1 had a failed console-encoding assertion; use only v2"
+}

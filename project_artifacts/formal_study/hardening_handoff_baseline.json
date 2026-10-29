@@ -1,0 +1,33 @@
+{
+  "schema_version": "handoff-baseline-v1",
+  "development_worktree": "D:\\ws\\Projects\\WorkAgent-RSI-hardening",
+  "development_branch": "feat/evaluation-rsi-hardening",
+  "original_worktree": "D:/ws/Projects/WorkAgent-RSI",
+  "original_branch": "feat/office-artifact-dual-assessment",
+  "base_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
+  "initial_T01_commit": "9290197",
+  "legacy_baseline": {
+    "passed": 157,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/handoff-legacy-baseline/20261021T074934481123Z"
+  },
+  "T01": {
+    "failed": 12,
+    "passed": 2,
+    "evidence": "project_artifacts/results/hardening-v2/T01-final/20261021T075943272086Z"
+  },
+  "T03": {
+    "focused_passed": 17,
+    "bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
+    "relocation": "passed"
+  },
+  "final_full_suite": {
+    "passed": 176,
+    "expected_open_failed": 12,
+    "errors": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/handoff-final-verified/20261021T080224738698Z"
+  },
+  "claim_boundary": "First handoff milestone complete. T01 defects remain open; no live model, three-domain rendering or external benchmark claim."
+}

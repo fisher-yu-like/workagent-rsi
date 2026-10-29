@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+
+# Additive v2 contracts. Existing report schemas and callers are unchanged.
+from .run_contracts import AssessmentOutcome, ExecutionOutcome, FailureOrigin, LiveCallPolicy, ProtocolCapabilities, RunUsage
 
 
 RiskLevel = Literal["low", "medium", "high"]
@@ -15,6 +18,7 @@ class TaskSpec(BaseModel):
     domain: str
     instruction: str
     input_files: tuple[str, ...] = ()
+    execution_mode: Literal['create','edit'] | None = None
     expected_constraints: dict[str, Any] = Field(default_factory=dict)
     risk_level: RiskLevel = "low"
     hidden_test: bool = False
@@ -54,6 +58,7 @@ class ArtifactRef(BaseModel):
     media_type: str
     size_bytes: int
     name: str | None = None
+    file_name: str | None = None
 
 
 class ToolCall(BaseModel):
@@ -77,4 +82,20 @@ class EvaluationReport(BaseModel):
     channel_status: dict[str, str] = Field(default_factory=dict)
     assessment_identity: str | None = None
     report_paths: dict[str, str] = Field(default_factory=dict)
+    score_semantics: Literal['legacy','task-v2','llm-task-review-v1','smoke'] = 'legacy'
+    task_acceptance: Literal['PASS','PARTIAL','FAIL','NEEDS_REVIEW','INCOMPLETE','NOT_ASSESSED'] | None = None
+    quality_score: float | None = Field(default=None,ge=0,le=1)
+    assessment_outcome: AssessmentOutcome | None = None
+
+    @model_validator(mode='after')
+    def versioned_task_semantics(self):
+        if self.score_semantics in {'task-v2','llm-task-review-v1'}:
+            outcome=self.assessment_outcome
+            if outcome is None or self.task_acceptance!=outcome.task_acceptance:
+                raise ValueError('versioned evaluation requires the same explicit task outcome')
+            if self.passed != (self.task_acceptance=='PASS'):
+                raise ValueError('passed must reflect task acceptance')
+            if self.score!=self.quality_score or self.quality_score!=outcome.quality_score:
+                raise ValueError('versioned quality fields must agree')
+        return self
 

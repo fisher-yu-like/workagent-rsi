@@ -1,0 +1,49 @@
+{
+  "scope": "Exposed controlled development standards;no independent population accuracy.",
+  "fully_returned_cases": 6,
+  "matches": 6,
+  "rows": [
+    {
+      "case_id": "review-ec20117491502820",
+      "authored_reference": "PASS",
+      "declared_scope_judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "authored_reference": "FAIL",
+      "declared_scope_judge": "FAIL",
+      "same": true
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "authored_reference": "PASS",
+      "declared_scope_judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "authored_reference": "PASS",
+      "declared_scope_judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "authored_reference": "INCOMPLETE",
+      "declared_scope_judge": "INCOMPLETE",
+      "same": true
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "authored_reference": "FAIL",
+      "declared_scope_judge": "FAIL",
+      "same": true
+    }
+  ],
+  "tested_defect_cases": 2,
+  "known_false_accepts_in_tested_defect_cases": 0,
+  "unjudged_defect_cases": [
+    "review-ccfa7110e2ffbd7e"
+  ],
+  "quality_qualified": false
+}

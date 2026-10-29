@@ -1,0 +1,170 @@
+{
+  "schema_version": "natural20-step1-delivery-v1",
+  "case_count": 20,
+  "recovered_workbooks": 2,
+  "new_rendered_pages": 144,
+  "actual_natural_pages": 311,
+  "unique_images": 300,
+  "new_server_jobs": 2,
+  "server_new_installations": 0,
+  "server_export_bytes": 7397072,
+  "source_workbooks_unchanged": true,
+  "default_renderer_page_cap_unchanged": 40,
+  "recovery_page_cap": 100,
+  "prior_blind_pack_unchanged": true,
+  "manual_followup_waived": true,
+  "warning_audits": [
+    {
+      "case_id": "review-4a85dc3e1d4675c8",
+      "file": "review-4a85dc3e1d4675c8-input-1.xlsx",
+      "warnings": [
+        "Data Validation extension is not supported and will be removed"
+      ],
+      "source_sha256": "105fc9ddfefaa18fa47c91b4982b031acf14809b6a32a1db066b87c89420e540",
+      "native_parts": 1,
+      "scope": "Raw chart/drawing/validation XML; embedded bitmap appearance and recalculation are not established.",
+      "resolved_as": "Raw XML supplied; no silent parser-loss assumption."
+    },
+    {
+      "case_id": "review-13f025d2d6d2afe3",
+      "file": "review-13f025d2d6d2afe3-input-3.xlsx",
+      "warnings": [
+        "Unable to read chart rId1 from xl/drawings/drawing1.xml <class 'openpyxl.chart.chartspace.ExternalData'>.id should be <class 'str'> but value is <class 'NoneType'>",
+        "Unable to read chart rId3 from xl/drawings/drawing1.xml <class 'openpyxl.chart.chartspace.ExternalData'>.id should be <class 'str'> but value is <class 'NoneType'>",
+        "Unable to read chart rId4 from xl/drawings/drawing1.xml <class 'openpyxl.chart.chartspace.ExternalData'>.id should be <class 'str'> but value is <class 'NoneType'>"
+      ],
+      "source_sha256": "f343b4060b76ad2e6ff9cb716b149f45fd441c85dc20605e424f2599c001e11d",
+      "native_parts": 26,
+      "scope": "Raw chart/drawing/validation XML; embedded bitmap appearance and recalculation are not established.",
+      "resolved_as": "Raw XML supplied; no silent parser-loss assumption."
+    },
+    {
+      "case_id": "review-7fa353cc90101d8e",
+      "file": "review-7fa353cc90101d8e-input-1.xlsx",
+      "warnings": [
+        "Data Validation extension is not supported and will be removed"
+      ],
+      "source_sha256": "0ca3f0cf0a4639e2789005f81bf540731cd9f17a7797378883cb242e6a709a57",
+      "native_parts": 1,
+      "scope": "Raw chart/drawing/validation XML; embedded bitmap appearance and recalculation are not established.",
+      "resolved_as": "Raw XML supplied; no silent parser-loss assumption."
+    },
+    {
+      "case_id": "review-9058f58c36b4c7ae",
+      "file": "review-9058f58c36b4c7ae-input-4.xlsx",
+      "warnings": [
+        "DrawingML support is incomplete and limited to charts and images only. Shapes and drawings will be lost."
+      ],
+      "source_sha256": "ca69a83b5a010f1aebbec396e5ba686ba87522ff2f9c3c8c79997ca7ca524770",
+      "native_parts": 42,
+      "scope": "Raw chart/drawing/validation XML; embedded bitmap appearance and recalculation are not established.",
+      "resolved_as": "Raw XML supplied; no silent parser-loss assumption."
+    }
+  ],
+  "remaining_native_limitations": "RawXML restoration does not prove bitmap appearance or numerical recalculation. Judge must retain NEEDS_REVIEW where these are essential.",
+  "traces": [
+    {
+      "path": "project_artifacts\\results\\hardening-v2\\T28-natural-render-recovery\\20261028\\actual-v1\\review-c0ea6a3781224c9e\\provider_records\\sandbox\\32c640c19e394d5782cce2d87d00c574.json",
+      "sha256": "5388d6187e1bd548367ec6c4328d72ac4ab9e5f5664d8f8e0eb6d99083c2be26",
+      "cleanup_confirmed": true,
+      "resource_limits_passed": true
+    },
+    {
+      "path": "project_artifacts\\results\\hardening-v2\\T28-natural-render-recovery\\20261028\\actual-v1\\review-2e562d78e43f4a93\\provider_records\\sandbox\\8903f4db7c6e4399bef8ec5a575758c2.json",
+      "sha256": "a88b69a87f9c72ba9e055f95318a17faf7777c4cc41e076c1d08191d37d81ddf",
+      "cleanup_confirmed": true,
+      "resource_limits_passed": true
+    }
+  ],
+  "manifest": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\prepared-final\\manifest.json",
+  "manifest_sha256": "05e6e6a8ebad6942ef6a4a1c8290381dc56ad7181c5fcdc589be6f87520de7d9",
+  "manifest_hash": "6cf835ea407eaac85ebd2dadb0960c3fb3d32419c9da99b091e9c775ef339884",
+  "model_calls_planned": 92,
+  "model_modalities": {
+    "semantic": 20,
+    "visual": 52,
+    "consistency": 20
+  },
+  "focused_tests": {
+    "passed": 20,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-natural-plan/20261028T080151926976Z/run.json"
+  },
+  "recorded_at": "2026-10-28T08:13:40.186892+00:00",
+  "step1_status": "completed_with_explicit_native_limits",
+  "step2_status": "completed_declared_scope_automatic_diagnostic",
+  "first_attempts": 1,
+  "valid_decisions": 0,
+  "charged_wall_seconds": 59,
+  "tool_calls": 0,
+  "original_failed_opinion_reused": false,
+  "revision_reason": "Literal source formulas/text replace JSON-escaped strings. Strict exact-quote validation unchanged.",
+  "proposed_manifest": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\prepared-literal-v2\\manifest.json",
+  "proposed_manifest_hash": "29e01f76e6be2dbbabe56e2d95950905e429fc694df3a48416b7c5c8fa5f90e7",
+  "proposed_cumulative_attempt_cap": 93,
+  "cumulative_seconds_cap": 7200,
+  "manual_followup_required": false,
+  "latest_focused_tests": {
+    "passed": 23,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-natural-literal/20261028T081153702374Z/run.json"
+  },
+  "preserved_first_attempt": {
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\approval-receipt.json": "19db6b14e3d449d91c68898e2b85d92765ea0714f97aeb384f6da2354743a653",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\budget-state.json": "45ba74747486d0a6545e7b21f4531d1ba2888d716a0c5566b89fc931e54af15a",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\results.json": "7dcb073a236e765051f2083217e8694218db60bc6a430f1b6c60b66b0b9544d5",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-first-attempt\\raw-invalid-decision.json": "517adc542623fbbe7b9ba3b1deb7beeeed9273ee94e9dc8411cf8b6aa188452f"
+  },
+  "offline_quote_format_diagnostic": {
+    "old_exact_source_citations": 4,
+    "new_exact_source_citations": 6,
+    "total_source_citations": 6,
+    "old_opinion_admitted": false
+  },
+  "approved_manifest_hash": "af7f6da042e7d172c8e22e4eec8c769af8e6ca4b9250c3b1f00a84c72a6121c0",
+  "cumulative_attempt_cap": 111,
+  "approval_source": "Actual user message approving revised natural20 manifest and93cumulativeattempts",
+  "actual_results": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\results.json",
+  "historical_attempts": 12,
+  "historical_charged_seconds": 545,
+  "font_qualification_receipt": "project_artifacts/formal_study/hardening_natural20_cjk_20261028.json",
+  "current_cumulative_attempts": 111,
+  "current_corrected_seconds": 6256,
+  "current_valid_channels": 92,
+  "completion_calls_proposed": 27,
+  "clock_audit": "project_artifacts/formal_study/hardening_natural20_clock_audit_20261028.json",
+  "completion_approval": {
+    "source": "call_75f35881f4e14a5d9db06d052bef8292",
+    "proposal_hash": "ed5a6ca903f28f80208de7754c50fd2c7a4a1c14ae85f297152d1ecb64dcc513",
+    "approved": true,
+    "cumulative_calls": 109,
+    "cumulative_seconds": 7200,
+    "historical_seconds_preserved": 5177
+  },
+  "effective_valid_channels": 92,
+  "total_required_channels": 92,
+  "final_two_proposal_hash": "9f408f18978b2103c9cfff794ef60e4fc62d79b7ab9675970dd6621876075b8f",
+  "automatic_results": "project_artifacts/formal_study/hardening_natural20_automatic_results_20261028.json",
+  "current_archive": "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-final\\index.json",
+  "final_two_approval": {
+    "approved": true,
+    "source": "call_d525488d7a8643988e9ac903eb4c0e86",
+    "new_requests": 2,
+    "max_cumulative_calls": 110,
+    "max_cumulative_seconds": 7200
+  },
+  "final_one_approval": {
+    "approved_by_user": true,
+    "approval_source": "user-20261029-request-close-automatic-stage-under-final-one-proposal",
+    "manifest_sha256": "0621536592b7a161a46d68e8cfd4affa0a9e86cc454e4b934bf355d8bf2662cf",
+    "policy_sha256": "1effe7d0077d9fb2875bfc68c965e86f93b97ef999c9837b218f8081eeaf3a74",
+    "historical_budget_path": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-two\\budget-state.json",
+    "historical_budget_sha256": "945bdc2c922e3f24c891fc778b2cfb934185c507eb9d0155f3a1669a32e64a27",
+    "max_cumulative_calls": 111,
+    "max_cumulative_seconds": 7200,
+    "max_new_calls": 1,
+    "max_tool_calls": 0,
+    "per_call_seconds": 120,
+    "automatic_retries": 0
+  }
+}

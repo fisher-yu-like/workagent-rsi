@@ -1,0 +1,8 @@
+[
+  {"case_id":"review-070bf88a4446ba8f","focus":"请在 Excel 中查看 Ledger!B6 的公式，并对照 B2 到 B4 的三行明细。当前公式为 =SUM(B2:B3)，请判断它是否满足原任务要求的完整求和范围。仅看显示的总数不够。"},
+  {"case_id":"review-ccfa7110e2ffbd7e","focus":"请对照这份输入的三行金额计算总数，再查看 Word 汇总段落。成品写 Total 52；按输入明细计算为 51。请确认材料后判断。"},
+  {"case_id":"review-0db11ab1e4e3d5e1","focus":"请读原任务最后一句，它明确允许在正文表格末尾添加 Total 汇总行。请区分三条原始明细与新增汇总行，核对这种成品是否属于允许的替代方案。"},
+  {"case_id":"review-6cda065fb91529a5","focus":"任务除了汇总，还要求标记 important result，但没有定义何为重要。请判断你能否据现有说明确认全部要求已满足；无法确认时可以选择 INCOMPLETE 并说明原因。"},
+  {"case_id":"review-3dfbb6e577ab463f","focus":"任务中的 important result 没有明确标准。请同时查看基础汇总是否完成，以及附加要求是否足以验收；不要仅凭成品外观作判断。"},
+  {"case_id":"review-01c7eae4091c4f6e","focus":"请查看总计是否可见且位于表格上方，并读任务最后未定义的 important result 要求。如果无法确认完整任务是否满足，请保留不确定性。"}
+]

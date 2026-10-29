@@ -1,0 +1,70 @@
+{
+  "schema_version": "hardening-t07-normalization-v1",
+  "status": "completed",
+  "completed_at": "2026-10-24T05:29:36.641101+00:00",
+  "base_commit": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
+  "implementation_commit": "commit containing this manifest; exact source hashes in full test evidence",
+  "branch": "feat/evaluation-rsi-hardening",
+  "scope": "T07 only, local authored fixtures; no server/model/API calls",
+  "T06_commit": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
+  "red": {
+    "failed": 27,
+    "error": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T07-red/20261024T051922049985Z"
+  },
+  "focused": {
+    "passed": 71,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T07-focused/20261024T052454082314Z"
+  },
+  "new_normalization_tests": 29,
+  "full_validation": {
+    "passed": 295,
+    "failed": 9,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/T07-full/20261024T052501756344Z"
+  },
+  "expected_open": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R06",
+    "R09",
+    "R10",
+    "R11"
+  ],
+  "review_cases": {
+    "R07": "passed",
+    "R08": "passed",
+    "R12": "passed",
+    "R06": "expected_open until T08"
+  },
+  "evidence": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z",
+  "bundle": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z/bundle/manifest.json",
+  "verified_behaviors": [
+    "whole raw edit list/metadata admission before constructing normalized edits",
+    "canonical string/object patches and registered candidate-patch-v1 variants",
+    "unknown envelope/field rejection",
+    "strict parent/budget/types; forbidden/duplicate/overlapping edits reject whole response",
+    "exact instruction string preservation",
+    "no fabricated hypothesis or expected metric",
+    "missing metadata only from actual context/transport or recorded deterministic rules",
+    "provider record owns provider/version/model identity; self-report raw only",
+    "duplicate JSON keys rejected in outer response and inner patch string",
+    "raw text/object and normalization evidence retained for rejected cases",
+    "fresh output destination prevents stale CLI response reuse"
+  ],
+  "audited_response_examples": 16,
+  "source_hashes_match_full_tests": true,
+  "limits": [
+    "offline contract qualification, no actual model performance/quality claim",
+    "standalone verifier/behavior gates remain T08",
+    "registered variants only; missing reasoning is rejected",
+    "legacy private normalizer requires a verified context; public provider adapters build it automatically",
+    "G1 remains unfinished; no server storage changes"
+  ]
+}

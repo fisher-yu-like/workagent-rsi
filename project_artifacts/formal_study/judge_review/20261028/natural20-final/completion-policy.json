@@ -1,0 +1,14 @@
+{
+  "schema_version": "live-call-policy-v1",
+  "allow_live_calls": true,
+  "approved_by_user": true,
+  "provider": "codex-cli",
+  "model": "gpt-6.1-sol",
+  "endpoint": null,
+  "max_model_calls": 109,
+  "max_tool_calls": 0,
+  "max_wall_seconds": 7200,
+  "max_cost_usd": null,
+  "approved_at": "2026-10-28T11:08:53.575197Z",
+  "approval_source": "call_75f35881f4e14a5d9db06d052bef8292"
+}

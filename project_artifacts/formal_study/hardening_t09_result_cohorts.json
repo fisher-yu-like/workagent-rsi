@@ -1,0 +1,63 @@
+{
+  "schema_version": "hardening-t09-v1",
+  "status": "completed",
+  "completed_at": "2026-10-24T06:10:42.300225+00:00",
+  "base_commit": "7b839c8773f521c9f41a55fd966f04d7446dc271",
+  "implementation_commit": "commit containing manifest; exact tested sources in evidence",
+  "scope": "Local comparable-cohort analysis and paired-reference protocol; authored fixtures only; no server/model calls",
+  "red": {
+    "failed": 24,
+    "error": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T09-red/20261024T055940252798Z"
+  },
+  "focused": {
+    "passed": 39,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T09-current-focused/20261024T060601944037Z"
+  },
+  "new_tests": 33,
+  "full_validation": {
+    "passed": 352,
+    "failed": 7,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 1,
+    "evidence": "project_artifacts/results/hardening-v2/T09-verified-full/20261024T060710840484Z"
+  },
+  "expected_open": [
+    "R01",
+    "R02",
+    "R03",
+    "R04",
+    "R05",
+    "R10",
+    "R11"
+  ],
+  "review_case_R09": "passed",
+  "verified_behavior": [
+    "all eight identity fields partition numeric means",
+    "hash-bound evidence, task coverage and per-task means are validated",
+    "explicit latest-attempt selection, duplicate/conflict/reused-evidence exclusions",
+    "per-cohort sample and metric denominators, traceable source observations",
+    "formal claims require cohort-bound source/quality/split admission; mixed root has no claim",
+    "new paired reference run preserves original history and records per-task deltas"
+  ],
+  "local_probe": {
+    "mixed_cohorts": 2,
+    "mixed_global_mean": {},
+    "mixed_claims_allowed": false,
+    "selected_retry_samples": 1,
+    "paired_tasks": 2,
+    "history_hash_unchanged": true
+  },
+  "limits": [
+    "v1 supports task-mean metrics; other aggregations require versioned evidence",
+    "legacy results without identities are excluded; historical evidence is not backfilled",
+    "authored admission fixtures validate protocol only, not real external benchmark authenticity",
+    "T08 genuine isolated behavior qualification remains deferred by user; G1 incomplete"
+  ],
+  "source_hashes_verified": true,
+  "evidence": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z",
+  "bundle": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z/bundle/manifest.json",
+  "G1": "incomplete"
+}

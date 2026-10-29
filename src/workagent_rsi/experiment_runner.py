@@ -21,6 +21,7 @@ from .verifier import CandidateVerifier, VerificationPolicy
 
 
 class ExperimentRunner:
+    qualification_only = True
     def __init__(self, data_root: str | Path, repository_root: str | Path) -> None:
         self.data_root = Path(data_root)
         self.repository_root = Path(repository_root)

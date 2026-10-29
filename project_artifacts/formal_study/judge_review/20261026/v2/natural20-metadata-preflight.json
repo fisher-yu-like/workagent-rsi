@@ -1,0 +1,159 @@
+{
+  "scope": "Metadata-only lower bound for future natural20 planning;not an approved request manifest or a full budget estimate.",
+  "cases": [
+    {
+      "case_id": "review-4a85dc3e1d4675c8",
+      "domain": "excel",
+      "render_status": "available",
+      "available_pages": 11,
+      "visual_calls_lower_bound": 2
+    },
+    {
+      "case_id": "review-f730abc3d56ac9f6",
+      "domain": "word",
+      "render_status": "available",
+      "available_pages": 2,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-262d29941e093887",
+      "domain": "word",
+      "render_status": "available",
+      "available_pages": 5,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-9e0e9f65e6b4c39c",
+      "domain": "word",
+      "render_status": "available",
+      "available_pages": 3,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-d8fa947266fa7b8e",
+      "domain": "excel",
+      "render_status": "available",
+      "available_pages": 4,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-9741b22fc5ad5268",
+      "domain": "powerpoint",
+      "render_status": "available",
+      "available_pages": 15,
+      "visual_calls_lower_bound": 2
+    },
+    {
+      "case_id": "review-d9adcabcf825a07b",
+      "domain": "powerpoint",
+      "render_status": "available",
+      "available_pages": 15,
+      "visual_calls_lower_bound": 2
+    },
+    {
+      "case_id": "review-13f025d2d6d2afe3",
+      "domain": "word",
+      "render_status": "available",
+      "available_pages": 4,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-f1a51e11aea9fca8",
+      "domain": "excel",
+      "render_status": "available",
+      "available_pages": 2,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-7fa353cc90101d8e",
+      "domain": "excel",
+      "render_status": "available",
+      "available_pages": 11,
+      "visual_calls_lower_bound": 2
+    },
+    {
+      "case_id": "review-6be86bb781998c57",
+      "domain": "excel",
+      "render_status": "available",
+      "available_pages": 38,
+      "visual_calls_lower_bound": 5
+    },
+    {
+      "case_id": "review-d69312f31c49fcab",
+      "domain": "excel",
+      "render_status": "available",
+      "available_pages": 3,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-c0ea6a3781224c9e",
+      "domain": "excel",
+      "render_status": "unavailable",
+      "available_pages": 0,
+      "visual_calls_lower_bound": null
+    },
+    {
+      "case_id": "review-1ae87e464aa68a9b",
+      "domain": "excel",
+      "render_status": "available",
+      "available_pages": 26,
+      "visual_calls_lower_bound": 4
+    },
+    {
+      "case_id": "review-85c3776978b97315",
+      "domain": "word",
+      "render_status": "available",
+      "available_pages": 2,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-8c91b91efb85a0a5",
+      "domain": "excel",
+      "render_status": "available",
+      "available_pages": 4,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-9058f58c36b4c7ae",
+      "domain": "word",
+      "render_status": "available",
+      "available_pages": 5,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-2e562d78e43f4a93",
+      "domain": "excel",
+      "render_status": "unavailable",
+      "available_pages": 0,
+      "visual_calls_lower_bound": null
+    },
+    {
+      "case_id": "review-e7c94efbec0677c3",
+      "domain": "word",
+      "render_status": "available",
+      "available_pages": 7,
+      "visual_calls_lower_bound": 1
+    },
+    {
+      "case_id": "review-cbbf830c8da29ae6",
+      "domain": "powerpoint",
+      "render_status": "available",
+      "available_pages": 10,
+      "visual_calls_lower_bound": 2
+    }
+  ],
+  "natural_cases": 20,
+  "semantic_calls_lower_bound": 20,
+  "available_visual_calls_lower_bound": 30,
+  "render_gap_cases": [
+    "review-c0ea6a3781224c9e",
+    "review-2e562d78e43f4a93"
+  ],
+  "additional_unknown_costs": [
+    "Semantic evidence/source partitions and consistency reviews are not planned yet.",
+    "Missing render pages may require server work and further requests.",
+    "Task requirement coverage/reference validity must be resolved before whole-task qualification."
+  ],
+  "actual_new_model_calls": 0,
+  "actual_server_jobs": 0
+}

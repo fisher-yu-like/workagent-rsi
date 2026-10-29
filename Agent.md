@@ -2,6 +2,10 @@
 
 ## Project
 
+Current direction (2026-10-29, supersedes the coded-rubric sections of the earlier plan): LLMs judge task reasonableness, artifact completion, quality and repair issues. Code supplies file observations, rendering, recalculation, model transport and records. Do not compile tasks into expected-value checks, select rules by task ID, rescore model decisions with thresholds, or require a reviewed code-check inventory before task review. Both loops use the same task-level model assessment. The inner loop repairs artifacts with its skill frozen; the outer loop compares actual task outcomes across skill versions. Candidate edit boundaries, budgets, isolation, paired statistics and rollback remain enforced by code. No configured judge means incomplete assessment. See [the current protocol](docs/operations/llm-task-review.md). The 140 uncovered rule units below are historical, not an active implementation backlog. Old results retain their original evaluator identity and are not comparable to this protocol without a new evaluation.
+
+Historical hardening results before the LLM protocol change: the standard v2 diagnostic had 26 attempts, 24 valid decisions and 12 complete pairs against exposed development references. Natural20 had 311 pages, 92/92 valid channels, 20 complete cases, 18 FAIL / 2 INCOMPLETE under the old protocol, 111 attempts and 6256 charged seconds. The old mandatory-PARTIAL-to-FAIL policy is retired. Human follow-up was waived; do not request it again. Original labels remain provisional. The 72 T31 inventories and 140 uncovered units describe retired rule preparation, with original evidence preserved. Historical validation snapshots apply to their original sources and evaluator identities. Current implementation and verification are recorded in [the migration report](docs/operations/llm-task-review-migration-20261029.md); no new live judge accuracy or research benefit has been established.
+
 WorkAgent-RSI is a benchmark-driven recursive skill improvement framework for Office agents. In this repository, RSI means **Recursive Skill Improvement**. It does not mean unrestricted model-weight self-modification.
 
 ## Non-negotiable execution rules
@@ -87,6 +91,84 @@ A candidate skill version can be promoted only if all conditions hold:
 - parent version, diff, rationale and evidence are stored.
 
 ## Current state
+
+For current hardening work, use `project_artifacts/formal_study/hardening_task_ledger.json`
+and `hardening_t27_offline_calibration.json` / `hardening_t28_human_calibration.json`. Work in the existing
+`feat/evaluation-rsi-hardening` branch at `D:/ws/Projects/WorkAgent-RSI`.
+T00-T03 are delivered; T03 includes the strict default-off live-call policy.
+T04's default Docker and explicit Apptainer SSH backends do not execute native
+model scripts on the host. Read the T04 manifest for actual backend qualification;
+CLI-owned sandbox capability must remain separate. R01-R12 pass; T21/T22 now close the task-local repair gap. T05 now isolates execution/candidate views and
+hash-verified rendering copies. LibreOffice/Poppler rendering, unrelated-instance
+survival and timeout cleanup passed on the explicit Apptainer worker; dedicated
+Microsoft Office COM remains unavailable. See `deploy/office-worker/README.md`.
+T06 shares verified champion/develop context across API/CLI; public history and
+context budgets are checked offline. See `docs/candidate_generation.md`.
+T07 admits complete raw candidate responses with auditable normalization and
+transport-owned model identity. Both tasks were qualified offline only.
+The latest full suite has 717 passed with no failures, errors or skips.
+The final T23/T24 focused suite has 129 passes; T21/T22 historical focused has121.
+T20's focused suite has 114 passes; the real-probe visual scope repair has 84.
+Counts and evidence are recorded in the task ledger. T08 actual isolated behavior and
+RSI rejection passed on frozen CLI-generated Office programs; champion was unchanged.
+This is authored qualification, not a full live RSI benchmark. See `docs/candidate_verification.md`. T09 comparable-cohort
+analysis and reference evaluation are complete offline; see `docs/result_cohorts.md`.
+T10 adds task-bound reviewed requirement coverage, T11 preflights registered checks,
+and T12 enforces scoped positions with separate requested/observed evidence. See
+`docs/requirement_admission.md`, `docs/check_registry.md`, `docs/scoped_content_checks.md`.
+T17 now unifies normal Check/Harness/RSI task evaluation with reviewed admission
+and explicit task/quality/coverage outcomes. Legacy v1 fields remain declared-check
+compatibility only; historical task entrypoints require an explicit legacy profile.
+T14 structural edit preservation is delivered within its documented support.
+T13 formula/recalculation and T15 geometry/page-coverage local work are complete;
+T13 actual qualification passed14 frozen LibreOffice worker runs. T15 actual rendering
+and individual controls passed; a real long-deck scope issue was fixed in0b64a04.
+Its separately approved three-request real recheck passed: two readable batches
+accepted, last-page defect rejected, all17 pages covered.
+See `docs/edit_preservation.md`, `docs/formula_recalculation.md` and
+`docs/visibility_checks.md`. T16 adds scoped/source-bound evidence partitions and
+independent review records. Actual CLI semantic/source/injection/cache/independent and
+joint-image controls passed. Direct API /responses and accuracy calibration remain
+unqualified; the configured CLI and corrected real batch-scope probes passed. T18 adds
+grounded issue facts, repair targets and verification steps; general feedback no
+longer contains internal fixture knobs. See `docs/judge_evidence_scope.md`,
+`docs/score_semantics_v2.md` and `docs/issue_evidence_quality.md`.
+T19 trace-grounded hypotheses, private-trace protection and five genuine authored
+local failure probes passed, with 51 focused tests. T20 makes valid execution
+failures learnable, retains null unobserved artifact quality, preserves fixed
+task denominators and distinguishes transport/environment/input gaps. R11 now
+passes and actual RSI capture receives syntax-failure feedback. See
+`docs/trace_diagnosis.md` and `docs/execution_failure_feedback.md`.
+T21 adds opt-in task-local repair with fresh full assessment and frozen task/skill.
+T22 adds shared reservations for native model/tool calls, retries, judge calls and
+API candidate generation, best-result retention, scoped output edits and protected
+split isolation. Failed and interrupted requests stay charged. Environment gaps
+retain earlier files while keeping outcomes incomplete. Execution/candidate CLI
+loops are unavailable under a bounded runtime budget because their internal calls
+cannot be reserved; the read-only judge CLI remains metered per invocation.
+See `docs/artifact_repair.md`. T23 removes fixture answer rules and task-ID
+strategy selection, adds explicit task mode and qualification-only formal guards.
+T24 adds optional sandbox input inspection, facts separate from declared plans,
+and independent variant oracles. Its authored local program passed22 actual
+Office cases in nine groups, including unchanged-code and randomized-ID controls.
+This qualifies local engineering and that authored implementation; it does not
+establish current model/champion generalization or new real sandbox qualification.
+Earlier T24 SSH forwarding refused the connection. It is now restored; actual
+T26 boundary and T28 rendering passed. No new model requests were made. See `docs/input_behavior_probes.md`
+and `docs/policies/template-and-overfitting.md`. T00-T25 engineering tasks are
+delivered. T26 local family/source/variant and one-use final-store interfaces pass;
+its 72-base/216-instance corpus and separate evaluator deployment remain blocked.
+T25 supplies 90 exposed calibration cases, 30 inputs and 3 source families. The
+calibration-splits profile covers 23 checks; complete handoff regression remains
+mandatory. T27 deterministic calibration is delivered:45 PASS/28 FAIL/17 INCOMPLETE over90 cases;
+2 visual defects remain unresolved, not passed. T28 local human provenance/UI and
+12 actual server renders/20 pages are complete; actual user labels,20 natural
+artifacts and newly bounded judge calls remain pending. User will provide independent
+files later and asked to stop after this delivery without new material generation.
+T26 actual candidate-mount denial is qualified; separate principals remain unprovisioned.
+T29-T35 and later live/research qualification remain unfinished. All-green local tests and authored
+probes do not establish live model repair or RSI improvement.
+The entries below preserve historical stage evidence.
 
 - Literature review: completed for the two specified arXiv works.
 - Phase 1A design: completed and approved.

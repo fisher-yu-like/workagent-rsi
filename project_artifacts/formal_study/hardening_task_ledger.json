@@ -1,0 +1,664 @@
+{
+  "schema_version": "hardening-task-ledger-v1",
+  "updated_at": "2026-10-29T10:35:19.480246+00:00",
+  "working_tree": "D:/ws/Projects/WorkAgent-RSI",
+  "branch": "feat/evaluation-rsi-hardening",
+  "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
+  "source_plan": "docs/superpowers/plans/2026-10-16-evaluation-rsi-hardening.md",
+  "tasks": [
+    {
+      "task_id": "T00",
+      "status": "completed",
+      "evidence": null,
+      "note": "Existing committed work reused."
+    },
+    {
+      "task_id": "T01",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T01-final/20261021T075943272086Z",
+      "note": "Evidence delivery complete; all twelve defects remain expected-open."
+    },
+    {
+      "task_id": "T02",
+      "status": "completed",
+      "evidence": null,
+      "note": "Existing committed work reused."
+    },
+    {
+      "task_id": "T03",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts",
+      "note": "Outcome/protocol/usage and portable bundle delivered previously. Section 2.7 strict default-off live-call approval contract and JSON template added; 33 focused tests pass. Runtime reservations/counters remain T22/T31, not claimed implemented.",
+      "policy_evidence": "project_artifacts/results/hardening-v2/T03-policy/20261023T125043946935Z"
+    },
+    {
+      "task_id": "T04",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T04/20261023T131835002830Z/sandbox",
+      "note": "Fail-closed Docker and explicit Apptainer SSH implemented. Apptainer real boundary, actual cgroups, three Office formats and detached-child cleanup passed. Docker real qualification not run. T05 remains pending."
+    },
+    {
+      "task_id": "T05",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T05/20261024T041832387079Z",
+      "note": "Input/candidate allowlist and pre-resolve link checks complete. Real isolated LibreOffice/Poppler XLSX/DOCX/PPTX rendering, unchanged source hashes, unrelated Office survivor and detached timeout cleanup passed. Dedicated MS Office COM unavailable; G1 remains unfinished.",
+      "base_commit": "d1a469750808f6b7bbbea93b8b6ef1cb5eb7b1f0",
+      "manifest": "project_artifacts/formal_study/hardening_t05_evaluation_boundary.json",
+      "bundle": "project_artifacts/results/hardening-v2/T05-handoff/20261024T042509615734Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T06",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z",
+      "note": "Verified champion/develop context shared by API/CLI; public-history provenance, overflow and multi-round inheritance passed offline. No server/model calls.",
+      "base_commit": "c9a3d3dd84262be893dde31a37fb2696eb2d016f",
+      "manifest": "project_artifacts/formal_study/hardening_t06_candidate_context.json",
+      "bundle": "project_artifacts/results/hardening-v2/T06/20261024T051729272060Z/bundle/manifest.json",
+      "implementation_commit": "8bb3e04f0760362ba2f1b94143ef95faf043034b"
+    },
+    {
+      "task_id": "T07",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z",
+      "note": "Complete API/CLI raw response admission with registered deterministic normalization, exact text/raw evidence and provider-owned identity passed offline. No server/model calls.",
+      "base_commit": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
+      "manifest": "project_artifacts/formal_study/hardening_t07_candidate_normalization.json",
+      "bundle": "project_artifacts/results/hardening-v2/T07/20261024T052934976672Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T08",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z",
+      "note": "Actual CLI gpt-6.1-sol frozen Office programs passed preserving control and exposed two protected regressions. Standalone verifier and actual RSI rejection route agree; champion unchanged. No full live RSI benchmark or general skill-quality claim.",
+      "local_status": "completed",
+      "behavior_status": "deferred_by_user",
+      "manifest": "project_artifacts/formal_study/hardening_t08_candidate_validation.json",
+      "bundle": "project_artifacts/results/hardening-v2/T08/20261024T055823362222Z/bundle/manifest.json",
+      "implementation_commit": "7b839c8773f521c9f41a55fd966f04d7446dc271",
+      "real_qualification": "isolated_run_passed",
+      "server_evidence": "project_artifacts/results/hardening-v2/T08-real/20261024T123719407816Z"
+    },
+    {
+      "task_id": "T09",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z",
+      "note": "Comparable cohort/evidence/retry/claim boundaries and exclusive paired reference evaluation verified offline. R09 passes. T08 genuine behavior remains deferred; G1 incomplete.",
+      "base_commit": "7b839c8773f521c9f41a55fd966f04d7446dc271",
+      "manifest": "project_artifacts/formal_study/hardening_t09_result_cohorts.json",
+      "bundle": "project_artifacts/results/hardening-v2/T09/20261024T060809298886Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T10",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T10/20261024T063905253104Z",
+      "note": "Local implementation and authored cases verified; no server/model calls. See task manifest for scope.",
+      "base_commit": "5c9253ad4cc5920f42ec9d08286ce0546ca77c79",
+      "manifest": "project_artifacts/formal_study/hardening_t10_requirement_admission.json",
+      "bundle": "project_artifacts/results/hardening-v2/T10/20261024T063905253104Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T11",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T11/20261024T064458800796Z",
+      "note": "Local implementation and authored cases verified; no server/model calls. See task manifest for scope.",
+      "base_commit": "2eb3938b064987f44a48b0755beb151dc3e8ba78",
+      "manifest": "project_artifacts/formal_study/hardening_t11_check_registry.json",
+      "bundle": "project_artifacts/results/hardening-v2/T11/20261024T064458800796Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T12",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T12/20261024T065433339082Z",
+      "note": "Local implementation and authored cases verified; no server/model calls. See task manifest for scope.",
+      "base_commit": "425f3b78928a5ae3749f76ee9c01b590d74b1865",
+      "manifest": "project_artifacts/formal_study/hardening_t12_scoped_content.json",
+      "bundle": "project_artifacts/results/hardening-v2/T12/20261024T065433339082Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T13",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z",
+      "note": "Local formula contracts plus 14 actual frozen Apptainer/LibreOffice runs passed. Independent engine probe, five variants, exact/literal/constant controls, changed-input recomputation, original hashes, resource/image and cleanup proof retained. External/dynamic formulas and general equivalence remain unsupported.",
+      "base_commit": "f9730d4607ab3e57f0a091455eeba89e978a53eb",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t13_formula_semantics.json",
+      "bundle": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z/bundle/manifest.json",
+      "real_qualification": "isolated_run_passed",
+      "server_evidence": "project_artifacts/results/hardening-v2/T13-real/20261024T122504362212Z"
+    },
+    {
+      "task_id": "T14",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T14/20261024T072013908473Z",
+      "note": "Local tests/protocol complete. Supported structural scopes only; unsupported content remains review gap.",
+      "base_commit": "ada9f84da1ca8b077792cf0e7b281e8a98bd4899",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t14_preservation.json",
+      "bundle": "project_artifacts/results/hardening-v2/T14/20261024T072013908473Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T15",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z",
+      "note": "Actual frozen Office rendering, authored visual controls, CLI source/injection/cache/independent/partition/joint-image probes passed. Real batch-scope regression fixed0b64a04 with4 red/84 green; approved three-request recheck PASS/PASS/FAIL with17/17 citations. Direct API and calibrated accuracy remain unqualified; no full live RSI claim.",
+      "base_commit": "b9598c4effd4c2e8c3e32306b847bcc70eeeac81",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t15_visibility.json",
+      "bundle": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z/bundle/manifest.json",
+      "real_qualification": "configured_cli_and_frozen_office_worker_passed",
+      "server_evidence": "project_artifacts/results/hardening-v2/T15-T16-final/20261024T125633426727Z"
+    },
+    {
+      "task_id": "T16",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z",
+      "note": "Actual frozen Office rendering, authored visual controls, CLI source/injection/cache/independent/partition/joint-image probes passed. Real batch-scope regression fixed0b64a04 with4 red/84 green; approved three-request recheck PASS/PASS/FAIL with17/17 citations. Direct API and calibrated accuracy remain unqualified; no full live RSI claim.",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t16_judge_evidence.json",
+      "bundle": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z/bundle/manifest.json",
+      "real_qualification": "configured_cli_and_frozen_office_worker_passed",
+      "server_evidence": "project_artifacts/results/hardening-v2/T15-T16-final/20261024T125633426727Z"
+    },
+    {
+      "task_id": "T17",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T17/20261024T102734939310Z",
+      "note": "Local engineering tests complete; see task manifest for supported scope.",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t17_entrypoint_parity.json",
+      "bundle": "project_artifacts/results/hardening-v2/T17/20261024T102734939310Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T18",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T18/20261024T105955004559Z",
+      "note": "Local engineering tests complete; see task manifest for supported scope.",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t18_issue_evidence.json",
+      "bundle": "project_artifacts/results/hardening-v2/T18/20261024T105955004559Z/bundle/manifest.json"
+    },
+    {
+      "task_id": "T19",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T19/20261024T130827249534Z",
+      "note": "Grounded syntax/API/sheet/range/overwrite hypotheses cite authorized hash-bound snippets and falsification checks. Output-only causes stay unknown. Private traces and legacy metadata paths excluded from candidate context. Five genuine authored local probes and51 focused tests passed; no model/server calls.",
+      "manifest": "project_artifacts/formal_study/hardening_t19_trace_diagnosis.json"
+    },
+    {
+      "task_id": "T20",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T20/20261024T133149608664Z",
+      "note": "Typed code/transport/environment/input origins survive provider/adapter/orchestrator. Code failures enter develop feedback and actual RSI candidate context with null artifact quality; fixed denominators, paired quality, runtime cost and private cohort/rate checks prevent dropping hard tasks. R11 passes. Exact focused/full counts in manifest; only R10 remains open. No model/server calls.",
+      "manifest": "project_artifacts/formal_study/hardening_t20_execution_feedback.json"
+    },
+    {
+      "task_id": "T21",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T21/20261024T161041483329Z",
+      "note": "Task-local repair through Harness, fresh full assessment, unchanged retry semantics and registry; 55 focused passes, authored provider substitutes only.",
+      "manifest": "project_artifacts/formal_study/hardening_t21_repair_loop.json"
+    },
+    {
+      "task_id": "T22",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T22/20261024T161057802548Z",
+      "note": "Shared call/tool/repair/time/cost reservations, protected feedback isolation, frozen identity, scoped edits, best result and interruption history. Final 121 focused/663 full passes; no live model/server calls.",
+      "manifest": "project_artifacts/formal_study/hardening_t22_budget_visibility.json"
+    },
+    {
+      "task_id": "T23",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T23/20261024T171006226072Z",
+      "note": "Generic prompt composition, explicit/input-derived task mode, qualification-only markers and formal guards. Focused92 pass; no live calls.",
+      "manifest": "project_artifacts/formal_study/hardening_t23_prompt_independence.json"
+    },
+    {
+      "task_id": "T24",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T24/20261024T171019773994Z",
+      "note": "Local engineering delivery: trusted sandbox inspection path, separate actual facts/declarations, independent behavior oracles; 22 authored local cases in nine groups pass with unchanged-code and ID controls. Full692/focused129 pass. No new live model or sandbox qualification; server unavailable and optional new budget unapproved.",
+      "manifest": "project_artifacts/formal_study/hardening_t24_dynamic_input.json"
+    },
+    {
+      "task_id": "T25",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T25-final/20261025T020152183803Z/bundle/manifest.json",
+      "note": "90 development cases, 30 distinct inputs,3 source families. Four grouped checks pass in final full regression.",
+      "manifest": "project_artifacts/formal_study/hardening_t25_calibration_materials.json"
+    },
+    {
+      "task_id": "T26",
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T26/20261025T020210626138Z/bundle/manifest.json",
+      "note": "2026-10-26 balanced candidate material preparation completed:24Excel/24Word/24PPT,72 native inputs,72 connected groups;173T28-reserved tasks excluded. Original216-instance and sealed untouched final/principal requirements remain incomplete.",
+      "local_status": "completed",
+      "data_scale_status": "balanced_candidate_materials_complete;full_T26_acceptance_incomplete",
+      "evaluator_service_status": "unprovisioned",
+      "manifest": "project_artifacts/formal_study/hardening_t26_family_splits.json",
+      "server_boundary_status": "qualified",
+      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+      "balanced_materials": "project_artifacts/formal_study/hardening_t26_balanced_materials.json",
+      "active_candidate_manifest": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/evaluator-only/task-manifest.json"
+    },
+    {
+      "task_id": "T27",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json",
+      "note": "90-case calibration repeated with unchanged outcomes; native SpreadsheetBench 1/2 scorer integration checked through four actual server recalculations. No model output or general accuracy claim.",
+      "local_status": "completed",
+      "manifest": "project_artifacts/formal_study/hardening_t27_offline_calibration.json",
+      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json"
+    },
+    {
+      "task_id": "T28",
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
+      "note": "Standard v2 diagnostic complete:26attempts/24valid/12pairs. Natural20 evidence complete:311pages;4CJKrenders qualified. Automatic diagnostic:92/92valid channels,18FAIL/2INCOMPLETE in declared scope. Manual follow-up waived;original human labels remain provisional. Whole-task acceptance, human accuracy and official benchmark parity are not qualified.",
+      "local_status": "completed",
+      "server_render_status": "30_available_2_coverage_gaps",
+      "human_status": "32first_pass_provisional_6nonblind_adjudications_received_2reference_disputes",
+      "natural_cohort_status": "evidence_and_automatic_diagnostic_complete;manual_followup_waived;whole_task_admission_unqualified",
+      "manifest": "project_artifacts/formal_study/hardening_t28_human_calibration.json",
+      "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+      "generation_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
+      "complete_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
+      "actual_human_labels": 32,
+      "actual_judge_attempts": 22,
+      "valid_judge_channel_decisions": 14,
+      "current_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
+      "latest_offline_preparation": "project_artifacts/formal_study/hardening_t28_t31_preparation.json",
+      "next_human_action": "No repeated adjudication requested. Resolve429. Eight never-issued payloads remain under original policy;retrying two failed requests/full26attempt recovery needs explicit additional approval.",
+      "judge_v2_status": "26attempts_24valid_12complete_pairs;2human_interpretations_clarified_nonblind;natural20_pending",
+      "actual_adjudications": 6,
+      "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json",
+      "judge_attempts_by_version": {
+        "v1": 6,
+        "v2": 16
+      },
+      "valid_judge_channel_decisions_scope": "Active v2 only;v1five retained separately,not pooled.",
+      "valid_judge_channels_by_version": {
+        "v1": 5,
+        "v2": 14
+      },
+      "judge_v2_evidence": "project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json",
+      "latest_continuation": "project_artifacts/formal_study/hardening_remaining_20261028.json",
+      "human_followup_status": "waived_by_user;not_a_completion_gate_for_further_development",
+      "human_followup_waiver": "project_artifacts/formal_study/hardening_manual_followup_waiver_20261028.json",
+      "latest_text_preparation": "project_artifacts/formal_study/hardening_mixed_evidence_20261028.json",
+      "latest_natural_delivery": "project_artifacts/formal_study/hardening_natural20_steps12_20261028.json",
+      "natural_render_status": "all20cases_311pages;4CJKartifacts_re_rendered_with_task_local_verified_font;originalfilesunchanged",
+      "natural_judge_status": "92of92_valid;20of20_cases_fully_returned;111attempts_6256corrected_seconds",
+      "font_qualification": "project_artifacts/formal_study/hardening_natural20_cjk_20261028.json",
+      "automatic_diagnostic_receipt": "project_artifacts/formal_study/hardening_natural20_automatic_results_20261028.json"
+    },
+    {
+      "task_id": "T29",
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T29-T32-focused/20261026T081038957014Z",
+      "note": "Optional interleaved three-repeat execution and family bootstrap now gate artifact promotion. Every repeat is retained; quality uses all repeats; cached judges and missing execution snapshots block. Actual qualified model comparisons and human-calibrated research evidence remain pending.",
+      "local_status": "offline_comparison_core_completed_integration_pending",
+      "manifest": "project_artifacts/formal_study/hardening_t29_local_comparison.json",
+      "local_engineering_complete": true
+    },
+    {
+      "task_id": "T30",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T29-T32-focused/20261026T081038957014Z",
+      "note": "Scoped negative evidence by parent/cohort/patch; trusted candidate version bound before behavior verification; registry/package consistency; develop-only allowlisted lesson records; endpoint/config identity and budget-ledger restoration. Offline verification only, not a real model resume claim.",
+      "local_engineering_complete": true
+    },
+    {
+      "task_id": "T31",
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T31-prepared/20261026",
+      "note": "Task acceptance now uses the original task and task-level LLM review. Coded rule authoring and mandatory rule-inventory admission are retired by user direction; the 140 uncovered units are historical. Both loops are connected and verified offline. Live qualification of the new judge protocol and actual three-domain repair remain unrun and require a separately approved configuration and budget.",
+      "local_engineering_complete": true,
+      "historical_coded_rule_preparation": {
+        "spec_preparation_status": "72source_bound_rule_plans_405source_units_140uncovered;66native_Word_rules;24PPT_reference_bindings;90Excel_label_bindings;all_SPEC_INCOMPLETE",
+        "spec_preparation_report": "project_artifacts\\formal_study\\acceptance_rules\\20261029\\report.json",
+        "latest_offline_preparation": "project_artifacts\\formal_study\\hardening_t31_acceptance_rules_20261029.json"
+      },
+      "active_protocol_report": "docs/operations/llm-task-review-migration-20261029.md"
+    },
+    {
+      "task_id": "T32",
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T34-final/20261026T083145209758Z",
+      "note": "Equal-cap B0/B1/B2/B3 preregistration, immutable complete-arm receipts, initial/final fixed-reference reassessment, resumable trusted-backend dispatch and sealed-final one-use gate implemented/tested offline. Production token-metered backend and its live qualification remain unfinished, so CLI live dispatch blocks. No current paid allowance or independent final cohort; no RSI benefit claim.",
+      "local_engineering_complete": false,
+      "local_protocol_complete": true
+    },
+    {
+      "task_id": "T33",
+      "status": "blocked",
+      "evidence": "project_artifacts/results/hardening-v2/T33-local/20261026",
+      "note": "Source/license/hash/boundary/native-parity gates and separate native/custom scoring channels implemented. Read-only current-source formal audit saved at T33-local/20261026. Previous input admission is preserved. Independent evaluator principal and original native Office environment parity remain unqualified.",
+      "local_engineering_complete": true
+    },
+    {
+      "task_id": "T34",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T34-human-release/20261026",
+      "note": "Current-source Windows773 passed;selected Linux non-COM149 passed in existing Apptainer.Compileall,diff,90-case declared calibration,T01 regressions,three-domain moved-bundle fresh assessment and tracked credential scan pass.Engineering release gate passes;live/research/external levels remain false.Source and test hashes verified;temporary server workspaces cleaned, no installation/image change.",
+      "local_engineering_complete": true,
+      "windows_validation_complete": true,
+      "linux_non_com_validation_complete": true,
+      "subsequent_changes": "Later preparation tools verified38focused checks only;Windows773/Linux149 refer to prior engineering snapshot.No later full release requalification claimed."
+    },
+    {
+      "task_id": "T35",
+      "status": "completed",
+      "evidence": "project_artifacts/results/hardening-v2/T35-local/20261026",
+      "note": "Chinese operations/handoff guide and README/package/Agent/skill documentation updated.12 help/dry-run commands verified with zero failures. Stage commits and rollback rules recorded; no evidence deletion. Final statuses distinguish completed engineering from actual model/human/external blockers.",
+      "local_engineering_complete": true
+    }
+  ],
+  "review_cases": {
+    "R01": {
+      "test_node": "tests/test_review_regressions.py::test_R01_blank_analysis_cannot_receive_full_task_acceptance",
+      "owner_tasks": [
+        "T10",
+        "T11",
+        "T17"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ]
+    },
+    "R02": {
+      "test_node": "tests/test_review_regressions.py::test_R02_required_paragraph_cannot_match_another_paragraph",
+      "owner_tasks": [
+        "T12"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ]
+    },
+    "R03": {
+      "test_node": "tests/test_review_regressions.py::test_R03_off_slide_text_cannot_establish_visible_delivery",
+      "owner_tasks": [
+        "T10",
+        "T15",
+        "T17"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ]
+    },
+    "R04": {
+      "test_node": "tests/test_review_regressions.py::test_R04_opaque_containment_cannot_be_declared_clear",
+      "owner_tasks": [
+        "T15"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ]
+    },
+    "R05": {
+      "test_node": "tests/test_review_regressions.py::test_R05_permitted_equivalent_formula_is_not_rejected_as_string_mismatch",
+      "owner_tasks": [
+        "T13"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ]
+    },
+    "R06": {
+      "test_node": "tests/test_candidate_boundary_regressions.py::test_R06_standalone_verifier_rejects_unknown_skill_field",
+      "owner_tasks": [
+        "T08"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/verifier.py"
+      ]
+    },
+    "R07": {
+      "test_node": "tests/test_candidate_boundary_regressions.py::test_R07_api_candidate_request_contains_actual_champion",
+      "owner_tasks": [
+        "T06"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/candidate_provider.py"
+      ]
+    },
+    "R08": {
+      "test_node": "tests/test_candidate_boundary_regressions.py::test_R08_over_budget_response_is_rejected_before_truncation",
+      "owner_tasks": [
+        "T07",
+        "T08"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/candidate_provider.py"
+      ]
+    },
+    "R09": {
+      "test_node": "tests/test_review_regressions.py::test_R09_mixed_pilot_formal_cannot_authorize_a_global_mean",
+      "owner_tasks": [
+        "T09"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/result_cohorts.py",
+        "project_artifacts/phase3_experiments/scripts/analyze_formal.py"
+      ]
+    },
+    "R10": {
+      "test_node": "tests/test_review_regressions.py::test_R10_final_assessment_failure_enters_bounded_repair",
+      "owner_tasks": [
+        "T21",
+        "T22"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/orchestrator.py",
+        "src/workagent_rsi/repair_loop.py"
+      ]
+    },
+    "R11": {
+      "test_node": "tests/test_review_regressions.py::test_R11_code_execution_failure_remains_a_develop_learning_signal",
+      "owner_tasks": [
+        "T20"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/workagent_evaluator.py",
+        "src/workagent_rsi/rsi_feedback.py"
+      ]
+    },
+    "R12": {
+      "test_node": "tests/test_candidate_boundary_regressions.py::test_R12_generated_code_cannot_read_parent_or_inherit_dummy_secret",
+      "owner_tasks": [
+        "T04",
+        "T05"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/workagent_provider.py",
+        "src/workagent_rsi/execution_sandbox.py"
+      ]
+    }
+  },
+  "implementation_commits": {
+    "T00_T02": "5c727a3",
+    "T01_initial": "9290197",
+    "T03_and_final_handoff": "commit containing this ledger; exact tested sources hashed in final run.json",
+    "T03_policy_completion": "9160b41",
+    "T04": "commit containing ledger; exact sources in evidence",
+    "T05": "commit containing ledger; exact sources hashed in evidence",
+    "T06": "8bb3e04f0760362ba2f1b94143ef95faf043034b",
+    "T07": "a34c4edd82cf1449a758e517e3e357cb3a615249",
+    "T08_local": "7b839c8773f521c9f41a55fd966f04d7446dc271",
+    "T09": "commit containing ledger; exact sources in final evidence",
+    "T10": "2eb3938b064987f44a48b0755beb151dc3e8ba78",
+    "T11": "425f3b78928a5ae3749f76ee9c01b590d74b1865",
+    "T12": "commit containing ledger; exact sources hashed in evidence",
+    "T14": "f9730d4607ab3e57f0a091455eeba89e978a53eb",
+    "T13": "commit containing ledger; exact sources in evidence",
+    "T13_local": "b9598c4effd4c2e8c3e32306b847bcc70eeeac81",
+    "T15": "commit containing ledger; exact sources in evidence",
+    "T16": "commit containing ledger; exact source hashes in evidence",
+    "T16_local": "571f14f",
+    "T17": "67c75cb",
+    "T18": "commit containing ledger; exact source hashes in evidence",
+    "T21": "7d8613c7b66eec5b46ef32fadd483a0ef0a76863",
+    "T22": "commit containing this ledger; exact sources hashed by final evidence",
+    "T19": "6057b4304407846e2150c3f78077b167a1886354",
+    "T20": "96ad8b11d9aaa3a5ead5a96c2e1ae8fb99fa66cb",
+    "T23": "e157f1e688f39010ca66f19cfab2c4fb0d3f363d",
+    "T24": "commit containing this ledger; exact source hashes in final evidence",
+    "T25_initial": "4f9ea6e22e58a1e5b6f83e06152fc2a4d7d2baad",
+    "T25_final_T26_local": "commit containing this ledger; exact tested sources are hashed in final run.json",
+    "T27_T28": "commits delivering these manifests; exact tested files hashed in final run.json",
+    "T27_remote_boundary": "a9377b217aa8d82c7941a7c9ab5fac410adc7285",
+    "T28_engineering": "commit containing this ledger; exact sources hashed in717-case final run",
+    "T28_human_intake": "e96bf91",
+    "T34_linux_completion": "commit containing current delivery; tested source hashes in full run.json"
+  },
+  "full_validation": {
+    "passed": 562,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/formal_study/llm_task_review_migration_20261029.json",
+    "protocol": "llm-task-review-v1",
+    "scope": "offline; no live model or server jobs"
+  },
+  "bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
+  "next_recommended_tasks": [
+    "Qualify task-level LLM review on a small fixed three-domain set, then run actual artifact repair with the same frozen model protocol; approve new live budget first.",
+    "Complete T26 qualified variants,untouched final cohort and independent evaluator principal.",
+    "Qualify hard-token-metered backend and native Office parity;any new live experiment requires its own budget."
+  ],
+  "review_case_status": {
+    "R12": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R01": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R02": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R03": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R04": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R05": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R06": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R07": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R08": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R09": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R10": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    },
+    "R11": {
+      "status": "passed",
+      "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+    }
+  },
+  "latest_full_validation": {
+    "passed": 562,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/formal_study/llm_task_review_migration_20261029.json",
+    "protocol": "llm-task-review-v1",
+    "scope": "offline; no live model or server jobs"
+  },
+  "expected_open": [],
+  "historical_full_validation_indexes": [
+    {
+      "passed": 569,
+      "failed": 2,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 1,
+      "evidence": "project_artifacts/results/hardening-v2/T18-final-full/20261024T105610295802Z",
+      "expected_open": [
+        "R10",
+        "R11"
+      ]
+    },
+    {
+      "passed": 620,
+      "failed": 1,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 1,
+      "evidence": "project_artifacts/results/hardening-v2/T20-delivery-full/20261024T132432256612Z"
+    },
+    {
+      "passed": 663,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z",
+      "expected_open": []
+    },
+    {
+      "passed": 663,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
+    },
+    {
+      "passed": 692,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence": "project_artifacts/results/hardening-v2/T24-final-full/20261024T170246296852Z"
+    },
+    {
+      "passed": 710,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+    },
+    {
+      "passed": 773,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
+    }
+  ],
+  "historical_contract_example_bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
+  "active_evaluation_protocol": {
+    "version": "llm-task-review-v1",
+    "changed_by": "user direction on 2026-10-29",
+    "report": "docs/operations/llm-task-review-migration-20261029.md",
+    "coded_rule_backlog_active": false,
+    "live_model_qualification": "not_run",
+    "historical_results_reinterpreted": false,
+    "offline_validation": "project_artifacts/formal_study/llm_task_review_migration_20261029.json"
+  },
+  "review_case_status_protocol": "Historical coded-rule protocol; active regression coverage is in the current manifest and LLM migration receipt."
+}

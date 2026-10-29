@@ -1,0 +1,3742 @@
+{
+  "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+  "provider": {
+    "backend": "model-judge-v1",
+    "config": {
+      "provider": "codex-cli",
+      "model": "gpt-6.1-sol",
+      "codex_executable": "codex",
+      "api_base_url": "https://api.openai.com/v1",
+      "api_key_env": "OPENAI_API_KEY",
+      "timeout_seconds": 120,
+      "retries": 0,
+      "repeats": 1,
+      "disagreement_tolerance": 0.25,
+      "max_text_chars": 60000,
+      "max_text_items": 2000,
+      "max_images": 8,
+      "max_image_bytes": 20000000,
+      "max_output_tokens": 4096,
+      "cache_enabled": false,
+      "independent_review": true,
+      "semantic_enabled": true,
+      "visual_enabled": true
+    },
+    "prompt_version": "office-quality-judge-v2-evidence-scope",
+    "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+    "cli_version": "codex-cli 0.159.3",
+    "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+  },
+  "rows": [
+    {
+      "case_id": "review-ec20117491502820",
+      "modality": "semantic",
+      "request": "review-ec20117491502820-semantic.json",
+      "sha256": "db65d2681f92cdf40b5801f6e77d9e12e2218694fe8d9a292ba82632b3fd4dde",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "All source text and three ordered ledger rows are preserved at their original logical locations. Ledger!B6 contains =SUM(B2:B4), covering all three amounts (12 + 19 + 7 = 38). No recalculated cached result is supplied; rendered appearance is outside this semantic review.",
+        "confidence": 1.0,
+        "observations": [
+          {
+            "evidence_id": "e1",
+            "quote": "Worksheet: Ledger",
+            "observation": "The original Ledger worksheet is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Worksheet: Ledger"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e2",
+            "quote": "Item",
+            "observation": "Ledger!A1 preserves the source header.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Item"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e3",
+            "quote": "Amount",
+            "observation": "Ledger!B1 preserves the source header.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Amount"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e4",
+            "quote": "North",
+            "observation": "Ledger!A2 preserves the first ordered entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "North"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e5",
+            "quote": "12",
+            "observation": "Ledger!B2 preserves North's amount.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "12"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e6",
+            "quote": "South",
+            "observation": "Ledger!A3 preserves the second ordered entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "South"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e7",
+            "quote": "19",
+            "observation": "Ledger!B3 preserves South's amount.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "19"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e8",
+            "quote": "West",
+            "observation": "Ledger!A4 preserves the third ordered entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "West"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e9",
+            "quote": "7",
+            "observation": "Ledger!B4 preserves West's amount.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "7"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e10",
+            "quote": "Total",
+            "observation": "Ledger!A6 preserves the source total label.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Total"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e11",
+            "quote": "=SUM(B2:B4)",
+            "observation": "The required formula is at Ledger!B6 and sums the complete source amount range B2:B4; its mathematical result is 38.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B2\", \"sheet\": \"Ledger\"}, \"text\": \"12\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B3\", \"sheet\": \"Ledger\"}, \"text\": \"19\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B4\", \"sheet\": \"Ledger\"}, \"text\": \"7\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e12",
+            "quote": "Worksheet: Notes",
+            "observation": "The original Notes worksheet is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Worksheet: Notes"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e13",
+            "quote": "Preserve source ledger 1.",
+            "observation": "Notes!A1 preserves the complete source text.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Preserve source ledger 1."
+              }
+            ]
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 22.32565820007585,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:02:41.950879+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 16022,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 777,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 22.32191599998623,
+            "ended_at": "2026-10-26T14:03:04.274265+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-ec20117491502820\\semantic\\call-feeabaa90cb8",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "All source text and three ordered ledger rows are preserved at their original logical locations. Ledger!B6 contains =SUM(B2:B4), covering all three amounts (12 + 19 + 7 = 38). No recalculated cached result is supplied; rendered appearance is outside this semantic review.",
+            "confidence": 1.0,
+            "observations": [
+              {
+                "evidence_id": "e1",
+                "quote": "Worksheet: Ledger",
+                "observation": "The original Ledger worksheet is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Worksheet: Ledger"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e2",
+                "quote": "Item",
+                "observation": "Ledger!A1 preserves the source header.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Item"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e3",
+                "quote": "Amount",
+                "observation": "Ledger!B1 preserves the source header.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Amount"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e4",
+                "quote": "North",
+                "observation": "Ledger!A2 preserves the first ordered entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "North"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e5",
+                "quote": "12",
+                "observation": "Ledger!B2 preserves North's amount.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "12"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e6",
+                "quote": "South",
+                "observation": "Ledger!A3 preserves the second ordered entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "South"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e7",
+                "quote": "19",
+                "observation": "Ledger!B3 preserves South's amount.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "19"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e8",
+                "quote": "West",
+                "observation": "Ledger!A4 preserves the third ordered entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "West"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e9",
+                "quote": "7",
+                "observation": "Ledger!B4 preserves West's amount.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "7"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e10",
+                "quote": "Total",
+                "observation": "Ledger!A6 preserves the source total label.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Total"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e11",
+                "quote": "=SUM(B2:B4)",
+                "observation": "The required formula is at Ledger!B6 and sums the complete source amount range B2:B4; its mathematical result is 38.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B2\", \"sheet\": \"Ledger\"}, \"text\": \"12\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B3\", \"sheet\": \"Ledger\"}, \"text\": \"19\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B4\", \"sheet\": \"Ledger\"}, \"text\": \"7\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e12",
+                "quote": "Worksheet: Notes",
+                "observation": "The original Notes worksheet is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Worksheet: Notes"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e13",
+                "quote": "Preserve source ledger 1.",
+                "observation": "Notes!A1 preserves the complete source text.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Preserve source ledger 1."
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-feeabaa90cb8:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "All source text and three ordered ledger rows are preserved at their original logical locations. Ledger!B6 contains =SUM(B2:B4), covering all three amounts (12 + 19 + 7 = 38). No recalculated cached result is supplied; rendered appearance is outside this semantic review.",
+                "confidence": 1.0,
+                "observations": [
+                  {
+                    "evidence_id": "e1",
+                    "quote": "Worksheet: Ledger",
+                    "observation": "The original Ledger worksheet is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Worksheet: Ledger"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e2",
+                    "quote": "Item",
+                    "observation": "Ledger!A1 preserves the source header.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Item"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e3",
+                    "quote": "Amount",
+                    "observation": "Ledger!B1 preserves the source header.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Amount"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e4",
+                    "quote": "North",
+                    "observation": "Ledger!A2 preserves the first ordered entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "North"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e5",
+                    "quote": "12",
+                    "observation": "Ledger!B2 preserves North's amount.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "12"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e6",
+                    "quote": "South",
+                    "observation": "Ledger!A3 preserves the second ordered entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "South"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e7",
+                    "quote": "19",
+                    "observation": "Ledger!B3 preserves South's amount.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "19"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e8",
+                    "quote": "West",
+                    "observation": "Ledger!A4 preserves the third ordered entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "West"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e9",
+                    "quote": "7",
+                    "observation": "Ledger!B4 preserves West's amount.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "7"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e10",
+                    "quote": "Total",
+                    "observation": "Ledger!A6 preserves the source total label.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Total"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e11",
+                    "quote": "=SUM(B2:B4)",
+                    "observation": "The required formula is at Ledger!B6 and sums the complete source amount range B2:B4; its mathematical result is 38.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B2\", \"sheet\": \"Ledger\"}, \"text\": \"12\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B3\", \"sheet\": \"Ledger\"}, \"text\": \"19\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"location\": {\"artifact\": \"input\", \"cell\": \"B4\", \"sheet\": \"Ledger\"}, \"text\": \"7\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e12",
+                    "quote": "Worksheet: Notes",
+                    "observation": "The original Notes worksheet is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Worksheet: Notes"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e13",
+                    "quote": "Preserve source ledger 1.",
+                    "observation": "Notes!A1 preserves the complete source text.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Preserve source ledger 1."
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "e1",
+                "e2",
+                "e3",
+                "e4",
+                "e5",
+                "e6",
+                "e7",
+                "e8",
+                "e9",
+                "e10",
+                "e11",
+                "e12",
+                "e13"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-ec20117491502820",
+      "modality": "visual",
+      "request": "review-ec20117491502820-visual.json",
+      "sha256": "703f6782326a5a9a18f50d7bffccd48a1ac2ea646f887e9f7621c44525ecc994",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "Both pages are readable, with no clipping or overlapping content. All three ledger rows appear in order, and the source note is fully visible. Formula logic and cell addressing are outside this visual assessment.",
+        "confidence": 0.99,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Upper-left ledger, approximately x73–230, y100–212",
+            "observation": "Headers and values are legible and aligned in two columns. Rows appear as North 12, South 19, West 7, with Total 38 below and no obstruction. Supplied evidence quotes: e1: \"Worksheet: Ledger\"; e2: \"Item\"; e3: \"Amount\"; e4: \"North\"; e5: \"12\"; e6: \"South\"; e7: \"19\"; e8: \"West\"; e9: \"7\"; e10: \"Total\"."
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Upper-left note, approximately x73–262, y100–113",
+            "observation": "The complete note \"Preserve source ledger 1.\" is clearly visible with strong black-on-white contrast and no clipping or overlap. Supplied evidence quotes: e11: \"Worksheet: Notes\"; e12: \"Preserve source ledger 1.\"."
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 14.95867979992181,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:03:04.283296+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 17982,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 309,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 14.955682599917054,
+            "ended_at": "2026-10-26T14:03:19.240653+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-ec20117491502820\\visual\\call-dc0664b8dd9e",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "Both pages are readable, with no clipping or overlapping content. All three ledger rows appear in order, and the source note is fully visible. Formula logic and cell addressing are outside this visual assessment.",
+            "confidence": 0.99,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Upper-left ledger, approximately x73–230, y100–212",
+                "observation": "Headers and values are legible and aligned in two columns. Rows appear as North 12, South 19, West 7, with Total 38 below and no obstruction. Supplied evidence quotes: e1: \"Worksheet: Ledger\"; e2: \"Item\"; e3: \"Amount\"; e4: \"North\"; e5: \"12\"; e6: \"South\"; e7: \"19\"; e8: \"West\"; e9: \"7\"; e10: \"Total\"."
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Upper-left note, approximately x73–262, y100–113",
+                "observation": "The complete note \"Preserve source ledger 1.\" is clearly visible with strong black-on-white contrast and no clipping or overlap. Supplied evidence quotes: e11: \"Worksheet: Notes\"; e12: \"Preserve source ledger 1.\"."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-dc0664b8dd9e:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "Both pages are readable, with no clipping or overlapping content. All three ledger rows appear in order, and the source note is fully visible. Formula logic and cell addressing are outside this visual assessment.",
+                "confidence": 0.99,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Upper-left ledger, approximately x73–230, y100–212",
+                    "observation": "Headers and values are legible and aligned in two columns. Rows appear as North 12, South 19, West 7, with Total 38 below and no obstruction. Supplied evidence quotes: e1: \"Worksheet: Ledger\"; e2: \"Item\"; e3: \"Amount\"; e4: \"North\"; e5: \"12\"; e6: \"South\"; e7: \"19\"; e8: \"West\"; e9: \"7\"; e10: \"Total\"."
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Upper-left note, approximately x73–262, y100–113",
+                    "observation": "The complete note \"Preserve source ledger 1.\" is clearly visible with strong black-on-white contrast and no clipping or overlap. Supplied evidence quotes: e11: \"Worksheet: Notes\"; e12: \"Preserve source ledger 1.\"."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1",
+                "page-2"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "modality": "semantic",
+      "request": "review-201d371b1160838f-semantic.json",
+      "sha256": "42e3ce7e04c857edd7c5aa3eaa7d336a8a0f5a6c4b094078e5ab9759c4c22052",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "Source text and all three ledger rows are preserved in order. Total 63 is correctly calculated as 2 + 26 + 35 and occurs on slide 2. Visibility and placement above the table are reserved for visual review.",
+        "confidence": 1.0,
+        "observations": [
+          {
+            "evidence_id": "e1",
+            "quote": "Slide 1",
+            "observation": "Slide 1 is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Slide 1"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e2",
+            "quote": "Preserve source ledger 10.",
+            "observation": "Source text is preserved exactly on slide 1.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Preserve source ledger 10."
+              }
+            ]
+          },
+          {
+            "evidence_id": "e3",
+            "quote": "Slide 2",
+            "observation": "The ledger remains on slide 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Slide 2"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e4",
+            "quote": "Item",
+            "observation": "The first column heading is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Item"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e5",
+            "quote": "Amount",
+            "observation": "The second column heading is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Amount"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e6",
+            "quote": "North",
+            "observation": "North remains the first ledger entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "North"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e7",
+            "quote": "2",
+            "observation": "North's amount remains 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"row\": 2, \"slide\": 2}, \"text\": \"2\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e8",
+            "quote": "South",
+            "observation": "South remains the second ledger entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "South"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e9",
+            "quote": "26",
+            "observation": "South's amount remains 26.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "26"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e10",
+            "quote": "West",
+            "observation": "West remains the third ledger entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "West"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e11",
+            "quote": "35",
+            "observation": "West's amount remains 35.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "35"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e12",
+            "quote": "Total 63",
+            "observation": "The required Total label and correct sum appear in a separate object on slide 2; 2 + 26 + 35 = 63.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"row\": 2, \"slide\": 2}, \"text\": \"2\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"row\": 3, \"slide\": 2}, \"text\": \"26\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"row\": 4, \"slide\": 2}, \"text\": \"35\""
+              }
+            ]
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 18.472458000062034,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:03:19.292292+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 16100,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 679,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 18.46732489997521,
+            "ended_at": "2026-10-26T14:03:37.762763+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-201d371b1160838f\\semantic\\call-2817d8c68bbe",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "Source text and all three ledger rows are preserved in order. Total 63 is correctly calculated as 2 + 26 + 35 and occurs on slide 2. Visibility and placement above the table are reserved for visual review.",
+            "confidence": 1.0,
+            "observations": [
+              {
+                "evidence_id": "e1",
+                "quote": "Slide 1",
+                "observation": "Slide 1 is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Slide 1"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e2",
+                "quote": "Preserve source ledger 10.",
+                "observation": "Source text is preserved exactly on slide 1.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Preserve source ledger 10."
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e3",
+                "quote": "Slide 2",
+                "observation": "The ledger remains on slide 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Slide 2"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e4",
+                "quote": "Item",
+                "observation": "The first column heading is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Item"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e5",
+                "quote": "Amount",
+                "observation": "The second column heading is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Amount"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e6",
+                "quote": "North",
+                "observation": "North remains the first ledger entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "North"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e7",
+                "quote": "2",
+                "observation": "North's amount remains 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"row\": 2, \"slide\": 2}, \"text\": \"2\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e8",
+                "quote": "South",
+                "observation": "South remains the second ledger entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "South"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e9",
+                "quote": "26",
+                "observation": "South's amount remains 26.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "26"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e10",
+                "quote": "West",
+                "observation": "West remains the third ledger entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "West"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e11",
+                "quote": "35",
+                "observation": "West's amount remains 35.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "35"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e12",
+                "quote": "Total 63",
+                "observation": "The required Total label and correct sum appear in a separate object on slide 2; 2 + 26 + 35 = 63.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"row\": 2, \"slide\": 2}, \"text\": \"2\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"row\": 3, \"slide\": 2}, \"text\": \"26\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"row\": 4, \"slide\": 2}, \"text\": \"35\""
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-2817d8c68bbe:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "Source text and all three ledger rows are preserved in order. Total 63 is correctly calculated as 2 + 26 + 35 and occurs on slide 2. Visibility and placement above the table are reserved for visual review.",
+                "confidence": 1.0,
+                "observations": [
+                  {
+                    "evidence_id": "e1",
+                    "quote": "Slide 1",
+                    "observation": "Slide 1 is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Slide 1"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e2",
+                    "quote": "Preserve source ledger 10.",
+                    "observation": "Source text is preserved exactly on slide 1.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Preserve source ledger 10."
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e3",
+                    "quote": "Slide 2",
+                    "observation": "The ledger remains on slide 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Slide 2"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e4",
+                    "quote": "Item",
+                    "observation": "The first column heading is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Item"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e5",
+                    "quote": "Amount",
+                    "observation": "The second column heading is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Amount"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e6",
+                    "quote": "North",
+                    "observation": "North remains the first ledger entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "North"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e7",
+                    "quote": "2",
+                    "observation": "North's amount remains 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"row\": 2, \"slide\": 2}, \"text\": \"2\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e8",
+                    "quote": "South",
+                    "observation": "South remains the second ledger entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "South"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e9",
+                    "quote": "26",
+                    "observation": "South's amount remains 26.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "26"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e10",
+                    "quote": "West",
+                    "observation": "West remains the third ledger entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "West"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e11",
+                    "quote": "35",
+                    "observation": "West's amount remains 35.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "35"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e12",
+                    "quote": "Total 63",
+                    "observation": "The required Total label and correct sum appear in a separate object on slide 2; 2 + 26 + 35 = 63.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"row\": 2, \"slide\": 2}, \"text\": \"2\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"row\": 3, \"slide\": 2}, \"text\": \"26\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"row\": 4, \"slide\": 2}, \"text\": \"35\""
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "e1",
+                "e2",
+                "e3",
+                "e4",
+                "e5",
+                "e6",
+                "e7",
+                "e8",
+                "e9",
+                "e10",
+                "e11",
+                "e12"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "modality": "visual",
+      "request": "review-201d371b1160838f-visual.json",
+      "sha256": "92b882d85781d3638543907bb671d1e36e1bc21f9c3030b68d0f7196309f572e",
+      "decision": {
+        "status": "PARTIAL",
+        "completion": 0.5,
+        "observed": "The source sentence and three ordered ledger rows are readable. Slide 2 fails the required visible Total and value above the table: that region is covered by a solid black rectangle.",
+        "confidence": 1.0,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Upper center, source sentence",
+            "observation": "The sentence \"Preserve source ledger 10.\" is fully visible and readable (input-1, e2: \"Preserve source ledger 10.\"). Page identity: input-1, e1: \"Slide 1\"."
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Table at x48–624, y193–384",
+            "observation": "The table is readable with clear headers and all three rows in order. Supplied evidence: input-1, e3: \"Slide 2\"; e4: \"Item\"; e5: \"Amount\"; e6: \"North\"; e7: \"2\"; e8: \"South\"; e9: \"26\"; e10: \"West\"; e11: \"35\"."
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Above the table, x48–624, y48–97",
+            "observation": "A solid black rectangle occupies the area above the table. Neither \"Total\" nor its value is visible, so the explicit visibility and placement obligation is unmet."
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 18.11328150006011,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:03:37.774210+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 17514,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 330,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 18.11036459985189,
+            "ended_at": "2026-10-26T14:03:55.885712+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-201d371b1160838f\\visual\\call-8ddcaf721d8f",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PARTIAL",
+            "completion": 0.5,
+            "observed": "The source sentence and three ordered ledger rows are readable. Slide 2 fails the required visible Total and value above the table: that region is covered by a solid black rectangle.",
+            "confidence": 1.0,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Upper center, source sentence",
+                "observation": "The sentence \"Preserve source ledger 10.\" is fully visible and readable (input-1, e2: \"Preserve source ledger 10.\"). Page identity: input-1, e1: \"Slide 1\"."
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Table at x48–624, y193–384",
+                "observation": "The table is readable with clear headers and all three rows in order. Supplied evidence: input-1, e3: \"Slide 2\"; e4: \"Item\"; e5: \"Amount\"; e6: \"North\"; e7: \"2\"; e8: \"South\"; e9: \"26\"; e10: \"West\"; e11: \"35\"."
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Above the table, x48–624, y48–97",
+                "observation": "A solid black rectangle occupies the area above the table. Neither \"Total\" nor its value is visible, so the explicit visibility and placement obligation is unmet."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-8ddcaf721d8f:repeat-1",
+              "decision": {
+                "status": "PARTIAL",
+                "completion": 0.5,
+                "observed": "The source sentence and three ordered ledger rows are readable. Slide 2 fails the required visible Total and value above the table: that region is covered by a solid black rectangle.",
+                "confidence": 1.0,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Upper center, source sentence",
+                    "observation": "The sentence \"Preserve source ledger 10.\" is fully visible and readable (input-1, e2: \"Preserve source ledger 10.\"). Page identity: input-1, e1: \"Slide 1\"."
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Table at x48–624, y193–384",
+                    "observation": "The table is readable with clear headers and all three rows in order. Supplied evidence: input-1, e3: \"Slide 2\"; e4: \"Item\"; e5: \"Amount\"; e6: \"North\"; e7: \"2\"; e8: \"South\"; e9: \"26\"; e10: \"West\"; e11: \"35\"."
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Above the table, x48–624, y48–97",
+                    "observation": "A solid black rectangle occupies the area above the table. Neither \"Total\" nor its value is visible, so the explicit visibility and placement obligation is unmet."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1",
+                "page-2",
+                "page-2"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "modality": "semantic",
+      "request": "review-19988a00ef040b43-semantic.json",
+      "sha256": "f601e1e6a213722301a1ede7ac356815b288b43eda88734e486b6994716410e8",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "All source text and the three ordered ledger rows are preserved. Total 38 is correctly calculated as 12 + 19 + 7 and is present on slide 2. Visibility and placement above the table remain exclusively within visual review.",
+        "confidence": 1.0,
+        "observations": [
+          {
+            "evidence_id": "e1",
+            "quote": "Slide 1",
+            "observation": "The source slide 1 designation is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Slide 1\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e2",
+            "quote": "Preserve source ledger 1.",
+            "observation": "The source text is preserved verbatim on slide 1.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Preserve source ledger 1.\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e3",
+            "quote": "Slide 2",
+            "observation": "The ledger remains on slide 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Slide 2\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e4",
+            "quote": "Item",
+            "observation": "The first column header is preserved in row 1.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Item\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e5",
+            "quote": "Amount",
+            "observation": "The second column header is preserved in row 1.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Amount\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e6",
+            "quote": "North",
+            "observation": "North remains the first ledger entry, in row 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"North\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e7",
+            "quote": "12",
+            "observation": "The amount paired with North remains 12.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"12\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e8",
+            "quote": "South",
+            "observation": "South remains the second ledger entry, in row 3.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"South\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e9",
+            "quote": "19",
+            "observation": "The amount paired with South remains 19.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"19\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e10",
+            "quote": "West",
+            "observation": "West remains the third ledger entry, in row 4.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"West\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e11",
+            "quote": "7",
+            "observation": "The amount paired with West remains 7.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"7\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e12",
+            "quote": "Total 38",
+            "observation": "The required label and value are present on slide 2; 38 correctly equals the sum of the three source amounts, 12 + 19 + 7. Spatial placement and rendered visibility are outside this semantic assessment.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"12\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"19\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"7\""
+              }
+            ]
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 21.610206700162962,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:03:55.892104+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 16102,
+              "cached_input_tokens": 13056,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 731,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 21.607889899984002,
+            "ended_at": "2026-10-26T14:04:17.500885+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-19988a00ef040b43\\semantic\\call-2bfe06c3c443",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "All source text and the three ordered ledger rows are preserved. Total 38 is correctly calculated as 12 + 19 + 7 and is present on slide 2. Visibility and placement above the table remain exclusively within visual review.",
+            "confidence": 1.0,
+            "observations": [
+              {
+                "evidence_id": "e1",
+                "quote": "Slide 1",
+                "observation": "The source slide 1 designation is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Slide 1\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e2",
+                "quote": "Preserve source ledger 1.",
+                "observation": "The source text is preserved verbatim on slide 1.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Preserve source ledger 1.\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e3",
+                "quote": "Slide 2",
+                "observation": "The ledger remains on slide 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Slide 2\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e4",
+                "quote": "Item",
+                "observation": "The first column header is preserved in row 1.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Item\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e5",
+                "quote": "Amount",
+                "observation": "The second column header is preserved in row 1.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Amount\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e6",
+                "quote": "North",
+                "observation": "North remains the first ledger entry, in row 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"North\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e7",
+                "quote": "12",
+                "observation": "The amount paired with North remains 12.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"12\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e8",
+                "quote": "South",
+                "observation": "South remains the second ledger entry, in row 3.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"South\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e9",
+                "quote": "19",
+                "observation": "The amount paired with South remains 19.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"19\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e10",
+                "quote": "West",
+                "observation": "West remains the third ledger entry, in row 4.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"West\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e11",
+                "quote": "7",
+                "observation": "The amount paired with West remains 7.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"7\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e12",
+                "quote": "Total 38",
+                "observation": "The required label and value are present on slide 2; 38 correctly equals the sum of the three source amounts, 12 + 19 + 7. Spatial placement and rendered visibility are outside this semantic assessment.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"12\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"19\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"7\""
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-2bfe06c3c443:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "All source text and the three ordered ledger rows are preserved. Total 38 is correctly calculated as 12 + 19 + 7 and is present on slide 2. Visibility and placement above the table remain exclusively within visual review.",
+                "confidence": 1.0,
+                "observations": [
+                  {
+                    "evidence_id": "e1",
+                    "quote": "Slide 1",
+                    "observation": "The source slide 1 designation is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Slide 1\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e2",
+                    "quote": "Preserve source ledger 1.",
+                    "observation": "The source text is preserved verbatim on slide 1.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Preserve source ledger 1.\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e3",
+                    "quote": "Slide 2",
+                    "observation": "The ledger remains on slide 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Slide 2\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e4",
+                    "quote": "Item",
+                    "observation": "The first column header is preserved in row 1.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Item\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e5",
+                    "quote": "Amount",
+                    "observation": "The second column header is preserved in row 1.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Amount\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e6",
+                    "quote": "North",
+                    "observation": "North remains the first ledger entry, in row 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"North\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e7",
+                    "quote": "12",
+                    "observation": "The amount paired with North remains 12.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"12\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e8",
+                    "quote": "South",
+                    "observation": "South remains the second ledger entry, in row 3.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"South\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e9",
+                    "quote": "19",
+                    "observation": "The amount paired with South remains 19.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"19\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e10",
+                    "quote": "West",
+                    "observation": "West remains the third ledger entry, in row 4.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"West\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e11",
+                    "quote": "7",
+                    "observation": "The amount paired with West remains 7.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"7\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e12",
+                    "quote": "Total 38",
+                    "observation": "The required label and value are present on slide 2; 38 correctly equals the sum of the three source amounts, 12 + 19 + 7. Spatial placement and rendered visibility are outside this semantic assessment.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"12\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"19\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"7\""
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "e1",
+                "e2",
+                "e3",
+                "e4",
+                "e5",
+                "e6",
+                "e7",
+                "e8",
+                "e9",
+                "e10",
+                "e11",
+                "e12"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "modality": "visual",
+      "request": "review-19988a00ef040b43-visual.json",
+      "sha256": "22fafd3457defa63e3e8dc84e9948b90f41db6d8f6393ee141f23e5beacd60fa",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "Both slides are readable and unobstructed. Slide 1 displays “Preserve source ledger 1.” Slide 2 displays “Total 38” clearly above the table, with all three ledger rows visible in order and no clipping or overlap.",
+        "confidence": 1.0,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Upper center, source-text line",
+            "observation": "“Preserve source ledger 1.” is fully visible in black on white. Supplied evidence: e1 “Slide 1”; e2 “Preserve source ledger 1.”"
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Upper area containing Total and table (approximately x48–624, y56–384)",
+            "observation": "“Total 38” is clearly visible above the table with ample separation. Headers and all ordered rows are readable, with contrasting fills and no occlusion. Supplied evidence: e3 “Slide 2”; e4 “Item”; e5 “Amount”; e6 “North”; e7 “12”; e8 “South”; e9 “19”; e10 “West”; e11 “7”."
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 15.915346800116822,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:04:17.513294+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 17522,
+              "cached_input_tokens": 12928,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 268,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 15.912795699900016,
+            "ended_at": "2026-10-26T14:04:33.427351+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-19988a00ef040b43\\visual\\call-2881e3c3a44b",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "Both slides are readable and unobstructed. Slide 1 displays “Preserve source ledger 1.” Slide 2 displays “Total 38” clearly above the table, with all three ledger rows visible in order and no clipping or overlap.",
+            "confidence": 1.0,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Upper center, source-text line",
+                "observation": "“Preserve source ledger 1.” is fully visible in black on white. Supplied evidence: e1 “Slide 1”; e2 “Preserve source ledger 1.”"
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Upper area containing Total and table (approximately x48–624, y56–384)",
+                "observation": "“Total 38” is clearly visible above the table with ample separation. Headers and all ordered rows are readable, with contrasting fills and no occlusion. Supplied evidence: e3 “Slide 2”; e4 “Item”; e5 “Amount”; e6 “North”; e7 “12”; e8 “South”; e9 “19”; e10 “West”; e11 “7”."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-2881e3c3a44b:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "Both slides are readable and unobstructed. Slide 1 displays “Preserve source ledger 1.” Slide 2 displays “Total 38” clearly above the table, with all three ledger rows visible in order and no clipping or overlap.",
+                "confidence": 1.0,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Upper center, source-text line",
+                    "observation": "“Preserve source ledger 1.” is fully visible in black on white. Supplied evidence: e1 “Slide 1”; e2 “Preserve source ledger 1.”"
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Upper area containing Total and table (approximately x48–624, y56–384)",
+                    "observation": "“Total 38” is clearly visible above the table with ample separation. Headers and all ordered rows are readable, with contrasting fills and no occlusion. Supplied evidence: e3 “Slide 2”; e4 “Item”; e5 “Amount”; e6 “North”; e7 “12”; e8 “South”; e9 “19”; e10 “West”; e11 “7”."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1",
+                "page-2"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "modality": "semantic",
+      "request": "review-8a0f33aa1247b0b8-semantic.json",
+      "sha256": "602133492b8ded084a7f2b00a9bbf406499cee6249b6d118e9c7e6e9de604bad",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "Source text and table headers are preserved. All three ledger rows retain their order and values. The body paragraph immediately after Summary contains Total 38, correctly summing 12 + 19 + 7. This assessment covers semantic content only.",
+        "confidence": 1.0,
+        "observations": [
+          {
+            "evidence_id": "e1",
+            "quote": "Preserve source ledger 1.",
+            "observation": "Paragraph 1 preserves the source text exactly.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Preserve source ledger 1."
+              }
+            ]
+          },
+          {
+            "evidence_id": "e2",
+            "quote": "Summary",
+            "observation": "Summary remains the heading in paragraph 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Summary"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e3",
+            "quote": "Total 38",
+            "observation": "Normal body paragraph 3 follows Summary and supplies the correct total: 12 + 19 + 7 = 38.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"12\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"19\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"7\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e4",
+            "quote": "Item",
+            "observation": "Table 1 retains the first column header.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Item\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e5",
+            "quote": "Amount",
+            "observation": "Table 1 retains the second column header.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"Amount\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e6",
+            "quote": "North",
+            "observation": "North remains the first ledger entry, in table row 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"North\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e7",
+            "quote": "12",
+            "observation": "North retains its amount of 12 in row 2.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"12\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e8",
+            "quote": "South",
+            "observation": "South remains the second ledger entry, in table row 3.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"South\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e9",
+            "quote": "19",
+            "observation": "South retains its amount of 19 in row 3.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"19\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e10",
+            "quote": "West",
+            "observation": "West remains the third ledger entry, in table row 4.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"West\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e11",
+            "quote": "7",
+            "observation": "West retains its amount of 7 in row 4.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"7\""
+              }
+            ]
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 17.2883095999714,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:04:33.433738+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 15987,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 655,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 17.28585819993168,
+            "ended_at": "2026-10-26T14:04:50.720847+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-8a0f33aa1247b0b8\\semantic\\call-7b86cb566b46",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "Source text and table headers are preserved. All three ledger rows retain their order and values. The body paragraph immediately after Summary contains Total 38, correctly summing 12 + 19 + 7. This assessment covers semantic content only.",
+            "confidence": 1.0,
+            "observations": [
+              {
+                "evidence_id": "e1",
+                "quote": "Preserve source ledger 1.",
+                "observation": "Paragraph 1 preserves the source text exactly.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Preserve source ledger 1."
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e2",
+                "quote": "Summary",
+                "observation": "Summary remains the heading in paragraph 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Summary"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e3",
+                "quote": "Total 38",
+                "observation": "Normal body paragraph 3 follows Summary and supplies the correct total: 12 + 19 + 7 = 38.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"12\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"19\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"7\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e4",
+                "quote": "Item",
+                "observation": "Table 1 retains the first column header.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Item\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e5",
+                "quote": "Amount",
+                "observation": "Table 1 retains the second column header.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"Amount\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e6",
+                "quote": "North",
+                "observation": "North remains the first ledger entry, in table row 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"North\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e7",
+                "quote": "12",
+                "observation": "North retains its amount of 12 in row 2.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"12\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e8",
+                "quote": "South",
+                "observation": "South remains the second ledger entry, in table row 3.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"South\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e9",
+                "quote": "19",
+                "observation": "South retains its amount of 19 in row 3.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"19\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e10",
+                "quote": "West",
+                "observation": "West remains the third ledger entry, in table row 4.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"West\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e11",
+                "quote": "7",
+                "observation": "West retains its amount of 7 in row 4.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"7\""
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-7b86cb566b46:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "Source text and table headers are preserved. All three ledger rows retain their order and values. The body paragraph immediately after Summary contains Total 38, correctly summing 12 + 19 + 7. This assessment covers semantic content only.",
+                "confidence": 1.0,
+                "observations": [
+                  {
+                    "evidence_id": "e1",
+                    "quote": "Preserve source ledger 1.",
+                    "observation": "Paragraph 1 preserves the source text exactly.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Preserve source ledger 1."
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e2",
+                    "quote": "Summary",
+                    "observation": "Summary remains the heading in paragraph 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Summary"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e3",
+                    "quote": "Total 38",
+                    "observation": "Normal body paragraph 3 follows Summary and supplies the correct total: 12 + 19 + 7 = 38.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"12\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"19\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"7\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e4",
+                    "quote": "Item",
+                    "observation": "Table 1 retains the first column header.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Item\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e5",
+                    "quote": "Amount",
+                    "observation": "Table 1 retains the second column header.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"Amount\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e6",
+                    "quote": "North",
+                    "observation": "North remains the first ledger entry, in table row 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"North\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e7",
+                    "quote": "12",
+                    "observation": "North retains its amount of 12 in row 2.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"12\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e8",
+                    "quote": "South",
+                    "observation": "South remains the second ledger entry, in table row 3.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"South\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e9",
+                    "quote": "19",
+                    "observation": "South retains its amount of 19 in row 3.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"19\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e10",
+                    "quote": "West",
+                    "observation": "West remains the third ledger entry, in table row 4.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"West\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e11",
+                    "quote": "7",
+                    "observation": "West retains its amount of 7 in row 4.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"7\""
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "e1",
+                "e2",
+                "e3",
+                "e4",
+                "e5",
+                "e6",
+                "e7",
+                "e8",
+                "e9",
+                "e10",
+                "e11"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "modality": "visual",
+      "request": "review-8a0f33aa1247b0b8-visual.json",
+      "sha256": "008a327a9a0bc78cfc8260e3a8b27a0a7da019e85c3c74f588eb13329a335e9c",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "The page clearly displays Total 38 in a body paragraph immediately after Summary and above the table. All three ledger rows are visible in order, with no overlap or clipping.",
+        "confidence": 0.99,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Upper-left content area, approximately x120–470, y98–318",
+            "observation": "Readable source text “Preserve source ledger 1.” (e1) appears above “Summary” (e2). “Total 38” is directly beneath Summary and above the table. Headers “Item” (e3) and “Amount” (e4) and ordered rows “North” (e5), “12” (e6), “South” (e7), “19” (e8), “West” (e9), “7” (e10) are fully visible, aligned in two columns, and unobstructed. The blue bold Summary heading provides clear hierarchy; text has strong contrast against the white page."
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 17.95881800004281,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:04:50.730080+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 16633,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 235,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 17.956505300011486,
+            "ended_at": "2026-10-26T14:05:08.687543+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-8a0f33aa1247b0b8\\visual\\call-609e2767adfc",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "The page clearly displays Total 38 in a body paragraph immediately after Summary and above the table. All three ledger rows are visible in order, with no overlap or clipping.",
+            "confidence": 0.99,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Upper-left content area, approximately x120–470, y98–318",
+                "observation": "Readable source text “Preserve source ledger 1.” (e1) appears above “Summary” (e2). “Total 38” is directly beneath Summary and above the table. Headers “Item” (e3) and “Amount” (e4) and ordered rows “North” (e5), “12” (e6), “South” (e7), “19” (e8), “West” (e9), “7” (e10) are fully visible, aligned in two columns, and unobstructed. The blue bold Summary heading provides clear hierarchy; text has strong contrast against the white page."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-609e2767adfc:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "The page clearly displays Total 38 in a body paragraph immediately after Summary and above the table. All three ledger rows are visible in order, with no overlap or clipping.",
+                "confidence": 0.99,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Upper-left content area, approximately x120–470, y98–318",
+                    "observation": "Readable source text “Preserve source ledger 1.” (e1) appears above “Summary” (e2). “Total 38” is directly beneath Summary and above the table. Headers “Item” (e3) and “Amount” (e4) and ordered rows “North” (e5), “12” (e6), “South” (e7), “19” (e8), “West” (e9), “7” (e10) are fully visible, aligned in two columns, and unobstructed. The blue bold Summary heading provides clear hierarchy; text has strong contrast against the white page."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "modality": "semantic",
+      "request": "review-01c7eae4091c4f6e-semantic.json",
+      "sha256": "0baa750453bb5a10a522f8668705f9065e479e770c0aedf51bb40fe6654749a0",
+      "decision": {
+        "status": "NEEDS_REVIEW",
+        "completion": null,
+        "observed": "Extracted source text and all three ledger rows are preserved in order. Total 45 is correctly calculated (5 + 17 + 23) and located on slide 2. Visibility and placement above the table belong to visual review. The undefined instruction to mark the “important result” remains a nonvisual ambiguity, preventing a definitive semantic judgment.",
+        "confidence": 1.0,
+        "observations": [
+          {
+            "evidence_id": "e1",
+            "quote": "Slide 1",
+            "observation": "Slide 1 is retained in the extracted structure.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Slide 1"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e2",
+            "quote": "Preserve source ledger 2.",
+            "observation": "The source text is preserved exactly on slide 1.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Preserve source ledger 2."
+              }
+            ]
+          },
+          {
+            "evidence_id": "e3",
+            "quote": "Slide 2",
+            "observation": "Slide 2 is retained as the ledger's logical location.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Slide 2"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e4",
+            "quote": "Item",
+            "observation": "The first column header is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Item"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e5",
+            "quote": "Amount",
+            "observation": "The second column header is preserved.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "Amount"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e6",
+            "quote": "North",
+            "observation": "North remains the first ledger entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "North"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e7",
+            "quote": "5",
+            "observation": "The first entry's amount remains 5.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"5\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e8",
+            "quote": "South",
+            "observation": "South remains the second ledger entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "South"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e9",
+            "quote": "17",
+            "observation": "The second entry's amount remains 17.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"17\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e10",
+            "quote": "West",
+            "observation": "West remains the third ledger entry.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "West"
+              }
+            ]
+          },
+          {
+            "evidence_id": "e11",
+            "quote": "23",
+            "observation": "The third entry's amount remains 23.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"23\""
+              }
+            ]
+          },
+          {
+            "evidence_id": "e12",
+            "quote": "Total 45",
+            "observation": "The total is a separate object on slide 2 and correctly sums the supplied amounts: 5 + 17 + 23 = 45. Whether it satisfies the undefined “important result” instruction cannot be determined.",
+            "source_citations": [
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"5\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"17\""
+              },
+              {
+                "source_id": "input-1",
+                "quote": "\"text\": \"23\""
+              }
+            ]
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 19.070009500021115,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:05:08.698381+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 16129,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 696,
+              "reasoning_output_tokens": 0
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 19.067391500109807,
+            "ended_at": "2026-10-26T14:05:27.766785+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-01c7eae4091c4f6e\\semantic\\call-154dc0605281",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "NEEDS_REVIEW",
+            "completion": null,
+            "observed": "Extracted source text and all three ledger rows are preserved in order. Total 45 is correctly calculated (5 + 17 + 23) and located on slide 2. Visibility and placement above the table belong to visual review. The undefined instruction to mark the “important result” remains a nonvisual ambiguity, preventing a definitive semantic judgment.",
+            "confidence": 1.0,
+            "observations": [
+              {
+                "evidence_id": "e1",
+                "quote": "Slide 1",
+                "observation": "Slide 1 is retained in the extracted structure.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Slide 1"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e2",
+                "quote": "Preserve source ledger 2.",
+                "observation": "The source text is preserved exactly on slide 1.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Preserve source ledger 2."
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e3",
+                "quote": "Slide 2",
+                "observation": "Slide 2 is retained as the ledger's logical location.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Slide 2"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e4",
+                "quote": "Item",
+                "observation": "The first column header is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Item"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e5",
+                "quote": "Amount",
+                "observation": "The second column header is preserved.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "Amount"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e6",
+                "quote": "North",
+                "observation": "North remains the first ledger entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "North"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e7",
+                "quote": "5",
+                "observation": "The first entry's amount remains 5.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"5\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e8",
+                "quote": "South",
+                "observation": "South remains the second ledger entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "South"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e9",
+                "quote": "17",
+                "observation": "The second entry's amount remains 17.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"17\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e10",
+                "quote": "West",
+                "observation": "West remains the third ledger entry.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "West"
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e11",
+                "quote": "23",
+                "observation": "The third entry's amount remains 23.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"23\""
+                  }
+                ]
+              },
+              {
+                "evidence_id": "e12",
+                "quote": "Total 45",
+                "observation": "The total is a separate object on slide 2 and correctly sums the supplied amounts: 5 + 17 + 23 = 45. Whether it satisfies the undefined “important result” instruction cannot be determined.",
+                "source_citations": [
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"5\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"17\""
+                  },
+                  {
+                    "source_id": "input-1",
+                    "quote": "\"text\": \"23\""
+                  }
+                ]
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-154dc0605281:repeat-1",
+              "decision": {
+                "status": "NEEDS_REVIEW",
+                "completion": null,
+                "observed": "Extracted source text and all three ledger rows are preserved in order. Total 45 is correctly calculated (5 + 17 + 23) and located on slide 2. Visibility and placement above the table belong to visual review. The undefined instruction to mark the “important result” remains a nonvisual ambiguity, preventing a definitive semantic judgment.",
+                "confidence": 1.0,
+                "observations": [
+                  {
+                    "evidence_id": "e1",
+                    "quote": "Slide 1",
+                    "observation": "Slide 1 is retained in the extracted structure.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Slide 1"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e2",
+                    "quote": "Preserve source ledger 2.",
+                    "observation": "The source text is preserved exactly on slide 1.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Preserve source ledger 2."
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e3",
+                    "quote": "Slide 2",
+                    "observation": "Slide 2 is retained as the ledger's logical location.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Slide 2"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e4",
+                    "quote": "Item",
+                    "observation": "The first column header is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Item"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e5",
+                    "quote": "Amount",
+                    "observation": "The second column header is preserved.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "Amount"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e6",
+                    "quote": "North",
+                    "observation": "North remains the first ledger entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "North"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e7",
+                    "quote": "5",
+                    "observation": "The first entry's amount remains 5.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"5\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e8",
+                    "quote": "South",
+                    "observation": "South remains the second ledger entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "South"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e9",
+                    "quote": "17",
+                    "observation": "The second entry's amount remains 17.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"17\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e10",
+                    "quote": "West",
+                    "observation": "West remains the third ledger entry.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "West"
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e11",
+                    "quote": "23",
+                    "observation": "The third entry's amount remains 23.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"23\""
+                      }
+                    ]
+                  },
+                  {
+                    "evidence_id": "e12",
+                    "quote": "Total 45",
+                    "observation": "The total is a separate object on slide 2 and correctly sums the supplied amounts: 5 + 17 + 23 = 45. Whether it satisfies the undefined “important result” instruction cannot be determined.",
+                    "source_citations": [
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"5\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"17\""
+                      },
+                      {
+                        "source_id": "input-1",
+                        "quote": "\"text\": \"23\""
+                      }
+                    ]
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "e1",
+                "e2",
+                "e3",
+                "e4",
+                "e5",
+                "e6",
+                "e7",
+                "e8",
+                "e9",
+                "e10",
+                "e11",
+                "e12"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "modality": "visual",
+      "request": "review-01c7eae4091c4f6e-visual.json",
+      "sha256": "6b517b5a94b5de5b56c5fe15b0a6eb768e3f1de82e10d2188d7526f8d247601a",
+      "decision": {
+        "status": "PASS",
+        "completion": 1.0,
+        "observed": "Both pages are readable and unclipped. Source text and all three ordered ledger rows remain visible. On slide 2, “Total 45” is clearly separated above the table, making the result visible. No specific additional marking style is defined by the ambiguous instruction.",
+        "confidence": 0.97,
+        "observations": [
+          {
+            "image_id": "page-1",
+            "artifact_location": "output/page/1",
+            "region": "Upper center, text at approximately x278–585, y56–80",
+            "observation": "“Preserve source ledger 2.” is fully visible in black text on white, without overlap or clipping. Supplied source input-1: e1 “Slide 1”; e2 “Preserve source ledger 2.”."
+          },
+          {
+            "image_id": "page-2",
+            "artifact_location": "output/page/2",
+            "region": "Total at x288–383, y56–80; table at x48–624, y193–384",
+            "observation": "“Total 45” is clearly visible above the table with ample separation. The table has readable headers and three unobscured rows in the supplied order, with strong text contrast. Supplied source input-1: e3 “Slide 2”; e4 “Item”; e5 “Amount”; e6 “North”; e7 “5”; e8 “South”; e9 “17”; e10 “West”; e11 “23”. The result’s standalone placement provides visual distinction; the task defines no further marking convention."
+          }
+        ]
+      },
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 22.274104099953547,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:05:27.780417+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 17558,
+              "cached_input_tokens": 12928,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 378,
+              "reasoning_output_tokens": 54
+            },
+            "model": "gpt-6.1-sol",
+            "status": "completed",
+            "elapsed_seconds": 22.27164310007356,
+            "ended_at": "2026-10-26T14:05:50.052791+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-01c7eae4091c4f6e\\visual\\call-c02fda43c1a9",
+        "status": "completed",
+        "independent_reviews": 1,
+        "agreement": true,
+        "judge_result": {
+          "decision": {
+            "status": "PASS",
+            "completion": 1.0,
+            "observed": "Both pages are readable and unclipped. Source text and all three ordered ledger rows remain visible. On slide 2, “Total 45” is clearly separated above the table, making the result visible. No specific additional marking style is defined by the ambiguous instruction.",
+            "confidence": 0.97,
+            "observations": [
+              {
+                "image_id": "page-1",
+                "artifact_location": "output/page/1",
+                "region": "Upper center, text at approximately x278–585, y56–80",
+                "observation": "“Preserve source ledger 2.” is fully visible in black text on white, without overlap or clipping. Supplied source input-1: e1 “Slide 1”; e2 “Preserve source ledger 2.”."
+              },
+              {
+                "image_id": "page-2",
+                "artifact_location": "output/page/2",
+                "region": "Total at x288–383, y56–80; table at x48–624, y193–384",
+                "observation": "“Total 45” is clearly visible above the table with ample separation. The table has readable headers and three unobscured rows in the supplied order, with strong text contrast. Supplied source input-1: e3 “Slide 2”; e4 “Item”; e5 “Amount”; e6 “North”; e7 “5”; e8 “South”; e9 “17”; e10 “West”; e11 “23”. The result’s standalone placement provides visual distinction; the task defines no further marking convention."
+              }
+            ]
+          },
+          "reviews": [
+            {
+              "review_id": "call-c02fda43c1a9:repeat-1",
+              "decision": {
+                "status": "PASS",
+                "completion": 1.0,
+                "observed": "Both pages are readable and unclipped. Source text and all three ordered ledger rows remain visible. On slide 2, “Total 45” is clearly separated above the table, making the result visible. No specific additional marking style is defined by the ambiguous instruction.",
+                "confidence": 0.97,
+                "observations": [
+                  {
+                    "image_id": "page-1",
+                    "artifact_location": "output/page/1",
+                    "region": "Upper center, text at approximately x278–585, y56–80",
+                    "observation": "“Preserve source ledger 2.” is fully visible in black text on white, without overlap or clipping. Supplied source input-1: e1 “Slide 1”; e2 “Preserve source ledger 2.”."
+                  },
+                  {
+                    "image_id": "page-2",
+                    "artifact_location": "output/page/2",
+                    "region": "Total at x288–383, y56–80; table at x48–624, y193–384",
+                    "observation": "“Total 45” is clearly visible above the table with ample separation. The table has readable headers and three unobscured rows in the supplied order, with strong text contrast. Supplied source input-1: e3 “Slide 2”; e4 “Item”; e5 “Amount”; e6 “North”; e7 “5”; e8 “South”; e9 “17”; e10 “West”; e11 “23”. The result’s standalone placement provides visual distinction; the task defines no further marking convention."
+                  }
+                ]
+              },
+              "evidence_refs": [
+                "page-1",
+                "page-2"
+              ]
+            }
+          ],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "modality": "semantic",
+      "request": "review-3dfbb6e577ab463f-semantic.json",
+      "sha256": "7c91e0127dd8dee475d8a747a4c920c5eb056b548b7b029f9cf7dcb91f1b5c3b",
+      "decision": null,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 5.070342400111258,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-26T14:05:50.063724+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 60000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "status": "error",
+            "error": "invalid response or transport failure: ValueError",
+            "elapsed_seconds": 5.0677110000979155,
+            "ended_at": "2026-10-26T14:05:55.132545+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\review-3dfbb6e577ab463f\\semantic\\call-81b4232be332",
+        "status": "error",
+        "error": "invalid response or transport failure: ValueError",
+        "judge_result": {
+          "decision": null,
+          "reviews": [],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 60000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      }
+    }
+  ],
+  "quality_qualified": false,
+  "status": "incomplete",
+  "declared_scope_acceptance": {
+    "review-ec20117491502820": "PASS",
+    "review-201d371b1160838f": "FAIL",
+    "review-19988a00ef040b43": "PASS",
+    "review-8a0f33aa1247b0b8": "PASS",
+    "review-01c7eae4091c4f6e": "INCOMPLETE",
+    "review-3dfbb6e577ab463f": "INCOMPLETE"
+  },
+  "aggregation_rule": "A mandatory FAIL or PARTIAL rejects acceptance; otherwise a missing/NEEDS_REVIEW channel stays INCOMPLETE; both PASS accept declared scopes only."
+}

@@ -1,0 +1,230 @@
+{
+  "schema_version": "review-red-baseline-v1",
+  "baseline_commit": "9290197a60bd4318905056df63efac8a87ce0151",
+  "test_exit_code": 1,
+  "counts": {
+    "failed": 12,
+    "passed_controls_and_manifest": 2,
+    "errors": 0
+  },
+  "evidence": "project_artifacts/results/hardening-v2/T01-final/20261021T075943272086Z",
+  "initial_red_evidence": "project_artifacts/results/hardening-v2/T01/20261021T074951807941Z",
+  "claim_boundary": "Counterexamples captured, not fixed. R10 preserves max_attempts as execution retry and requests explicit repair policy when supported.",
+  "cases": [
+    {
+      "case_id": "R01",
+      "test_node": "tests/test_review_regressions.py::test_R01_blank_analysis_cannot_receive_full_task_acceptance",
+      "owner_tasks": [
+        "T10",
+        "T11",
+        "T17"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ],
+      "truth_source": "Task explicitly requires aggregation/chart/format; blank workbook has none.",
+      "minimal_input": "Blank xlsx plus rich task with absent constraints.",
+      "expected": "No full task acceptance; structural-only or spec-incomplete is acceptable.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R01: file readability cannot establish the unmet analysis requirements\nassert not ('PASS' == 'PASS'\n  \n    PASS and 100.0 == 100)\n +  where 100.0 = ScoreReport(task_id='R01', spec_hash='187bd19a3281e3c04c7f123fc618f15f3182b1c6f6241fa997344f877f28faf1', evaluator_ide...8f5d7da7eb40f34f5526e14516bca49cabb0804468fd949625e828974'], scope_note='Only the declared requirements are assessed.').total_score"
+    },
+    {
+      "case_id": "R02",
+      "test_node": "tests/test_review_regressions.py::test_R02_required_paragraph_cannot_match_another_paragraph",
+      "owner_tasks": [
+        "T12"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ],
+      "truth_source": "Independent paragraph indexing: required paragraph 2 contains unrelated text.",
+      "minimal_input": "Two-paragraph docx; target appears only in paragraph 1.",
+      "expected": "Paragraph-scoped check must not pass.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R02: a hit in paragraph 1 does not satisfy paragraph 2\nassert 'PASS' != 'PASS'\n +  where 'PASS' = CheckRecord(requirement_id='required', status='PASS', completion=1.0, location=Location(artifact='output', sheet=None,...='Required conclusion', evidence_refs=['ab2e3da6722e234499f9b08edca4c1e7aeae9899b81d8038aabd4b3a33734d75'], message='').status"
+    },
+    {
+      "case_id": "R03",
+      "test_node": "tests/test_review_regressions.py::test_R03_off_slide_text_cannot_establish_visible_delivery",
+      "owner_tasks": [
+        "T10",
+        "T15",
+        "T17"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ],
+      "truth_source": "Textbox left coordinate exceeds slide width; task requires visible delivery.",
+      "minimal_input": "Single slide with required text entirely outside the canvas.",
+      "expected": "Do not publish full visible-delivery PASS from text-only evidence; a spec/assessment gap is acceptable.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R03: text existence alone cannot establish visible delivery\nassert 'PASS' != 'PASS'\n +  where 'PASS' = ScoreReport(task_id='review', spec_hash='de5eccea5adda693472f4f381adc5d7bec727293c777bbea182e9969c0740f6d', evaluator_...4f180ba47a2b0df28d93b5404e724df7029badbf86f2e5e6f1eb1b8db'], scope_note='Only the declared requirements are assessed.').acceptance_status"
+    },
+    {
+      "case_id": "R04",
+      "test_node": "tests/test_review_regressions.py::test_R04_opaque_containment_cannot_be_declared_clear",
+      "owner_tasks": [
+        "T15"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ],
+      "truth_source": "A later solid opaque foreground rectangle fully contains the required textbox.",
+      "minimal_input": "Text and fully containing opaque cover; no rendering or model judgment.",
+      "expected": "Do not infer visual clearance from containment alone; review is acceptable.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R04: containment alone is not evidence of an unobscured slide; review is acceptable\nassert 'PASS' != 'PASS'\n +  where 'PASS' = CheckRecord(requirement_id='required', status='PASS', completion=1.0, location=Location(artifact='output', sheet=None,...served=[], expected=[], evidence_refs=['3efe92fbe390318030fdb5e8c75a187c68fba17d3ab0c0235cd85a704c7a0b79'], message='').status"
+    },
+    {
+      "case_id": "R05",
+      "test_node": "tests/test_review_regressions.py::test_R05_permitted_equivalent_formula_is_not_rejected_as_string_mismatch",
+      "owner_tasks": [
+        "T13"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/artifact_assessment.py"
+      ],
+      "truth_source": "a+b equals sum([a,b]) for each independently specified variant; task permits equivalent sums.",
+      "minimal_input": "B2=4, B3=6, B4=B2+B3 with equivalence-permitted rubric.",
+      "expected": "Validate equivalent formula or declare gap; do not reject solely for SUM syntax.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R05: allowed equivalence requires semantic validation or an explicit capability/spec gap\nassert 'FAIL' != 'FAIL'\n +  where 'FAIL' = CheckRecord(requirement_id='required', status='FAIL', completion=0.0, location=Location(artifact='output', sheet='Shee...expected='=SUM(B2:B3)', evidence_refs=['7375f87d0ef42ddeb69b7b080be7fd8ff73a11ecea3f41280d66a23f4c232d1e'], message='').status"
+    },
+    {
+      "case_id": "R06",
+      "test_node": "tests/test_candidate_boundary_regressions.py::test_R06_standalone_verifier_rejects_unknown_skill_field",
+      "owner_tasks": [
+        "T08"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/verifier.py"
+      ],
+      "truth_source": "WorkAgentSkill extra=forbid independently rejects the proposed unknown field.",
+      "minimal_input": "Valid parent skill and JSON patch adding unknown_review_field.",
+      "expected": "Standalone verifier rejects the invalid skill patch.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R06: compileall on a JSON-only directory does not validate the proposed skill schema\nassert True is False\n +  where True = VerificationReport(candidate_id='review', passed=True, critical_violations=[], warnings=['candidate workspace has no c...xit_code': 0}, artifact_results={}, evidence_refs=['227f6edf2529641a109eb1e0dd51d359cadd523bf7bf6180668c525054b5bb20']).passed"
+    },
+    {
+      "case_id": "R07",
+      "test_node": "tests/test_candidate_boundary_regressions.py::test_R07_api_candidate_request_contains_actual_champion",
+      "owner_tasks": [
+        "T06"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/candidate_provider.py"
+      ],
+      "truth_source": "Known champion instruction sentinel must appear in the captured request.",
+      "minimal_input": "Current skill.json and in-process stub transport; no network.",
+      "expected": "Actual champion instructions are supplied, not only parent_version.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R07: parent version alone does not supply current champion instructions\nassert 'CHAMPION_RULE_read_every_input_row_before_aggregation' in '{\"model\": \"offline-review-stub\", \"temperature\": 0, \"messages\": [{\"role\": \"system\", \"content\": \"Return only one JSON o...p\\\\\",\\\\\"mode\\\\\":\\\\\"structured\\\\\",\\\\\"tasks\\\\\":[],\\\\\"issue_groups\\\\\":{}}\"}], \"response_format\": {\"type\": \"json_object\"}}'\n +  where '{\"model\": \"offline-review-stub\", \"temperature\": 0, \"messages\": [{\"role\": \"system\", \"content\": \"Return only one JSON o...p\\\\\",\\\\\"mode\\\\\":\\\\\"structured\\\\\",\\\\\"tasks\\\\\":[],\\\\\"issue_groups\\\\\":{}}\"}], \"response_format\": {\"type\": \"json_object\"}}' = <function dumps at 0x000001C2D6E79DA0>({'model': 'offline-review-stub', 'temperature': 0, 'messages': [{'role': 'system', 'content': 'Return only one JSON ob...v1\",\"split\":\"develop\",\"mode\":\"structured\",\"tasks\":[],\"issue_groups\":{}}'}], 'response_format': {'type': 'json_object'}})\n +    where <function dumps at 0x000001C2D6E79DA0> = json.dumps"
+    },
+    {
+      "case_id": "R08",
+      "test_node": "tests/test_candidate_boundary_regressions.py::test_R08_over_budget_response_is_rejected_before_truncation",
+      "owner_tasks": [
+        "T07",
+        "T08"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/candidate_provider.py"
+      ],
+      "truth_source": "Two original edits exceed budget1 and second targets a prohibited evaluator file.",
+      "minimal_input": "Valid first edit plus forbidden second edit.",
+      "expected": "Reject original response as a whole before normalization.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "Failed: R08: reject the whole response; the forbidden second edit disappeared through slicing"
+    },
+    {
+      "case_id": "R09",
+      "test_node": "tests/test_review_regressions.py::test_R09_mixed_pilot_formal_cannot_authorize_a_global_mean",
+      "owner_tasks": [
+        "T09"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/result_cohorts.py",
+        "project_artifacts/phase3_experiments/scripts/analyze_formal.py"
+      ],
+      "truth_source": "Synthetic pilot0/formal1 have incompatible identities; metadata is not admission evidence.",
+      "minimal_input": "Two locally constructed summary.json files.",
+      "expected": "No combined mean0.5 and no global formal authorization.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R09: synthetic mixed identities must not yield a formal global claim or a combined mean\nassert (True is not True)\n +  where True = <built-in method get of dict object at 0x000001C2DA756B40>('claims_allowed')\n +    where <built-in method get of dict object at 0x000001C2DA756B40> = {'results_root': 'D:\\\\ws\\\\Projects\\\\WorkAgent-RSI-hardening\\\\.pytest-tmp\\\\h-2c8b389c\\\\test_R09_mixed_pilot_formal_ca0', 'source_summary_count': 2, 'completed_experiments': 2, 'unavailable_experiments': 0, ...}.get"
+    },
+    {
+      "case_id": "R10",
+      "test_node": "tests/test_review_regressions.py::test_R10_final_assessment_failure_enters_bounded_repair",
+      "owner_tasks": [
+        "T21",
+        "T22"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/orchestrator.py",
+        "src/workagent_rsi/repair_loop.py"
+      ],
+      "truth_source": "Authored stub writes wrong first docx and correct second docx if called again.",
+      "minimal_input": "Task required text; max_attempts1; explicit repair_policy when supported; authored local adapter, no real provider.",
+      "expected": "Final assessment failure enters explicit bounded repair; max_attempts retains execution-retry semantics.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R10: final assessment failure needs explicit bounded repair; keep max_attempts as execution retry only\nassert (1 == 2)\n +  where 1 = len(['R10'])"
+    },
+    {
+      "case_id": "R11",
+      "test_node": "tests/test_review_regressions.py::test_R11_code_execution_failure_remains_a_develop_learning_signal",
+      "owner_tasks": [
+        "T20"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/workagent_evaluator.py",
+        "src/workagent_rsi/rsi_feedback.py"
+      ],
+      "truth_source": "Injected agent_execution SyntaxError is a known agent failure, not environment absence.",
+      "minimal_input": "Frozen develop task and in-process failing Harness stub.",
+      "expected": "Failed execution counted and available for feedback; unobserved quality remains null.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R11: known code failure needs an explicit failed-task denominator and develop feedback, with unobserved quality null\nassert (None == 0)\n +  where None = <built-in method get of dict object at 0x000001C2DA80E3C0>('execution_success_rate')\n +    where <built-in method get of dict object at 0x000001C2DA80E3C0> = {'split': 'develop', 'status': 'incomplete', 'task_count': 1, 'completed_count': 0, ...}.get"
+    },
+    {
+      "case_id": "R12",
+      "test_node": "tests/test_candidate_boundary_regressions.py::test_R12_generated_code_cannot_read_parent_or_inherit_dummy_secret",
+      "owner_tasks": [
+        "T04",
+        "T05"
+      ],
+      "owner_modules": [
+        "src/workagent_rsi/workagent_provider.py",
+        "src/workagent_rsi/execution_sandbox.py"
+      ],
+      "truth_source": "Only authored parent file and injected dummy environment value are probed.",
+      "minimal_input": "Authored probe.py; subprocess environment stripped to OS essentials plus dummy sentinel.",
+      "expected": "Deny parent/dummy visibility or fail closed; passing alone is not real sandbox qualification.",
+      "baseline_state": "expected-open",
+      "evidence": "observation.json is written before the contract assertion",
+      "observed_test_status": "failed",
+      "assertion": "AssertionError: R12: cwd/path validation does not prevent code from reading a parent or inheriting a host environment\nassert {'outside': '...nly-sentinel'} == {'outside': N...'dummy': None}\n  \n  Differing items:\n  {'outside': 'authored-parent-sentinel'} != {'outside': None}\n  {'dummy': 'dummy-only-sentinel'} != {'dummy': None}\n  Use -v to get more diff"
+    }
+  ]
+}

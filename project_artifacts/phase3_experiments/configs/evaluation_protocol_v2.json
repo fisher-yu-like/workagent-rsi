@@ -1,0 +1,27 @@
+{
+  "schema_version": "evaluation-protocol-v2",
+  "source_kind": "project-generated",
+  "seed": 20261025,
+  "domains": ["excel", "word", "powerpoint"],
+  "per_domain_base_targets": {
+    "develop": 8,
+    "regression": 4,
+    "promotion_validation": 4,
+    "final_test": 4,
+    "ood_transfer": 4
+  },
+  "target_base_tasks": 72,
+  "input_variants_per_base": 3,
+  "target_instances": 216,
+  "group_keys": ["family_id", "source_document_id", "source_hash", "variant_input_hashes"],
+  "assign_groups_before_variants": true,
+  "legacy_hidden_maps_to": "promotion_validation",
+  "promotion_validation_role": "Repeated protected promotion gate; not an untouched final set",
+  "final_test_role": "Evaluator-side one-use evaluation after development is frozen",
+  "final_content_in_adaptive_rsi": false,
+  "final_public_fields": ["task_count", "base_task_count", "family_count", "source_document_count", "final_test_hash"],
+  "final_storage_requires_external_private_root": true,
+  "deployment_requires_separate_mounts_and_principals": true,
+  "insufficient_families": "blocked; no renamed copies or claimed scale completion",
+  "live_calls_authorized": false
+}

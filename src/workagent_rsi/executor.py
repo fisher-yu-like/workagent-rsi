@@ -11,6 +11,7 @@ from .path_safety import validated_task_directory
 
 class MockWorkAgentAdapter:
     """Deterministic adapter used until a real WorkAgent provider is configured."""
+    qualification_only = True
 
     def execute(self, task: TaskSpec, skill_id: str) -> Iterable[dict[str, Any]]:
         yield {"kind": "started", "skill_id": skill_id, "task_id": task.task_id}
@@ -25,6 +26,7 @@ class MockWorkAgentAdapter:
 
 class LocalOfficeAdapter:
     """Create genuine Office artifacts for local provider qualification."""
+    qualification_only = True
 
     MEDIA_TYPES = {
         "excel": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -100,6 +102,7 @@ class UnavailableOfficeAdapter:
 
 class ComOfficeAdapter:
     """Generate a genuine package and require Microsoft Office to reopen it."""
+    qualification_only = True
 
     def __init__(
         self,

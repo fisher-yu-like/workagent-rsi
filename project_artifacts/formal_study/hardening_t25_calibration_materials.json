@@ -1,0 +1,47 @@
+{
+  "task_id": "T25",
+  "status": "completed",
+  "delivery_level": "local_engineering",
+  "evidence_bundle": "project_artifacts/results/hardening-v2/T25-final/20261025T020152183803Z/bundle/manifest.json",
+  "counts": {
+    "cases": 90,
+    "per_domain": 30,
+    "correct": 30,
+    "single_defect": 30,
+    "equivalent": 15,
+    "gap": 15
+  },
+  "source_families": 3,
+  "input_documents": 30,
+  "seed": 20261025,
+  "focused_passed": 4,
+  "red_evidence": [
+    "project_artifacts/results/hardening-v2/T25-red/20261025T013953682773Z",
+    "project_artifacts/results/hardening-v2/T25-focused/20261025T014145412648Z"
+  ],
+  "red_reason": "Missing calibration module; then independent reproducibility check caught unfrozen core metadata.",
+  "source_hashes": {
+    "src/workagent_rsi/calibration_data.py": "5427fef37c235150d76a3830c4e1bb2fdf5efc6ab6a32639b2d3e75d17cea026",
+    "tests/test_calibration_case_integrity.py": "4f83fba062e1d0fcb0aa995011d97b44f92c5062fe7ce366e15841dfc10acdab",
+    "tests/fixtures/calibration/case_manifest.json": "114a4e755a726685e25865eeecc2cb1600c6a7653abe8587dcd916baf8bc9548",
+    "project_artifacts/phase3_experiments/scripts/build_calibration_cases.py": "2bde6476c0000b18269e9a9e898624aa8644311b44c5c12a12da0722bacf1ede"
+  },
+  "limitations": [
+    "Development material only; three source families, not 90 independent tasks.",
+    "No evaluator accuracy, human agreement, live model, renderer or sandbox qualification."
+  ],
+  "historical_milestone_bundle": "project_artifacts/results/hardening-v2/T25/20261025T014502287648Z/bundle/manifest.json",
+  "initial_focused_evidence": "project_artifacts/results/hardening-v2/T25-green/20261025T014229678680Z",
+  "final_focused_source": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z",
+  "bundle_files": 132,
+  "latest_full_validation": {
+    "passed": 710,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+  },
+  "final_source_verified": true,
+  "note": "Final revision uses ten distinct numerical inputs per domain and explicit equivalent-solution locations."
+}

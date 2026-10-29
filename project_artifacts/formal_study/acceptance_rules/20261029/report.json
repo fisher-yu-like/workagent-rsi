@@ -1,0 +1,536 @@
+{
+  "schema_version": "t31-source-bound-acceptance-rules-v3",
+  "source_bundle": "project_artifacts\\results\\hardening-v2\\T31-prepared\\20261026\\task-bundle.draft.json",
+  "source_bundle_sha256": "8f6bc8fe72a744447d27c2d406a98aae1f6e04de5fa6e79d0efeb62d9d0ebe25",
+  "task_count": 72,
+  "domain_counts": {
+    "excel": 24,
+    "powerpoint": 24,
+    "word": 24
+  },
+  "source_units": 405,
+  "routes": {
+    "uncovered": 140,
+    "visual": 116,
+    "deterministic": 91,
+    "semantic": 58
+  },
+  "necessary_controls": 48,
+  "word_rule_count": 66,
+  "excel_metric_bindings": 90,
+  "reference_bound_tasks": 24,
+  "admission_counts": {
+    "SPEC_INCOMPLETE": 72
+  },
+  "model_calls": 0,
+  "server_jobs": 0,
+  "reviewer_signatures_created": 0,
+  "candidate_outputs_read": false,
+  "reference_answers_read": false,
+  "tasks": [
+    {
+      "task_id": "ssb2/Financial_Model/09_03/native-1",
+      "domain": "excel",
+      "file": "4d4d7786a4d96297a957.json",
+      "sha256": "000bf8bc96fbc36d4630f63b15042109e1b9668574aa62e1150753efe6f91be7",
+      "uncovered_units": 6
+    },
+    {
+      "task_id": "ssb2/Financial_Model/18_04/native-1",
+      "domain": "excel",
+      "file": "43136cede0d82c95fb9e.json",
+      "sha256": "97338f02f8de1929743835029798cf6a40cb11b741b0aeb3ac53f1b9349b64f4",
+      "uncovered_units": 8
+    },
+    {
+      "task_id": "ssb2/Template/07_01/native-1",
+      "domain": "excel",
+      "file": "1c7e02c5e780c662688a.json",
+      "sha256": "c2e0a6301fb509e24c0c63a08b8e5786d3d9782cc0ba07375ab2b35f6c3bb303",
+      "uncovered_units": 3
+    },
+    {
+      "task_id": "ssb2/Template/09_02/native-1",
+      "domain": "excel",
+      "file": "85d971d1829da787f1c0.json",
+      "sha256": "c0dab689b0a27a77a35238d9cbe719edeac8b3374876714d5b0e8f31aec1919e",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 133/native-1",
+      "domain": "excel",
+      "file": "7204670c2278790fadba.json",
+      "sha256": "dfc8c241fdeb46a72b5068c17cef8d57e63b73e32c93ea5ec05f1037a01404e4",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 134/native-1",
+      "domain": "excel",
+      "file": "5b235c2d64105cebc9b7.json",
+      "sha256": "3a63b2f2efcc5bdf93213d6cb87e55caafeb1ceb8bedbaf63107977431e53703",
+      "uncovered_units": 3
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 1426290/native-1",
+      "domain": "excel",
+      "file": "cb6ca4e145128315934a.json",
+      "sha256": "6a6325c5651eecbd1145471126481df136c4d48a91be459fb916176c2c649e9d",
+      "uncovered_units": 18
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 1431124/native-1",
+      "domain": "excel",
+      "file": "0bbde62c2091df66c2c0.json",
+      "sha256": "9b8996105ac9811db7e62e2a6d46ba422bb0534fcd33ad2c71f9f4c7343fce33",
+      "uncovered_units": 4
+    },
+    {
+      "task_id": "pptbench/task_0024/native-1",
+      "domain": "powerpoint",
+      "file": "1f0f602c63b060b6cdc2.json",
+      "sha256": "85239c73bb2825dfdeba7cb7caed877680f3a370759ce7c48eead9e13a504575",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0085/native-1",
+      "domain": "powerpoint",
+      "file": "9a55afa41dee1fb00107.json",
+      "sha256": "a7a70946f1f22c89dfbd8504d6409ac410b2a14bb4b976cd60014ff6bc5eaeb6",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0095/native-1",
+      "domain": "powerpoint",
+      "file": "412ef5ddcfde12fb8992.json",
+      "sha256": "4e8fc3e8389da102008d62a493ea0e0582c028c8c73c4a10f0470c88ceb70da7",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0113/native-1",
+      "domain": "powerpoint",
+      "file": "273c5b4a3b26b5ad6854.json",
+      "sha256": "702aa4ffb58d0136fa7c9553f6a99c88831673b14f40d0aa5220a99f7d4adee3",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0138/native-1",
+      "domain": "powerpoint",
+      "file": "7a0f042dc142d5ca28fe.json",
+      "sha256": "4e4d7361c10606f0cd5cf5c3d89369ab444dff1fa3c3204e37bda5f6f3d78701",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0155/native-1",
+      "domain": "powerpoint",
+      "file": "e3ac00dd16437b6204ce.json",
+      "sha256": "e1f8bc1945b804c5bd4e3e6dd1f493a396d71f394cddc079355f134f72f7f21e",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0167/native-1",
+      "domain": "powerpoint",
+      "file": "2753230afeedbf437e9d.json",
+      "sha256": "d1fe04b8ba2aa2be6a0d7b1c56273b96dd80f2c7016b34878182e43d977b82b8",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0168/native-1",
+      "domain": "powerpoint",
+      "file": "4e82750f56396d718446.json",
+      "sha256": "db88f57d1568fa2b9739adfdff39b301d65fe7b5c457afb1f6e7884a66e50ef9",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "word-edit/02a00a9f7bd170512656/native-1",
+      "domain": "word",
+      "file": "c36fe85ee0c01d773fe9.json",
+      "sha256": "3186e287ac3c4b53b7b5c32d4d7cc620b1e56dfdf1a18a09f87071d017df3d14",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/4fde28fde3ca3d1fce6e/native-1",
+      "domain": "word",
+      "file": "30ddfe76c3dfdd0112c6.json",
+      "sha256": "6f3ab370439b7be89df45bd08b3c4cb88e5178fe920758565a2d8132adc28b5f",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/55b776efbc1cf3ef361e/native-1",
+      "domain": "word",
+      "file": "508d54824f4bcdb99146.json",
+      "sha256": "ad2675bbec97be97c22241a0bd7c18b707baab3338c5b1cf6dc285ea01bbc874",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/788ee5bc9b61152ede71/native-1",
+      "domain": "word",
+      "file": "9250ddd17f5cff509bbb.json",
+      "sha256": "485033a52dbd192af82942409ee01850c029742b52063e7202a89dbac94117a6",
+      "uncovered_units": 1
+    },
+    {
+      "task_id": "word-edit/b47b04d19bea10fbc814/native-1",
+      "domain": "word",
+      "file": "acec8475995701fb8c4c.json",
+      "sha256": "3956f43d1b7bae1e978a55916b0f0ff4facecfe226cf4df0eca6b0bb876b75c9",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/cc2fccd701c3ac869dfc/native-1",
+      "domain": "word",
+      "file": "4e47620641dfc60d3e31.json",
+      "sha256": "d54e70e6c3f900c0335fa690cd601ab5a67e1cdc4e32dda0f228d8bbb658050b",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/dbcd47f3ef2e36413aec/native-1",
+      "domain": "word",
+      "file": "d62f91f88cda0755a5bc.json",
+      "sha256": "645dbb123d31a075f320cc1f50831e391b8ab881dec996254700ffe146f8896e",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/f4fdde5982eb8ebbc3ad/native-1",
+      "domain": "word",
+      "file": "aa16b52e8b3ec85ad51e.json",
+      "sha256": "287aab7f61ac513a0df49b83992e9203984d39b096d9e8d15c70cd19a6e743dc",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "ssb2/Debugging/07_07/native-1",
+      "domain": "excel",
+      "file": "e4b8074b9e314903445e.json",
+      "sha256": "b84c5cdc6a37cde704f4ae4729fe016c5f9b994e95a78dd62ec767b2da12533c",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "ssb2/Debugging/08_04/native-1",
+      "domain": "excel",
+      "file": "49dc18c24c0d8841c3db.json",
+      "sha256": "38ed32b74a1bb3ea1de13500d2d645998c037de3212bf31335805b44138488ad",
+      "uncovered_units": 3
+    },
+    {
+      "task_id": "ssb2/Financial_Model/04_05/native-1",
+      "domain": "excel",
+      "file": "e4b7c89a66f355999381.json",
+      "sha256": "dcdbc9ae6f84877a87d1b7b9610726dff26b889a646bbf168855ebaefdf9cc28",
+      "uncovered_units": 5
+    },
+    {
+      "task_id": "ssb2/Template/01_05/native-1",
+      "domain": "excel",
+      "file": "0dcaf57e13b311b37177.json",
+      "sha256": "36ec4765b193ed5ec99d8ed0c0c385ad7ebd376f1961671d173bd9f201accfee",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "ssb2/Template/15_04/native-1",
+      "domain": "excel",
+      "file": "9e0e5209330658a8e808.json",
+      "sha256": "7d531f63928cda5eb97a81022af15a4101da30853062598c8da7dcb633e99261",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 1428419/native-1",
+      "domain": "excel",
+      "file": "49421c5a60bb8ecb6e05.json",
+      "sha256": "a13b922e66242cea4e65532aa048d724b896d012bf74305c37de520a05cf89c9",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 1437004/native-1",
+      "domain": "excel",
+      "file": "7a1e50e366069630c42c.json",
+      "sha256": "c904ef5d03092e7fe6aca0669330187def270e7018ba69bf6dce8e56e814c859",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 96/native-1",
+      "domain": "excel",
+      "file": "042723eead6a6669fda8.json",
+      "sha256": "27b406128245135825f7cfa9431d6c5ce45e6d70b8d7b819e266917459f1ef1e",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "pptbench/task_0011/native-1",
+      "domain": "powerpoint",
+      "file": "0e8576f3fd40b16104a0.json",
+      "sha256": "7041856260137ce9bc591a3424f601f70ab5055f2e4499f9f013b7bccd60d5f3",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0026/native-1",
+      "domain": "powerpoint",
+      "file": "39711adc15246c450a7d.json",
+      "sha256": "731346cfb3730b297ba4130d34bda7e03317d7f70d2d05d2c0ac204bb8ad453f",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0032/native-1",
+      "domain": "powerpoint",
+      "file": "acca4719491b7b3b398f.json",
+      "sha256": "9d373e07401cd3b06884fdbd765c0430a0e95ce355ee502ab781a2892c3cb7de",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0034/native-1",
+      "domain": "powerpoint",
+      "file": "670a1bab4b3e725a094f.json",
+      "sha256": "77d899c55f8164f2473b9b8e15e173dfecc8fcc116a05da06ca3d0402145d527",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0080/native-1",
+      "domain": "powerpoint",
+      "file": "f70f191c2ef72d0b2bf9.json",
+      "sha256": "1f477bcf27727304456a69716ce233de2bd4b10aa2c810e1d48ab0c0beff947a",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0102/native-1",
+      "domain": "powerpoint",
+      "file": "9ca7f6320c0803e54e0d.json",
+      "sha256": "04ba676bc5f70f1bf6008b095f7363b40ac871ac8f66bde87821093555f58f00",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0109/native-1",
+      "domain": "powerpoint",
+      "file": "2c5547e4c954e5d759a8.json",
+      "sha256": "bd3087bf235a267e7a72ca6d34f4a350c0f206319a81d23a75463303c84478b9",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0173/native-1",
+      "domain": "powerpoint",
+      "file": "a5eb0565c4a73dc7b5f4.json",
+      "sha256": "73f80b93b707338fa284b99c9ca6901fd95b8b59bed756f2a50bc6e601858a5a",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "word-edit/090109ef9efaee668933/native-1",
+      "domain": "word",
+      "file": "3a082d7db70a7eb1b45d.json",
+      "sha256": "34813bdaa9d41315855a032bf104074cfc21d14365ce6024a64445caac58499c",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/0ca2e7837a28b8655b68/native-1",
+      "domain": "word",
+      "file": "fa94bac8437a05ea51ad.json",
+      "sha256": "94ec05643056be6c08739b6e5a6166ef67ae38794dfaafe001686887afce0f77",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/394d4298a0f47f54e059/native-1",
+      "domain": "word",
+      "file": "43ded9f6881c51164a9b.json",
+      "sha256": "d3cc259923d7778ad17787613305ac34f8c0ad3478b5fe26f36dfec05906fce8",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "word-edit/5c3287777b802adfb021/native-1",
+      "domain": "word",
+      "file": "5a10c5962ba83ff4ed03.json",
+      "sha256": "116b36d091bd6c04875e10a92db94b29901c3969400817ad91017e0b9966da64",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/77240a705ffdbfe894f1/native-1",
+      "domain": "word",
+      "file": "3fcde94e392593221819.json",
+      "sha256": "3fa2f35cf42c80a76bf4665041b860457e0bc2f0c89afbb2789c6889d66362f2",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/9fb33d614f74629f2b26/native-1",
+      "domain": "word",
+      "file": "36d0ea018676d497f6ad.json",
+      "sha256": "13a632125bbae50d0d8ad3193a62de95ee57b4af06997790f0920b7bda5ec947",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/c67214beb186618811d4/native-1",
+      "domain": "word",
+      "file": "5acef9f4c616e59094cf.json",
+      "sha256": "811644dffce697d7933cebde05c1a46629186c223e39067ddf56a994c3cd4524",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/e00d39117abef369a890/native-1",
+      "domain": "word",
+      "file": "c4a434fde3db5e910f85.json",
+      "sha256": "4ced73252abc3018a37b96a6a706b8a7d411e9e68122430d2817a021065c6be5",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "ssb2/Financial_Model/10_01/native-1",
+      "domain": "excel",
+      "file": "1ee2ddf5471a4eca39e5.json",
+      "sha256": "58323b3fa574791defeb5a9cbbfcdaecf9a033d6968fb2b344def80165591d93",
+      "uncovered_units": 6
+    },
+    {
+      "task_id": "ssb2/Financial_Model/15_04/native-1",
+      "domain": "excel",
+      "file": "45d62f58a95bd83e4880.json",
+      "sha256": "30513f07ea578090097b5d770cda60ee7152a875bb6882725301a8bb71cbebc3",
+      "uncovered_units": 6
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 131/native-1",
+      "domain": "excel",
+      "file": "41ad20e8a5f1d59ec1f2.json",
+      "sha256": "1330ffaaf6f72c3cd3f1fe57c8f706055611cce90de018822441abf1aebc88ad",
+      "uncovered_units": 3
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 1422635/native-1",
+      "domain": "excel",
+      "file": "1535165a6c39d0396ffb.json",
+      "sha256": "5c59f6d3d0b45fe92c51509b721be654bc3a4dbb0ed0db613916bbb224bce815",
+      "uncovered_units": 1
+    },
+    {
+      "task_id": "pptbench/task_0000/native-1",
+      "domain": "powerpoint",
+      "file": "6a5739359ce56f2bd21f.json",
+      "sha256": "52aa6f175df1c0b3e1e4bbfe77cccb61f864f506076ac3bf92dda03e6fdef003",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0091/native-1",
+      "domain": "powerpoint",
+      "file": "971d7dce1d427c0911ff.json",
+      "sha256": "a995d6205c0438d535bf7dada863d2aad993a7a6e7bf4ba1a1a1cf418dd60b53",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0115/native-1",
+      "domain": "powerpoint",
+      "file": "4552d79d330fcdd3b9a4.json",
+      "sha256": "9f2b6ed0cae0a693744125eae98d261bbeac741f451de6a5b9e52d5e79faf828",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0153/native-1",
+      "domain": "powerpoint",
+      "file": "7642345d027c8dc43403.json",
+      "sha256": "0b7492ca0ca4987041ec02ec16c64cc74299672ec5f5d5dc83aa84f8e62b367e",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "word-edit/2338543adc617e9fb9b0/native-1",
+      "domain": "word",
+      "file": "bd4bc13aeac7bca8b78e.json",
+      "sha256": "3ba7a6ab6265d469ad3981bccf882e14e850f957ed920423a71121f415f6b436",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/3c94244b1a2888d506c5/native-1",
+      "domain": "word",
+      "file": "2a48ac08465c6c7700bc.json",
+      "sha256": "6ba2399746dde12add578812ff5b032ddb883bed81044ca454fbe9cd0859c804",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/a4ed292e8ca46156df5b/native-1",
+      "domain": "word",
+      "file": "dad7b28ec36e9e70e19f.json",
+      "sha256": "38675c79f0a847da0969eb9e62f66839f20fcc42e1cc6e099da9659a21744193",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/bd7fe0fab4968dc32780/native-1",
+      "domain": "word",
+      "file": "207528b9f38f59217c09.json",
+      "sha256": "bcc49839c54c51e921900eb554ff7dfbf838c5a986bf01de64e9b2508adcf32b",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "ssb2/Template/08_02/native-1",
+      "domain": "excel",
+      "file": "1e4cf96cd7fe348697f8.json",
+      "sha256": "65e37561643d24be4f019d7150c7f9c3c4ee6af7edd4c35b546e7979cfd6daea",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "ssb2/Template/11_04/native-1",
+      "domain": "excel",
+      "file": "e79eb58ff356c25920b6.json",
+      "sha256": "df585c401455f80461b9fe59efd100ce422a4f70d4bf1db06f309791516f3a5e",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 127/native-1",
+      "domain": "excel",
+      "file": "07f1021f08526168669d.json",
+      "sha256": "64d4a2812913013479474b2a419604bc0c96a758935e5ebb32e2c09849fc3173",
+      "uncovered_units": 1
+    },
+    {
+      "task_id": "ssb2/Visualization/Task 1421372/native-1",
+      "domain": "excel",
+      "file": "c27dffc363ef5ff44cd7.json",
+      "sha256": "1161351ac35202802b789464ab020b33add2152a054b7ff456011bd2ab6611bc",
+      "uncovered_units": 6
+    },
+    {
+      "task_id": "pptbench/task_0017/native-1",
+      "domain": "powerpoint",
+      "file": "c567078609d616245760.json",
+      "sha256": "58706fb4fbb659da96fd9abf66657ade2212fbef0f485a9ecf60db40755c8fbd",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0064/native-1",
+      "domain": "powerpoint",
+      "file": "f144032b5c71a9edf39f.json",
+      "sha256": "73efa52cfef757578942f50d4fddb1272b9694f01d208b8ede46a758a1930a4f",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0110/native-1",
+      "domain": "powerpoint",
+      "file": "e1171071da9d10c3313e.json",
+      "sha256": "a32198967fb3b635ef50f43cc5a41e048a4ec21476d26a9a11c052d3bc552018",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "pptbench/task_0140/native-1",
+      "domain": "powerpoint",
+      "file": "0f7a838024de617e4ab0.json",
+      "sha256": "889f9b78b5bbfb79546a88e738eca0356651c12f097d2f5fcb874f62daade3f2",
+      "uncovered_units": 2
+    },
+    {
+      "task_id": "word-edit/1e1b47f9e68b4214b87c/native-1",
+      "domain": "word",
+      "file": "458bf0885f25f20d1672.json",
+      "sha256": "c16209bb61f0ad21516c42cdb1b82956bd1ab9c8088bd8a718d908d2d9b620e9",
+      "uncovered_units": 1
+    },
+    {
+      "task_id": "word-edit/8f2ad366a8017d3b62f2/native-1",
+      "domain": "word",
+      "file": "9143b90ce0eee50baf0e.json",
+      "sha256": "0aacf1cc08bd99b77ac84edec47b009d37e90fa13521154c6393669ea341eb48",
+      "uncovered_units": 0
+    },
+    {
+      "task_id": "word-edit/e7448d57763245b44271/native-1",
+      "domain": "word",
+      "file": "50b7fe9979dda4aa5cdd.json",
+      "sha256": "d7d89102a8bd89403f06fe4f2930b02992ecd1a28e9353bb05440c9face56a83",
+      "uncovered_units": 1
+    },
+    {
+      "task_id": "word-edit/f70a53d16d35d89c086b/native-1",
+      "domain": "word",
+      "file": "159ac68662d7b00faa41.json",
+      "sha256": "d9dc3438cc1cfdef3f435e898764b0977cd483dd12caa900bfecd36ae52cac7e",
+      "uncovered_units": 0
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "command": [
+    ".venv/Scripts/python.exe",
+    "project_artifacts/phase3_experiments/scripts/run_standard_judge_pilot.py",
+    "--prepared",
+    "project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\prepared-v2-final",
+    "--policy",
+    "project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\approved-v2\\live-policy.json",
+    "--output",
+    "project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2"
+  ],
+  "cwd": "D:\\ws\\Projects\\WorkAgent-RSI",
+  "git_commit": "84c59693001bbcd6dedb53717dca688206cb11f8",
+  "model_invocations_started_at": "2026-10-26T14:02:41.971830+00:00",
+  "model_invocations_ended_at": "2026-10-26T14:05:55.124646+00:00",
+  "observed_shell_exit_code": 1,
+  "reported_status": "incomplete",
+  "stop_reason": "HTTP429 Too Many Requests on request11;no automatic retry or budget expansion.",
+  "model_calls": 11,
+  "tool_calls": 0,
+  "server_jobs": 0
+}

@@ -24,7 +24,10 @@
       "download_status": "metadata_only",
       "redistribution_status": "unknown",
       "checksum": null,
-      "leakage_risks": ["task files and evaluation answers may be bundled with source", "third-party Office content and application dependencies"],
+      "leakage_risks": [
+        "task files and evaluation answers may be bundled with source",
+        "third-party Office content and application dependencies"
+      ],
       "notes": "README describes task annotations and evaluation methods but does not provide a separate data license statement."
     },
     {
@@ -42,7 +45,11 @@
       "download_status": "metadata_only",
       "redistribution_status": "conditional",
       "checksum": null,
-      "leakage_risks": ["questions derived from public Excel forums", "source workbooks may contain third-party or personal content", "answer workbooks can leak hidden targets"],
+      "leakage_risks": [
+        "questions derived from public Excel forums",
+        "source workbooks may contain third-party or personal content",
+        "answer workbooks can leak hidden targets"
+      ],
       "license_evidence": {
         "source": "official README.md",
         "statement": "The project is hosted with the CC BY SA 4.0 License.",
@@ -65,7 +72,11 @@
       "download_status": "metadata_only",
       "redistribution_status": "unknown",
       "checksum": null,
-      "leakage_risks": ["initial-state files and screenshots", "VM/application licensing", "task instructions and reference outputs"],
+      "leakage_risks": [
+        "initial-state files and screenshots",
+        "VM/application licensing",
+        "task instructions and reference outputs"
+      ],
       "notes": "Apache-2.0 repository badge covers the code repository; it is not treated as blanket permission for all assets."
     },
     {
@@ -82,25 +93,42 @@
       "download_status": "metadata_only",
       "redistribution_status": "restricted_or_unknown",
       "checksum": null,
-      "leakage_risks": ["Windows evaluation image terms", "Office/application licenses", "large VM and initial-state assets"],
+      "leakage_risks": [
+        "Windows evaluation image terms",
+        "Office/application licenses",
+        "large VM and initial-state assets"
+      ],
       "notes": "Not selected for the first formal dataset; requires a separate Windows/Office environment and terms review."
     },
     {
       "id": "spreadsheetbench-2",
       "name": "SpreadsheetBench 2",
       "official_repository": "https://github.com/RUCKBReasoning/SpreadsheetBench-2",
-      "official_paper": null,
-      "data_url": "https://github.com/RUCKBReasoning/SpreadsheetBench-2",
-      "version": "repository-main-2026-09-27",
+      "official_paper": "https://arxiv.org/abs/2606.29955",
+      "data_url": "https://huggingface.co/datasets/KAKA22/SpreadsheetBench-v2",
+      "version": "hf-5a2215ed4121945ab09d8723df2995602090b042",
       "scope": "End-to-end business spreadsheet workflows",
       "repository_license": null,
-      "data_license": null,
-      "license_status": "blocked_no_license_statement",
+      "data_license": "MIT (official pinned dataset card)",
+      "license_status": "verified",
       "download_status": "metadata_only",
       "redistribution_status": "unknown",
       "checksum": null,
-      "leakage_risks": ["business documents and confidential-looking spreadsheet content", "license not stated"],
-      "notes": "Keep as a future adapter target only; do not download into the formal dataset."
+      "leakage_risks": [
+        "business documents and confidential-looking spreadsheet content",
+        "license not stated"
+      ],
+      "notes": "2026-10-25: supersedes the older missing-license observation. Actual source downloads and admitted development subsets are recorded separately in configs/benchmark_sources_v1.json; this legacy catalog remains metadata-only. Native visualization scoring requires Windows COM and approved VLM."
     }
-  ]
+  ],
+  "benchmark_intake": {
+    "source_lock": "project_artifacts/phase3_experiments/configs/benchmark_sources_v1.json",
+    "priority": [
+      "spreadsheetbench-2",
+      "workspace-bench-lite",
+      "spreadsheetbench-v1"
+    ],
+    "scope": "licensed exposed development resources; not the untouched final corpus; no live calls authorized",
+    "evidence": "project_artifacts/results/hardening-v2/T26-benchmarks/20261025/corpus/split-quality-report.json"
+  }
 }

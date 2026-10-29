@@ -1,0 +1,28 @@
+{
+  "schema_version": "balanced-office-candidate-policy-v1",
+  "scope": "exposed_development_candidates",
+  "seed": 20261026,
+  "per_domain_target": 24,
+  "max_domain_count_ratio": 1.25,
+  "source_priority": [
+    "spreadsheetbench-2",
+    "word-editing-benchmark",
+    "pptbench-editable-diagrams"
+  ],
+  "one_task_per_connected_source_group": true,
+  "exclude_splits": [
+    "human_calibration",
+    "final_test"
+  ],
+  "selected_native_instances_per_base": 1,
+  "original_three_variant_target_satisfied": false,
+  "split_allocation_per_domain": {
+    "develop": 8,
+    "regression": 8,
+    "promotion_validation": 4,
+    "ood_transfer": 4
+  },
+  "final_test_allocation": 0,
+  "untouched_final_claim": false,
+  "live_calls_authorized": false
+}

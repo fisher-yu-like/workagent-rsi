@@ -1,0 +1,25 @@
+{
+  "command": [
+    ".venv/Scripts/python.exe",
+    "project_artifacts/phase3_experiments/scripts/run_standard_judge_pilot.py",
+    "--prepared",
+    "project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\prepared-v2-final",
+    "--policy",
+    "project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\approved-v2\\live-policy.json",
+    "--output",
+    "project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2-unissued-1",
+    "--continue-from",
+    "project_artifacts\\results\\hardening-v2\\T28-judge-pilot\\20261026\\actual-v2\\pilot-results.json"
+  ],
+  "cwd": "D:\\ws\\Projects\\WorkAgent-RSI",
+  "inherited_attempted_requests": 11,
+  "new_attempted_requests": 5,
+  "new_payloads_only": true,
+  "failed_requests_retried": false,
+  "original_policy_and_counter_reused": true,
+  "model_invocations_started_at": "2026-10-26T14:21:11.419986+00:00",
+  "model_invocations_ended_at": "2026-10-26T14:22:45.201758+00:00",
+  "observed_shell_exit_code": 1,
+  "reported_status": "incomplete",
+  "script_sha256": "3a06213cf32c1137f16a1e16ad4101d54449b51073d1e0aa893c648a02baae96"
+}

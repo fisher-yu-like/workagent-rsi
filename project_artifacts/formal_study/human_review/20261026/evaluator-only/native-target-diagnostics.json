@@ -1,0 +1,201 @@
+{
+  "scope": "Pinned native target checks under recorded LibreOffice, not official-environment parity or whole-task acceptance",
+  "official_leaderboard_claim": false,
+  "whole_task_admission": "NOT_ASSESSED",
+  "human_labels_read": false,
+  "model_calls": 0,
+  "expected_workbooks": 10,
+  "completed_workbooks": 10,
+  "recalculation_attempts": 29,
+  "max_recalculations": 30,
+  "max_seconds": 600,
+  "actual_worker_jobs": 19,
+  "wall_seconds": 334.7549217999913,
+  "recorded_at": "2026-10-26T11:25:07.062723+00:00",
+  "raw_evidence": "project_artifacts/results/hardening-v2/T28-native-diagnostics/20261026/run-v1/native-checks.json",
+  "raw_sha256": "a0846481e782312fcb2fcc50e3133651ae4ab4b0bf03fbd31d5ca97f84f25033",
+  "rows": [
+    {
+      "case_id": "review-f1a51e11aea9fca8",
+      "natural_id": "natural-01ccbc233d094cf5",
+      "base_task_id": "ssb2/Template/14_07",
+      "status": "unavailable",
+      "score": null,
+      "reason": "One or more isolated recalculations unavailable"
+    },
+    {
+      "case_id": "review-2e562d78e43f4a93",
+      "natural_id": "natural-9c867620076c3c02",
+      "base_task_id": "ssb2/Financial_Model/13_05",
+      "status": "fail",
+      "score": 0.0,
+      "native_result": [
+        false,
+        "Regression error at Summary Valuation!E11: answer=11.3281525647495, output=11.5156125647495",
+        16846,
+        17121,
+        {
+          "correct": 16490,
+          "total": 16523
+        },
+        {
+          "correct": 356,
+          "total": 598
+        }
+      ],
+      "scorer_sha256": "04a2a75b29805ab40efe93e202384c365d1d32b9c924c1a4aed56e41249facb0",
+      "whole_task_admission": "NOT_ASSESSED",
+      "official_leaderboard_claim": false,
+      "scope": "Pinned native target-cell check with recorded isolated recalculation; not whole-artifact quality."
+    },
+    {
+      "case_id": "review-7fa353cc90101d8e",
+      "natural_id": "natural-435d75627f1e918b",
+      "base_task_id": "ssb2/Debugging/09_09",
+      "status": "unavailable",
+      "score": null,
+      "reason": "One or more isolated recalculations unavailable"
+    },
+    {
+      "case_id": "review-6be86bb781998c57",
+      "natural_id": "natural-b00a9b50507c5314",
+      "base_task_id": "ssb2/Debugging/05_03",
+      "status": "unavailable",
+      "score": null,
+      "reason": "One or more isolated recalculations unavailable"
+    },
+    {
+      "case_id": "review-1ae87e464aa68a9b",
+      "natural_id": "natural-11c9b2eafdc939a7",
+      "base_task_id": "ssb2/Financial_Model/19_04",
+      "status": "fail",
+      "score": 0.0,
+      "native_result": [
+        false,
+        "Regression error at Trading Comps!E36: answer=EV/EBITDA, output=27.5472353333714",
+        12873,
+        12882,
+        {
+          "correct": 12606,
+          "total": 12609
+        },
+        {
+          "correct": 267,
+          "total": 273
+        }
+      ],
+      "scorer_sha256": "04a2a75b29805ab40efe93e202384c365d1d32b9c924c1a4aed56e41249facb0",
+      "whole_task_admission": "NOT_ASSESSED",
+      "official_leaderboard_claim": false,
+      "scope": "Pinned native target-cell check with recorded isolated recalculation; not whole-artifact quality."
+    },
+    {
+      "case_id": "review-d69312f31c49fcab",
+      "natural_id": "natural-c62b2823969c41cc",
+      "base_task_id": "ssb2/Template/06_06",
+      "status": "fail",
+      "score": 0.0,
+      "native_result": [
+        false,
+        "Regression error at Revenue_Forecast!G10: answer=None, output=0.225724771509559",
+        237,
+        246,
+        {
+          "correct": 177,
+          "total": 185
+        },
+        {
+          "correct": 60,
+          "total": 61
+        }
+      ],
+      "scorer_sha256": "04a2a75b29805ab40efe93e202384c365d1d32b9c924c1a4aed56e41249facb0",
+      "whole_task_admission": "NOT_ASSESSED",
+      "official_leaderboard_claim": false,
+      "scope": "Pinned native target-cell check with recorded isolated recalculation; not whole-artifact quality."
+    },
+    {
+      "case_id": "review-8c91b91efb85a0a5",
+      "natural_id": "natural-ba4fb1d307843396",
+      "base_task_id": "ssb2/Template/14_08",
+      "status": "fail",
+      "score": 0.0,
+      "native_result": [
+        false,
+        "Modification error at OpEx_Projection!C32: answer=2054375, output=8217500",
+        301,
+        390,
+        {
+          "correct": 249,
+          "total": 249
+        },
+        {
+          "correct": 52,
+          "total": 141
+        }
+      ],
+      "scorer_sha256": "04a2a75b29805ab40efe93e202384c365d1d32b9c924c1a4aed56e41249facb0",
+      "whole_task_admission": "NOT_ASSESSED",
+      "official_leaderboard_claim": false,
+      "scope": "Pinned native target-cell check with recorded isolated recalculation; not whole-artifact quality."
+    },
+    {
+      "case_id": "review-4a85dc3e1d4675c8",
+      "natural_id": "natural-f1d10b0762bf752c",
+      "base_task_id": "ssb2/Debugging/09_05",
+      "status": "unavailable",
+      "score": null,
+      "reason": "One or more isolated recalculations unavailable"
+    },
+    {
+      "case_id": "review-c0ea6a3781224c9e",
+      "natural_id": "natural-70debbad8619d0f3",
+      "base_task_id": "ssb2/Debugging/02_05",
+      "status": "fail",
+      "score": 0.0,
+      "native_result": [
+        false,
+        "Regression error at DCF!B3: answer=Value of Andarko on December 31, 2018 , output=Value of Anadarko on December 31, 2018 ",
+        6394,
+        6443,
+        {
+          "correct": 6392,
+          "total": 6414
+        },
+        {
+          "correct": 2,
+          "total": 29
+        }
+      ],
+      "scorer_sha256": "04a2a75b29805ab40efe93e202384c365d1d32b9c924c1a4aed56e41249facb0",
+      "whole_task_admission": "NOT_ASSESSED",
+      "official_leaderboard_claim": false,
+      "scope": "Pinned native target-cell check with recorded isolated recalculation; not whole-artifact quality."
+    },
+    {
+      "case_id": "review-d8fa947266fa7b8e",
+      "natural_id": "natural-33a4e994c2c485b1",
+      "base_task_id": "ssb2/Template/06_01",
+      "status": "fail",
+      "score": 0.0,
+      "native_result": [
+        false,
+        "Modification error at ProductRevenue!D24: answer=19205, output=12995",
+        336,
+        348,
+        {
+          "correct": 308,
+          "total": 308
+        },
+        {
+          "correct": 28,
+          "total": 40
+        }
+      ],
+      "scorer_sha256": "04a2a75b29805ab40efe93e202384c365d1d32b9c924c1a4aed56e41249facb0",
+      "whole_task_admission": "NOT_ASSESSED",
+      "official_leaderboard_claim": false,
+      "scope": "Pinned native target-cell check with recorded isolated recalculation; not whole-artifact quality."
+    }
+  ]
+}

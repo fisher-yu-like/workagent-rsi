@@ -76,6 +76,10 @@ def validate_formal_gate(
     if candidate is None:
         reasons.append("selected formal dataset is absent from source manifest")
     else:
+        if candidate.get('external_admission_v2') is not None:
+            from workagent_rsi.external_admission import validate_external_admission
+            admission=validate_external_admission(candidate['external_admission_v2'], manifest_file.parent)
+            reasons.extend('external admission v2: '+reason for reason in admission['blockers'])
         if candidate.get("license_status") != "verified":
             reasons.append("selected dataset does not have a verified data license")
         if not candidate.get("data_license"):
@@ -172,6 +176,8 @@ def run_matrix(
     if mode == "formal":
         gate = validate_formal_gate(manifest_path, quality_report_path, data_root or ROOT / matrix["dataset"]["formal_data_root"])
         selected_data_root = Path(data_root or ROOT / matrix["dataset"]["formal_data_root"])
+        from workagent_rsi.execution_policy import require_production
+        require_production(ExperimentRunner)
     else:
         selected_data_root = Path(data_root or ROOT / matrix["pilot"]["data_root"])
 

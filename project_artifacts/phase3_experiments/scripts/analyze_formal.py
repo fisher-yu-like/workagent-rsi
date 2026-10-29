@@ -9,54 +9,15 @@ from pathlib import Path
 from typing import Any
 
 
-def _summaries(results_root: Path) -> list[dict[str, Any]]:
-    summaries = []
-    for path in sorted(results_root.rglob("summary.json")):
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        if payload.get("mode") in {"pilot", "formal"} and isinstance(payload.get("experiments"), list):
-            summaries.append(payload)
-    return summaries
+# Direct script execution must use this checkout's implementation.
+import sys
+REPO = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO / 'src'))
+from workagent_rsi.result_cohorts import analyze_cohorts
 
 
 def analyze_results(results_root: str | Path) -> dict[str, Any]:
-    root = Path(results_root)
-    source_summaries = _summaries(root)
-    completed: list[dict[str, Any]] = []
-    unavailable = 0
-    failed = 0
-    values: dict[str, list[float]] = defaultdict(list)
-    for summary in source_summaries:
-        for experiment in summary["experiments"]:
-            status = experiment.get("status")
-            if status == "completed":
-                completed.append(experiment)
-                for key, value in experiment.get("metrics", {}).items():
-                    if isinstance(value, (int, float)) and not isinstance(value, bool):
-                        values[key].append(float(value))
-            elif status in {"unavailable", "timeout"}:
-                unavailable += 1
-            else:
-                failed += 1
-    numeric_means = {key: sum(items) / len(items) for key, items in sorted(values.items()) if items}
-    formal_summaries = [item for item in source_summaries if item.get("mode") == "formal"]
-    claims_allowed = bool(formal_summaries) and unavailable == 0 and failed == 0 and all(
-        item.get("dataset_kind") == "external-admitted"
-        and item.get("claim_boundary", {}).get("external_benchmark") is True
-        for item in formal_summaries
-    )
-    return {
-        "results_root": str(root.resolve()),
-        "source_summary_count": len(source_summaries),
-        "completed_experiments": len(completed),
-        "unavailable_experiments": unavailable,
-        "failed_experiments": failed,
-        "numeric_means": numeric_means,
-        "claims_allowed": claims_allowed,
-        "claim_boundary": {
-            "unavailable_is_not_a_score": True,
-            "pilot_is_not_external_benchmark": True,
-        },
-    }
+    return analyze_cohorts(Path(results_root))
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -66,7 +27,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     result = analyze_results(args.results_root)
     output = args.output or args.results_root / "analysis.json"
-    output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    output.write_text(json.dumps(result, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
     print(json.dumps(result, sort_keys=True))
     return 0
 

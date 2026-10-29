@@ -35,6 +35,7 @@ class Harness:
         input_base: str | Path | None = None,
         model_review_config: dict | None = None,
         assessment=None,
+        assessment_profile: str | None = None,
     ) -> None:
         self.results_dir = Path(results_dir)
         self.office = office
@@ -45,6 +46,7 @@ class Harness:
         self.input_base = input_base
         self.model_review_config = model_review_config
         self.assessment = assessment
+        self.assessment_profile=assessment_profile
 
     def run(
         self,
@@ -53,7 +55,12 @@ class Harness:
         run_id: str | None = None,
         result_path: str | Path | None = None,
         max_attempts: int = 1,
+        repair_policy=None,
+        run_budget=None,
+        split_name: str = 'develop',
     ) -> dict:
+        from .repair_loop import FeedbackVisibilityPolicy
+        FeedbackVisibilityPolicy().permits(split_name)
         task = task if isinstance(task, TaskSpec) else TaskSpec.model_validate(task)
         root, output = self._paths(task, run_id=run_id, result_path=result_path)
         if output.exists() or (root / "task.json").exists():
@@ -86,7 +93,8 @@ class Harness:
             input_base=self.input_base,
             model_review_config=self.model_review_config,
             assessment=self.assessment,
-        ).execute(task, max_attempts=max_attempts)
+            assessment_profile=self.assessment_profile,
+        ).execute(task, max_attempts=max_attempts, repair_policy=repair_policy, run_budget=run_budget, split_name=split_name)
         result["result_path"] = str(output.resolve())
         result["result_dir"] = str(root.resolve())
         output.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")

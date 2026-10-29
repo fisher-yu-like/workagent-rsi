@@ -1,0 +1,53 @@
+{
+  "scope": "Exposed controlled-development standards only;no independent population accuracy.",
+  "fully_returned_cases": 5,
+  "matches": 5,
+  "rows": [
+    {
+      "case_id": "review-ec20117491502820",
+      "authored_reference": "PASS",
+      "declared_scope_judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "authored_reference": "FAIL",
+      "declared_scope_judge": "FAIL",
+      "same": true
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "authored_reference": "PASS",
+      "declared_scope_judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "authored_reference": "PASS",
+      "declared_scope_judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "authored_reference": "INCOMPLETE",
+      "declared_scope_judge": "INCOMPLETE",
+      "same": true
+    }
+  ],
+  "unjudged_standard_cases": [
+    "review-3dfbb6e577ab463f",
+    "review-070bf88a4446ba8f",
+    "review-6cda065fb91529a5",
+    "review-0db11ab1e4e3d5e1",
+    "review-eae3e39d4eebdc00",
+    "review-44158a7fd630cae5",
+    "review-ccfa7110e2ffbd7e"
+  ],
+  "tested_defect_cases": 1,
+  "known_false_accepts_in_tested_defect_cases": 0,
+  "unjudged_defect_cases": [
+    "review-070bf88a4446ba8f",
+    "review-ccfa7110e2ffbd7e"
+  ],
+  "quality_qualified": false
+}

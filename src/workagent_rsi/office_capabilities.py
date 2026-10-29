@@ -75,52 +75,12 @@ class CapabilityReport(BaseModel):
 
 
 def _default_com_probe(progid: str) -> str | None:
-    script = r'''
-$ErrorActionPreference = "Stop"
-$processName = switch -Regex ($env:WORKAGENT_PROGID) {
-  "Word" { "WINWORD"; break }
-  "Excel" { "EXCEL"; break }
-  "PowerPoint" { "POWERPNT"; break }
-  default { $null }
-}
-$existingProcessIds = @()
-if ($processName) { $existingProcessIds = @(Get-Process -Name $processName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id) }
-$app = $null
-try {
-  $app = New-Object -ComObject $env:WORKAGENT_PROGID
-  [string]$app.Version
-} finally {
-  if ($app -ne $null) {
-    try { $app.Quit() } catch {}
-    try { [System.Runtime.InteropServices.Marshal]::FinalReleaseComObject($app) | Out-Null } catch {}
-    $app = $null
-  }
-  [GC]::Collect()
-  [GC]::WaitForPendingFinalizers()
-  if ($processName) {
-    Get-Process -Name $processName -ErrorAction SilentlyContinue |
-      Where-Object { $existingProcessIds -notcontains $_.Id } |
-      Stop-Process -Force -ErrorAction SilentlyContinue
-  }
-}
-'''
-    env = os.environ.copy()
-    env["WORKAGENT_PROGID"] = progid
-    try:
-        completed = subprocess.run(
-            ["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", script],
-            capture_output=True,
-            text=True,
-            timeout=30,
-            check=False,
-            env=env,
-        )
-    except (FileNotFoundError, subprocess.TimeoutExpired):
-        return None
-    if completed.returncode != 0:
-        return None
-    value = completed.stdout.strip()
-    return value or None
+    """Unconfigured host COM is not a controlled worker capability.
+
+    Do not activate an application merely to probe it: PowerPoint can attach to
+    a user's existing instance. Explicit worker probes can still be injected.
+    """
+    return None
 
 
 def probe_capabilities(
@@ -142,7 +102,7 @@ def probe_capabilities(
                 status="available" if version else "unavailable",
                 version=version,
                 source=f"COM:{progid}",
-                error=None if version else "COM application could not be created",
+                error=None if version else "isolated COM worker is not configured or its probe is unavailable",
             )
         except Exception as exc:
             capabilities[name] = Capability(
@@ -175,83 +135,39 @@ def probe_capabilities(
     return CapabilityReport(platform=platform_name or platform.platform(), capabilities=capabilities)
 
 
-_COM_VERIFY_SCRIPT = r'''
-$ErrorActionPreference = "Stop"
-$path = $env:WORKAGENT_ARTIFACT
-$domain = $env:WORKAGENT_DOMAIN
-$processName = switch ($domain) {
-  "word" { "WINWORD"; break }
-  "excel" { "EXCEL"; break }
-  "powerpoint" { "POWERPNT"; break }
-  default { $null }
-}
-$existingProcessIds = @()
-if ($processName) { $existingProcessIds = @(Get-Process -Name $processName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Id) }
-$app = $null
-$document = $null
-try {
-  switch ($domain) {
-    "word" { $app = New-Object -ComObject Word.Application; $app.Visible = $false; $app.DisplayAlerts = 0; $document = $app.Documents.Open($path, $false, $true, $false) }
-    "excel" { $app = New-Object -ComObject Excel.Application; $app.Visible = $false; $app.DisplayAlerts = $false; $document = $app.Workbooks.Open($path, $null, $true) }
-    "powerpoint" { $app = New-Object -ComObject PowerPoint.Application; $document = $app.Presentations.Open($path, $true, $true, $false) }
-    default { throw "unsupported Office domain: $domain" }
-  }
-  @{ ok = $true; version = [string]$app.Version } | ConvertTo-Json -Compress
-} catch {
-  @{ ok = $false; error = $_.Exception.Message } | ConvertTo-Json -Compress
-  exit 1
-} finally {
-  if ($document -ne $null) {
-    try { if ($domain -eq "powerpoint") { $document.Close() } else { $document.Close($false) } } catch {}
-    try { [System.Runtime.InteropServices.Marshal]::FinalReleaseComObject($document) | Out-Null } catch {}
-    $document = $null
-  }
-  if ($app -ne $null) {
-    if ($domain -eq "excel") { try { $app.Workbooks.Close() } catch {} }
-    try { $app.Quit() } catch {}
-    try { [System.Runtime.InteropServices.Marshal]::FinalReleaseComObject($app) | Out-Null } catch {}
-    $app = $null
-  }
-  [GC]::Collect()
-  [GC]::WaitForPendingFinalizers()
-  if ($processName) {
-    Get-Process -Name $processName -ErrorAction SilentlyContinue |
-      Where-Object { $existingProcessIds -notcontains $_.Id } |
-      Stop-Process -Force -ErrorAction SilentlyContinue
-  }
-}
-'''
+def verify_artifact_with_com(path: str | Path, domain: str, *, timeout_seconds: int = 60, worker=None) -> dict[str, object]:
+    """Reopen a verified copy only through an explicitly isolated COM worker.
 
-
-def verify_artifact_with_com(path: str | Path, domain: str, *, timeout_seconds: int = 60) -> dict[str, object]:
-    env = os.environ.copy()
-    env["WORKAGENT_ARTIFACT"] = str(Path(path).resolve())
-    env["WORKAGENT_DOMAIN"] = domain.lower()
+    A successful reopen is not formula recalculation or visual qualification.
+    There is deliberately no host-COM fallback and no process-name cleanup.
+    """
+    if worker is None:
+        return {"ok": False, "status": "unavailable", "error": "isolated Office COM worker is not configured",
+                "capability_scope": "com_reopen", "formula_recalculation": "not_claimed", "visual_validation": "not_claimed"}
+    import tempfile
+    from .view_safety import ordinary_file
+    from .hashing import sha256_file
     try:
-        completed = subprocess.run(
-            ["powershell.exe", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", _COM_VERIFY_SCRIPT],
-            capture_output=True,
-            text=True,
-            timeout=timeout_seconds,
-            check=False,
-            env=env,
-        )
-    except FileNotFoundError as exc:
-        return {"ok": False, "status": "unavailable", "error": str(exc)}
-    except subprocess.TimeoutExpired as exc:
-        return {"ok": False, "status": "timeout", "error": f"COM verification timed out after {exc.timeout}s"}
-    output = completed.stdout.strip().splitlines()
-    if not output:
-        return {"ok": False, "status": "failed", "error": completed.stderr.strip() or "COM verification returned no output"}
-    try:
-        import json
-
-        payload = json.loads(output[-1])
-    except (ValueError, TypeError) as exc:
-        return {"ok": False, "status": "failed", "error": f"invalid COM verification output: {exc}"}
-    if completed.returncode != 0 or not payload.get("ok"):
-        return {"ok": False, "status": "failed", "error": str(payload.get("error") or completed.stderr.strip())}
-    return {"ok": True, "status": "available", "version": payload.get("version")}
+        source = ordinary_file(Path(path))
+        suffix = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}.get(domain)
+        if suffix is None or source.suffix.lower()!=suffix:
+            raise ValueError("unsupported COM artifact format")
+        digest = sha256_file(source)
+        with tempfile.TemporaryDirectory(prefix="office-readonly-copy-") as temporary:
+            target = Path(temporary)/("artifact"+suffix)
+            shutil.copyfile(source, target)
+            if sha256_file(target)!=digest or sha256_file(source)!=digest:
+                raise ValueError("COM copy identity changed")
+            result = worker.reopen(target, domain, artifact_sha256=digest, timeout_seconds=timeout_seconds)
+            if sha256_file(source)!=digest or sha256_file(target)!=digest:
+                raise ValueError("Office worker modified source/copy")
+            required = {"read_only": True, "macros_disabled": True, "external_updates_disabled": True, "owned_cleanup": True}
+            if result.get("ok") is True and (result.get("isolation_status")!="available" or not result.get("worker_identity")
+                                             or result.get("policy")!=required):
+                raise ValueError("COM worker did not establish isolation/load/cleanup policy")
+        return {**result, "capability_scope": "com_reopen", "formula_recalculation": "not_claimed", "visual_validation": "not_claimed"}
+    except (OSError, ValueError, TypeError) as exc:
+        return {"ok": False, "status": "failed", "error": str(exc), "capability_scope": "com_reopen"}
 
 
 __all__ = ["Capability", "CapabilityReport", "probe_capabilities", "verify_artifact_with_com"]

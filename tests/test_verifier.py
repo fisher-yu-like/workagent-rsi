@@ -1,4 +1,5 @@
 import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -49,8 +50,30 @@ def test_verifier_accepts_schema_valid_skill_patch(tmp_path: Path):
     )
     assert report.passed is True
     assert report.critical_violations == []
-    assert "compile" in report.executed_checks
+    assert report.compile_status == 'not_applicable'
+    assert report.behavior_status == 'not_run' and report.quality_verified is False
     assert report.evidence_refs
+
+
+def test_json_verifier_does_not_execute_candidate_authored_tests_on_host(tmp_path: Path):
+    (tmp_path / "skill.json").write_text('{"marker_source":"task_id"}', encoding="utf-8")
+    tests_dir = tmp_path / "tests"
+    tests_dir.mkdir()
+    (tests_dir / "test_candidate.py").write_text("def test_candidate(): pass\n", encoding="utf-8")
+    commands = []
+
+    def runner(command, cwd, timeout):
+        commands.append(command)
+        return subprocess.CompletedProcess(command, 0, stdout="", stderr="")
+
+    report = CandidateVerifier(runner=runner).verify(
+        candidate(), tmp_path, VerificationPolicy(allowed_targets={"skill.json"})
+    )
+
+    assert report.passed is True
+    assert commands == []
+    assert report.compile_status == 'not_applicable'
+    assert report.test_results['candidate_authored_tests'] == 'not_run'
 
 
 def test_verifier_rejects_invalid_json_patch(tmp_path: Path):

@@ -1,0 +1,40 @@
+{
+  "schema_version": "t34-current-release-receipt-v1",
+  "recorded_at": "2026-10-26T11:59:41.086611+00:00",
+  "gate": {
+    "schema_version": "release-gates-v2",
+    "engineering_pass": true,
+    "live_loop_pass": false,
+    "research_pass": false,
+    "external_pass": false,
+    "checks": {
+      "full_pytest": true,
+      "compileall": true,
+      "diff_check": true,
+      "calibration_90": true,
+      "t01_regressions": true,
+      "moved_bundle_replay": true,
+      "credential_scan": true,
+      "linux_non_com": true
+    },
+    "blocked_checks": [],
+    "pending_claims": [
+      "live_loop",
+      "research",
+      "external"
+    ]
+  },
+  "evidence": {
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/release-gate.json": "9cf9a3929aa1e6efb624b2bd2c9d98593962e8ac3b98ee537a7c4a801a99e33b",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/release-manifest.json": "d7e5289bc684c47d46c348f45bcab798dc0f2a93c23c1d9dee9ad2caed84eab5",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/coverage-map.json": "325e16300781f478a1dd0738ad60af88a2ff0abff490c9894865a20ce54adf3d",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/calibration-90.json": "c94aa06b3a42aece1229a0ab4864ec9f16f1796b0a0cad9cb4b45a65cbddbb6b",
+    "project_artifacts/results/hardening-v2/T34-human-release/20261026/frozen-pack-check.json": "84ee280b3b7330f5ccdb349a9c26615d0d496fdc0f38da4811c204ab880bbba9"
+  },
+  "full_pytest_source_hashes_verified": true,
+  "linux_source_hashes_verified": true,
+  "windows_passed": 773,
+  "linux_selected_passed": 149,
+  "source_scope": "src/tests/pyproject exact source hashes bound to full pytest; Linux snapshot hashes checked against current files",
+  "no_model_accuracy_claim": true
+}

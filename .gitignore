@@ -15,6 +15,15 @@ build/
 *.egg-info/
 .mypy_cache/
 .ruff_cache/
+.planning/
+/task_plan.md
+/findings.md
+/progress.md
+/WorkAgent_RSI_Codex_Execution_Plan_20261016.md
+/任务产物评估与核验双技能实施计划.md
+/双评估技能_分阶段实施提示词.md
+/双评估技能_项目状态与上下文交接.md
+/同步后项目代码与功能总结.md
 project_artifacts/**/logs/*
 project_artifacts/**/results/*
 project_artifacts/**/checkpoints/*

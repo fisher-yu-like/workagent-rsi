@@ -1,0 +1,35 @@
+{
+  "schema_version": "natural20-text-partitions-v1",
+  "manifest_sha256": "d7e4b4c16e76c81e9e8b27b187b02ec04e77fe9ea29658c7fb987715a7072beb",
+  "case_count": 20,
+  "gap_files": 0,
+  "warning_files": 4,
+  "text_partitions": 153,
+  "model_calls": 0,
+  "server_jobs": 0,
+  "human_labels_read": false,
+  "reference_answers_read": false,
+  "live_ready": false,
+  "whole_task_coverage_qualified": false,
+  "remaining": [
+    "Bind text/source partitions into review requests and cross-partition checks.",
+    "Resolve two actual render gaps and qualify native object/formula coverage.",
+    "Freeze a new complete model request budget before requesting approval."
+  ],
+  "report": "project_artifacts\\results\\hardening-v2\\T28-natural-evidence\\20261028\\partitions-v1\\report.json",
+  "report_sha256": "9e47067aa0a22b48031bd34a29054edbcd7d21615850bd8fc374ba132b0fb71b",
+  "evidence_hashes_verified": true,
+  "source_hashes": {
+    "src\\workagent_rsi\\review_evidence.py": "9f03b45b70f0bef358092e5510c4a8d0fd43eb2a49422596cce84750dce85b3a",
+    "project_artifacts\\phase3_experiments\\scripts\\prepare_natural_review_evidence.py": "acfde1571d5618bc66b55fc91f9976bcd956373a207ba77eadd2ff35985f3cc7",
+    "tests\\test_review_evidence.py": "431836d1ba965bda1da7e886b2b2a9e7010d4aaf97f68855bd390fe07954f6b1"
+  },
+  "focused_validation": {
+    "passed": 14,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts\\results\\hardening-v2\\T28-mixed-evidence\\20261028T072745446477Z\\run.json",
+    "sha256": "6b241d6cee9b4d171ce731fee1335660558a4e68cd8d1898d80504a7775207ca"
+  }
+}

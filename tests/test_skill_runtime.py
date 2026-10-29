@@ -4,6 +4,7 @@ from workagent_rsi.contracts import TaskSpec
 from workagent_rsi.evaluator import OfficeArtifactEvaluator
 from workagent_rsi.skill_runtime import PilotSkillConfig, SkillConfiguredOfficeAdapter
 from workagent_rsi.storage import ArtifactStore
+from model_fixture import MarkerFixtureAssessment
 
 
 def evaluate(tmp_path: Path, marker_source: str):
@@ -13,11 +14,17 @@ def evaluate(tmp_path: Path, marker_source: str):
         instruction="Create the monthly operating update.",
         expected_constraints={"required_text": "REQUIRED-001"},
     )
-    events = list(SkillConfiguredOfficeAdapter(tmp_path / marker_source, PilotSkillConfig(marker_source=marker_source)).execute(task, "office.marker"))
+    events = list(
+        SkillConfiguredOfficeAdapter(
+            tmp_path / marker_source, PilotSkillConfig(marker_source=marker_source)
+        ).execute(task, "office.marker")
+    )
     artifact = events[-1]
     store = ArtifactStore(tmp_path / "store" / marker_source)
     ref = store.put_file(artifact["artifact_path"], artifact["media_type"])
-    return OfficeArtifactEvaluator().evaluate(task, [ref], "trace")
+    return OfficeArtifactEvaluator(assessment=MarkerFixtureAssessment()).evaluate(
+        task, [ref], "trace"
+    )
 
 
 def test_skill_marker_policy_changes_real_office_result(tmp_path: Path):

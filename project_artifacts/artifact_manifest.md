@@ -115,3 +115,65 @@ Phase 1B local mock runs are real executions of the repository code. They are no
 Phase 2 artifacts are designs and plans. They contain no executed training, dataset experiment or benchmark score.
 
 Phase 3 local Office qualification uses genuine DOCX/XLSX/PPTX artifacts and Microsoft Office COM reopening. It is not an external WorkAgent run, hidden evaluation, candidate-generation run, or E01-E12 RSI experiment.
+
+## 2026-10-21 hardening handoff
+
+| Artifact | Purpose | Evidence boundary |
+|---|---|---|
+| `formal_study/hardening_handoff_baseline.json` | Canonical worktree, commits, baseline and validation records | Local engineering only |
+| `formal_study/hardening_task_ledger.json` | T00–T35 status and R01–R12 repair ownership | T01 defects remain open |
+| `formal_study/hardening_t01_review_baseline.json` | Tracked independent red observations and owner mapping | 12 failures captured, not repaired |
+| `../tests/fixtures/review_cases/manifest.json` | Minimal inputs, independent truths and desired outcomes | Authored fixtures; no real protected data |
+| `../src/workagent_rsi/run_contracts.py`, `evidence_bundle.py` | Additive outcome/usage/protocol and portable evidence contracts | 17 focused tests pass; later pipeline integration pending |
+| `results/hardening-v2/handoff-final-verified/20261021T080224738698Z/` | Raw final invocation, hashes, logs and generated fixture archive | 176 pass / 12 expected-open failures |
+| `results/hardening-v2/T03/20261021T080824087553Z/contracts/` | Exported schemas and actual relocated, hash-verified bundle | Portable engineering evidence, no live service qualification |
+
+## 2026-10-23 T03/T04
+
+| Artifact | Purpose | Evidence boundary |
+|---|---|---|
+| `formal_study/hardening_t04_execution_boundary.json` | Current task outcome, qualified policy, tests and raw evidence references | Apptainer SSH T04 only; T05 pending |
+| `../src/workagent_rsi/execution_sandbox.py`, `apptainer_sandbox.py`, `apptainer_worker.py` | Native Docker and remote Apptainer boundary; no host fallback | Docker real probe not run; remote probes passed |
+| `../deploy/agent-runtime/` | Locked Docker recipe, bounded private-runtime provisioner and operations | No host package install; no image download |
+| `project_artifacts/results/hardening-v2/T04-handoff/20261023T132138583259Z/bundle/manifest.json` | Portable, checksummed source/test/runtime evidence | 29 files; relocation verified |
+
+## T21 and T22 task repair
+
+- `src/workagent_rsi/repair_loop.py`: bounded task repair, frozen feedback boundary and best-result selection.
+- `src/workagent_rsi/run_budget.py`: shared reservations and persisted model/tool/repair/time/cost accounting.
+- `docs/artifact_repair.md`: public options, protected split rules, supported transports and qualification limits.
+- `project_artifacts/formal_study/hardening_t21_repair_loop.json` and `hardening_t22_budget_visibility.json`: current evidence indexes.
+- Portable bundles and relocated verification are indexed in the manifests. This batch uses genuine Office library files and authored transport substitutes; it makes no live model or server qualification claim.
+
+## T23 and T24 input-dependent engineering
+
+- `docs/policies/template-and-overfitting.md`: prompt composition, explicit task mode and qualification-only formal boundaries.
+- `src/workagent_rsi/task_observations.py` and `office_input_inspector.py`: host-owned read evidence via existing execution sandbox and bounded visibility.
+- `src/workagent_rsi/behavior_probes.py`: independent behavioral oracles, ID controls and exact source/process evidence.
+- `project_artifacts/phase3_experiments/scripts/run_t24_behavior_probe.py` and `t24_authored_program.py`: trusted local qualification with22 cases in nine groups; no arbitrary candidate code or real model calls.
+- `docs/input_behavior_probes.md` and `formal_study/hardening_t23_prompt_independence.json` / `hardening_t24_dynamic_input.json`: usage, evidence, portable verification and explicit limits.
+- Final full692/focused129 pass; authored engineering pass does not establish live model, new sandbox or research qualification.
+
+- T25: `formal_study/hardening_t25_calibration_materials.json`, `../docs/calibration_materials.md`, development-only truth in `tests/fixtures/calibration/case_manifest.json`.
+
+- T26: `formal_study/hardening_t26_family_splits.json`, `../docs/dataset_splits.md`, `phase3_experiments/configs/evaluation_protocol_v2.json`; local interface delivered, data/deployment blocked.
+
+- T27: `formal_study/hardening_t27_offline_calibration.json`; actual90-case declared-check calibration, known gaps explicit.
+- T28: `formal_study/hardening_t28_human_calibration.json`, `../docs/human_calibration.md`;12-case human page/20 actual rendered pages, no human-agreement claim.
+
+- 2026-10-26 current T28 delivery: `results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html`;32 cases, human labels still pending. Historical smaller packs above remain unchanged.
+- T29-T35 local engineering: `formal_study/hardening_t29_t35_local_delivery.json`;paired repeats, scoped memory/resume, default-off qualification and study entrypoints, external gates, release checks and Chinese handoff.
+- Final local test evidence: `results/hardening-v2/T34-final/20261026T083145209758Z/run.json`;767 passed. Release checks: `results/hardening-v2/T34-local/20261026/release-gate.json`;Linux non-COM execution blocked, later live/research/external claim levels false.
+- T31 draft inputs: `results/hardening-v2/T31-prepared/20261026/task-bundle.draft.json`;72 existing inputs,24 per domain, no new benchmark artifact generation, all whole-task acceptance specifications still incomplete.
+- Operations and rollback: `../docs/operations/evaluation-rsi-v2.md`.
+
+- Current human/server follow-up: `formal_study/hardening_human_intake_linux_delivery.json`;32 real provisional labels retained with exact bytes under `formal_study/human_review/20261026/evaluator-only/`. This supersedes earlier “labels pending” status.
+- Review repetition and targeted adjudication: `../docs/operations/human-review-follow-up-20261026.md`;24 distinct instruction texts across32 different artifacts;6 controlled-standard differences without label replacement.
+- Current validation: `results/hardening-v2/T28-T34-release/20261026T113921863242Z/run.json` (Windows773passed),`results/hardening-v2/T34-linux/20261026/run-v3/linux-non-com.json` (selected Linux149passed),`results/hardening-v2/T34-human-release/20261026/release-gate.json` (engineering true;live/research/external false).
+- Judge pilot: `results/hardening-v2/T28-judge-pilot/20261026/actual-v1/`;6 requests,5 valid channel decisions,HTTP429 stop without retry,0tools. Complete T28 calibration remains blocked. Native Excel diagnostics are separate from these model decisions and are not official benchmark results.
+
+- Latest offline preparation: `formal_study/hardening_t28_t31_preparation.json`;task-aware judge v2 request manifest,proposed disabled budget,72 unreviewed T31 spec drafts and explicit capability gaps.38focused checks passed,no new full release qualification or model/server execution.
+- User checkpoint: `results/hardening-v2/T28-adjudication/20261026/six-case-v1/index.html`;six existing standards only,empty choices,original task/input/output/render links. Download is nonblind `office-human-adjudication.json`. Instructions: `../docs/operations/next-human-checkpoint-20261026.md`.
+
+- Actual six-case adjudication: `formal_study/hardening_t28_adjudication_intake.json`;3FAIL/3INCOMPLETE,original32unchanged,13focused checks passed.
+- Actual approved judge v2: `formal_study/hardening_t28_judge_v2_delivery.json` and `formal_study/judge_review/20261026/v2/`;16attempts/14valid channels/6complete cases,twoHTTP429stops,0tools/295chargedseconds,no failed retries.Only2controlled defects tested,no accuracy claim.8never-issued payloads remain under original approval;full recovery of10missing results needs at least26total attempts.

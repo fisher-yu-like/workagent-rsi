@@ -1,0 +1,23 @@
+{
+  "schema_version": "hardening-t00-baseline-v1",
+  "source_commit": "43f89d54daed37aba9f0e79a7df79b3288b2f993",
+  "branch": "feat/evaluation-rsi-hardening",
+  "execution_date": "2026-10-17",
+  "platform": "Windows 11",
+  "python_version": "3.13.6",
+  "command": "<explicit-project-venv-python> -X utf8 -m pytest -q",
+  "test_result": {
+    "exit_code": 1,
+    "passed": 149,
+    "failed": 4,
+    "failed_tests": [
+      "tests/test_frozen_evaluator.py::test_hidden_evaluation_redacts_rows_and_automated_judge_can_disagree",
+      "tests/test_multiround_rsi.py::test_resume_retries_only_incomplete_round_and_uses_latest_champion",
+      "tests/test_rsi_loop.py::test_fake_provider_closed_loop_promotes_and_rolls_back",
+      "tests/test_simple_harness.py::test_short_services_keep_candidate_checks_evaluation_and_versions"
+    ]
+  },
+  "focused_environment_tests": "2 passed",
+  "local_evidence_dir": "project_artifacts/results/hardening-v2/T00/20261017T224647995/baseline/",
+  "claim_boundary": "The baseline is a local engineering check. API connectivity, Office COM, rendering, semantic judgment, and external benchmark eligibility were not tested."
+}

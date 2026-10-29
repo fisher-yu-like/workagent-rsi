@@ -1,0 +1,67 @@
+{
+  "schema_version": "hardening-t24-v1",
+  "status": "completed",
+  "delivery_level": "local_engineering",
+  "base_commit": "e157f1e688f39010ca66f19cfab2c4fb0d3f363d",
+  "implementation_commit": "commit containing this manifest; exact sources in frozen focused/full/probe records",
+  "red": {
+    "evidence": "project_artifacts/results/hardening-v2/T24-red/20261024T164635009938Z",
+    "failed": 15,
+    "error": 0
+  },
+  "focused": {
+    "passed": 129,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T24-final-focused/20261024T170246299969Z"
+  },
+  "full_validation": {
+    "passed": 692,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T24-final-full/20261024T170246296852Z"
+  },
+  "source_file_count": 156,
+  "probe": {
+    "evidence": "project_artifacts/results/hardening-v2/T24-probe/20261024T170246393658Z",
+    "cases": 22,
+    "groups": 9,
+    "domains": [
+      "excel",
+      "word",
+      "powerpoint"
+    ],
+    "status": "passed",
+    "model_calls": 0,
+    "id_invariance_passed": true,
+    "same_code_dynamic_input_passed": true,
+    "coverage_complete": true
+  },
+  "claim_levels": {
+    "engineering_pass": true,
+    "live_model_pass": false,
+    "research_pass": false,
+    "external_pass": false
+  },
+  "live_qualification": {
+    "status": "not_run",
+    "budget": "previous27 requests exhausted; optional new24-request proposal not approved",
+    "server": "cluster_vlab_jump forwarding returned Connection refused; no uploads or remote execution",
+    "scope": "fresh real model/sandbox qualification remains separate; not replaced by authored local results"
+  },
+  "limitations": [
+    "the authored fixed dynamic program is not evidence of current model/champion generalization",
+    "native inspect_office has offline adapter and unavailable-boundary tests; no new real sandbox smoke run",
+    "declared operations/plans are not actual execution proof",
+    "bounded incomplete inspections stay partial/not_observed",
+    "no new formula recalculation, COM reopening or rendering qualification"
+  ],
+  "evidence": "project_artifacts/results/hardening-v2/T24/20261024T171019773994Z",
+  "bundle": "project_artifacts/results/hardening-v2/T24/20261024T171019773994Z/bundle/manifest.json",
+  "relocated_bundle": "project_artifacts/results/hardening-v2/T24/20261024T171019773994Z/relocated/manifest.json",
+  "verified_files": 591
+}

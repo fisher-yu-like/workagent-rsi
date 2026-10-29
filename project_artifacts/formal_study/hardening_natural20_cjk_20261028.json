@@ -1,0 +1,96 @@
+{
+  "schema_version": "task-local-cjk-font-qualification-v1",
+  "font_source_revision": "f8d157532fbfaeda587e826d4cd5b21a49186f7c",
+  "font_source": "https://github.com/notofonts/noto-cjk",
+  "font_license": "SIL Open Font License1.1",
+  "font_bytes": 16437364,
+  "font_sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+  "license_sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+  "server_system_installation": false,
+  "base_runtime_modified": false,
+  "font_injection": "Read-only task inputs and task-local FONTCONFIG_FILE;ephemeral task cache.",
+  "server_jobs": 4,
+  "new_pages": 22,
+  "proof": [
+    {
+      "case_id": "review-f730abc3d56ac9f6",
+      "pages": 2,
+      "cjk_characters_in_pdf": 1311,
+      "font_selected": "/task/inputs/fonts/NotoSansCJKsc-Regular.otf",
+      "font_sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+      "pdf_sha256": "6b3e365d8c2779c5a23c97a56e18aa6a5ec3f43effff3c2ce51657e3e5221356",
+      "traces": [
+        {
+          "file": "project_artifacts\\results\\hardening-v2\\T28-font-qualification\\20261028\\actual-v1\\review-f730abc3d56ac9f6\\provider_records\\sandbox\\a8efc739bb61451c8859179a17e18f84.json",
+          "sha256": "298e054e3428067f3a54d8d904832ea4d5700c49d28e8ed971a1787860cca2d3",
+          "resource_limits_passed": true,
+          "cleanup_confirmed": true,
+          "runtime_sha256": "481af80d507540f293116f57b3331c75d5a69f55fa957c3643322fe471360cf7"
+        }
+      ]
+    },
+    {
+      "case_id": "review-9e0e9f65e6b4c39c",
+      "pages": 3,
+      "cjk_characters_in_pdf": 1682,
+      "font_selected": "/task/inputs/fonts/NotoSansCJKsc-Regular.otf",
+      "font_sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+      "pdf_sha256": "88c1554e278c2866d127395120330f42fe08b1ca9458aa68203b81f75597e69a",
+      "traces": [
+        {
+          "file": "project_artifacts\\results\\hardening-v2\\T28-font-qualification\\20261028\\actual-v1\\review-9e0e9f65e6b4c39c\\provider_records\\sandbox\\ea535e4751154943b159b7320f988c5d.json",
+          "sha256": "d11def8ad637382b98ac378309b6be561c62dc69633940e8ac831b8d267a1ea6",
+          "resource_limits_passed": true,
+          "cleanup_confirmed": true,
+          "runtime_sha256": "481af80d507540f293116f57b3331c75d5a69f55fa957c3643322fe471360cf7"
+        }
+      ]
+    },
+    {
+      "case_id": "review-9741b22fc5ad5268",
+      "pages": 15,
+      "cjk_characters_in_pdf": 2254,
+      "font_selected": "/task/inputs/fonts/NotoSansCJKsc-Regular.otf",
+      "font_sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+      "pdf_sha256": "4c14484a73f1d53a1c2779c004b9a0af733aa5465e98ee971bde8b3b738aea80",
+      "traces": [
+        {
+          "file": "project_artifacts\\results\\hardening-v2\\T28-font-qualification\\20261028\\actual-v1\\review-9741b22fc5ad5268\\provider_records\\sandbox\\24164cc449b14b648ba0dcdbf36831e1.json",
+          "sha256": "2a06221f1f542246bf2f6781aa510235fb61cd99872db281954026d719df5644",
+          "resource_limits_passed": true,
+          "cleanup_confirmed": true,
+          "runtime_sha256": "481af80d507540f293116f57b3331c75d5a69f55fa957c3643322fe471360cf7"
+        }
+      ]
+    },
+    {
+      "case_id": "review-85c3776978b97315",
+      "pages": 2,
+      "cjk_characters_in_pdf": 784,
+      "font_selected": "/task/inputs/fonts/NotoSansCJKsc-Regular.otf",
+      "font_sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+      "pdf_sha256": "3608d770641a318f17ab349000e505b54b7e07a5415780568e6d612b763cd294",
+      "traces": [
+        {
+          "file": "project_artifacts\\results\\hardening-v2\\T28-font-qualification\\20261028\\actual-v1\\review-85c3776978b97315\\provider_records\\sandbox\\6b2a5d5a63c240858541d97837168d93.json",
+          "sha256": "0db6f8baee5fa8cb5753dbf90c5e35ec47729d032aa3322625e34d31eb06c0c8",
+          "resource_limits_passed": true,
+          "cleanup_confirmed": true,
+          "runtime_sha256": "481af80d507540f293116f57b3331c75d5a69f55fa957c3643322fe471360cf7"
+        }
+      ]
+    }
+  ],
+  "focused_tests": {
+    "passed": 24,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-cjk-guard/20261028T090123621321Z/run.json"
+  },
+  "old_font_missing_visual_results_are_not_artifact_truth": true,
+  "native_office_parity_qualified": false,
+  "prior_attempt_archive": {
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-pre-font-v2\\approval-receipt.json": "b2d3f00e01b885e3d57e33c051fe7cc470d813b11a6ec1f4d2cabea2cc30fbed",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-pre-font-v2\\budget-state.json": "dad45b408293a3a99a4785ba730dd90b50127cea91b05063792f552196ec7c61",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-pre-font-v2\\stopped-results.json": "a1d3a32ba10b71cc404b8a7439b5417475918dbc97d56d8f3fb56283dbc798ea"
+  }
+}

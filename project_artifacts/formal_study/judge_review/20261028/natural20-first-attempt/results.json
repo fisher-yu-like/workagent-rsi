@@ -1,0 +1,158 @@
+{
+  "manifest_hash": "6cf835ea407eaac85ebd2dadb0960c3fb3d32419c9da99b091e9c775ef339884",
+  "provider": {
+    "backend": "model-judge-v1",
+    "config": {
+      "provider": "codex-cli",
+      "model": "gpt-6.1-sol",
+      "codex_executable": "codex",
+      "api_base_url": "https://api.openai.com/v1",
+      "api_key_env": "OPENAI_API_KEY",
+      "timeout_seconds": 120,
+      "retries": 0,
+      "repeats": 1,
+      "disagreement_tolerance": 0.25,
+      "max_text_chars": 600000,
+      "max_text_items": 2000,
+      "max_images": 8,
+      "max_image_bytes": 20000000,
+      "max_output_tokens": 4096,
+      "cache_enabled": false,
+      "independent_review": true,
+      "semantic_enabled": true,
+      "visual_enabled": true
+    },
+    "prompt_version": "office-quality-judge-v2-evidence-scope",
+    "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+    "cli_version": "codex-cli 0.159.3",
+    "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+  },
+  "rows": [
+    {
+      "call_id": "review-4a85dc3e1d4675c8-semantic",
+      "case_id": "review-4a85dc3e1d4675c8",
+      "modality": "semantic",
+      "phase": "local",
+      "request": "review-4a85dc3e1d4675c8-semantic.json",
+      "sha256": "e4fbb5f3746bb2a847363e30bc42e56aee9960f1481dc1838662a79787e42cfa",
+      "parents": [],
+      "decision": null,
+      "attempted": true,
+      "telemetry": {
+        "model_calls": 1,
+        "elapsed_seconds": 59.01968150003813,
+        "cost": null,
+        "cost_status": "unavailable",
+        "attempts": [
+          {
+            "started_at": "2026-10-28T08:06:19.388724+00:00",
+            "provider": {
+              "backend": "model-judge-v1",
+              "config": {
+                "provider": "codex-cli",
+                "model": "gpt-6.1-sol",
+                "codex_executable": "codex",
+                "api_base_url": "https://api.openai.com/v1",
+                "api_key_env": "OPENAI_API_KEY",
+                "timeout_seconds": 120,
+                "retries": 0,
+                "repeats": 1,
+                "disagreement_tolerance": 0.25,
+                "max_text_chars": 600000,
+                "max_text_items": 2000,
+                "max_images": 8,
+                "max_image_bytes": 20000000,
+                "max_output_tokens": 4096,
+                "cache_enabled": false,
+                "independent_review": true,
+                "semantic_enabled": true,
+                "visual_enabled": true
+              },
+              "prompt_version": "office-quality-judge-v2-evidence-scope",
+              "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+              "cli_version": "codex-cli 0.159.3",
+              "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+            },
+            "repeat": 1,
+            "attempt": 1,
+            "model_call_started": true,
+            "exit_code": 0,
+            "usage": {
+              "input_tokens": 58616,
+              "cached_input_tokens": 0,
+              "cache_write_input_tokens": 0,
+              "output_tokens": 460,
+              "reasoning_output_tokens": 66
+            },
+            "model": "gpt-6.1-sol",
+            "status": "error",
+            "error": "invalid response or transport failure: ValueError",
+            "elapsed_seconds": 59.01680970005691,
+            "ended_at": "2026-10-28T08:07:18.408473+00:00"
+          }
+        ],
+        "evidence_directory": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final\\review-4a85dc3e1d4675c8-semantic\\call-7dddacc71683",
+        "status": "error",
+        "error": "invalid response or transport failure: ValueError",
+        "judge_result": {
+          "decision": null,
+          "reviews": [],
+          "model_identity": {
+            "backend": "model-judge-v1",
+            "config": {
+              "provider": "codex-cli",
+              "model": "gpt-6.1-sol",
+              "codex_executable": "codex",
+              "api_base_url": "https://api.openai.com/v1",
+              "api_key_env": "OPENAI_API_KEY",
+              "timeout_seconds": 120,
+              "retries": 0,
+              "repeats": 1,
+              "disagreement_tolerance": 0.25,
+              "max_text_chars": 600000,
+              "max_text_items": 2000,
+              "max_images": 8,
+              "max_image_bytes": 20000000,
+              "max_output_tokens": 4096,
+              "cache_enabled": false,
+              "independent_review": true,
+              "semantic_enabled": true,
+              "visual_enabled": true
+            },
+            "prompt_version": "office-quality-judge-v2-evidence-scope",
+            "prompt_hash": "f5c82c9e4d993fb9824930974f2ef315ff9994ebe650f7892d8144d9107d2fae",
+            "cli_version": "codex-cli 0.159.3",
+            "executable": "C:\\Users\\Lenovo\\AppData\\Local\\Programs\\OpenAI\\Codex\\bin\\codex.EXE"
+          },
+          "actual_model_calls": 1,
+          "disagreement": false,
+          "confidence_basis": "uncalibrated_self_report"
+        }
+      },
+      "actual_request_hash": "8c8819fb6324fe4b7ae5142f440b8bb8b15f0df0f571097f17ccee82b94bf4a5"
+    }
+  ],
+  "declared_scope_results": {
+    "review-7fa353cc90101d8e": "INCOMPLETE",
+    "review-d69312f31c49fcab": "INCOMPLETE",
+    "review-9e0e9f65e6b4c39c": "INCOMPLETE",
+    "review-2e562d78e43f4a93": "INCOMPLETE",
+    "review-f1a51e11aea9fca8": "INCOMPLETE",
+    "review-cbbf830c8da29ae6": "INCOMPLETE",
+    "review-85c3776978b97315": "INCOMPLETE",
+    "review-d9adcabcf825a07b": "INCOMPLETE",
+    "review-e7c94efbec0677c3": "INCOMPLETE",
+    "review-9058f58c36b4c7ae": "INCOMPLETE",
+    "review-13f025d2d6d2afe3": "INCOMPLETE",
+    "review-8c91b91efb85a0a5": "INCOMPLETE",
+    "review-9741b22fc5ad5268": "INCOMPLETE",
+    "review-4a85dc3e1d4675c8": "INCOMPLETE",
+    "review-1ae87e464aa68a9b": "INCOMPLETE",
+    "review-c0ea6a3781224c9e": "INCOMPLETE",
+    "review-262d29941e093887": "INCOMPLETE",
+    "review-6be86bb781998c57": "INCOMPLETE",
+    "review-f730abc3d56ac9f6": "INCOMPLETE",
+    "review-d8fa947266fa7b8e": "INCOMPLETE"
+  },
+  "quality_qualified": false
+}

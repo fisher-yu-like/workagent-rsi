@@ -1,0 +1,71 @@
+{
+  "schema_version": "office-human-adjudication-v1",
+  "source_kind": "human_adjudication",
+  "rubric_hash": "bd95df9c9a5f586502ec279f1eb001e6384c98cd1470fb69796696e83d8174b1",
+  "source_submission_hash": "3a19b2e01492583c051ecec7a93f9b0a9677775b139732bff3153c9f710b5ba5",
+  "request_manifest_hash": "fc2c031d478ac49a9d835ee02fe2af1deca43806d5d6b0dbd46c2914b2794a84",
+  "adjudication_after_diagnostics": true,
+  "independent_blind_review": false,
+  "labels": [
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "reviewer_id": "xy",
+      "label": "FAIL",
+      "defect_locations": [
+        "上次看错了，这个总数是不对的"
+      ],
+      "requirements_checked": true,
+      "timestamp": "2026-10-26T13:48:22.221Z"
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "reviewer_id": "xy",
+      "label": "FAIL",
+      "defect_locations": [
+        "上次看错了，这个总数是错误的"
+      ],
+      "requirements_checked": true,
+      "timestamp": "2026-10-26T13:48:22.222Z"
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "reviewer_id": "xy",
+      "label": "INCOMPLETE",
+      "defect_locations": [
+        "我觉得原任务的最后一点的意思是，total 要在 summary 之后，要是放在整体的表格之后也是可以的"
+      ],
+      "requirements_checked": true,
+      "timestamp": "2026-10-26T13:48:22.222Z"
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "reviewer_id": "xy",
+      "label": "FAIL",
+      "defect_locations": [
+        "原任务中说明了要 mark the important result，但是最终的成品中没有显示"
+      ],
+      "requirements_checked": true,
+      "timestamp": "2026-10-26T13:48:22.222Z"
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "reviewer_id": "xy",
+      "label": "INCOMPLETE",
+      "defect_locations": [
+        "没有标出原任务中说明的重要的部分"
+      ],
+      "requirements_checked": true,
+      "timestamp": "2026-10-26T13:48:22.222Z"
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "reviewer_id": "xy",
+      "label": "INCOMPLETE",
+      "defect_locations": [
+        "没有标注重要部分"
+      ],
+      "requirements_checked": true,
+      "timestamp": "2026-10-26T13:48:22.222Z"
+    }
+  ]
+}

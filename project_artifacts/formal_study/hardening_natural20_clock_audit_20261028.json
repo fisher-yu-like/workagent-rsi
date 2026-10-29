@@ -1,0 +1,45 @@
+{
+  "schema_version": "natural20-clock-accounting-audit-v1",
+  "original_recorded_seconds": 3037,
+  "corrected_seconds": 5177,
+  "remaining_original5400": 223,
+  "cumulative_attempts": 82,
+  "corrected_requests": [
+    {
+      "index": 76,
+      "elapsed_seconds": 2259.785111699952,
+      "previous_charge_seconds": 120,
+      "correct_charge_seconds": 2260,
+      "delta_seconds": 2140
+    }
+  ],
+  "cause_of_long_wait": "Not established;do not exclude it as idle time.",
+  "model_opinions_admitted_after_timeout": false,
+  "fix": "Charge complete measured elapsed time,at least reservation for failed/unknown calls;reject late success;block later calls once cumulative budget exhausted.",
+  "valid_channels_preserved": 65,
+  "unissued_slots": 20,
+  "missing_processed_slots": 7,
+  "completion_proposal_hash": "ed5a6ca903f28f80208de7754c50fd2c7a4a1c14ae85f297152d1ecb64dcc513",
+  "proposed_new_calls": 27,
+  "proposed_cumulative_cap": 109,
+  "proposed_time_cap": 7200,
+  "approval_status": "approved;27completion_slots_processed;see_latest_automatic_results_for_remaining_gap",
+  "focused_validation": {
+    "passed": 18,
+    "failed": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-clock-recovery/20261028T110149017178Z/run.json"
+  },
+  "evidence_hashes": {
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-clock-stop\\corrected-budget-state.json": "08cd671bb1f26a0b81b372bf80cc7cadb61b23f85c94431136822fc92b330b98",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-clock-stop\\original-budget-state.json": "0ccb38c4da5d1bdac4c30a94e92400c0a5b3aad61c6c5bc8929ce22fec34ba0d",
+    "project_artifacts\\formal_study\\judge_review\\20261028\\natural20-clock-stop\\stopped-results.json": "c23759b0149393156759a1f571fd57c52fc4209619df37fb5cc1c6363c7ab72a"
+  },
+  "completion_approval": {
+    "source": "call_75f35881f4e14a5d9db06d052bef8292",
+    "proposal_hash": "ed5a6ca903f28f80208de7754c50fd2c7a4a1c14ae85f297152d1ecb64dcc513",
+    "approved": true,
+    "cumulative_calls": 109,
+    "cumulative_seconds": 7200,
+    "historical_seconds_preserved": 5177
+  }
+}

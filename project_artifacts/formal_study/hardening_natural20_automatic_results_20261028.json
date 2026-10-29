@@ -1,0 +1,697 @@
+{
+  "schema_version": "natural20-automatic-diagnostic-delivery-v1",
+  "recorded_at": "2026-10-29T02:16:56.840307+00:00",
+  "status": "completed_declared_scope_diagnostic",
+  "case_count": 20,
+  "valid_channels": 92,
+  "required_channels": 92,
+  "fully_returned_cases": 20,
+  "declared_scope_counts": {
+    "FAIL": 18,
+    "INCOMPLETE": 2
+  },
+  "manual_followup_waived": true,
+  "human_accuracy_qualified": false,
+  "whole_task_admission_qualified": false,
+  "official_benchmark_score_claim": false,
+  "known_model_usage": {
+    "input_tokens": 3218087,
+    "cached_input_tokens": 482176,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 67568,
+    "reasoning_output_tokens": 3313
+  },
+  "usage_unknown_calls": 6,
+  "recorded_tool_calls": 0,
+  "historical_interrupted_tool_usage": "unknown;not recorded as observed zero",
+  "cumulative_model_attempts": 111,
+  "corrected_charged_seconds": 6256,
+  "observed_cost_usd": null,
+  "source_results": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\actual-final-one\\results.json",
+  "source_results_sha256": "1d700671139ecb014b79a3ab8bf62f533b59868cc0d197cc937bf55076d3d3f7",
+  "budget_path": "project_artifacts\\results\\hardening-v2\\T28-natural-judge\\20261028\\approved-final-one\\budget-state.json",
+  "budget_sha256": "468e0bff00277a1bfe81a28c3c506f476d24c527bcc9f2a531d7849bd438c3f3",
+  "cases": [
+    {
+      "case_id": "review-4a85dc3e1d4675c8",
+      "domain": "excel",
+      "instruction": "Please audit and fix this file thoroughly. Errors may include but are not limited to: formula logic errors or inconsistencies, hardcoded values that should be formulas, broken cell references, data validation issues, potential calculation errors, inconsistent formatting or naming conventions, best practice violations, and any other issues that could affect accuracy or maintainability.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-4a85dc3e1d4675c8.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 4,
+      "required_channels": 4,
+      "findings": [
+        {
+          "channel": "review-4a85dc3e1d4675c8-semantic",
+          "status": "FAIL",
+          "summary": "The complete output cell data is unchanged, leaving identifiable formula errors unresolved. It does not fulfill the requested thorough audit and repair."
+        },
+        {
+          "channel": "review-4a85dc3e1d4675c8-visual-01",
+          "status": "PARTIAL",
+          "summary": "The supplied pages show serious print-layout problems: extremely small dashboard text, financial labels separated from their values, a clipped title, and nearly blank overflow pages. Operating-case tables remain readable, but pagination fragments related content."
+        },
+        {
+          "channel": "review-4a85dc3e1d4675c8-visual-02",
+          "status": "PARTIAL",
+          "summary": "The subset has legible numbers and consistent cell colors, but severe table fragmentation separates values from their labels and headers. Large blank areas and isolated table fragments impair readability and professional layout. No visible text overlap is evident."
+        },
+        {
+          "channel": "review-4a85dc3e1d4675c8-consistency",
+          "status": "FAIL",
+          "summary": "The reports consistently describe unresolved calculation errors and serious layout defects. The established semantic FAIL is retained; both visual PARTIAL findings remain compatible with it. The summaries do not independently establish the original artifact’s accuracy or a complete audit of all requested obligations."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-f730abc3d56ac9f6",
+      "domain": "word",
+      "instruction": "Extract the relevant transaction data of the company's top five customers and top five suppliers from the annual report file of Shengye Electric, summarize the transaction amount and revenue/procurement ratio information corresponding to each entity, analyze the upstream and downstream business concentration of the enterprise and the dependence of customers and suppliers, complete the comparison analysis of the upstream and downstream cooperation structure, and generate special analysis reports.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-f730abc3d56ac9f6.docx",
+      "declared_scope_result": "INCOMPLETE",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-f730abc3d56ac9f6-consistency",
+          "status": "NEEDS_REVIEW",
+          "summary": "The summaries contain no direct contradiction, but overall task fulfillment cannot be established. The semantic PASS does not demonstrate the requested entity-by-entity transaction amounts and ratios; its claim that these are unavailable cannot be verified from the supplied summaries. The visual PASS addresses presentation, not that missing substantive obligation."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-262d29941e093887",
+      "domain": "word",
+      "instruction": "Based on the 2024 security report, summarize the overall data security status, outline the areas that need improvement, and generate an improvement plan document on the desktop as Data_Security_Improvement_Plan.docx.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-262d29941e093887.docx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-262d29941e093887-semantic",
+          "status": "NEEDS_REVIEW",
+          "summary": "The supplied text fulfills the substantive content obligations: it summarizes the security posture, identifies improvement areas, and provides a prioritized plan with owners, deadlines, targets and oversight. Reported aggregates and baseline details agree with the supplied sources, and source inconsistencies are explicitly acknowledged. The evidence does not establish that the document was saved on the desktop as Data_Security_Improvement_Plan.docx."
+        },
+        {
+          "channel": "review-262d29941e093887-visual-01",
+          "status": "PARTIAL",
+          "summary": "The pages are readable, with consistent headings, margins and table styling, and no visible clipping or overlap. Minor layout shortcomings include uneven page utilization and a source entry split across pages 4–5."
+        },
+        {
+          "channel": "review-262d29941e093887-consistency",
+          "status": "NEEDS_REVIEW",
+          "summary": "The reports are compatible: the semantic review leaves delivery requirements unverified, while the visual review establishes PARTIAL fulfillment for layout. Overall task consistency cannot be fully established from these summaries. The visual PARTIAL remains in effect; neither report supports an overall PASS."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-9e0e9f65e6b4c39c",
+      "domain": "word",
+      "instruction": "Generate a monthly employee salary accounting and production quality analysis report based on the basic employee information, process records, and nonconforming product data in the manufacturing enterprise piece-rate wage management system. Link multi-dimensional data such as employee personal information, process details, and nonconforming records; calculate the actual salary payable for each employee after deducting the impact of nonconforming products; analyze the production efficiency and quality level of each department; and generate a Word (.docx) report containing data tables and statistical conclusions, saved to the /production_management/payroll/ directory.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-9e0e9f65e6b4c39c.docx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-9e0e9f65e6b4c39c-semantic",
+          "status": "PARTIAL",
+          "summary": "报告按月列示全部员工的计件提成、质量扣减及部门生产与质量分析，内容较完整；但应付金额采用未经来源确认的扣减政策，仅为估算，尚不能满足实际应付工资核算要求。现有证据也无法确认.docx格式及指定目录保存情况。"
+        },
+        {
+          "channel": "review-9e0e9f65e6b4c39c-consistency",
+          "status": "PARTIAL",
+          "summary": "The reports are consistent: visual readability does not resolve the semantic report’s outstanding payroll-calculation and delivery-verification issues. Preserve the established PARTIAL; these summaries cannot independently establish factual accuracy or complete task fulfillment."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-d8fa947266fa7b8e",
+      "domain": "excel",
+      "instruction": "Complete the financial model based on the provided assumptions. Ensure that all formulas, references, and calculations are correct.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-d8fa947266fa7b8e.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-d8fa947266fa7b8e-semantic",
+          "status": "PARTIAL",
+          "summary": "Income statement formulas follow the expected arithmetic relationships, but product category subtotals omit populated revenue cells included in total product revenue, so the model does not reconcile."
+        },
+        {
+          "channel": "review-d8fa947266fa7b8e-visual-01",
+          "status": "PARTIAL",
+          "summary": "Serious readability and layout defects: tables split horizontally across pages, separating later quarters from row labels, and numerous numeric cells display \"###\". Some headings, figures and subtotal bands remain readable."
+        },
+        {
+          "channel": "review-d8fa947266fa7b8e-consistency",
+          "status": "NEEDS_REVIEW",
+          "summary": "The reports do not directly contradict one another, and both retain PARTIAL findings. Overall correctness cannot be established from these summaries alone: the semantic report leaves recalculated results unverified, and the visual report cannot independently establish formula accuracy. The reported subtotal defects remain unresolved; no upgrade to PASS is supported."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-9741b22fc5ad5268",
+      "domain": "powerpoint",
+      "instruction": "Task description: Based on the income and expenditure of hospitals at all levels (hospital_finance_2025.csv), liabilities (liabilities_2025.csv), drug production data (drug_production_2025.csv), per capita medical expenses (medical_expenses_2025.csv) and local chronic disease data (chronic_disease_2025.csv), evaluate the relationship between hospital financial health and disease burden. It is necessary to complete data merging, calculation of key indicators (balance ratio, asset-liability ratio, average cost per time, pharmaceutical output value), correlation analysis between financial performance and chronic disease prevalence in each region, identification of high-risk areas, financial optimization and resource allocation recommendations, and finally generate an analysis report Hospital_Finance_Disease_Report.pptx.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-9741b22fc5ad5268.pptx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 4,
+      "required_channels": 4,
+      "findings": [
+        {
+          "channel": "review-9741b22fc5ad5268-semantic",
+          "status": "PARTIAL",
+          "summary": "The report provides a usable provincial merge, asset-liability ratios, medical-cost comparisons and management recommendations, and correctly explains why provincial financial–disease correlations and pharmaceutical output value cannot be calculated. However, it incorrectly labels every hospital expenditure and balance ratio as missing or uncomputable despite explicit expenditure values in the source, leaving a required financial indicator unfinished."
+        },
+        {
+          "channel": "review-9741b22fc5ad5268-visual-01",
+          "status": "PARTIAL",
+          "summary": "The supplied pages are readable, with consistent title hierarchy, strong contrast and aligned tables. Minor table-layout shortcomings on pages 2 and 7 create awkward wrapping and crowded row boundaries. No major clipping or overlap is visible."
+        },
+        {
+          "channel": "review-9741b22fc5ad5268-consistency",
+          "status": "PARTIAL",
+          "summary": "The three preceding reports are mutually consistent and support retaining PARTIAL. The semantic report identifies an unfinished required balance-ratio calculation; the visual reports identify localized wrapping defects while agreeing on readability in their overlapping page 8 review. Source accuracy cannot be independently established from these summaries alone."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-d9adcabcf825a07b",
+      "domain": "powerpoint",
+      "instruction": "Based on the data files in the t1 project, we integrate strategic review meeting minutes, team performance and monthly indicator records, and competitive product analysis data to refine management insights and generate a professional PowerPoint strategy report document NovaMind_Q1_review_and_Q2_strategy_plan.pptx, which is saved in the t1 project directory.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-d9adcabcf825a07b.pptx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 4,
+      "required_channels": 4,
+      "findings": [
+        {
+          "channel": "review-d9adcabcf825a07b-semantic",
+          "status": "PARTIAL",
+          "summary": "The report substantially integrates the three source sets into management insights, Q2 goals, a roadmap and an execution register. Two localized statements misrepresent recorded commitments: March 25 is the deadline for a visit plan, and CDN delivery remains scheduled for March rather than Q2. The supplied text cannot verify the required filename, save location or visual presentation."
+        },
+        {
+          "channel": "review-d9adcabcf825a07b-visual-01",
+          "status": "PARTIAL",
+          "summary": "The supplied pages generally have readable typography, strong contrast and consistent hierarchy. Localized crowding on pages 3 and 7 weakens separation between tables and commentary; page 7 has visible overlap. Other supplied pages remain readable and within their slide boundaries."
+        },
+        {
+          "channel": "review-d9adcabcf825a07b-visual-02",
+          "status": "PARTIAL",
+          "summary": "The supplied pages generally have readable typography, strong contrast and consistent hierarchy. Page 12 has a localized but conspicuous overlap: the blue team-summary sentence runs across the final table row. The other supplied pages show no material clipping or overlap."
+        },
+        {
+          "channel": "review-d9adcabcf825a07b-consistency",
+          "status": "NEEDS_REVIEW",
+          "summary": "All three reports consistently establish partial fulfillment; none supports PASS. They identify semantic inaccuracies and localized layout defects, with agreement on the shared page 8. Overall task consistency cannot be fully established because the required filename and save location remain unverified, and the supplied reports are not independent factual sources. Their established PARTIAL findings remain intact."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-13f025d2d6d2afe3",
+      "domain": "word",
+      "instruction": "Based on the departmental expense trend analysis table, the annual revenue statistics table, the product cost-profit comparison table, and the product sales analysis table, including sales data, and considering the roles and work needs of the people involved in collaboration, infer their job responsibilities, work needs, and corresponding spreadsheet permissions such as view, edit, modify, delete, and reference, and generate a file with the results for me.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-13f025d2d6d2afe3.docx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-13f025d2d6d2afe3-visual-01",
+          "status": "PARTIAL",
+          "summary": "The four pages are readable, with clear blue headings, strong contrast and consistent margins. Minor layout shortcomings include dense, small table text and insufficient spacing immediately below the table on page 3. No visible text clipping or overlap obscures content."
+        },
+        {
+          "channel": "review-13f025d2d6d2afe3-consistency",
+          "status": "PARTIAL",
+          "summary": "The reports are consistent within their declared scopes: the semantic report addresses the four workbooks, inferred responsibilities, work needs and all five permission types; the visual report records localized readability and spacing defects. The established visual PARTIAL is retained. Original artifacts and sources are unavailable for independent verification, so this finding establishes report consistency only, not complete-task accuracy."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-f1a51e11aea9fca8",
+      "domain": "excel",
+      "instruction": "Complete the financial model based on the provided assumptions. Ensure that all formulas, references, and calculations are correct.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-f1a51e11aea9fca8.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-f1a51e11aea9fca8-semantic",
+          "status": "PARTIAL",
+          "summary": "The output preserves the existing assumptions and formulas but does not complete the financial model. Rows 17–20 contain labels for Market Rent, Loss-to-Lease, Vacancy Loss, and Net Rental Revenue, with no corresponding calculation cells. Recalculated numerical results cannot be verified from the supplied evidence."
+        },
+        {
+          "channel": "review-f1a51e11aea9fca8-visual-01",
+          "status": "PARTIAL",
+          "summary": "The table is split horizontally across pages: row labels appear on page 1 while their numeric columns appear on page 2. This seriously impairs readability by requiring readers to align rows across separate pages. Individual text and numbers are legible, with no visible overlap or clipping."
+        },
+        {
+          "channel": "review-f1a51e11aea9fca8-consistency",
+          "status": "PARTIAL",
+          "summary": "Both preceding reports identify shortcomings and neither supports full acceptance. Their findings are compatible: a horizontal page split does not establish that the missing summary calculations exist elsewhere. Correctness of all formulas, references, and calculations remains unverified because the supplied evidence consists only of prior-review summaries."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-7fa353cc90101d8e",
+      "domain": "excel",
+      "instruction": "Please audit and fix this file thoroughly. Errors may include but are not limited to: formula logic errors or inconsistencies, hardcoded values that should be formulas, broken cell references, data validation issues, potential calculation errors, inconsistent formatting or naming conventions, best practice violations, and any other issues that could affect accuracy or maintainability.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-7fa353cc90101d8e.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 4,
+      "required_channels": 4,
+      "findings": [
+        {
+          "channel": "review-7fa353cc90101d8e-semantic",
+          "status": "FAIL",
+          "summary": "The output copies the original workbook without any changes, leaving demonstrable formula reference errors unresolved. It therefore does not fulfill the requested thorough audit and repair. Recalculated results and appearance cannot be assessed from this evidence."
+        },
+        {
+          "channel": "review-7fa353cc90101d8e-visual-01",
+          "status": "PARTIAL",
+          "summary": "Serious print-layout shortcomings: the dashboard is extremely small, financial row labels and values are split across pages, and two pages contain only formatting remnants. Larger operating-case tables are readable, but pagination leaves a small isolated continuation."
+        },
+        {
+          "channel": "review-7fa353cc90101d8e-visual-02",
+          "status": "PARTIAL",
+          "summary": "Text and numbers are legible with consistent cell alignment and no visible overlap, but the selected pages show serious layout fragmentation: tables continue without identifying labels or headers, and a detached metric occupies an otherwise largely empty page. Formula correctness is outside this visual assessment."
+        },
+        {
+          "channel": "review-7fa353cc90101d8e-consistency",
+          "status": "FAIL",
+          "summary": "The reports consistently establish an unresolved failure to audit and repair the workbook, alongside serious layout shortcomings. Their claims do not materially contradict one another. The established semantic FAIL is retained; the summaries do not independently verify original artifact facts or establish exhaustive audit coverage."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-6be86bb781998c57",
+      "domain": "excel",
+      "instruction": "Please audit and fix this file thoroughly. Errors may include but are not limited to: deleted rows causing #REF! errors, broken cross-sheet references, incorrect formulas, wrong sheet name references, and cascading calculation failures. Fixes must be applied in the correct order - restoring structural elements before fixing dependent formulas.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-6be86bb781998c57.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 8,
+      "required_channels": 8,
+      "findings": [
+        {
+          "channel": "review-6be86bb781998c57-semantic",
+          "status": "PARTIAL",
+          "summary": "The output restores the contract-revenue row and updates several dependent links, but leaves widespread broken references in core revenue and interest formulas. The thorough repair requirement is not met. Recalculated results and repair order cannot be verified from the supplied final-state formulas."
+        },
+        {
+          "channel": "review-6be86bb781998c57-visual-01",
+          "status": "PARTIAL",
+          "summary": "Text is legible, columns are aligned, and shaded section headers provide hierarchy. However, horizontal pagination separates forecast values from their row labels, while continuation pages omit year headers. This substantially impairs reading across the supplied pages. Formula errors are not assessed under this visual-only requirement."
+        },
+        {
+          "channel": "review-6be86bb781998c57-visual-02",
+          "status": "PARTIAL",
+          "summary": "The subset is readable in places, with aligned columns and clear subtotal shading, but horizontal page breaks split tables, truncate headings, and separate values from their row labels. Formula-error text is not assessed for correctness."
+        },
+        {
+          "channel": "review-6be86bb781998c57-visual-03",
+          "status": "PARTIAL",
+          "summary": "The tables are generally legible, but horizontal page splits truncate financial headings and divide the SOFR chart across pages. The chart title is also vertically clipped, and its date labels are crowded. These are substantial layout defects; formula correctness is outside this visual assessment."
+        },
+        {
+          "channel": "review-6be86bb781998c57-visual-04",
+          "status": "PARTIAL",
+          "summary": "Tables are legible, but horizontal pagination separates rate columns from their dates. The chart title is clipped on page 27, and the chart spills onto page 28 as a detached fragment. These are substantial layout defects within the supplied subset."
+        },
+        {
+          "channel": "review-6be86bb781998c57-visual-05",
+          "status": "PARTIAL",
+          "summary": "Tables are readable, but the chart title on page 32 is clipped, and the chart extends onto page 33 as a detached fragment. These are substantial layout defects within the supplied subset."
+        },
+        {
+          "channel": "review-6be86bb781998c57-visual-06",
+          "status": "PARTIAL",
+          "summary": "The tables are legible, but page 37 has a clipped heading, and the projections table splits horizontally onto page 38, separating the 2029 values from their rate labels. Large unused areas weaken the layout."
+        },
+        {
+          "channel": "review-6be86bb781998c57-consistency",
+          "status": "PARTIAL",
+          "summary": "All seven preceding reports were reviewed. They consistently establish partial fulfillment, with unresolved formula defects and repeated pagination problems. No material contradiction is established between the summaries. The semantic report leaves repair order and recalculated results unverified, so thorough completion remains unsupported. These summaries do not independently verify the artifact."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-d69312f31c49fcab",
+      "domain": "excel",
+      "instruction": "Complete the financial model based on the provided assumptions. Ensure that all formulas, references, and calculations are correct.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-d69312f31c49fcab.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-d69312f31c49fcab-visual-01",
+          "status": "PARTIAL",
+          "summary": "The model is legible locally, but horizontal pagination separates quarter columns from their row labels, and instruction text is clipped and continued onto a mostly blank third page. These are serious layout shortcomings."
+        },
+        {
+          "channel": "review-d69312f31c49fcab-consistency",
+          "status": "NEEDS_REVIEW",
+          "summary": "The reports do not directly contradict each other: the semantic PASS excludes appearance and recalculated results, while the visual PARTIAL identifies layout defects. However, the semantic report does not establish the task's full calculation-correctness obligation because recalculated results are explicitly outside its assessment. The underlying workbook and original evidence are unavailable here, so overall consistency and sufficient support cannot be established. The established visual PARTIAL remains unresolved and cannot be upgraded to PASS."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-c0ea6a3781224c9e",
+      "domain": "excel",
+      "instruction": "Please audit and fix this file thoroughly. Errors may include but are not limited to: formula logic errors or inconsistencies, hardcoded values that should be formulas, broken cell references, data validation issues, potential calculation errors, inconsistent formatting or naming conventions, best practice violations, and any other issues that could affect accuracy or maintainability.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-c0ea6a3781224c9e.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 9,
+      "required_channels": 9,
+      "findings": [
+        {
+          "channel": "review-c0ea6a3781224c9e-semantic",
+          "status": "PARTIAL",
+          "summary": "The workbook includes useful formula corrections and an audit log, but substantial formula errors remain. The request for a thorough audit and fix is only partially fulfilled."
+        },
+        {
+          "channel": "review-c0ea6a3781224c9e-visual-01",
+          "status": "PARTIAL",
+          "summary": "Text is generally legible and section styling is consistent, but severe horizontal pagination separates table labels from values and splits the sensitivity grid. The WACC title is visibly clipped."
+        },
+        {
+          "channel": "review-c0ea6a3781224c9e-visual-02",
+          "status": "PARTIAL",
+          "summary": "Text is generally legible and section formatting is consistent, but horizontal pagination seriously impairs readability: headings are clipped, table labels and values occupy separate pages, and continuation pages lack the context needed to interpret their rows easily. No obvious text overlap is visible."
+        },
+        {
+          "channel": "review-c0ea6a3781224c9e-visual-03",
+          "status": "PARTIAL",
+          "summary": "Text is generally legible with no obvious overlap, but the page subset has serious layout fragmentation: row labels, values and year headings are separated across pages, with large empty areas and isolated table fragments. This makes the financial tables difficult to follow. Formula correctness and content outside this subset were not assessed."
+        },
+        {
+          "channel": "review-c0ea6a3781224c9e-visual-04",
+          "status": "PARTIAL",
+          "summary": "Text is generally legible without visible overlap, but severe pagination fragments tables across pages and separates numerical columns from their row labels. Large blank areas and isolated headers impair readability and comparison within the supplied subset."
+        },
+        {
+          "channel": "review-c0ea6a3781224c9e-visual-05",
+          "status": "PARTIAL",
+          "summary": "The subset has serious pagination and clipping defects. Tables split horizontally across pages, separating labels from values; totals occupy otherwise empty pages; several headings are visibly truncated. Page 36 is readable and well aligned."
+        },
+        {
+          "channel": "review-c0ea6a3781224c9e-visual-07",
+          "status": "PARTIAL",
+          "summary": "The exhibits are mostly readable, but the audit log is split into separate column pages, and several labels and explanations are visibly clipped. These are substantial layout defects within the supplied pages."
+        },
+        {
+          "channel": "review-c0ea6a3781224c9e-consistency",
+          "status": "PARTIAL",
+          "summary": "All eight reports were reviewed. Their overlapping findings are consistent: localized readability successes coexist with widespread pagination defects, and the semantic report identifies unresolved formula errors. The PASS for pages 36–43 is explicitly limited to that subset and does not override established PARTIAL findings. The summaries support retaining PARTIAL, but cannot independently verify the workbook or establish that the requested thorough audit and repair covered every obligation."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-1ae87e464aa68a9b",
+      "domain": "excel",
+      "instruction": "Complete the financial model based on the provided assumptions. Ensure the existing structure, layout, and formatting of the model are preserved throughout the process.\nIn the Assets Sch. sheet, calculate Buildings Depreciation for FY26–FY30 at 9.5% applied to opening PP&E plus Capex. In the Trading Comps sheet, calculate EV/EBITDA for FY24–FY26 using fixed Enterprise Value from Summary Valuation, then calculate P/E for FY24–FY26 using fixed Equity Value from Summary Valuation. In the Working Capital sheet, calculate Short-Term Provisions for FY26–FY30 as a percentage of Revenue. In the IS sheet, calculate Revenue Growth % for FY21A–FY30E.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-1ae87e464aa68a9b.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 6,
+      "required_channels": 6,
+      "findings": [
+        {
+          "channel": "review-1ae87e464aa68a9b-semantic",
+          "status": "PARTIAL",
+          "summary": "Building depreciation, short-term provisions and revenue growth formulas meet the requested logic. P/E uses the correct fixed equity value and fiscal-year earnings. EV/EBITDA uses incorrect denominators, and existing Trading Comps headers were overwritten. Layout, formatting and recalculated results cannot be verified from this evidence."
+        },
+        {
+          "channel": "review-1ae87e464aa68a9b-visual-01",
+          "status": "PARTIAL",
+          "summary": "Most text is readable, but the audit table is split horizontally across separate pages, weakening row association. Page 8 has right-edge clipping and a crowded chart label."
+        },
+        {
+          "channel": "review-1ae87e464aa68a9b-visual-02",
+          "status": "PARTIAL",
+          "summary": "Serious layout and readability defects: the valuation summary and chart split horizontally across pages 8–9, while several subsequent tables are printed at extremely small scale with extensive unused space. Navy headers and ruled totals provide some hierarchy, but the supplied pages require substantial layout correction."
+        },
+        {
+          "channel": "review-1ae87e464aa68a9b-visual-03",
+          "status": "PARTIAL",
+          "summary": "Tables retain consistent navy headers, section shading and numeric alignment, with no obvious overlapping text. However, horizontal pagination separates forecast columns from their row labels, and several schedules use very small text despite extensive unused page space. These are substantial readability and layout shortcomings."
+        },
+        {
+          "channel": "review-1ae87e464aa68a9b-visual-04",
+          "status": "PARTIAL",
+          "summary": "The supplied pages retain consistent navy headers, aligned numeric columns and table rules, but severe underscaling compromises readability. Pages 23–25 contain extremely small tables near the upper-left corner with most of each page blank. Pages 22 and 26 are larger but still have very small financial text. No obvious overlapping objects are visible."
+        },
+        {
+          "channel": "review-1ae87e464aa68a9b-consistency",
+          "status": "PARTIAL",
+          "summary": "All five reports retain PARTIAL findings. Their overlapping observations are compatible, and together they address the requested formulas and presentation. The reported EV/EBITDA errors and overwritten headers remain unresolved. Visual summaries establish reported readability concerns, but cannot establish whether the original workbook's layout and formatting were preserved without comparative evidence. These summaries do not independently verify artifact accuracy."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-85c3776978b97315",
+      "domain": "word",
+      "instruction": "Extract relevant information such as the total number of employees, the composition of educational qualifications, the number of R&D personnel, and the number of patents held from the designated annual report data of Shengye Electric, regulate the above human resources and R&D related data into clear statistical tables, and form the corresponding statistical report file.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-85c3776978b97315.docx",
+      "declared_scope_result": "INCOMPLETE",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-85c3776978b97315-consistency",
+          "status": "NEEDS_REVIEW",
+          "summary": "The reports contain no direct contradiction, but overall consistency cannot be established: the requested educational composition remains unavailable, and the supplied summaries cannot independently establish the claimed source omission or factual accuracy. The visual report supports presentation quality only."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-8c91b91efb85a0a5",
+      "domain": "excel",
+      "instruction": "Complete the financial model based on the provided assumptions. Ensure that all formulas, references, and calculations are correct.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-8c91b91efb85a0a5.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-8c91b91efb85a0a5-semantic",
+          "status": "PARTIAL",
+          "summary": "The annual projection is substantially populated, but the quarterly projection remains incomplete and annual expense totals omit required line items. Formula evidence establishes these defects without recalculation."
+        },
+        {
+          "channel": "review-8c91b91efb85a0a5-visual-01",
+          "status": "PARTIAL",
+          "summary": "The assumptions are readable, but severe pagination and column-width problems impair the projection tables. The title is clipped, quarterly columns are separated from their row labels, and annual values display as \"###\" across Years 2–5."
+        },
+        {
+          "channel": "review-8c91b91efb85a0a5-consistency",
+          "status": "PARTIAL",
+          "summary": "Both preceding reports establish partial fulfillment and neither supports PASS. Their findings are compatible: populated annual formulas can coexist with unreadable displayed amounts. Reported incomplete quarterly projections and omitted expenses leave the task unmet. Original artifacts and assumptions are unavailable here, so the summaries cannot independently establish calculation accuracy or visual appearance."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-9058f58c36b4c7ae",
+      "domain": "word",
+      "instruction": "Please help analyze the core roles required for the four financial analysis spreadsheets on the desktop and their corresponding operation permissions, clearly defining permission boundaries to avoid unauthorized actions.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-9058f58c36b4c7ae.docx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-9058f58c36b4c7ae-semantic",
+          "status": "PARTIAL",
+          "summary": "The manual covers all four workbooks with proposed roles, scoped operations, explicit prohibitions, separation of duties and access workflows. A localized factual error weakens its source accuracy: it reports zero charts on the sales Dashboard, while supplied native evidence establishes ten embedded charts. Worksheet visibility, protection status and used-range claims cannot be verified from the supplied evidence."
+        },
+        {
+          "channel": "review-9058f58c36b4c7ae-visual-01",
+          "status": "PARTIAL",
+          "summary": "The pages are readable, with consistent headings, margins and table shading, and no visible text overlap. Minor pagination issues interrupt table reading: the permission matrix splits a row across pages without repeating its headers, and the workflow continues without headers. The final page has substantial unused space."
+        },
+        {
+          "channel": "review-9058f58c36b4c7ae-consistency",
+          "status": "PARTIAL",
+          "summary": "Both preceding reports consistently assign PARTIAL (0.75). Neither supports an upgrade to PASS. The semantic report identifies a chart-inventory contradiction and unverified workbook metadata; the visual report identifies interrupted tables and missing continuation headers. No contradiction between the reports is apparent. Original artifacts and sources are unavailable here, so the underlying findings cannot be independently confirmed."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-2e562d78e43f4a93",
+      "domain": "excel",
+      "instruction": "Complete the financial model based on the provided assumptions. Ensure the existing structure, layout, and formatting of the model are preserved throughout the process.\nIn the Input Sheet, define Transport Revenue growth (10% FY26, 30% FY27–FY30), then in the Revenue Drivers tab calculate Transport Revenue for FY26–FY30. Also in the Input Sheet, calculate Warehousing Rate per Square Feet for FY27–FY30 escalating from FY26 base of 28 USD. In the Debt Schedule, calculate Long Term Borrowings interest at 15% from FY26. In the Asset Sch. tab, calculate Consolidated PPE Depreciation for FY26–FY30. In the IS tab, link Depreciation & Amortization from Asset Sch sheet.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-2e562d78e43f4a93.xlsx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 16,
+      "required_channels": 16,
+      "findings": [
+        {
+          "channel": "review-2e562d78e43f4a93-semantic",
+          "status": "PARTIAL",
+          "summary": "Transport growth, transport revenue formulas, 15% borrowing interest and IS depreciation links are implemented. Warehousing rates retain the wrong FY26 base, and consolidated depreciation incorrectly applies the vehicle depreciation rate to all PPE."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-01",
+          "status": "PARTIAL",
+          "summary": "Text and section formatting are generally legible, but horizontal pagination seriously disrupts the valuation tables, sensitivity table and chart. Columns and headings are split across pages, leaving detached values and clipped labels."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-02",
+          "status": "PARTIAL",
+          "summary": "Text and numbers are legible, with consistent alignment, strong header contrast and no visible text overlap or clipping. However, horizontal pagination separates financial values from their row labels across several pages, substantially weakening standalone readability. This assessment concerns layout on the supplied pages only, not missing model content or formula accuracy."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-03",
+          "status": "PARTIAL",
+          "summary": "Text is legible with clear blue headers and bold totals, and no visible text overlap. However, horizontal pagination separates financial values from their row labels across several pages, substantially weakening readability and leaving excessive unused space."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-04",
+          "status": "PARTIAL",
+          "summary": "Text and numbers are generally legible, with consistent section colors and alignment. However, the visible pagination separates row labels from financial values across several pages, making tables difficult to read, and one unit label is visibly clipped. No formula or source accuracy assessment was made."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-05",
+          "status": "PARTIAL",
+          "summary": "Text and figures are legible, with clear header bands and bold totals; no obvious text overlap or clipping appears. However, tables are split horizontally across pages without repeated row labels or section titles on continuation pages, substantially weakening standalone readability and requiring cross-page matching."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-06",
+          "status": "PARTIAL",
+          "summary": "Figures remain legible and table formatting is consistent, but horizontal pagination separates row labels from their values across multiple pages, substantially impairing readability. Page 38 also has an overlapping or clipped column header."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-07",
+          "status": "PARTIAL",
+          "summary": "The tables retain readable numbers, consistent blue headers and shaded totals, but page breaks separate labels from values and visibly truncate several labels and headers. These are substantial layout shortcomings within the supplied subset."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-08",
+          "status": "PARTIAL",
+          "summary": "Numeric cells are mostly legible and aligned, but repeated horizontal fragmentation leaves isolated columns and clipped metric headings. White text on bright yellow summary rows has poor contrast. These defects substantially impair readability across the supplied pages."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-09",
+          "status": "PARTIAL",
+          "summary": "Numbers are generally legible and aligned, but the attached subset has serious horizontal fragmentation and clipped headings. Several tables continue across pages with detached year columns and blank title bands, weakening readability and layout. No formula or source-accuracy judgment is made."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-10",
+          "status": "PARTIAL",
+          "summary": "Numeric rows are mostly legible and consistently aligned, with strong header contrast. However, the supplied pages show serious clipping and fragmented table layout: date headers display ###, section titles are cut off, and business descriptions are truncated. This assessment covers only pages 64–71 and does not assess formulas or source accuracy."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-11",
+          "status": "PARTIAL",
+          "summary": "The supplied pages have legible text and strong contrast, but serious horizontal clipping and fragmented layout impair readability. Business descriptions continue across pages as narrow slices with cut-off words, while most of each page is blank. This assessment covers only pages 71–78."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-12",
+          "status": "PARTIAL",
+          "summary": "The supplied pages have serious clipping and layout defects. Text is fragmented across mostly blank pages, and charts extend beyond visible boundaries, cutting off titles, categories and values. Some text and chart data remain readable."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-13",
+          "status": "PARTIAL",
+          "summary": "The supplied pages retain readable financial values and table styling, but severe horizontal pagination clips chart titles, axes, legends, hyperlinks and table headers. Some chart labels overlap, and one table value displays as \"###\". These defects substantially impair readability within the selected subset."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-visual-14",
+          "status": "PARTIAL",
+          "summary": "The supplied pages have serious layout and readability defects: clipped labels, totals displayed as ###, and tables split across both columns and pages. Text contrast and table borders are generally clear, but the fragmentation makes financial tables difficult to follow."
+        },
+        {
+          "channel": "review-2e562d78e43f4a93-consistency",
+          "status": "PARTIAL",
+          "summary": "All 15 reports were reviewed. Their overlapping findings are consistent, and established PARTIAL outcomes remain. The semantic report identifies two unmet calculation obligations: the warehousing base and consolidated depreciation. Visual reports consistently describe pagination and clipping defects, but do not establish whether these differ from the original model. Original formulas, recalculated results and formatting preservation cannot be independently verified from these summaries."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-e7c94efbec0677c3",
+      "domain": "word",
+      "instruction": "Based on 2019yearannual salary management system information_including cover page_basic information table_one-month to twelve-monthmonth salary table_annual salary summary_query_16_worktable_first check the annual salary summary_table for each employee_12_months total wages andmonth salary table for the consistency of the sum of the actual after-tax wages of the corresponding employees_re-statistics Technical Department_Finance Department_Sales Department_Personnel Department_Administration Department_5_departments Total annual salary_per capita annual salary_month Average remuneration and median remuneration_analysis Differences in departmental remuneration levels and employee individual remuneration fluctuations_Finally, a_2019_annual remuneration 2019_Annual_Salary_Analysis_Report.doc containing the check results_departmental remuneration statisticsdata and the difference analysis is generated and saved under/compensation_management/fy2019/analysis report/directory.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-e7c94efbec0677c3.docx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 3,
+      "required_channels": 3,
+      "findings": [
+        {
+          "channel": "review-e7c94efbec0677c3-semantic",
+          "status": "NEEDS_REVIEW",
+          "summary": "The report substantively covers employee reconciliation, all five departments’ remuneration statistics, departmental differences and individual monthly fluctuations. The supplied body-text evidence cannot establish the required .doc filename, format or save directory."
+        },
+        {
+          "channel": "review-e7c94efbec0677c3-visual-01",
+          "status": "PARTIAL",
+          "summary": "The report is readable overall, with clear blue section headings and consistent table shading. However, narrow table columns repeatedly split department names, headings and monetary values across lines. Several tables continue onto another page without repeated identifying headings, and the final page is mostly empty. These are substantial layout shortcomings, although the content remains usable. No visible text overlap or page-edge clipping was observed."
+        },
+        {
+          "channel": "review-e7c94efbec0677c3-consistency",
+          "status": "NEEDS_REVIEW",
+          "summary": "The summaries do not directly contradict each other: substantive coverage can coexist with substantial layout defects. Overall consistency remains unverified because the required filename, format and save directory are unresolved, and the summaries cannot independently establish numerical accuracy. The established visual PARTIAL remains in force."
+        }
+      ],
+      "missing_calls": []
+    },
+    {
+      "case_id": "review-cbbf830c8da29ae6",
+      "domain": "powerpoint",
+      "instruction": "Task description: Prepare a presentation on \"Annual Benefit Analysis and Future Planning of the Volunteer Association\". Given the following files:\n• Annual event photo album (activity_photos/): Contains representative photos of each event (for on-site display)\n• Benefit trend table (impact_chart.csv): shows changes in key indicators such as total annual service time, audience size, etc.\n• Volunteer feedback word cloud (feedback_wordcloud.png): displays high-frequency suggested keywords\n• Draft future plan (strategic_plan_1.md): including key projects, expected goals, and resource requirements\n• Recruitment diagram for new positions (recruitment_poster.png): including position name, number of people to be recruited, and skill requirements\nExtract key information from the above documents and integrate it to generate a PPT presentation Volunteer_Annual_Review.pptx. The content must include the annual event presentation, benefit analysis (with trend charts), future planning, and new recruitment directions (with new recruitment graphics). And save it to the /Volunteer Activities/ directory. The pictures are required to be beautiful, focusing on annual results and recruitment attraction.",
+      "artifact": "D:\\ws\\Projects\\WorkAgent-RSI\\project_artifacts\\results\\hardening-v2\\T28-benchmarks\\20261025\\complete-human-pack-v1\\blind-review-pack\\review-cbbf830c8da29ae6.pptx",
+      "declared_scope_result": "FAIL",
+      "valid_channels": 4,
+      "required_channels": 4,
+      "findings": [
+        {
+          "channel": "review-cbbf830c8da29ae6-semantic",
+          "status": "PARTIAL",
+          "summary": "The presentation provides clearly labeled planning and recruitment proposals and accurately preserves the supplied commercial metrics. However, it remains a planning draft: annual events are placeholders, the trend concerns corporate revenue targets rather than volunteer benefits, and recruitment headcounts are unresolved. The authorized sources do not supply the requested volunteer records or assets. Visual quality, native graphics and the required save location cannot be verified from this text evidence."
+        },
+        {
+          "channel": "review-cbbf830c8da29ae6-visual-01",
+          "status": "PARTIAL",
+          "summary": "Consistent typography, colors and slide hierarchy make most content readable. However, multiple cards overflow, one heading crowds its body text, and both chart titles have very poor contrast. These visible defects substantially reduce presentation polish and readability."
+        },
+        {
+          "channel": "review-cbbf830c8da29ae6-visual-02",
+          "status": "PARTIAL",
+          "summary": "The selected pages have clear hierarchy, strong contrast and consistent alignment. Minor localized layout issues remain: the first timeline card has insufficient bottom padding, and a source filename wraps awkwardly. No major overlap or unreadable content is visible."
+        },
+        {
+          "channel": "review-cbbf830c8da29ae6-consistency",
+          "status": "PARTIAL",
+          "summary": "The three reports are consistent within their stated scopes and establish partial fulfillment. Substantive content obligations remain unmet, and visual defects are reported. Agreement on page 8 supports consistency across the overlapping visual reviews. Original-source accuracy, native graphics and the required save location remain unverified; this review does not establish complete-task accuracy."
+        }
+      ],
+      "missing_calls": []
+    }
+  ],
+  "limitations": [
+    "FAIL includes mandatory PARTIAL and is not a claim that an entire file is unusable.",
+    "Excel PDF pagination can affect visual observations;these are renderer-dependent diagnostic findings,not official native Office scores.",
+    "Formula strings and source XML do not establish recalculated numerical correctness or all native-object obligations.",
+    "Labels were not used as ground truth;no human-calibrated accuracy is reported."
+  ]
+}

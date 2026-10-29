@@ -1,0 +1,84 @@
+{
+  "task_id": "T28",
+  "status": "blocked",
+  "local_status": "completed",
+  "server_render_status": "30/32 review cases rendered,187 pages;2 original workbooks exceed40-page cap",
+  "human_status": "32_first_pass_and6_nonblind_adjudications_received",
+  "reviewer_confirmed": "user agreed in conversation",
+  "natural_cohort_status": "20 real natural outputs:17 single-shot plus3 repaired; all source records retained",
+  "real_judge_status": "v2_incomplete_two_HTTP429_stops_16attempts_14decisions_6complete_pairs",
+  "evidence_bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
+  "bundle_files": 163,
+  "latest_full_validation": {
+    "passed": 773,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
+  },
+  "blind_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
+  "standards_count": 12,
+  "actual_rendered_pages": 187,
+  "actual_human_labels": 32,
+  "actual_natural_artifacts": 20,
+  "required_natural_artifacts": 20,
+  "agreement": null,
+  "model_calls": 45,
+  "report": {
+    "status": "blocked",
+    "standards_cases": 12,
+    "natural_cases": 20,
+    "required_natural_cases": 20,
+    "actual_human_labels": 0,
+    "rubric_hash": "bd95df9c9a5f586502ec279f1eb001e6384c98cd1470fb69796696e83d8174b1",
+    "judge_results_revealed": false,
+    "blind_pack_hash": "12582cc4368b767b7884b869789c7c51546a5a17cd52622fd8b70d7baf6de312",
+    "blockers": [
+      "Actual human labeling required"
+    ],
+    "rendered_cases": 30,
+    "rendered_pages": 187,
+    "standards_renders_reused": 12,
+    "rendering_gaps": 2,
+    "new_model_calls": 0,
+    "new_server_operations": 0
+  },
+  "source_hashes": {
+    "src/workagent_rsi/human_calibration.py": "ef722a9c1b8ffdafe052db792ab703f28f333f6850622b3afc3a23fb8172fafa",
+    "tests/test_human_label_provenance.py": "374c5f3473336a6890deb2add4de410618fa2b1312bdcf62f4483d816531db03",
+    "project_artifacts/phase3_experiments/scripts/prepare_human_calibration.py": "006d9fff5c9d88f7532745a2e0fd567225517e9ceadc7e6cb9453859cbf8eb0a",
+    "project_artifacts/phase3_experiments/scripts/run_hardening_checks.py": "f71b3ba837694abb8a4d538fce725642fe2aef1d1be13bd41981f3e8fbe94e1f"
+  },
+  "red_evidence": "project_artifacts/results/hardening-v2/T27-T28-red/20261025T021119075237Z",
+  "red_counts": {
+    "failed": 6,
+    "error": 0
+  },
+  "ui_validation": "32 empty selectors;84 local links and187 page hashes verified;Node syntax exit0. Static validation only; no actual human submission or browser qualification.",
+  "remaining": [
+    "Resolve429;8never-issued requests remain under the existing24cap. Retrying2failed requests/full26attempt minimum requires explicit added approval. No failed requests automatically retried.",
+    "Natural20 full semantic/visual evidence partitioning and separate model approval remain pending;first-pass labels remain provisional.",
+    "Two original workbook render coverage gaps and complete cohort reference validity remain unresolved."
+  ],
+  "user_stop_instruction": "Superseded on 2026-10-25: user authorized benchmark preparation in priority order.",
+  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+  "judge_calls": 22,
+  "natural_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
+  "standards_review_page": "project_artifacts/results/hardening-v2/T28/20261025-human-pack/blind-review-pack/index.html",
+  "natural_report": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
+  "complete_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html",
+  "repaired_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
+  "total_review_cases": 32,
+  "generation_model_calls": 23,
+  "latest_intake": "project_artifacts/formal_study/hardening_human_intake_linux_delivery.json",
+  "source_hashes_scope": "Historical T27/T28 engineering delivery; current source hashes in current release evidence.",
+  "report_scope": "Historical material-delivery report before actual user submission.",
+  "actual_adjudications": 6,
+  "adjudication_evidence": "project_artifacts/formal_study/hardening_t28_adjudication_intake.json",
+  "judge_calls_by_version": {
+    "v1": 6,
+    "v2": 16
+  },
+  "judge_v2_delivery": "project_artifacts/formal_study/hardening_t28_judge_v2_delivery.json"
+}

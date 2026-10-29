@@ -1,0 +1,13 @@
+{
+  "schema_version": "manual-followup-waiver-v1",
+  "recorded_at": "2026-10-28T07:26:07.021936+00:00",
+  "source": "User explicitly waived natural20 follow-up in conversation because of limited time.",
+  "scope": "Only the new20-case manual follow-up;not a fabricated approval or reviewer signature for other tasks.",
+  "manual_followup_required": false,
+  "original_labels_preserved": true,
+  "original_labels_remain_provisional": true,
+  "quality_qualified": false,
+  "human_ground_truth_accuracy_claim_allowed": false,
+  "automatic_evidence_preparation_continues": true,
+  "new_model_calls_authorized": false
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": "t26-domain-inventory-amendment-v1",
+  "recorded_at": "2026-10-25T09:07:34.991592+00:00",
+  "manifest": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/planned-run/evaluator-only/reserved-task-manifest.json",
+  "manifest_sha256": "657b5b83acd342934b37a1373ed000c5d7610c746574dff6a9345168a13d9085",
+  "per_domain": {
+    "excel": {
+      "base_tasks": 1251,
+      "native_input_instances": 3065,
+      "connected_source_groups": 984,
+      "human_calibration_reserved_base_tasks": 91
+    },
+    "word": {
+      "base_tasks": 10,
+      "native_input_instances": 10,
+      "connected_source_groups": 2,
+      "human_calibration_reserved_base_tasks": 10
+    },
+    "powerpoint": {
+      "base_tasks": 4,
+      "native_input_instances": 4,
+      "connected_source_groups": 2,
+      "human_calibration_reserved_base_tasks": 4
+    }
+  },
+  "other_metadata_without_office_bundle": 68,
+  "equal_domain_counts_required": false,
+  "amendment_source": "User explicitly waived equal counts on2026-10-25.",
+  "total_target_base_tasks": 72,
+  "total_target_input_instances": 216,
+  "allocation_status": "pending revised qualified allocation; fixed-quota historical checks are not the amended acceptance",
+  "final_test_count": 0,
+  "protected_final_and_separate_evaluator_principal_required": true,
+  "claim_boundary": "Input task counts; not generated output counts or independent population samples. Connected families may cross domains; group counts are not additive.",
+  "snapshot_scope": "Historical2026-10-25 pre-supplement input inventory",
+  "current_balanced_materials": "project_artifacts/formal_study/hardening_t26_balanced_materials.json",
+  "current_selected_per_domain": {
+    "excel": 24,
+    "powerpoint": 24,
+    "word": 24
+  }
+}

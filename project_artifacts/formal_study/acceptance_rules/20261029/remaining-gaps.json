@@ -1,0 +1,1122 @@
+[
+  {
+    "task_id": "ssb2/Financial_Model/09_03/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/09_03/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure the existing structure, layout, and formatting of the model are preserved throughout the process.",
+    "gap_kind": "edit_preservation_scope",
+    "reason": "Freeze authorized edit scopes and preserved regions before enabling preservation; broad permission would hide regressions."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/09_03/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "In the Financials sheet, calculate EBITDA for all periods (noting D&A is presented as negative), then calculate Reported EPS (Basic) for 2014F–2018F.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/09_03/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-004",
+    "source_quote": "In the Assumptions sheet, calculate Total Capital Spending+ Corporate for 2014F–2018F.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/09_03/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "In the Ratio Analysis sheet, calculate Implied P/E for 2014F–2018F only.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/09_03/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-006",
+    "source_quote": "In the Valuation sheet, calculate Present Value of Equity and Value per Share.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/18_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/18_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure the existing structure, layout, and formatting of the model are preserved throughout the process.",
+    "gap_kind": "edit_preservation_scope",
+    "reason": "Freeze authorized edit scopes and preserved regions before enabling preservation; broad permission would hide regressions."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/18_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "In the Ratio Analysis sheet, calculate Return on Capital Employed for FY33–FY39 using EBIT and Capital Employed (Net Worth plus Total Debt).",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/18_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-004",
+    "source_quote": "In the DSCR sheet, calculate Average ISCR across the debt tenor.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/18_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "In the Cash Flow sheet, calculate Net Cash from Operating Activities for FY33–FY39 by summing all operating cash flow components.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/18_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-006",
+    "source_quote": "In the Revenue sheet, calculate Price Index Multiple for FY33–FY39 by escalating the prior year's value using the annual indexation rate.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/18_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-007",
+    "source_quote": "In the COP sheet, calculate Cost to Concessionaire after Government Incentive as Total Project Cost minus Government Incentive.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/18_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-008",
+    "source_quote": "Finally, identify and fix any calculation errors while preserving existing formatting and structure.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/07_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the equity method accounting model.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/07_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Fill in all empty cells.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/07_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "Account for deferred tax effects from the dividends received deduction (DRD).",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/09_02/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/09_02/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure that all formulas, references, and calculations are correct.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 134/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "Point B is located on the ellipse at the intersection with a line drawn from the origin to the upper-right corner of the ellipse's bounding box, at approximately (2,190,000, 12,939).",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 134/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-004",
+    "source_quote": "Connect all six vertices A through F in order with dashed lines to form a closed polygon.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 134/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "Also draw a solid green line from the origin (0, 0) to the upper-right bounding-box corner at approximately (2,434,688, 14,285) to indicate the direction used to locate point B.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Based on the daily patrol times, calculate the average patrol duration for each day and place it in a new \"Average\" column at the end of that day's row.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Identify all durations strictly greater than the daily average and display them in red text.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "For each of these above-average durations, apply a soft orange fill to the corresponding start time, finish time, and duration cells.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-004",
+    "source_quote": "In a new \"Avg.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "Excess Duration\" column (next to \"Average\"), calculate the average of only the above-average durations for that day.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-006",
+    "source_quote": "Create a new sheet named \"Graph Average Patrol Time\" containing:",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-008",
+    "source_quote": "- Date (in DD-MMM format)",
+    "gap_kind": "edit_preservation_scope",
+    "reason": "Freeze authorized edit scopes and preserved regions before enabling preservation; broad permission would hide regressions."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-009",
+    "source_quote": "- Average Patrol Time",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-010",
+    "source_quote": "- Ideal Average Time (constant 30 minutes)",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-011",
+    "source_quote": "- Avg.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-012",
+    "source_quote": "Excess Duration",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-013",
+    "source_quote": "- Count Above Average (count of durations exceeding the daily average)",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-016",
+    "source_quote": "- Average Patrol Time (blue)",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-017",
+    "source_quote": "- Ideal Average Time (orange)",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-018",
+    "source_quote": "- Avg.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-019",
+    "source_quote": "Excess Duration (green)",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-021",
+    "source_quote": "- Count Above Average (gray)",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1426290/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-023",
+    "source_quote": "4. X-axis for dates, primary Y-axis for durations, secondary Y-axis for count.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1431124/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Create a dynamic summary section in the “Forecasting Summary Data” sheet that first includes a drop-down list for selecting the Service Area, defaulting to 'B'.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1431124/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Use this selection to automatically generate two summary tables: one showing the 4 quarterly values (Quarter) and another showing cumulative values (Quarter (Cum)) for Blue, Green, Blue & Green, and Original, by summarizing the main dataset.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1431124/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "Ensure the tables update based on the selected Service Area and exclude totals or blank rows.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1431124/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "Format both charts in £ currency, include legends, use line charts with markers, place the quarterly chart above the cumulative chart, and ensure all tables and charts update automatically when the Service Area selection changes.",
+    "gap_kind": "edit_preservation_scope",
+    "reason": "Freeze authorized edit scopes and preserved regions before enabling preservation; broad permission would hide regressions."
+  },
+  {
+    "task_id": "pptbench/task_0024/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0024/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0085/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0085/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0095/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0095/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0113/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0113/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0138/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0138/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0155/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0155/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0167/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0167/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0168/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0168/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "word-edit/788ee5bc9b61152ede71/native-1",
+    "domain": "word",
+    "requirement_id": "obligation-001",
+    "source_quote": "This document has tracked changes (redlines).",
+    "gap_kind": "word_package_and_preservation",
+    "reason": "Body-text extraction omits non-body parts and cannot prove formatting, annotations or unchanged regions; bind XML/structural scopes before admission."
+  },
+  {
+    "task_id": "ssb2/Debugging/07_07/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Please audit and fix this file thoroughly.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Debugging/07_07/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Errors may include but are not limited to: formula logic errors or inconsistencies, hardcoded values that should be formulas, broken cell references, data validation issues, potential calculation errors, inconsistent formatting or naming conventions, best practice violations, and any other issues that could affect accuracy or maintainability.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Debugging/08_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Please audit and fix this file thoroughly.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Debugging/08_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Errors may include but are not limited to: formula logic errors or inconsistencies, hardcoded values that should be formulas, broken cell references, data validation issues, potential calculation errors, inconsistent formatting or naming conventions, best practice violations, and any other issues that could affect accuracy or maintainability.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Debugging/08_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "The model uses a 3-color font convention: black for in-sheet formulas with any math, green for plain cell references like =A1 or ='Sheet'!B2, and blue for hardcoded values.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/04_05/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/04_05/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure the existing structure, layout, and formatting of the model are preserved throughout the process.",
+    "gap_kind": "edit_preservation_scope",
+    "reason": "Freeze authorized edit scopes and preserved regions before enabling preservation; broad permission would hide regressions."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/04_05/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "In the Ratio Analysis sheet, calculate Equity Turnover for all periods displaying \"NM\" where equity is not meaningful.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/04_05/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-004",
+    "source_quote": "In the Valuation sheet, calculate Tax Rate for the forecast period, then calculate NOPAT.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/04_05/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "In the Assumption sheet, calculate Other Long-Term Assets for the forecast period, then calculate forecast revenue (2014F–2018F) for each product segment (Beauty, Grooming, Health Care, Snacks & Pet Care, Fabric Care & Home Care, Baby Care & Family Care) by growing from 2013 using total growth rates.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/01_05/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the bond accounting model for ABC Corp's 4-year bond issuance.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/01_05/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Fill in all empty cells.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/15_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/15_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure that all formulas, references, and calculations are correct.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1437004/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Pull the data from the \"Sharepoint Tracker\" sheet, count the total number of TRUE values in each category for each corresponding month, then populate a monthly summary table in the \"Data\" sheet with columns for Months, Desk drops, Newsletters, and SharePoint Changes listing all 12 months (January through December) and a total row for the year.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1437004/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "1. A multi-series line chart titled \"Monthly Activity Trends\" showing each category's count per month.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "pptbench/task_0011/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0011/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0026/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0026/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0032/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0032/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0034/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0034/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0080/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0080/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0102/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0102/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0109/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0109/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0173/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0173/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "word-edit/394d4298a0f47f54e059/native-1",
+    "domain": "word",
+    "requirement_id": "obligation-002",
+    "source_quote": "Add comments (using author \"Reviewer\") highlighting at least 3 problematic clauses.",
+    "gap_kind": "word_package_and_preservation",
+    "reason": "Body-text extraction omits non-body parts and cannot prove formatting, annotations or unchanged regions; bind XML/structural scopes before admission."
+  },
+  {
+    "task_id": "word-edit/394d4298a0f47f54e059/native-1",
+    "domain": "word",
+    "requirement_id": "obligation-008",
+    "source_quote": "Add specific, actionable comments explaining why each clause is problematic.",
+    "gap_kind": "word_package_and_preservation",
+    "reason": "Body-text extraction omits non-body parts and cannot prove formatting, annotations or unchanged regions; bind XML/structural scopes before admission."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/10_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/10_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure the existing structure, layout, and formatting of the model are preserved throughout the process.",
+    "gap_kind": "edit_preservation_scope",
+    "reason": "Freeze authorized edit scopes and preserved regions before enabling preservation; broad permission would hide regressions."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/10_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "In the Financials sheet, calculate YoY Growth for Revenue and COGS for 2010–2018F suppressing output where values are zero, then calculate EBITDA Margin for forecast years.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/10_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-004",
+    "source_quote": "In the Assumptions sheet, calculate Depreciation & Amortization for the forecast period.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/10_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "In the Valuation sheet, calculate Terminal Value, then construct a sensitivity table varying WACC and terminal growth rate against implied equity value.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/10_01/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-006",
+    "source_quote": "In the Ratio Analysis sheet, calculate Debt/Equity, then calculate Earnings Yield.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/15_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/15_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure the existing structure, layout, and formatting of the model are preserved throughout the process.",
+    "gap_kind": "edit_preservation_scope",
+    "reason": "Freeze authorized edit scopes and preserved regions before enabling preservation; broad permission would hide regressions."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/15_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "In the Consol_annual sheet, calculate (or reference where required) all elements from PBT to EPS Growth (%) for all years.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/15_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-004",
+    "source_quote": "Then, in the Ratios and Growth Analysis section, calculate all elements that are not hardcoded for all years from 2013-2027 – note that for the shares section, for 2023-2027, the numbers for all 5 years should be the same as the last historical year of data.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/15_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "At the end of the tab, calculate the two Check balance lines.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Financial_Model/15_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-006",
+    "source_quote": "In the Consol_quarterly sheet, after referencing for Interest Expenses and Other Non-operating Income (Expense) for all quarters, calculate or reference all elements from PBT to EPS.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 131/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Start with FY22 EBITDA as the opening total bar, then add sequential contribution bars for FX Tailwind, Gross Profit, Employee Costs, Direct Marketing, and Other Opex, ending with FY23 EBITDA as the closing total bar.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 131/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "Positive contributors (FX Tailwind, Gross Profit) should be yellow, negative contributors (Employee Costs, Direct Marketing, Other Opex) should be grey, and both the FY22 and FY23 EBITDA total bars should be dark blue.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 131/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "No decimals.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1422635/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Add helper columns with formulas that automatically split the values into three categories: Low (<7), Normal (7-12), and High (>12).",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "pptbench/task_0000/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0000/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0091/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0091/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0115/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0115/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0153/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0153/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "ssb2/Template/08_02/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/08_02/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure that all formulas, references, and calculations are correct.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/11_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Complete the financial model based on the provided assumptions.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Template/11_04/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Ensure that all formulas, references, and calculations are correct.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 127/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Add two separate lines to the chart to show the 'Average Target Price' and 'Price' for each month.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1421372/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-001",
+    "source_quote": "Create a dashboard on a sheet named “Summary” to consolidate data from 2-hour racing events, organizing the data into 5-minute time blocks from 0 & 5 MINS through 115 & 120 MINS",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1421372/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-002",
+    "source_quote": "Add a drop-down menu on the Summary sheet to allow users to select a racing event.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1421372/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-003",
+    "source_quote": "Set the default selection to SEB'18.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1421372/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-004",
+    "source_quote": "Based on the selected racing event, dynamically display a multi-series line chart that visualizes the YELLOW, PIT, DRIVER CHANGE, Dive-in, and Worst Position data series across these time blocks.",
+    "gap_kind": "spreadsheet_scope_and_recalculation",
+    "reason": "Bind exact cells/ranges and authorized assumptions, then verify formulas/recalculated results; generic text or upstream target scores do not cover the entire task."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1421372/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-005",
+    "source_quote": "Plot WORST POSITION as a standard line.",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "ssb2/Visualization/Task 1421372/native-1",
+    "domain": "excel",
+    "requirement_id": "obligation-011",
+    "source_quote": "“Race Events by 5-Minute Time Intervals.”",
+    "gap_kind": "spreadsheet_requirement_review",
+    "reason": "A reviewer must resolve data/formula/appearance responsibilities and target locations."
+  },
+  {
+    "task_id": "pptbench/task_0017/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0017/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0064/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0064/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0110/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0110/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0140/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-001",
+    "source_quote": "Reconstruct the supplied scientific diagram as one editable PowerPoint slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "pptbench/task_0140/native-1",
+    "domain": "powerpoint",
+    "requirement_id": "obligation-003",
+    "source_quote": "Use native editable text, shapes and connectors; do not embed the entire reference image or PDF as a flat slide.",
+    "gap_kind": "native_object_editability",
+    "reason": "Package/object inspection must prove editable text/shapes/connectors and raster prohibition; a screenshot cannot establish these."
+  },
+  {
+    "task_id": "word-edit/1e1b47f9e68b4214b87c/native-1",
+    "domain": "word",
+    "requirement_id": "obligation-012",
+    "source_quote": "Keep all legal structure and boilerplate intact.",
+    "gap_kind": "word_package_and_preservation",
+    "reason": "Body-text extraction omits non-body parts and cannot prove formatting, annotations or unchanged regions; bind XML/structural scopes before admission."
+  },
+  {
+    "task_id": "word-edit/e7448d57763245b44271/native-1",
+    "domain": "word",
+    "requirement_id": "obligation-001",
+    "source_quote": "Fill in this intake form by replacing the placeholder text in the gray fields:",
+    "gap_kind": "word_package_and_preservation",
+    "reason": "Body-text extraction omits non-body parts and cannot prove formatting, annotations or unchanged regions; bind XML/structural scopes before admission."
+  }
+]

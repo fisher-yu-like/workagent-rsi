@@ -22,3 +22,11 @@ def test_diagnoser_is_deterministic():
     second = FailureDiagnoser().diagnose(results)
     assert first == second
     assert first[0].recommended_component == "tool_policy"
+
+
+def test_legacy_failure_metadata_uses_logical_ids_without_exporting_private_paths():
+    rows=[{'run_id':'C:/private/hidden/run','state':'FAILED','failure':{'message':'format failed'},
+        'evidence_ref':'C:/private/hidden/trace.json'}]
+    result=FailureDiagnoser().diagnose(rows)
+    assert result and 'C:/private' not in result[0].model_dump_json()
+    assert 'unknown' in result[0].causal_hypothesis.lower()

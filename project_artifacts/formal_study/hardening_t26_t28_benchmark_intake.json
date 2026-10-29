@@ -1,0 +1,86 @@
+{
+  "schema_version": "benchmark-intake-delivery-v1",
+  "recorded_at": "2026-10-25",
+  "status": "engineering_complete_acceptance_incomplete",
+  "sources": {
+    "spreadsheetbench-2": {
+      "base_tasks": 321,
+      "instances": 321
+    },
+    "spreadsheetbench-v1": {
+      "base_tasks": 912,
+      "instances": 2726
+    },
+    "workspace-bench-lite": {
+      "base_tasks": 100,
+      "instances": 32
+    }
+  },
+  "priority": [
+    "spreadsheetbench-2",
+    "workspace-bench-lite",
+    "spreadsheetbench-v1"
+  ],
+  "source_lock_sha256": "cb524e299b62f5a3c50e55e32b5a15637ff39a79586ca547c761da9e9f31c934",
+  "metadata_records": 1333,
+  "materialized_office_instances": 3079,
+  "workspace_download_bytes": 62449760,
+  "workspace_files": 208,
+  "workspace_input_failures": 0,
+  "workspace_annotation_matches": 100,
+  "workspace_dependency_differences": 80,
+  "v1_advertised_cases": 2729,
+  "v1_observed_cases": 2726,
+  "active_reserved_manifest": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/planned-run/evaluator-only/reserved-task-manifest.json",
+  "active_reserved_manifest_hash": "0dfc590322938e700eff679433d878401169e213d1f45a52462aad8d21eb931d",
+  "human_calibration_reserved_base_tasks": 173,
+  "human_calibration_source_groups": 9,
+  "natural_jobs": 20,
+  "natural_job_domains": {
+    "excel": 10,
+    "word": 7,
+    "powerpoint": 3
+  },
+  "planned_inputs_bytes": 2999530,
+  "actual_model_calls": 23,
+  "actual_natural_model_outputs": 20,
+  "actual_human_labels": 0,
+  "actual_judge_calls": 0,
+  "server_operations": {
+    "probe": 1,
+    "recalculations": 4,
+    "full_dataset_uploads": 0,
+    "server_package_installs": 0
+  },
+  "focused_validation": {
+    "passed": 41,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T26-T28-benchmark-focused/20261025T063329032021Z"
+  },
+  "t26_status": "balanced development material preparation complete24/domain;original216-instance requirement and untouched final/evaluator principal remain incomplete",
+  "t27_status": "completed for deterministic development calibration; both native scorers integration-qualified",
+  "t28_status": "32 review materials complete; actual human labels and later authorized judge calibration pending",
+  "approval_request": "3 model repairs approved and consumed; additional deterministic PPT execution/render approved and completed. No judge approval.",
+  "evidence": {
+    "source_discovery": "project_artifacts/results/hardening-v2/T26-benchmarks/20261025/source-discovery",
+    "source_inventory": "project_artifacts/results/hardening-v2/T26-benchmarks/20261025/corpus/split-quality-report.json",
+    "reserved_split_quality": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/planned-run/reserved-split-quality-report.json",
+    "generation_plan": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/planned-run/run-plan.json",
+    "t27_calibration": "project_artifacts/results/hardening-v2/T27-benchmarks/20261025/deterministic-calibration",
+    "native_v2_control": "project_artifacts/results/hardening-v2/T27-benchmarks/20261025/native-scorer-control/report.json",
+    "native_v1_control": "project_artifacts/results/hardening-v2/T27-benchmarks/20261025/native-scorer-control-v1/report.json"
+  },
+  "code_commit": "07d3ca7cfc308b738b65f33ec8c7534f9dd5d808",
+  "verified_validation_source_files": 170,
+  "source_hash_mismatches": 0,
+  "integrity_evidence": "project_artifacts/results/hardening-v2/T26-benchmarks/20261025/delivery-integrity.json",
+  "generation_delivery": "project_artifacts/formal_study/hardening_t28_benchmark_generation.json",
+  "repaired_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json",
+  "equal_domain_counts_required": false,
+  "domain_inventory": "project_artifacts/formal_study/hardening_t26_domain_inventory.json",
+  "active_balanced_t26_materials": "project_artifacts/formal_study/hardening_t26_balanced_materials.json",
+  "active_balanced_t26_manifest": "project_artifacts/results/hardening-v2/T26-balanced/20261026/cohort-v2/evaluator-only/task-manifest.json",
+  "initial_inventory_scope": "Source counts and metadata totals above describe the initial2026-10-25 intake,not the new selected cohort."
+}

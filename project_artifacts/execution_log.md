@@ -160,3 +160,349 @@
 - 阶段 5 文档与 manifest 已提交：`94ee97c`（`record real-model RSI pilot`）。
 - 已推送到 `origin/codex/closed-loop-rsi`；推送后本地与远程 hash 均为 `94ee97c274bcf637dc485e42e1d8f3a19db2fbc8`。
 - 收尾时工作树干净，结果目录仍保留在 `project_artifacts/results/qualification/real-model/`，并未把被忽略的二进制/运行中间文件混入提交。
+
+### Hardening T00 local baseline (2026-10-17)
+
+- Isolated branch `feat/evaluation-rsi-hardening` starts at `main@43f89d54daed37aba9f0e79a7df79b3288b2f993`; the user's original worktree and untracked notes were not changed.
+- Explicit interpreter: `D:\ws\Projects\WorkAgent-RSI\.venv\Scripts\python.exe`, Python 3.13.6. Raw full suite: 149 passed, 4 failed, exit 1. Exact command, cwd, dependency versions, timestamps, stdout/stderr and hashes are in `project_artifacts/results/hardening-v2/T00/20261017T224647995/baseline/`.
+- T00 environment manifest records Git/installed dependencies/tool presence; API connectivity and Office COM were deliberately not probed. The manifest is not evidence of a successful model or COM run.
+- Environment-manifest tests: 2 passed. An initial in-memory Python runner failed before pytest due PowerShell quoting; the failed attempt is recorded in the local progress log. A first implementation of Git status parsing lost a leading space and was corrected after a focused test failed.
+- External formal data work is marked blocked because source/license evidence remains incomplete; no external dataset was downloaded.
+
+### Hardening T02 local failure explanation (2026-10-17)
+
+- On main@43f89d5, raw local full suite: 149 passed, 4 failed. Three failures shared a CandidateVerifier command using unavailable `py -3.12` (compilation exit 103); the fourth was a Word fixture that copied `REQUIRED-001` into the title and incorrectly gave the bad baseline full credit.
+- New independent command/artifact assertions first failed 2/2 for those exact causes; raw stdout/stderr and invocation are retained under `project_artifacts/results/hardening-v2/T02/20261017-red/`.
+- CandidateVerifier now uses `sys.executable` for compile and pytest. The Word fixture excludes the expected token from its instruction; closed-loop tests assert baseline 0, repaired candidate 1, promotion, and rollback content hash.
+- Focused tests: 18 passed. Full local suite: 157 passed in 113.60s, exit 0; raw invocation and output under `project_artifacts/results/hardening-v2/T02/20261017-full/`. Details in `project_artifacts/formal_study/hardening_t02_failure_explanation.md`.
+- T01's independent R01-R12 review corpus is pending. No live API/model, Office COM, rendering, or external formal data was validated in this stage.
+
+### Hardening handoff and T01 (2026-10-21)
+
+- Continued existing `feat/evaluation-rsi-hardening@5c727a3`; original `WorkAgent-RSI` checkout, branch and untracked user notes preserved.
+- Fresh unchanged engineering baseline: 157 passed, exit0. Evidence: `results/hardening-v2/handoff-legacy-baseline/20261021T074934481123Z/`. Two earlier runner/environment attempts are retained separately: long-path WinError206 and missing basetemp parent WinError3; neither is T01 functional evidence.
+- T01: 12 independent active red tests, one passing exact-formula control, one passing case-manifest integrity check; 12 failed / 2 passed / 0 errors, exit1. Evidence: `results/hardening-v2/T01/20261021T074951807941Z/`; fixture observations and Office files are preserved in generated.zip.
+- Each R01–R12 has a source-independent truth, minimal input, desired behavior, actual observation and owner task. No xfail, skip or collection suppression was added. These defects remain open.
+- Canonical copy of the supplied plan and a common task ledger are now in this worktree. T03 is the only primary task in_progress.
+- No live model calls or external data. R12 runs only authored probe code against its own temporary parent sentinel, with a sanitized environment and a dummy value; it does not read real credentials or protected data.
+
+### Hardening T03 and final handoff validation (2026-10-21)
+
+- Added strict, versioned ExecutionOutcome/AssessmentOutcome/RunUsage/ProtocolCapabilities and explicit legacy adapters. Unknown counts/costs remain null, observed zero requires available telemetry, and ambiguous old failure causes remain null. Old report fields and pipeline decisions are unchanged.
+- Added exclusive evidence bundles with relative paths, SHA-256 and size validation, metadata credential rejection and separately recorded executor/candidate/judge capabilities. Arbitrary evidence file bodies must already be sanitized by the caller.
+- T03 interface red: two expected missing-module collection errors in `results/hardening-v2/T03-red/20261021T075209002525Z/`. Final focused checks: 17 passed in `results/hardening-v2/T03/20261021T075640278743Z/`.
+- Refined R10 to preserve max_attempts as execution retries; the future repair loop must use explicit repair_policy. Latest T01: 12 failed / 2 passed / 0 errors in `results/hardening-v2/T01-final/20261021T075943272086Z/`.
+- Final full suite: 176 passed / 12 failed / 0 errors / 0 skips, exit1, in `results/hardening-v2/handoff-final-verified/20261021T080224738698Z/`. Exactly the twelve expected-open R01–R12 cases fail. All tested source hashes were rechecked after the run.
+- Actual schema export, evidence bundle and successful relocation/integrity check: `results/hardening-v2/T03/20261021T080824087553Z/contracts/`. The bundle includes raw logs, source hashes, independent observations, owner map and generated fixtures.
+- T00/T01/T02/T03 are completed as scoped; later repairs are pending. The original worktree, branch, user notes and historical run evidence are preserved. No live model, external benchmark or three-domain rendering qualification was run.
+- Local commits only; no push, PR, merge or deployment.
+
+## 2026-10-23 ? T03 section 2.7 completion
+
+Current work directory is `D:/ws/Projects/WorkAgent-RSI`, existing branch `feat/evaluation-rsi-hardening`. Added strict `LiveCallPolicy` and default-off JSON configuration: explicit approval, matching provider/model/endpoint, finite call/tool/time caps, optional observed-cost cap, timezone-aware approval source, and credential-free endpoints. It is an additive approval contract; T22/T31 runtime counters and orchestration are still pending. Red: missing interface, 1 collection error (not a behavioral defect); green: 33 passed / 0 failed. Evidence: `project_artifacts/results/hardening-v2/T03-policy-red/20261023T125005764891Z` and `project_artifacts/results/hardening-v2/T03-policy/20261023T125043946935Z`. No live model calls.
+
+## 2026-10-23 — T04 execution boundary
+
+Implemented immutable-image Docker execution and an explicit Apptainer SSH backend for the user's existing `cluster_vlab_jump`. Native API/Ollama run_python now routes only through these interfaces; unavailable isolation never falls back to host Python. CLI-owned sandbox capability remains separate.
+
+The existing Apptainer 1.4.5 module works with the user's existing D-Bus socket and systemd user services. No administrator settings were changed. Initial SIF mounting lacked squashfuse, so a tiny existing BusyBox seed and selected Python/core libraries from an existing SIF were extracted into a private runtime; no application/cache/source content was copied. Nine hash-verified official wheels totaled 14,168,107 bytes, extracted only into that runtime. Provision failures (unsupported unsquashfs flag and missing librt) and all failed preflights are retained, not reported as qualified evidence. Final server-added storage is 199,672 KiB (~195 MiB), including retained failed attempts; no new image download or model call occurred.
+
+Real checks: all 13 boundary assertions passed, with host-side pre-execution cgroup observations of 2 GiB memory, zero swap, 2 CPUs and 128 PIDs. Real XLSX/DOCX/PPTX files were generated remotely, exported and independently reopened locally. A detached-session child timed out; the owned service was absent and its cgroup empty/removed. No owned services remained at final server inspection. Docker daemon access on the cluster is denied and the local CLI is absent; Docker real qualification remains not_run.
+
+Validation: 78 focused passed; final full suite 233 passed / 11 expected-open R01-R11 failures / 0 errors / 0 skipped, pytest exit 1 preserved. R12 now passes. Python source hashes match the final tests and qualified probe. Compileall and diff checks pass. Evidence: `project_artifacts/results/hardening-v2/T04/20261023T131835002830Z/sandbox`, `project_artifacts/results/hardening-v2/T04-verified/20261023T132132594651Z`, `project_artifacts/results/hardening-v2/T04-current-tests/20261023T132034498773Z`. Portable bundle `project_artifacts/results/hardening-v2/T04-handoff/20261023T132138583259Z/bundle/manifest.json` has 29 files and verifies after relocation.
+
+T04 completed within its backend-specific scope. G1 as a whole, T05 input/Office-worker isolation, and T06-T35 remain unfinished. No model performance, visual/COM, research or benchmark claim. Runtime /tmp storage is temporary; missing or changed identity blocks execution. Per-file/transfer bounds do not replace an aggregate disk quota.
+
+
+### Hardening T05 evaluation and Office-worker isolation (2026-10-24)
+
+Continued on `feat/evaluation-rsi-hardening` at `d1a4697` in the current checkout. T05 only. The independent initial red cases failed 9/9 for behavioral boundary gaps (not missing dependencies). Execution views now contain only declared task inputs; candidate exports reject source links/junctions/hardlinks before resolution, protected history paths and policy/context collisions. Copies are rehashed before/after processing. The renderer has no host Office or Poppler fallback, and unconfigured COM probing/reopening does not activate user applications.
+
+Prepared a private LibreOffice UNO/Poppler runtime inside the existing Apptainer/systemd boundary. Retained 246 Debian archives verified against signed apt metadata (186,961,340 download bytes); package extraction ran no maintainer scripts or host package installation. First actual render exposed missing Debian conffiles; shipped `.registry/*.xcd` bytes were materialized only in the private tree. A second startup exposed first-profile exit 81; the worker now reaps its owned child and permits one bounded restart. Failed attempts remain as evidence. Final runtime identity is `481af80d507540f293116f57b3331c75d5a69f55fa957c3643322fe471360cf7`. The previous T04 runtime identity remains unchanged. Server forwarding was unavailable at resume and restored by the user before actual execution.
+
+Real XLSX, DOCX and PPTX fixtures each rendered to PDF and PNG in the isolated worker. Source/copy hashes stayed unchanged. UNO used ReadOnly=True, MacroExecutionMode=0 and UpdateDocMode=0; the worker uses a unique pipe/profile, an aborting interaction handler and no network. Versions, binary hashes and font/system fingerprints are recorded. The authored remote boundary probe saw only its script and declared input, could not write inputs, could not see local hidden/remote host sentinels and did not inherit the dummy credential variable. During real rendering, a separate owned Office sentinel retained its PID/start time; it was then cleaned by its own creator. A detached Office launcher timed out; its owned unit and cgroup were confirmed absent. Final inspection of the six known probe units found all absent. No user Office process was terminated.
+
+Validation: 38 focused passed; final full suite 250 passed / 11 expected-open R01-R11 failures / 0 errors / 0 skipped, exit 1 retained. All source hashes match the final full tests; 17 new isolation cases account for the increase from T04. Compileall, documented probe --help and diff checks pass. One resumed test command used an absent historical filename (exit 4, no cases); its failed invocation was retained and corrected using discovered test files. The fixture PNGs were visually inspected and readable. This is infrastructure qualification, not general visual/formula acceptance or a model/RSI benchmark. Dedicated Microsoft Office COM remains unavailable. Only seven font files are provisioned. G1 and T06-T35 remain unfinished.
+
+Evidence: `project_artifacts/results/hardening-v2/T05/20261024T041832387079Z` and `project_artifacts/results/hardening-v2/T05-final-full/20261024T041854561992Z`. Summary: `project_artifacts/formal_study/hardening_t05_evaluation_boundary.json`; operations: `deploy/office-worker/README.md`. T04 plus retained T05 preparation consumes 1,301,760 KiB (1.241 GiB), below the user's 4 GB budget; /tmp lifetime and lack of aggregate disk quota remain explicit. The portable handoff bundle location is recorded in the summary and ledger. Local commit only; no push, PR, merge or live model call.
+
+
+### Hardening T06 candidate context (2026-10-24)
+
+Shared CandidateContext now carries actual champion package and canonical/byte hashes, current develop facts, logical requirement refs, minimal traces, provenance-backed abstract public history and edit/context budgets. API and CLI share the same prompt; compatibility wrappers require an exported skill.json. Loop exports are checked against registry content hashes. Protected promotion refs remain private. Completed develop history is rehashed before resume; no raw hidden rejection is converted into a lesson. Overflow is explicit and never truncated.
+
+Independent red: 9 failed / 0 errors. Final focused: 36 passed. Full: {'passed': 265, 'failed': 10, 'error': 0, 'skipped': 0}; exit 1 preserved. R07 is green; ten future-task regressions remain open. First green had a history fixture with an inconsistent issue-group index; corrected the authored index and reran. All Python and captured test sources match final full evidence. No server/model/API call: API/CLI transports injected offline; multi-round authored policy only. Evidence project_artifacts/results/hardening-v2/T06/20261024T051729272060Z. Scope T06 only; T07 response normalization remains unchanged.
+
+
+### Hardening T07 candidate normalization (2026-10-24)
+
+T06 implementation committed locally as 8bb3e04f0760362ba2f1b94143ef95faf043034b. T07 now admits the complete raw edit list and metadata before constructing normalized edits. API and CLI use the same registered envelope conversion. Over-budget/forbidden/duplicate/wrong-type edits reject the entire response. Duplicate JSON keys are rejected in raw responses and patch strings. Exact instruction values remain unchanged. Missing model hypotheses/metrics reject; deterministic context/transport metadata supplements have explicit provenance. Actual transport identity owns the normalized provider/model fields; model self-report remains raw evidence. Fresh response roots prevent stale CLI output reuse. Original response text, parsed claims and accepted/rejected normalization records remain available.
+
+T07 independent red: 27 failed / 0 errors. First green 49 passed; final focused 71 passed. Full: {'passed': 295, 'failed': 9, 'error': 0, 'skipped': 0}; exit 1 retained. R08 is green; R01-R06/R09-R11 remain open. Final Python and captured source/test hashes match. Compileall and diff checks pass. Evidence project_artifacts/results/hardening-v2/T07/20261024T052934976672Z includes 16 actual audited offline response examples. No server, live model, push or benchmark run. T08 and T09 remain pending; G1 is not complete.
+
+
+### T08 local candidate validation; real behavior deferred (2026-10-24)
+
+Centralized complete patch/schema/parent/budget/type checks in CandidateVerifier; RSI and Check share it. JSON skill compilation is not_applicable; candidate-authored tests never run on host. Required rules and explicit task branches are checked as static heuristics. Reports separate schema/safety/behavior/quality; WorkAgent requires real behavior by default and remains not_run/quality unverified without it. Fixed sandbox-probe adapter binds independent program/taskset/package hashes, exact coverage and actual runtime/resource/cleanup traces; unit fixtures cannot qualify real quality. Probe/policy identity is checkpointed.
+
+Red17 failed/0 errors; final focused57 passed. Verified full {'passed': 318, 'failed': 8, 'error': 0, 'skipped': 0} (exit1 preserved); R06 green. A legacy JSON-error message expectation was corrected without hiding defects. One earlier full had a transient Windows checkpoint os.replace PermissionError; its evidence is retained and serial full rerun passed all other than the eight known open cases. Evidence project_artifacts/results/hardening-v2/T08/20261024T055823362222Z. T08 remains partial: real isolated behavior tasks/runtime acceptance deferred by explicit user request. No server/model calls.
+
+
+### Hardening T09 comparable result cohorts (2026-10-24)
+
+T08 local implementation committed as 7b839c8773f521c9f41a55fd966f04d7446dc271. T08 remains partial: genuine isolated behavior is deferred by user. T09 partitions all eight comparable identities, verifies hash-bound task observations and admission evidence, excludes missing identities/nonfinite metrics/duplicate evidence, selects the latest declared attempt without fallback, and records denominators/source refs. Mixed pilot/formal roots cannot inherit a global mean or claim. New exclusive paired reference runs save per-task comparisons and preserve original history.
+
+Independent red24 failed/0 errors; focused39 passed (33 new cohort cases). Final full352 passed/7 failed/0 errors/0 skipped, exit1 retained, exactly R01-R05/R10/R11. R09 now passes; final source hashes match. The old formal-runner fixture expected aggregation without identity; its assertion now requires explicit exclusion. Actual local CLI and authored paired evaluation produced two separate pilot/formal means, no mixed mean/claim, one selected retry sample and two paired tasks with unchanged historical SHA-256. Compileall, CLI help and diff checks pass. Evidence project_artifacts/results/hardening-v2/T09/20261024T060809298886Z.
+
+Qualification is local protocol engineering only, not a real external benchmark/model evaluation. V1 accepts task-mean metrics; missing legacy identities are not invented. No server, model/API call, push, PR or merge. T09 completed; T10 not started; G1 remains incomplete.
+
+
+### Hardening T10 local completion (2026-10-24)
+
+{"schema_version": "hardening-t10-v1", "status": "completed", "base_commit": "5c9253ad4cc5920f42ec9d08286ce0546ca77c79", "implementation_commit": "commit containing manifest; exact tested sources hashed in evidence", "completed_at": "2026-10-24T06:39:06.523995+00:00", "scope": "offline authored engineering cases; no server/model/API/external benchmark", "red": {"passed": 0, "failed": 17, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T10-red/20261024T062906891784Z"}, "focused": {"passed": 49, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T10-final-focused/20261024T063804448372Z"}, "new_tests": 23, "tested_source_hashes_match": true, "evidence": "project_artifacts/results/hardening-v2/T10/20261024T063905253104Z", "bundle": "project_artifacts/results/hardening-v2/T10/20261024T063905253104Z/bundle/manifest.json", "T08_real_behavior": "deferred_by_user", "G1": "incomplete", "limits": ["Legacy v1 fields remain declared-check scores; task score is null without admission.", "T17 downstream legacy migration is separate. Review authenticity/completeness is trusted, not inferred."]}
+
+No server, model/API call, push or external benchmark result. T08 real behavior remains explicitly deferred. Historical evidence and user notes preserved.
+
+
+### Hardening T11 local completion (2026-10-24)
+
+{"schema_version": "hardening-t11-v1", "status": "completed", "base_commit": "2eb3938b064987f44a48b0755beb151dc3e8ba78", "implementation_commit": "commit containing manifest; exact tested sources hashed in evidence", "completed_at": "2026-10-24T06:44:59.420276+00:00", "scope": "offline authored engineering cases; no server/model/API/external benchmark", "red": {"passed": 0, "failed": 24, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T11-red/20261024T064023169420Z"}, "focused": {"passed": 120, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T11-final-focused/20261024T064344594182Z"}, "new_tests": 30, "tested_source_hashes_match": true, "evidence": "project_artifacts/results/hardening-v2/T11/20261024T064458800796Z", "bundle": "project_artifacts/results/hardening-v2/T11/20261024T064458800796Z/bundle/manifest.json", "T08_real_behavior": "deferred_by_user", "G1": "incomplete"}
+
+No server, model/API call, push or external benchmark result. T08 real behavior remains explicitly deferred. Historical evidence and user notes preserved.
+
+
+T10-T12 delivery review: reviewed requirement coverage is separate from check completion; invalid checks never become artifact defects; content matches cannot escape the frozen location. T11 wider validation exposed two old test contracts using the pre-adaptation hash; fixtures now freeze spec_from_task(task), preserving runtime hash enforcement. T12 first red had a renamed-style fixture lookup problem; corrected red rerun is the official baseline. First green exposed a recursive grouped-shape return-type bug, corrected before final focused/full runs. All earlier attempts remain retained. Final full442 passed/5 known R03/R04/R05/R10/R11 failures/0 errors/0 skips; exit1 preserved. Exact tested source hashes verified. No xfail/skip/suppression. Legacy v1 score consumers migrate in T17; text existence does not establish visibility or recalculated values. No server, live model, push, PR or merge.
+
+
+### Hardening T12 local completion (2026-10-24)
+
+{"schema_version": "hardening-t12-v1", "status": "completed", "base_commit": "425f3b78928a5ae3749f76ee9c01b590d74b1865", "implementation_commit": "commit containing manifest; exact tested sources hashed in evidence", "completed_at": "2026-10-24T06:54:36.108089+00:00", "scope": "offline authored engineering cases; no server/model/API/external benchmark", "red": {"passed": 4, "failed": 25, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T12-red/20261024T064651892281Z"}, "focused": {"passed": 156, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T12-final-focused/20261024T065032351708Z"}, "new_tests": 35, "tested_source_hashes_match": true, "evidence": "project_artifacts/results/hardening-v2/T12/20261024T065433339082Z", "bundle": "project_artifacts/results/hardening-v2/T12/20261024T065433339082Z/bundle/manifest.json", "T08_real_behavior": "deferred_by_user", "G1": "incomplete", "full_validation": {"passed": 442, "failed": 5, "error": 0, "skipped": 0, "exit_code": 1, "evidence": "project_artifacts/results/hardening-v2/T12-final-full/20261024T065143066459Z"}, "expected_open": ["R03", "R04", "R05", "R10", "R11"], "limits": ["Legacy v1 total/acceptance fields are declared-check compatibility; task score requires reviewed coverage. T17 consumer migration remains pending.", "Text extraction does not prove rendered visibility (T15) or formula recalculation (T13).", "Scope limits and ambiguous identities produce explicit NEEDS_REVIEW; no truncated pass.", "No real model, renderer, external benchmark or server qualification is claimed."]}
+
+No server, model/API call, push or external benchmark result. T08 real behavior remains explicitly deferred. Historical evidence and user notes preserved.
+
+
+### T14 local delivery (2026-10-24)
+
+{"schema_version": "hardening-t14-v1", "status": "completed", "local_status": "completed", "base_commit": "ada9f84da1ca8b077792cf0e7b281e8a98bd4899", "implementation_commit": "commit containing manifest; exact source hashes in test records", "completed_at": "2026-10-24T07:20:15.451489+00:00", "scope": "local authored engineering tests; no server/model/API calls", "red": {"passed": 0, "failed": 16, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T14-red/20261024T071549541146Z"}, "focused": {"passed": 91, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T14-final-focused/20261024T071924229952Z"}, "evidence": "project_artifacts/results/hardening-v2/T14/20261024T072013908473Z", "bundle": "project_artifacts/results/hardening-v2/T14/20261024T072013908473Z/bundle/manifest.json", "A1_cleanup": "blocked_by_automatic_policy_no_deletion", "G1": "incomplete"}
+
+No server/model calls; A1 deletion automatically rejected, no files removed. Earlier failed attempts retained.
+
+
+### T13 local delivery (2026-10-24)
+
+{"schema_version": "hardening-t13-v1", "status": "partial", "local_status": "completed", "base_commit": "f9730d4607ab3e57f0a091455eeba89e978a53eb", "implementation_commit": "commit containing manifest; exact source hashes in test records", "completed_at": "2026-10-24T07:26:36.209598+00:00", "scope": "local authored engineering tests; no server/model/API calls", "red": {"passed": 2, "failed": 16, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T13-red/20261024T072137963641Z"}, "focused": {"passed": 118, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T13-final-focused/20261024T072520017590Z"}, "evidence": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z", "bundle": "project_artifacts/results/hardening-v2/T13/20261024T072632724385Z/bundle/manifest.json", "A1_cleanup": "blocked_by_automatic_policy_no_deletion", "G1": "incomplete", "real_qualification": "deferred_by_user_not_run"}
+
+No server/model calls; A1 deletion automatically rejected, no files removed. Earlier failed attempts retained.
+
+
+### T15 local delivery (2026-10-24)
+
+{"schema_version": "hardening-t15-v1", "status": "partial", "local_status": "completed", "base_commit": "b9598c4effd4c2e8c3e32306b847bcc70eeeac81", "implementation_commit": "commit containing manifest; exact source hashes in test records", "completed_at": "2026-10-24T07:37:15.802924+00:00", "scope": "local authored engineering tests; no server/model/API calls", "red": {"passed": 1, "failed": 17, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T15-red/20261024T072729925670Z"}, "focused": {"passed": 182, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T15-final-focused/20261024T073426154983Z"}, "evidence": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z", "bundle": "project_artifacts/results/hardening-v2/T15/20261024T073714709166Z/bundle/manifest.json", "A1_cleanup": "blocked_by_automatic_policy_no_deletion", "G1": "incomplete", "real_qualification": "deferred_by_user_not_run", "full_validation": {"passed": 512, "failed": 2, "error": 0, "skipped": 0, "exit_code": 1, "evidence": "project_artifacts/results/hardening-v2/T15-final-full/20261024T073436079821Z"}, "expected_open": ["R10", "R11"]}
+
+No server/model calls; A1 deletion automatically rejected, no files removed. Earlier failed attempts retained.
+
+
+### T16 local delivery (2026-10-24)
+
+{"schema_version": "hardening-t16-v1", "status": "partial", "local_status": "completed", "base_commit": "d5239444a9ccebaf1496aec39b55670eaa42d695", "implementation_commit": "commit containing manifest; exact sources in test records", "completed_at": "2026-10-24T10:15:08.905534+00:00", "scope": "local authored engineering tests; no remote server/model/API calls", "red": {"passed": 0, "failed": 18, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T16-red/20261024T085207852225Z"}, "focused": {"passed": 99, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T16-final-focused/20261024T090751092963Z"}, "evidence": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z", "bundle": "project_artifacts/results/hardening-v2/T16/20261024T101507439756Z/bundle/manifest.json", "G1": "incomplete", "real_qualification": "deferred_by_user_not_run"}
+
+Real server/model capability remains unqualified by these authored tests.
+
+
+### T17 local delivery (2026-10-24)
+
+{"schema_version": "hardening-t17-v1", "status": "completed", "local_status": "completed", "base_commit": "571f14fe37760fb5517718699ff3117718792fbc", "implementation_commit": "commit containing manifest; exact sources in test records", "completed_at": "2026-10-24T10:27:35.912540+00:00", "scope": "local authored engineering tests; no remote server/model/API calls", "red": {"passed": 0, "failed": 11, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T17-red/20261024T101750510688Z"}, "focused": {"passed": 141, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T17-final-focused/20261024T102403860937Z"}, "evidence": "project_artifacts/results/hardening-v2/T17/20261024T102734939310Z", "bundle": "project_artifacts/results/hardening-v2/T17/20261024T102734939310Z/bundle/manifest.json", "G1": "incomplete"}
+
+Real server/model capability remains unqualified by these authored tests.
+
+
+### T18 local delivery (2026-10-24)
+
+{"schema_version": "hardening-t18-v1", "status": "completed", "local_status": "completed", "base_commit": "67c75cb20b213352774c40dfb231507ff711b8f5", "implementation_commit": "commit containing manifest; exact sources in test records", "completed_at": "2026-10-24T10:59:55.949425+00:00", "scope": "local authored engineering tests; no remote server/model/API calls", "red": {"passed": 1, "failed": 13, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T18-red/20261024T102841289200Z"}, "focused": {"passed": 207, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T18-final-focused/20261024T105559998584Z"}, "evidence": "project_artifacts/results/hardening-v2/T18/20261024T105955004559Z", "bundle": "project_artifacts/results/hardening-v2/T18/20261024T105955004559Z/bundle/manifest.json", "G1": "incomplete", "full_validation": {"passed": 569, "failed": 2, "error": 0, "skipped": 0, "exit_code": 1, "evidence": "project_artifacts/results/hardening-v2/T18-final-full/20261024T105610295802Z"}, "expected_open": ["R10", "R11"]}
+
+Real server/model capability remains unqualified by these authored tests.
+
+
+### T13 actual server qualification (2026-10-24)
+
+14 actual isolated LibreOffice runs passed with independent arithmetic oracles, five input variants, negative controls and unchanged originals. No model calls or new runtime installation. Evidence: `project_artifacts/results/hardening-v2/T13-real/20261024T122504362212Z`. Scope is the frozen engine and authored cases, not general equivalence.
+
+
+### T08 actual behavior qualification (2026-10-24)
+
+Preserving candidate passed three authored tasks; first-two-entries control regressed on two protected cases and was rejected. Actual RSI route reran behavior and preserved champion. Three accepted model generations used codex-cli gpt-6.1-sol; no generated code ran on the host. Frozen generation snapshots and cached real parent baseline do not constitute a full live RSI benchmark. Evidence: `project_artifacts/results/hardening-v2/T08-real/20261024T123719407816Z`, `project_artifacts/results/hardening-v2/T08-rsi-real/20261024T123929807716Z`. Earlier CLI startup/configuration and warning-classification failures are retained separately and charged against the same budget.
+
+
+### T15/T16 actual probe and discovered scope regression (2026-10-24)
+
+24 actual rendered pages and six visual controls passed; joint-image review passed. Semantic authorized-source, contradiction, injection, cache and independent review contracts passed with real CLI gpt-6.1-sol. The17-page result conservatively requested review due to incorrect whole-document scope in individual batches. Fixed in0b64a04; four new red cases now pass, related suite84 pass. Original budget24 launch reservations exhausted (23 observed model turns, including one rejected warning-classification result). Additional3 requests require explicit user confirmation; not yet executed. T15/T16 remain partial pending this concrete recheck. Pre-fix full suite574 passed/2 known R10/R11 failures.
+
+
+### T15/T16 actual probe and discovered scope regression (2026-10-24)
+
+24 actual rendered pages and six visual controls passed; joint-image review passed. Semantic authorized-source, contradiction, injection, cache and independent review contracts passed with real CLI gpt-6.1-sol. The17-page result conservatively requested review due to incorrect whole-document scope in individual batches. Fixed in0b64a04; four new red cases now pass, related suite84 pass. Original budget24 launch reservations exhausted (23 observed model turns, including one rejected warning-classification result). Additional3 requests require explicit user confirmation; not yet executed. T15/T16 remain partial pending this concrete recheck. Pre-fix full suite574 passed/2 known R10/R11 failures.
+
+
+### T15/T16 completed for frozen worker and selected CLI (2026-10-24)
+
+Explicitly approved three-request recheck passed: pages1-8 PASS,9-16 PASS,17 FAIL; all17 pages cited. Scope confusion is fixed and old cache protocol invalidated. T08/T13/T15/T16 deferred qualification is now complete for the recorded Apptainer worker and CLI gpt-6.1-sol profile. Direct API and accuracy calibration are not claimed. {"launch_reservations": 27, "observed_completed_model_turns": 26, "reserved_cumulative_wall_seconds": 429, "input_tokens": 418336, "output_tokens": 5412, "max_observed_output_tokens": 559, "cost_usd": null, "cost_status": "unavailable", "tools_in_retained_accepted_logs": 0, "legacy_conservative_tool_charge": 1, "scope": "24 original +3 explicitly approved launch reservations; original1200s/32tool ceiling retained"}
+
+
+### T19 trace-grounded diagnosis (2026-10-24)
+
+{"schema_version": "hardening-t19-v1", "status": "completed", "base_commit": "8641499373bcbff7b25481c911bb5ba67b0bd6d0", "implementation_commit": "commit containing this manifest; exact source hashes in focused evidence", "scope": "local trace-grounded engineering; five genuine trusted authored-program failure/artifact cases; no model/server calls", "red": {"failed": 15, "error": 0, "evidence": "project_artifacts/results/hardening-v2/T19-red/20261024T125842394569Z"}, "review_red": {"failed": 5, "passed": 15, "evidence": "project_artifacts/results/hardening-v2/T19-review-red/20261024T130228792851Z"}, "legacy_red": {"failed": 1, "passed": 2, "evidence": "project_artifacts/results/hardening-v2/T19-legacy-red/20261024T130528192260Z"}, "focused": {"passed": 51, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T19-delivery-focused/20261024T130553728003Z"}, "trace_probe": "project_artifacts/results/hardening-v2/T19-probe/20261024T130436485682Z", "actual_authored_cases": 5, "new_tests": 21, "limitations": ["rule strengths are uncalibrated", "input counts and write receipts require trusted provenance", "not general causal inference"], "expected_open": ["R10", "R11"], "G1": "incomplete", "evidence": "project_artifacts/results/hardening-v2/T19/20261024T130827249534Z", "bundle": "project_artifacts/results/hardening-v2/T19/20261024T130827249534Z/bundle/manifest.json"}
+
+
+### T20 execution feedback and denominators (2026-10-24)
+
+{"schema_version": "hardening-t20-v1", "status": "completed", "base_commit": "6057b4304407846e2150c3f78077b167a1886354", "implementation_commit": "commit containing this manifest; exact sources bound by focused/full records", "scope": "offline engineering; genuine OOXML, authored execution failures, injected transport failures and actual RSI capture path; no model/server calls", "red": {"passed": 1, "failed": 12, "error": 0, "evidence": "project_artifacts/results/hardening-v2/T20-red/20261024T131203752641Z"}, "integration_review_red": {"passed": 17, "failed": 1, "evidence": "project_artifacts/results/hardening-v2/T20-integration-review/20261024T131911860208Z"}, "resource_red": {"failed": 2, "evidence": "project_artifacts/results/hardening-v2/T20-resource-red/20261024T132207300105Z"}, "metric_review_red": {"failed": 2, "evidence": "project_artifacts/results/hardening-v2/T20-metric-review-red/20261024T132405412808Z"}, "focused": {"passed": 114, "failed": 0, "error": 0, "skipped": 0, "evidence": "project_artifacts/results/hardening-v2/T20-delivery-focused/20261024T132432449518Z"}, "full_validation": {"passed": 620, "failed": 1, "error": 0, "skipped": 0, "exit_code": 1, "evidence": "project_artifacts/results/hardening-v2/T20-delivery-full/20261024T132432256612Z"}, "new_tests": 20, "R11": "passed", "expected_open": ["R10"], "G1": "incomplete", "limitations": ["not a live RSI improvement", "preregistered task-success promotion policy belongs to T29", "unobserved quality stays null"], "evidence": "project_artifacts/results/hardening-v2/T20/20261024T133149608664Z", "bundle": "project_artifacts/results/hardening-v2/T20/20261024T133149608664Z/bundle/manifest.json"}
+
+## 2026-10-24 T21 task repair
+
+- Implemented opt-in Harness repair, separate execution retries and fresh per-attempt full assessment.
+- Retained task/spec, code snapshots, before/after OOXML hashes, reports and trace state; no registry update.
+- Red: 9 passed/11 failed/0 errors. Delivery: 55 passed/0 failures/errors/skips. See hardening_t21_repair_loop.json.
+- R10 compatibility fixture now explicitly selects legacy declared checks after T17 admission changes. Reviewed acceptance tests independently cover task repair.
+- One mistyped test path caused a collection exit4 and was corrected; that attempt is retained. No real model or server calls.
+
+## 2026-10-24 T22 budget and protected repair
+
+- Added shared pre-call reservations for native execution, API retries, tools, judges and API candidate generation. Failed/interrupted requests stay charged; opaque execution/candidate CLI loops are unavailable in bounded mode.
+- Bound repair and budget limits to evaluator identity; propagated real split names through Harness. Protected splits and hidden tasks never receive assessment-driven repair requests.
+- Retained the best assessed artifacts and rejected attempts; a later environment/transport gap stays incomplete. Added allowed-output checks, no-progress stopping, atomic best-result history and interruption accounting.
+- Fixed trace-root binding and preserved exact LF/CRLF source hashes in repair context. Corrected R10 compatibility fixture without relaxing task admission.
+- Final focused: 121 passed. Full: 663 passed, 0 failed/errors/skips. R01-R12 pass. Original and relocated bundles verified; exact hashes/counts are in T21/T22 manifests.
+- No real model or server calls. Native transport and CLI boundary tests are authored offline qualification. Live repair, active recovery, matched experiment arms and research validation remain later work.
+- Ledger recommendations, R10/R11 states, validation and bundle indexes reconciled; older indexes retained as history.
+
+## T23 production prompt independence
+
+Removed fixed answer rules and task-ID strategy selection; retained generic Office knowledge and authorized template inputs. Added explicit execution mode and task binding. Qualification-only fixed implementations are rejected by formal entry points. Red12 failures; focused92 passes. See hardening_t23_prompt_independence.json. No model/server calls.
+
+## T24 input observation and behavior qualification
+
+- Added optional native inspect_office through the configured T04 sandbox, host-owned read evidence and TaskObservation. Facts, declared plans and incomplete visibility stay distinct; no host fallback was added.
+- Added independent behavioral oracles, source integrity, actual script/process/tool trace checks and output signatures. Same code may pass dynamic variants; task IDs alone must not change semantic results.
+- Actual trusted local probe: 22 real Office cases in nine groups (three per domain), all passed; three ID controls and reusable-code controls passed. Model calls0; no sandbox/generalization claim. The authored executor refuses arbitrary code.
+- Final focused129/full692 pass, zero failures/errors/skips; R01-R12 pass. Exact sources, commands, environment, artifacts and relocated bundle checks are indexed in hardening_t24_dynamic_input.json.
+- Read-only cluster_vlab_jump connectivity check returned Connection refused after the Vlab banner. No uploads or remote execution. Optional new real-model budget proposed because the old27-request policy is exhausted; no new model request made. Global plan distinguishes engineering delivery from live/model/research qualification, so the task is delivered locally with those boundaries explicit.
+
+## 2026-10-25 T25 development calibration materials
+
+Built 90 actual Office cases, with separately authored truth and input/output hashes. Four grouped tests passed after a real reproducibility failure exposed unfrozen core dates. No production evaluator labels, model calls or remote execution. These are three development source families, not an independent final set. Evidence: `formal_study/hardening_t25_calibration_materials.json`.
+
+## 2026-10-25 T26 local boundary and dataset shortage
+
+Final regression: 710 passed, 0 failures/errors/skips. Fixed calibration-splits profile contributes 23 passing cases within that run; no repeated final focused execution. T25 now uses 30 input documents and 10 distinct correct outputs per domain.
+
+T26 groups families/source hashes before variants, rejects all overlap and exposed final content, maps legacy hidden explicitly to promotion_validation, and excludes final_test from adaptive RSI. The evaluator-side interface snapshots inputs and enforces hash/count-only views plus one-use evaluation. Production account/mount isolation is unprovisioned.
+
+Actual inventory: 90 exposed calibration controls, 30 inputs, 3 families; historical pilot 3 families already span splits. No formally admitted bases or final cases. Both inventory and quality CLIs return the expected exit 1 blocker. The 72/216 target is not completed or padded. T26 remains blocked with local_status=completed. No model/server calls.
+
+An early full attempt was stopped for a Python 3.11 compatibility correction and is retained as interrupted, not counted as a pass. The replacement is the only completed final full run. Evidence packaging reuses test outputs and retains the full generated ZIP once.
+
+## 2026-10-25 T26 server boundary, T27 calibration, T28 review engineering
+
+Final full regression: 717 passed, zero failures/errors/skips. Focused30 passed; no repeated final full runs.
+
+Reused the frozen Apptainer/LibreOffice runtime. Actual private32-byte canary was unreadable from the candidate container; public input readable/read-only and owned cleanup passed. No installation, new image, final corpus, host-owner isolation or separate principal is claimed.
+
+T27 actual production checks on90 cases:45 PASS,28 FAIL,17 INCOMPLETE. Error denominators exclude15 true gaps;2 visual defects stay unresolved. Observed false accepts0/28, false rejects0/45, gap classes15/15 and defect locations28/28. Descriptive intervals over3 correlated families do not imply general accuracy. No fabricated human admission.
+
+T28 engineering: exact-source human intake receipts, rubric/evaluator identity binding, opaque manual review pack12 cases,12 real isolated renders/20 pages. User agreed to review; no actual labels or agreement yet. Natural20-file cohort was deferred at this point. Prior model budget exhausted; no new judge/model requests. The later benchmark-intake authorization below supersedes that material-preparation pause.
+
+## 2026-10-25 Benchmark intake for T26 to T28
+
+The user authorized SpreadsheetBench 2, Workspace-Bench-Lite, then SpreadsheetBench 1. Pinned versions, content identities and license evidence are recorded in `phase3_experiments/configs/benchmark_sources_v1.json`. The full Workspace dataset provides Apache-2.0 annotations at all100 Lite IDs with matching task text/outputs/rubrics;80 input/graph differences are explicit. This is an adapted file subset, not native Lite leaderboard parity.
+
+Actual inventory:1333 metadata task records and3079 materialized native input cases. SSB2 contributes321/321, Workspace100/32 and SSB1 912/2726. The SSB1 archive count differs from the advertised2729. Workspace downloads are208 files/62,449,760 bytes on Windows. No full workspace ZIP, server package installation or new runtime image. The original three-domain72/216 family/variant target and evaluator-side untouched final corpus remain incomplete; no final cases or renamed copies were created.
+
+T28 reserves20 input-only jobs (Excel10/Word7/PPT3) from9 connected source groups. All173 task records in those groups leave adaptive/OOD use. The reserved manifest supersedes the pre-reservation development snapshot. Planned input bytes2,999,530. Actual natural model outputs0, submitted human labels0, model/judge calls0. A separate bounded request for20 gpt-6.1-sol generation calls/40 server operations/3600 cumulative model seconds is awaiting the user's reply. The runner defaults to refusal without that approval and executes generated Python only in Apptainer.
+
+T27 production90-case calibration repeated unchanged:45 PASS,28 FAIL,17 INCOMPLETE. Native SSB1 and SSB2 input controls were recalculated through four actual isolated server runs and both rejected. These qualify scorer integration, not model performance or accuracy. Server cleanup evidence is retained in each worker trace.
+
+Focused benchmark-intake checks:41 passed,0 failures/errors/skips, in `results/hardening-v2/T26-T28-benchmark-focused/20261025T063329032021Z`. No repeated full717 run. Syntax checks and `git diff --check` passed. Delivery state and evidence paths are in `formal_study/hardening_t26_t28_benchmark_intake.json`; usage and remaining acceptance limits are in `docs/benchmark_intake.md`.
+
+## 2026-10-25 Approved T28 generation and actual review delivery
+
+The user explicitly approved20 gpt-6.1-sol requests,40 server execution/render operations,3600 cumulative model-request seconds, a4096-token prompt instruction without a server token cap, no model tools/retries/judge. The exact plan/policy hashes and actual approval reference are retained in `results/hardening-v2/T28-benchmarks/20261025/approved-generation-v1`. A separate receipt corrects PowerShell ASCII conversion of the Chinese answer; the consumed policy and its ledger hash are unchanged.
+
+Used20/20 requests,0 model tools,1598/3600 charged seconds. Observed input tokens355515, output tokens64184, maximum output4505; three responses exceeded the soft4096 instruction. Actual monetary cost remains unavailable. No judge request or human label was generated.
+
+All20 programs reached Apptainer. Three failed at runtime, one per Office domain. Seventeen actual files reopen:Excel9/Word6/PPT2, spanning8 connected source groups. The controller initially mixed absolute checked file paths with a relative run root during registration. Files were preserved. A separate verified recovery registered saved successful exports with no new model or server operation; original records remain immutable. Future output roots are resolved before registration. The executed generation source matches commit b755800, while the repair is in266e5a3.
+
+Seventeen rendering attempts yielded15 fully covered artifacts and126 actual pages. Two workbooks exceed the fixed40-page limit. Used37/40 logical operations (20 executions+17 renders). All37 worker traces confirm owned cleanup and resource checks. A watcher deadline guard changed during its run; the end-of-run controller hash is not claimed as a launch attestation. The exact known launch version is reconstructed separately, and the actual Office worker source did not change. Evidence is indexed by `execution-integrity.json`.
+
+The new natural-only review page contains17 cases with17 empty manual selectors and126 hash-verified images. Every local link and artifact hash passed, hidden model/score/truth fields are absent, and Node syntax checks passed. The existing12 standards stay separate so users need not label them twice. The17-file pack explicitly retains the20-file shortage blocker; reference answers and controlled fixtures did not fill the three missing files.
+
+Latest focused profile:45 passed,0 failures/errors/skips, `results/hardening-v2/T28-approved-delivery-focused/20261025T072234422873Z`. No repeated full suite. A concrete three-job runtime-error repair proposal is prepared and separately requested, not authorized or executed. T28 remains blocked for missing outputs, actual labels and subsequent authorized judge calibration. T26 balanced family/variant/final-corpus blockers remain unchanged. Delivery summary: `formal_study/hardening_t28_benchmark_generation.json`.
+# 2026-10-25 T26 domain counts and T28 complete review materials
+
+The user waived equal Excel/Word/PowerPoint quantities. The active admitted input inventory has Excel1,251 base tasks/3,065 instances, Word10/10 and PowerPoint4/4;68 metadata-only non-Office records are excluded. The total72/216 target is retained pending a qualified revised allocation. Family isolation, native variant integrity, sealed final data and separate evaluator deployment remain requirements.
+
+Three explicitly authorized model repairs consumed188 charged seconds and zero tools. Excel and Word exported. PowerPoint failed a generated11-slide assertion; the original task specifies no slide count. A deterministic one-line assertion correction was prepared before requesting additional permission. The user explicitly approved its execution and rendering, raising this repair round's server cap from6 to7. The corrected10-slide deck exported and rendered. All original failures remain saved. No extra model call or judge was used.
+
+The complete32-case review pack contains12 standards and20 natural outputs (Excel10/Word7/PPT3). Thirty cases have187 actual pages;two original workbook coverage gaps remain. All32 files reopened;84 links, all artifact/page hashes,32 empty selectors and JavaScript syntax passed static validation. All7 new worker traces confirm resource checks and cleanup. Previous packs are unchanged. Cumulative generation usage:23 requests,1,786 charged seconds,44 execution/render operations. T28 material preparation is complete;human labels and separately authorized judge comparison are pending.
+
+Current evidence: `project_artifacts/formal_study/hardening_t28_repaired_delivery.json`;review: `project_artifacts/results/hardening-v2/T28-benchmarks/20261025/complete-human-pack-v1/blind-review-pack/index.html`. Only delivery checks were run for these materials;the previous45 focused and717 full tests remain historical evidence.
+
+## 2026-10-26 T26 balanced materials and small T29 offline follow-up
+
+User requested similar-size domain quantities and deferred human review. Added pinnedMIT Word benchmark inputs (50 tasks/31 generated fixture documents) and24 CC-licensed scientific-diagram PPT tasks. Selected24 tasks/domain,72 total,one published input instance each. All173 T28-related records were excluded through source/hash-connected grouping. Every selected task has a different connected source group. Input-only exports contain no private expected strings or judge metadata.
+
+All120 exported input hashes verified;24XLSX and24DOCX reopened;24 reference PNGs match frozen upstream pixels after the alpha-compositing/dimension-hash correction. Initial evidence remains preserved;cohort-v2 is active. Source archives144,141,555bytes stay local. Two predefined source candidates were unavailable/hash-mismatched or over bounded size/time and were recorded,not replaced using model outcomes. TheT28 pack hash is unchanged. No model/judge/server calls occurred.
+
+T26 material preparation is complete for this72-instance development cohort. Original216 distinct instances and an untouched evaluator-side final corpus/separate principal remain incomplete. Word fixtures and scientific PPT diagrams have a narrower scope than general enterprise work.
+
+The separately authorized smallT29 local comparison core handles all repeats,valid execution failures,family-level bootstrap,domain/critical regression andcached judgement rejection. It is not wired into production promotion and never claims research qualification. Saved examples are explicitly synthetic. Final focused23 checks passed;no full-suite rerun. Receipts:hardening_t26_balanced_materials.json andhardening_t29_local_comparison.json.
+
+# 2026-10-26 T29/T30 engineering integration
+
+Added optional paired three-repeat scheduling and family-level statistical promotion, all-repeat quality aggregation, scoped rejection evidence, verified package version binding, develop-only lessons, provider configuration identity and explicit budget-preserving resume. The feedback baseline and failed attempts remain separate evidence. Judge-only variance stays unidentified; research qualification remains false. Focused verification:49 passed,0 failures at `results/hardening-v2/T29-T32-focused/20261026T081038957014Z`. Earlier failing attempts are retained. No live model, server or human labels were used. T29 actual qualification is blocked; T30 engineering is complete.
+
+# 2026-10-26 T31-T33 default-off entrypoints and external gates
+
+Added frozen T31 qualification preparation and a metered API runner/resume path; T32 equal-cap four-arm preregistration, immutable receipts, trusted-backend dispatch and one-use final protocol; T33 source/license/hash/boundary/native-parity admission with separate native/custom scores. The shipped configs disable all live calls. No qualified production total-token backend exists, so comparison CLI execution remains explicitly blocked. Focused T31-T34 checks:54 passed at `results/hardening-v2/T31-T34-focused/20261026T081631845138Z`. Added endpoint/version-binding/dispatch coverage also passes locally. Real model/human/external results are not claimed.
+
+# 2026-10-26 T34/T35 final local validation and handoff
+
+Final source-bound suite:767 passed,0 failed/errors/skips (`results/hardening-v2/T34-final/20261026T083145209758Z`). All recorded source hashes match.90-case calibration:45PASS/28FAIL/17INCOMPLETE,0 known false accepts and0 permitted-equivalent false rejects.Three-domain moved-bundle replay rebinds every frozen input by hash, removes temporary originals and runs a fresh assessment; evaluator identity/check outcomes preserved.Compileall,diff,T01 selection,12 documented commands and tracked credential patterns pass.Linux target forwarding refused; release checks report only linux_non_com blocked, so full engineering/live/research/external levels remain false.
+
+T31 prepared72 existing inputs with family bindings,24/domain, zero new model calls; all72 full task specs still incomplete. T32 local protocol and trusted-backend dispatch are delivered; production token-metered backend remains unqualified/unimplemented. No human labels or new benchmark outputs were generated. Current task ledger:29 completed,7 blocked. Human review remains32 cases. Delivery and rollback: `formal_study/hardening_t29_t35_local_delivery.json`, `../docs/operations/evaluation-rsi-v2.md`.Stage commits334e04f/fb32a74 plus final handoff commit; no push.
+
+## 2026-10-26 actual human intake, server completion and bounded judge pilot
+
+Received the user's actual32-label download:29PASS/2FAIL/1PARTIAL. Exact original SHA256 is3a19b2e01492583c051ecec7a93f9b0a9677775b139732bff3153c9f710b5ba5. The user disclosed quick visual review and uncertainty; intake preserves every original label and marks references provisional. Comparison retains human/judge differences without calling them proven evaluator errors. Repetition audit found24 instruction texts,5 shared groups involving13 cases, and no identical artifact hashes. Six controlled-standard differences are documented for later adjudication; no agent relabeling occurred. Frozen public pack hash remains12582cc4368b767b7884b869789c7c51546a5a17cd52622fd8b70d7baf6de312.
+
+Restored cluster_vlab_jump/existing Apptainer:Linux non-COM v1 had146 passes and2 temporary child-import failures; after fixing runner PYTHONPATH,v2 passed148. The explicit zero-tool live policy contract changed source identity; v3 passed149. Existing image unchanged,no server installations/new images. Each bounded test run transfers about24.88MB; source and temporary dependencies expand to43.92MB and are cleaned. Ten natural Excel diagnostic checks used19 actual worker jobs:6 target mismatches,4 capability gaps; no official benchmark or whole-task accuracy claim. A strict spelling mismatch may be a valid correction and remains unadjudicated.
+
+User separately approved gpt-6.1-sol,24 semantic/visual standard requests,0tools,1200seconds,120seconds/request,no retries. Actual pilot attempted6 requests:5 valid channel decisions, then HTTP429; stopped without retry/expansion. Only2 full case pairs returned. Actual elapsed128.36seconds,charged132seconds; known usage81625input/3158output tokens; failure usage unknown.4096output tokens remains a prompt request,not a server hard limit. No human labels,controlled truth or reference answers were sent.18 requests were not issued. Scope gaps and provisional human labels keep T28 blocked.
+
+Current exact-source Windows suite773passed,0failed/errors/skips; selected Linux149passed. Current-identity90-case declared checks:45PASS/28FAIL/17INCOMPLETE,0 known false accepts/authorized-equivalent false rejects. Moved-bundle three-domain fresh replay passes after temporary input removal; initial whole-check equality assertion included path-dependent evidence IDs,so comparison explicitly excludes those IDs while retaining statuses,observations,expectations and locations. Compileall,diff,T01 selection and tracked credential scan pass. Engineering release gate now passes;live/research/external remain false. Ledger30completed/6blocked. Human intake committed as e96bf91;server/policy/release follow-up is saved in the next local commit,no push. Current receipt: `formal_study/hardening_human_intake_linux_delivery.json`; guide: `../docs/operations/human-review-follow-up-20261026.md`. Earlier evidence records above remain historical.
+
+
+## 2026-10-26 judge scope and T31 requirement preparation
+
+User authorized local preparation and asked to stop when their participation is needed. Judge v2 delegates rendered visibility/spatial placement to a task-aware visual request and keeps source content/logic in semantic review. Required partial fulfillment rejects acceptance before unrelated missing evidence,consistent with the existing ArtifactEvaluator. All input,output and page hashes are frozen. An old manifest approval cannot authorize this new cohort. The24-request proposal remains disabled,with0new model/server calls. V1 requests,decisions and budget state are unchanged;no old opinions are reused.
+
+The72 public T31 tasks match their source instructions. New drafts retain405 instruction spans,with85semantic/34visual proposed routes and286explicit uncovered units. No reviewer was signed,no spec was self-approved,and all72 admissions remain SPEC_INCOMPLETE. Initial real-data preflight stopped before writing drafts because the new script used ordered input hashes;the frozen family contract uses sorted hashes. Corrected the script and expanded the fixture to multiple inputs. This was an aggregation mismatch,not a changed source file. Actual final preparation commands/environment/source hashes are under results/hardening-v2/T28-T31-offline-handoff/20261026/.
+
+A separate six-case follow-up page shows original instructions,actual inputs/outputs/pages and targeted diagnostic hints. Every choice is initially empty. Export requires a choice,reason and requirements-check confirmation for each case. Export source_kind is human_adjudication and independent_blind_review=false;the blind intake rejects it. No human answers were generated. All actual local links/image hashes and the unchanged original pack/raw submission were checked. Node exercises form export with authored data;no live browser visual qualification is claimed.
+
+Final focused38passed,0failed/errors/skips at results/hardening-v2/T28-T31-offline-final/20261026T132333698628Z;compileall passes. Earlier773Windows/149selectedLinux results remain the prior engineering snapshot;no new full-suite or server execution was needed for this preparation stage. Ledger remains30completed/6blocked. Stop at actual user adjudication,then consider the new manifest-bound judge proposal. Current receipt: formal_study/hardening_t28_t31_preparation.json;user instructions: ../docs/operations/next-human-checkpoint-20261026.md. Save this work in a local commit,no push.
+
+
+## 2026-10-26 actual six-case adjudication intake
+
+User supplied Downloads/office-human-adjudication.json. Exact2277bytes/SHA25635feda71996950533f58ea03802a8f14e8c28ff597b4c5f58608e7d6a12e2509 retained. All request,parent,rubric and asset bindings verified.3FAIL/3INCOMPLETE,all6 revised;2 authored-reference interpretations remain different. Original32 labels unchanged;no additional independent blind labels claimed. New separate strict intake rejects duplicates,unchecked requirements,model reviewer IDs and changed parent/assets.13focused tests and compileall pass;no new full-suite claim. New24-request v2 budget question pending;no model/server calls until explicitly approved. Receipt:formal_study/hardening_t28_adjudication_intake.json.
+
+
+## 2026-10-26 approved judge v2 actual run
+
+User explicitly approved frozen manifest9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5:24requests,gpt-6.1-sol,0tools,1200seconds,120perrequest,no retries.11requests attempted,10valid decisions/5complete pairs;request11HTTP429 stopped the run without retry. Observed shell exit1 and reported status incomplete are preserved. Actual model time192.52seconds,charged199;known input167549/output5058tokens,1failure usage unknown.0server jobs,no v1 opinion reuse.
+
+All5fully returned standards match the authored development reference;only1of3controlled defect cases tested. Three normal cases PASS,the obstructed PPT FAIL,and the ambiguous PPT INCOMPLETE.10valid decisions and their source/image mappings revalidated. First-pass32 provisional comparison and6nonblind revisions remain separate. No accuracy or T28 qualification claim. Original pack/hash and both human submissions unchanged.
+
+13requests remain unissued plus1failed response:14valid results still needed,min25cumulative attempts,1above original24cap. Missing payloads and10same-v2 valid results preserved in an unapproved offline continuation plan;no automatic recovery. Natural20 metadata-only lower bound20semantic+30available-page visual batches,2render gaps and source/partition overhead unresolved;not an approved budget. Delivery:formal_study/hardening_t28_judge_v2_delivery.json. Human intake commit84c5969;actual evidence saved in the following local commit,no push.
+
+The initial stop did not revoke approval of never-issued payloads. Added explicit unissued-only continuation with same manifest/provider/policy and the same budget ledger;failed entries remain attempted and are skipped.4focused continuation tests passed. Continued5new payloads,4valid replies,then a second429 at request16 stopped further traffic. Final v2 total16attempts/14validchannels/6fullpairs,0tools,286.15actualseconds/295charged.8notissued plus2failed require10valid results;minimum26attempts for full recovery,2above24cap. Never-issued8 remain within original authorization;failed retries are not approved. All6full pairs match exposed references,only2of3controlled defects tested. Original11-row result and first-stop budget preserved separately;new merged result keeps the failed rows and original10valid decisions. No blind labels changed,no natural20 or server calls.

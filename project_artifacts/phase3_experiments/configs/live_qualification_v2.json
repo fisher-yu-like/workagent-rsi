@@ -1,0 +1,16 @@
+{
+  "schema_version": "office-study-v2",
+  "kind": "qualification",
+  "allow_live_calls": false,
+  "provider": "openai-chat",
+  "model": "gpt-6.1-sol",
+  "endpoint": "https://api.openai.com/v1",
+  "rounds": 1,
+  "repeats": 3,
+  "max_model_calls": 24,
+  "max_tool_calls": 64,
+  "max_wall_seconds": 1200,
+  "max_repairs": 1,
+  "live_policy_file": "project_artifacts/phase3_experiments/configs/live_call_policy.json",
+  "output_root": "project_artifacts/results/qualification-v2"
+}

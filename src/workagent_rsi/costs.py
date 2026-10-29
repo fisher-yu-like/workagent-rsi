@@ -48,4 +48,19 @@ def measure_round_cost(root: str | Path, started_at: float, *, render_status: st
     }
 
 
-__all__ = ["measure_round_cost"]
+def usage_from_legacy_costs(costs: dict):
+    """Adapt old cost channels without converting absent observations into zero."""
+    from .run_contracts import RunUsage
+
+    mapping = {"token_count": "tokens", "tool_calls": "tool_calls", "steps": "steps",
+               "wall_time_seconds": "wall_seconds", "cost_usd": "cost_usd"}
+    values, statuses = {}, {}
+    for old, new in mapping.items():
+        channel = costs.get(old) or {}
+        observed = channel.get("status") == "available" and channel.get("value") is not None
+        values[new] = channel["value"] if observed else None
+        statuses[new] = "available" if observed else "unavailable"
+    return RunUsage(**values, statuses=statuses)
+
+
+__all__ = ["measure_round_cost", "usage_from_legacy_costs"]

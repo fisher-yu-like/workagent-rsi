@@ -15,7 +15,6 @@ def test_cli_runs_smoke_task_and_writes_json(tmp_path: Path):
     )
     output = tmp_path / "run.json"
     code = main([str(task), "--output", str(output)])
-    assert code == 0
+    assert code != 0
     assert output.exists()
-    assert '"state": "SUCCEEDED"' in output.read_text(encoding="utf-8")
-
+    assert '"passed": false' in output.read_text(encoding="utf-8")

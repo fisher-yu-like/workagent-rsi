@@ -1,0 +1,25 @@
+{
+  "scope": "Nonblind selected revisions;not pooled with first-pass provisional agreement.",
+  "paired_cases": 2,
+  "rows": [
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "adjudicated": "FAIL",
+      "judge": "FAIL",
+      "same": true
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "adjudicated": "INCOMPLETE",
+      "judge": "INCOMPLETE",
+      "same": true
+    }
+  ],
+  "unjudged_adjudicated_cases": [
+    "review-ccfa7110e2ffbd7e",
+    "review-0db11ab1e4e3d5e1",
+    "review-6cda065fb91529a5",
+    "review-3dfbb6e577ab463f"
+  ],
+  "quality_qualified": false
+}

@@ -28,7 +28,7 @@ class ArtifactStore:
         )
 
     def put_file(self, source: str | Path, media_type: str) -> ArtifactRef:
-        return self.put_bytes(Path(source).read_bytes(), media_type)
+        return self.put_bytes(Path(source).read_bytes(), media_type).model_copy(update={'file_name':Path(source).name})
 
 
 class TraceStore:

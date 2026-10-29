@@ -1,0 +1,109 @@
+{
+  "schema_version": "t28-approved-generation-delivery-v1",
+  "status": "bounded_run_complete_acceptance_blocked",
+  "approval_source": "actual user reply to question call_d3e0b224620341a2a2b0195aee77b8fd",
+  "model": "gpt-6.1-sol",
+  "provider": "codex-cli",
+  "model_requests": 20,
+  "approved_model_request_cap": 20,
+  "actual_model_tools": 0,
+  "model_charged_seconds": 1598,
+  "actual_model_call_elapsed_seconds": 1586.553,
+  "approved_model_seconds": 3600,
+  "token_usage": {
+    "input_tokens": 355515,
+    "output_tokens": 64184,
+    "reasoning_output_tokens": 3352,
+    "cached_input_tokens": 37632
+  },
+  "max_observed_output_tokens": 4505,
+  "output_token_soft_limit_exceedances": 3,
+  "output_token_cap_type": "4096 prompt instruction, not a server hard cap; actual usage retained",
+  "cost_usd": null,
+  "cost_status": "unavailable",
+  "actual_natural_artifacts": 17,
+  "required_natural_artifacts": 20,
+  "shortage": 3,
+  "per_domain_actual": {
+    "excel": 9,
+    "word": 6,
+    "powerpoint": 2
+  },
+  "actual_source_groups": 8,
+  "execution_attempts": 20,
+  "execution_failures": [
+    {
+      "case_id": "natural-11c9b2eafdc939a7",
+      "domain": "excel",
+      "origin": "agent_execution",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"/task/generate.py\", line 52, in <module>\n    ys=yearcols(ws,range(2020,2031))\n       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/task/generate.py\", line 38, in yearcols\n    y=year(resolved(ws,cell))\n           ^^^^^^^^^^^^^^^^^\n  File \"/task/generate.py\", line 25, in resolved\n    return resolved(wb[sheet] if sheet else ws,(wb[sheet] if sheet else ws)[m.group(3).replace('$','')],seen)\n                    ~~^^^^^^^\n  File \"/usr/local/lib/python3.11/dist-packages/openpyxl/workbook/workbook.py\", line 287, in __getitem__\n    raise KeyError(\"Worksheet {0} does not exist.\".format(key))\nKeyError: \"Worksheet I8*'Cost Drivers' does not exist.\"\n",
+      "owned_cleanup": true,
+      "resource_checks_passed": true
+    },
+    {
+      "case_id": "natural-a78e09a7b0c873ea",
+      "domain": "word",
+      "origin": "agent_execution",
+      "stderr_tail": "/usr/local/lib/python3.11/dist-packages/openpyxl/reader/drawings.py:33: UserWarning: DrawingML support is incomplete and limited to charts and images only. Shapes and drawings will be lost.\n  warn(\"DrawingML support is incomplete and limited to charts and images only. Shapes and drawings will be lost.\")\nTraceback (most recent call last):\n  File \"/task/generate.py\", line 150, in <module>\n    assert len(check.tables) >= 5\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "owned_cleanup": true,
+      "resource_checks_passed": true
+    },
+    {
+      "case_id": "natural-8da6349caaada439",
+      "domain": "powerpoint",
+      "origin": "agent_execution",
+      "stderr_tail": "Traceback (most recent call last):\n  File \"/task/generate.py\", line 141, in <module>\n    assert len(check.slides) == 10\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "owned_cleanup": true,
+      "resource_checks_passed": true
+    }
+  ],
+  "server_operation_budget": {
+    "approved": 40,
+    "used": 37,
+    "executions": 20,
+    "renders": 17
+  },
+  "rendered_natural_cases": 15,
+  "rendered_natural_pages": 126,
+  "rendering_gaps": 2,
+  "actual_human_labels": 0,
+  "judge_calls": 0,
+  "judge_results_revealed": false,
+  "natural_review_page": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/natural-human-pack-v1/blind-review-pack/index.html",
+  "standards_review_page": "project_artifacts/results/hardening-v2/T28/20261025-human-pack/blind-review-pack/index.html",
+  "rubric_hash": "bd95df9c9a5f586502ec279f1eb001e6384c98cd1470fb69796696e83d8174b1",
+  "blind_pack_hash": "e69223ff723baf7bb79895aada09160a4a8962c88dcac4f287b2053dc0e3735e",
+  "ui_validation": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/review-ui-validation.json",
+  "recovery": {
+    "controller_path_errors": 17,
+    "new_model_calls": 0,
+    "new_server_operations": 0,
+    "original_records_preserved": true,
+    "record": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/actual-run-v1/recovery-report.json"
+  },
+  "generation_protocol": "Single-shot adapted public benchmark tasks with bounded source previews and original unrecalculated release inputs. No native leaderboard parity or whole-task quality claim.",
+  "proposed_repairs": {
+    "status": "Authorized and attempted3 model repairs;2 exported directly, third exported after separately approved deterministic source correction. See current_combined_delivery.",
+    "new_requests": 3,
+    "new_server_operations": 6,
+    "new_model_seconds": 540,
+    "plan": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/proposed-repairs-v1/run-plan.json"
+  },
+  "blockers": [
+    "Three natural outputs still missing.",
+    "Actual user labels required.",
+    "Two spreadsheet files exceed fixed40-page render coverage.",
+    "Actual judge calibration requires labels and separately approved budget."
+  ],
+  "evidence_root": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025",
+  "focused_validation": {
+    "passed": 45,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T28-approved-delivery-focused/20261025T072234422873Z"
+  },
+  "execution_integrity": "project_artifacts/results/hardening-v2/T28-benchmarks/20261025/execution-integrity.json",
+  "snapshot_scope": "Historical original20 single-shot requests; current combined review delivery is separate.",
+  "current_combined_delivery": "project_artifacts/formal_study/hardening_t28_repaired_delivery.json"
+}

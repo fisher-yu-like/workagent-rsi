@@ -1,0 +1,47 @@
+{
+  "schema_version": "hardening-t21-v1",
+  "status": "completed",
+  "base_commit": "f9e69d069134cc2487b42729ad91e19d5990413e",
+  "implementation_commit": "7d8613c7b66eec5b46ef32fadd483a0ef0a76863",
+  "scope": "local engineering, real OOXML with injected executor; no model or server calls",
+  "red": {
+    "evidence": "project_artifacts/results/hardening-v2/T21-red/20261024T152949326721Z",
+    "passed": 9,
+    "failed": 11,
+    "error": 0
+  },
+  "focused": {
+    "evidence": "project_artifacts/results/hardening-v2/T21-delivery-focused/20261024T153359636610Z",
+    "passed": 55,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "R10": "passed with explicit legacy declared-check fixture; reviewed task-acceptance coverage in new T21 tests",
+  "limitations": [
+    "not live model repair",
+    "T22 budget/visibility controls delivered separately",
+    "later live/research qualification remains open"
+  ],
+  "evidence": "project_artifacts/results/hardening-v2/T21/20261024T161041483329Z",
+  "bundle": "project_artifacts/results/hardening-v2/T21/20261024T161041483329Z/bundle/manifest.json",
+  "relocated_bundle": "project_artifacts/results/hardening-v2/T21/20261024T161041483329Z/relocated/manifest.json",
+  "verified_files": 300,
+  "probe_directories": 4,
+  "combined_final_validation": {
+    "passed": 663,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T22-frozen-full/20261024T160625275455Z"
+  },
+  "combined_final_focused": {
+    "passed": 121,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T22-frozen-focused/20261024T160615307083Z"
+  }
+}

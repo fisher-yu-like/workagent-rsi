@@ -76,7 +76,7 @@ def test_com_provider_uses_injected_capability_report_without_reprobing(tmp_path
 
 
 @pytest.mark.skipif(os.name != "nt", reason="requires Windows Office COM")
-def test_com_reopen_does_not_leave_new_excel_automation_process(tmp_path):
+def test_unconfigured_com_worker_does_not_start_excel_automation_process(tmp_path):
     from workagent_rsi.office_capabilities import verify_artifact_with_com
 
     path = tmp_path / "probe.xlsx"
@@ -87,5 +87,6 @@ def test_com_reopen_does_not_leave_new_excel_automation_process(tmp_path):
     result = verify_artifact_with_com(path, "excel")
 
     after = _automation_process_ids("EXCEL")
-    assert result["ok"] is True
+    assert result["ok"] is False and result["status"] == "unavailable"
+    assert 'worker' in result['error']
     assert after == before

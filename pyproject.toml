@@ -11,6 +11,7 @@ dependencies = ["pydantic>=2.0", "PyYAML>=6.0", "openpyxl>=3.1", "python-docx>=1
 
 [project.optional-dependencies]
 test = ["pytest>=8.0"]
+benchmark = ["numpy>=2.0", "tqdm>=4.66", "PyMuPDF==1.28.0"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

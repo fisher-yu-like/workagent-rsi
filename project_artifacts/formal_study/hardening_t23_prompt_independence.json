@@ -1,0 +1,44 @@
+{
+  "schema_version": "hardening-t23-v1",
+  "status": "completed",
+  "base_commit": "704db328f6f399e5407bd16403e5bcbfd7ed2d16",
+  "implementation_commit": "e157f1e688f39010ca66f19cfab2c4fb0d3f363d",
+  "scope": "local engineering, no model/server calls",
+  "red": {
+    "evidence": "project_artifacts/results/hardening-v2/T23-red/20261024T163924083344Z",
+    "passed": 6,
+    "failed": 12,
+    "error": 0
+  },
+  "focused": {
+    "evidence": "project_artifacts/results/hardening-v2/T23-delivery-focused/20261024T164240482980Z",
+    "passed": 92,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0
+  },
+  "evidence": "project_artifacts/results/hardening-v2/T23/20261024T171006226072Z",
+  "limitations": [
+    "engineering prompt/guard qualification only; actual model/champion dynamic behavior is not established"
+  ],
+  "initial_evidence": "project_artifacts/results/hardening-v2/T23/20261024T164416983527Z",
+  "bundle": "project_artifacts/results/hardening-v2/T23/20261024T171006226072Z/bundle/manifest.json",
+  "relocated_bundle": "project_artifacts/results/hardening-v2/T23/20261024T171006226072Z/relocated/manifest.json",
+  "verified_files": 193,
+  "combined_final_validation": {
+    "passed": 692,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T24-final-full/20261024T170246296852Z"
+  },
+  "combined_final_focused": {
+    "passed": 129,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T24-final-focused/20261024T170246299969Z"
+  }
+}

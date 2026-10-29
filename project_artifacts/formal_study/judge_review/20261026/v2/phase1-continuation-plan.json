@@ -1,0 +1,105 @@
+{
+  "schema_version": "standard-v2-offline-continuation-plan-v1",
+  "allow_live_calls": false,
+  "execution_ready": false,
+  "reason": "Requires explicit manual recovery after429 and approval of at least one extra cumulative attempt;no automatic recovery.",
+  "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+  "previous_results_sha256": "c71a9f5ac4937550d2c135c969d60285c8e23f03fd3fafc1566181e0b20f1c74",
+  "previous_budget_state_sha256": "7fb105e8fcb7cd5752d62ea278c0a8f66e4b581c61c31a8a436cb1ae666f63db",
+  "prior_attempts": 11,
+  "prior_valid_decisions": 10,
+  "pending_payloads": [
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "modality": "semantic",
+      "request": "review-3dfbb6e577ab463f-semantic.json",
+      "sha256": "7c91e0127dd8dee475d8a747a4c920c5eb056b548b7b029f9cf7dcb91f1b5c3b"
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "modality": "visual",
+      "request": "review-3dfbb6e577ab463f-visual.json",
+      "sha256": "11845f3e4293a98110cba45beae59e359d874141ab108b8848656261d26ee9f2"
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "modality": "semantic",
+      "request": "review-070bf88a4446ba8f-semantic.json",
+      "sha256": "2d2d01e28ddf97ac2b6069c9e5ea2da4916c2b1be8d526ae61336537e94d6113"
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "modality": "visual",
+      "request": "review-070bf88a4446ba8f-visual.json",
+      "sha256": "69cc0fff4b7d4fa5659a68445e54e58e0aabba1f8da692c03a57892b8f43ccea"
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "modality": "semantic",
+      "request": "review-6cda065fb91529a5-semantic.json",
+      "sha256": "e694a6e8993e8597bc3de19b6249e7edfbf5781bead536db2436706b60196595"
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "modality": "visual",
+      "request": "review-6cda065fb91529a5-visual.json",
+      "sha256": "604e2a66121d009dc374e93f46b2ffe3cb2f9683213dbc585203bdda9977021d"
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "modality": "semantic",
+      "request": "review-0db11ab1e4e3d5e1-semantic.json",
+      "sha256": "c53c67e0ea23e31ba830bf961d1680934a95cae53a7d57450b809906e35a795c"
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "modality": "visual",
+      "request": "review-0db11ab1e4e3d5e1-visual.json",
+      "sha256": "1a6af395cb1438646a68965f25432c773b2635d550a8a3b243e558cc2414c424"
+    },
+    {
+      "case_id": "review-eae3e39d4eebdc00",
+      "modality": "semantic",
+      "request": "review-eae3e39d4eebdc00-semantic.json",
+      "sha256": "46d2561db90c07d7e855af7b6462a0993af2ff271b702e90a25a580d9450b792"
+    },
+    {
+      "case_id": "review-eae3e39d4eebdc00",
+      "modality": "visual",
+      "request": "review-eae3e39d4eebdc00-visual.json",
+      "sha256": "cf3c63f23c64a4df9e7b99767982a39a6d79bccac90f88fa909078998a62fe27"
+    },
+    {
+      "case_id": "review-44158a7fd630cae5",
+      "modality": "semantic",
+      "request": "review-44158a7fd630cae5-semantic.json",
+      "sha256": "230d5757afdc011a2cddb2f78a8f212b32db253646b98095f81d2f6d6ef0b087"
+    },
+    {
+      "case_id": "review-44158a7fd630cae5",
+      "modality": "visual",
+      "request": "review-44158a7fd630cae5-visual.json",
+      "sha256": "384e5e3bf4dd4fd4d0384f74390075590132a05b2cabeea30dfaf9f643ef8615"
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "modality": "semantic",
+      "request": "review-ccfa7110e2ffbd7e-semantic.json",
+      "sha256": "1306e23c23691d58bffc0efada1e2a4fb3bb257849c7c391680abde11b5eacc2"
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "modality": "visual",
+      "request": "review-ccfa7110e2ffbd7e-visual.json",
+      "sha256": "cad4be4706c93be339ee5f50b0d543a163116649dfe2d64dd2f0d0a78a335978"
+    }
+  ],
+  "minimum_additional_successful_requests": 14,
+  "minimum_cumulative_attempts": 25,
+  "previous_approved_attempt_cap": 24,
+  "extra_attempts_beyond_cap": 1,
+  "remaining_original_wall_seconds": 1001,
+  "prior_version_results_reused": false,
+  "same_v2_valid_decisions_preserved": 10,
+  "model_calls_in_preparation": 0
+}

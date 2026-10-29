@@ -1,0 +1,48 @@
+{
+  "schema_version": "standard-pilot-diagnostic-v1",
+  "attempted_requests": 6,
+  "valid_channel_decisions": 5,
+  "fully_returned_case_pairs": 2,
+  "planned_requests": 24,
+  "remaining_requests_not_issued": 18,
+  "stop_reason": "HTTP 429 Too Many Requests on request6; approved no automatic retry policy enforced",
+  "tool_calls": 0,
+  "elapsed_seconds": 128.35651479987428,
+  "charged_wall_seconds": 132,
+  "usage_totals": {
+    "input_tokens": 81625,
+    "cached_input_tokens": 0,
+    "output_tokens": 3158,
+    "reasoning_output_tokens": 133
+  },
+  "unknown_usage_calls": 1,
+  "quality_qualified": false,
+  "case_scope": "Text semantic obligations plus general rendered readability; no full-task qualification; missing evidence remains INCOMPLETE.",
+  "cases": [
+    {
+      "case_id": "review-ec20117491502820",
+      "channel_statuses": {
+        "semantic": "PASS",
+        "visual": "PASS"
+      },
+      "aggregate_status": "PASS"
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "channel_statuses": {
+        "semantic": "NEEDS_REVIEW",
+        "visual": "PARTIAL"
+      },
+      "aggregate_status": "INCOMPLETE"
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "channel_statuses": {
+        "semantic": "NEEDS_REVIEW",
+        "visual": null
+      },
+      "aggregate_status": "INCOMPLETE"
+    }
+  ],
+  "evaluator_identity": "c648c2e5486552c0d8b3aadce71d8f261a772e87c23226c76aa44cfef2eb5c15"
+}

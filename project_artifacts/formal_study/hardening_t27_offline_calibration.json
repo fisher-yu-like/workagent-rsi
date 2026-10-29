@@ -1,0 +1,155 @@
+{
+  "task_id": "T27",
+  "status": "completed",
+  "local_status": "completed",
+  "scope": "deterministic development declared-check calibration",
+  "whole_task_admission": "NOT_ASSESSED; no agent-generated human provenance",
+  "evidence_bundle": "project_artifacts/results/hardening-v2/T27-delivery/20261025T023606358026Z/bundle/manifest.json",
+  "bundle_files": 24,
+  "latest_full_validation": {
+    "passed": 717,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-full/20261025T022956446614Z"
+  },
+  "focused": {
+    "passed": 30,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0,
+    "profile": "calibration-human",
+    "evidence": "project_artifacts/results/hardening-v2/T27-T28-final-focused/20261025T022607206432Z"
+  },
+  "calibration_report": {
+    "status": "completed",
+    "evaluator_identity": "0864a4fe4e3e507c8d27c12d8ce85e6cdb6b375103ed4de6768527a02b6b940c",
+    "summary": {
+      "case_count": 90,
+      "artifact_error_denominator": 75,
+      "completed_artifact_denominator": 73,
+      "incomplete_artifact_cases": 2,
+      "confusion_matrix": {
+        "PASS": {
+          "PASS": 45
+        },
+        "FAIL": {
+          "FAIL": 28,
+          "INCOMPLETE": 2
+        },
+        "INCOMPLETE": {
+          "INCOMPLETE": 15
+        }
+      },
+      "false_accept_rate": {
+        "numerator": 0,
+        "denominator": 28,
+        "value": 0.0,
+        "interval_95": [
+          0,
+          0.12064330476584563
+        ]
+      },
+      "false_reject_rate": {
+        "numerator": 0,
+        "denominator": 45,
+        "value": 0.0,
+        "interval_95": [
+          0,
+          0.07865159873288836
+        ]
+      },
+      "gap_classification": {
+        "numerator": 15,
+        "denominator": 15,
+        "value": 1.0,
+        "interval_95": [
+          0.7961166989641515,
+          1
+        ]
+      },
+      "location_accuracy": {
+        "numerator": 28,
+        "denominator": 28,
+        "value": 1.0,
+        "interval_95": [
+          0.8793566952341543,
+          1
+        ]
+      },
+      "family_count": 3,
+      "partial_policy": "not_accepted",
+      "independent_accuracy_claim": false,
+      "interval_scope": "Descriptive Wilson intervals over observed cases; cases share families and are not independent population samples."
+    },
+    "quality_qualified": false,
+    "measurement_scope": "development declared checks; no human agreement or final accuracy claim",
+    "known_critical_false_accepts": 0,
+    "permitted_equivalent_false_rejects": 0
+  },
+  "model_calls": 0,
+  "server_boundary_probe": {
+    "status": "passed",
+    "candidate_mount_boundary_qualified": true,
+    "separate_service_principal": false,
+    "formal_final_corpus_present": false,
+    "host_owner_isolation_claim": false,
+    "facts": {
+      "private_unreadable": true,
+      "input_readonly": true,
+      "public_input_readable": true
+    },
+    "owned_canary_cleanup": true,
+    "error": null,
+    "model_calls": 0,
+    "remote_added_persistent_bytes": 0,
+    "host_resources": {
+      "uid": 68288,
+      "gid": 68288,
+      "canary_bytes": 32,
+      "private_mode": "0o700",
+      "runtime_du": "713116\t/tmp/wrsi-t05-runtime-ngigwm0t/rootfs-office",
+      "runtime_du_exit": 0,
+      "free_tmp_bytes": 69336543232
+    },
+    "outcome": {
+      "schema_version": "run-outcome-v2",
+      "status": "succeeded",
+      "failure_origin": null,
+      "artifact_refs": [
+        "outputs/facts.json"
+      ],
+      "trace_refs": [
+        "provider_records/sandbox/a826fa392e634060937cdb217febe97f.json"
+      ],
+      "usage": {
+        "tokens": null,
+        "tool_calls": null,
+        "steps": null,
+        "wall_seconds": 6.593766199890524,
+        "cost_usd": null,
+        "statuses": {
+          "tokens": "unavailable",
+          "tool_calls": "unavailable",
+          "steps": "unavailable",
+          "wall_seconds": "available",
+          "cost_usd": "unavailable"
+        }
+      }
+    }
+  },
+  "source_hashes": {
+    "src/workagent_rsi/calibration_metrics.py": "205b0284f19af02757c148f02bc22ff78f1ddbdadccc5c6957fc55033c025f77",
+    "tests/test_calibration_metrics.py": "b1e8691bbb7514337682ace1712e36254632f0f09b1e50b7fda069497419a3b6",
+    "project_artifacts/phase3_experiments/scripts/calibrate_evaluator.py": "30352104283ebf762a9efb5774176bb02b809af52efc09859ff020bbe88331a4",
+    "project_artifacts/phase3_experiments/scripts/run_t26_evaluator_boundary_probe.py": "75ee4e99e017c0a3d69a7b977631fdff06533b2183a4f33f65d1f15464b4ca6b"
+  },
+  "limitations": [
+    "Two occlusion defects remain INCOMPLETE for actual visual judging in T28.",
+    "Three correlated development families; no final benchmark accuracy or human agreement claim."
+  ],
+  "implementation_commit": "a9377b217aa8d82c7941a7c9ab5fac410adc7285",
+  "benchmark_intake": "project_artifacts/formal_study/hardening_t26_t28_benchmark_intake.json",
+  "benchmark_native_scorers": "two actual server recalculation/input-control checks completed; not model outputs or accuracy measurements"
+}

@@ -10,7 +10,8 @@ from .rsi_contracts import AtomicEdit, CandidatePatch, ProviderRecord
 
 
 class ArtifactFeedbackProvider:
-    provider_version = "artifact-feedback-policy-v1"
+    provider_version = "artifact-feedback-policy-v2-qualification-only"
+    qualification_only = True
 
     def generate_with_feedback(self, workspace, feedback, parent_version, edit_budget, record_root):
         started = datetime.now(timezone.utc)
@@ -20,11 +21,17 @@ class ArtifactFeedbackProvider:
         if feedback.mode == "structured":
             for row in feedback.tasks:
                 for issue in row.get("issues", []):
-                    hint = issue.get("skill_improvement_hint") or ""
                     refs.extend(issue["evidence_refs"])
-                    for key, value in (("sales_rows", "all"), ("sales_chart", True), ("sales_number_format", True)):
-                        if f"{key}={str(value).lower()}" in hint and current.get(key) != value:
-                            desired[key] = value
+                    # This fixed mapping is an explicitly labelled offline test
+                    # policy. The general verifier never teaches these knobs.
+                    rid=issue['requirement_id']
+                    if rid=='source_records' or rid.startswith(('total.','formula.')):
+                        desired['sales_rows']='all'
+                    if rid=='chart':
+                        desired['sales_chart']=True
+                    if rid.startswith('format.'):
+                        desired['sales_number_format']=True
+                    desired={key:value for key,value in desired.items() if current.get(key)!=value}
         elif feedback.mode == "brief":
             # The brief arm uses only requirement classes; it has no detailed hints.
             for row in feedback.tasks:
@@ -51,6 +58,8 @@ class ArtifactFeedbackProvider:
             diagnosis_refs=refs or [fingerprint], atomic_edits=edits, edit_budget=edit_budget, created_at=started)
         root = Path(record_root)
         root.mkdir(parents=True, exist_ok=True)
+        (root/'qualification.json').write_text(json.dumps({'qualification_only':True,
+            'scope':'authored offline feedback plumbing; not model or formal research evidence'}),encoding='utf-8')
         path = root / "candidate.json"
         path.write_text(candidate.model_dump_json(indent=2), encoding="utf-8")
         record = ProviderRecord(provider="artifact-feedback-policy", provider_version=self.provider_version, command=[],

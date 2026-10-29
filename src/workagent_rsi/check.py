@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from pathlib import Path
+from uuid import uuid4
 
 from .contracts import ArtifactRef, EvaluationReport, TaskSpec
 from .evaluator import BasicEvaluator, OfficeArtifactEvaluator
@@ -16,6 +17,7 @@ from .artifact_assessment import SharedAssessment
 from .artifact_evaluator import ArtifactEvaluator
 from .artifact_verifier import ArtifactVerifier
 from .assessment_contracts import AcceptanceSpec, IssueReport, ScoreReport
+from .task_review import TaskReviewSpec
 
 
 class Check:
@@ -30,21 +32,26 @@ class Check:
         office_evaluator: OfficeArtifactEvaluator | None = None,
         frozen: FrozenEvaluator | None = None,
         artifact_assessment: SharedAssessment | None = None,
+        report_root: str | Path | None = None,
+        assessment_profile: str | None = None,
     ) -> None:
         self.verifier = verifier or CandidateVerifier()
         self.promotion = promotion or PromotionController()
-        self.evaluator = evaluator or BasicEvaluator()
-        self.office_evaluator = office_evaluator or OfficeArtifactEvaluator()
-        self.frozen = frozen
         self.artifact_assessment = artifact_assessment or SharedAssessment()
+        self.evaluator = evaluator or BasicEvaluator(assessment=self.artifact_assessment)
+        self.office_evaluator = office_evaluator or OfficeArtifactEvaluator(assessment=self.artifact_assessment)
+        self.frozen = frozen
+        self.report_root=Path(report_root) if report_root is not None else Path.cwd()/'project_artifacts/results/check'
+        self.assessment_profile=assessment_profile
 
     def verify(
         self,
         candidate: CandidatePatch,
         workspace: str | Path,
         policy: VerificationPolicy,
+        **validation_context,
     ) -> VerificationReport:
-        return self.verifier.verify(candidate, workspace, policy)
+        return self.verifier.verify(candidate, workspace, policy, **validation_context)
 
     def evaluate(
         self,
@@ -53,10 +60,15 @@ class Check:
         trace_id: str,
         *,
         office: bool | None = None,
+        assessment_profile: str | None = None,
     ) -> EvaluationReport:
-        use_office = office if office is not None else task.domain.lower() in {"excel", "word", "powerpoint"}
-        evaluator = self.office_evaluator if use_office else self.evaluator
-        return evaluator.evaluate(task, artifacts, trace_id)
+        office_domain=task.domain.lower() in {'excel','word','powerpoint'}
+        if office_domain and office is False:
+            raise ValueError('Office tasks require the versioned LLM review chain')
+        if office_domain or office:
+            from .harness_artifact_evaluator import HarnessArtifactEvaluator
+            return HarnessArtifactEvaluator(self.report_root/uuid4().hex,assessment=self.artifact_assessment).evaluate(task,artifacts,trace_id)
+        return self.evaluator.evaluate(task,artifacts,trace_id)
 
     def evaluate_split(
         self,
@@ -90,15 +102,15 @@ class Check:
 
     decide = promote
 
-    def assess_artifact(self, spec: AcceptanceSpec, artifacts: dict[str, str | Path]) -> tuple[ScoreReport, IssueReport]:
+    def assess_artifact(self, spec: TaskReviewSpec, artifacts: dict[str, str | Path]) -> tuple[ScoreReport, IssueReport]:
         """Call both fixed artifact skills over one shared evidence snapshot."""
         shared = self.artifact_assessment.inspect(spec, artifacts)
         return ArtifactEvaluator().evaluate(shared), ArtifactVerifier().verify(shared)
 
-    def evaluate_artifact(self, spec: AcceptanceSpec, artifacts: dict[str, str | Path]) -> ScoreReport:
+    def evaluate_artifact(self, spec: TaskReviewSpec, artifacts: dict[str, str | Path]) -> ScoreReport:
         return self.assess_artifact(spec, artifacts)[0]
 
-    def verify_artifact(self, spec: AcceptanceSpec, artifacts: dict[str, str | Path]) -> IssueReport:
+    def verify_artifact(self, spec: TaskReviewSpec, artifacts: dict[str, str | Path]) -> IssueReport:
         return self.assess_artifact(spec, artifacts)[1]
 
 

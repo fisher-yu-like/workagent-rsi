@@ -1,7 +1,5 @@
-# Spreadsheet assessment
+# Spreadsheet observations
 
-Locate observations by logical artifact, sheet and cell/range. Freeze expected values from original inputs or independent labels, including tolerances and input hashes.
+Read the original input and output cells,formulas,number formats,chart structures and data-validation metadata. Recalculation is an operation that returns observed results,not an acceptance oracle.
 
-`excel.cell` checks a typed value; `excel.formula` checks exact required formula text; `excel.cached_value` checks an existing stored cache only. `excel.recalculated_value` requires an actual engine and remains unavailable until one is configured. Reading formula text or caches with openpyxl is not recalculation. If equivalent calculations are permitted, assess their outputs under the task standard instead of requiring a particular formula string.
-
-`excel.sheets`, `excel.range`, `excel.chart` and `excel.number_format` cover structure, data coverage, chart references and number formats. A chart reference check does not prove visual legibility. Group dependent observations under one scoring requirement when they describe the same error. Weights live only in the task specification.
+Give relevant facts and their locations to the task-level model. The model decides whether the calculations and presentation fulfil the request,including whether equivalent formulas are acceptable. Do not prescribe expected answers or exact formula strings in Python.

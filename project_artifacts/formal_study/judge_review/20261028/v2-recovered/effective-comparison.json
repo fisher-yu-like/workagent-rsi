@@ -1,0 +1,88 @@
+{
+  "manifest_hash": "9c9451e870f63434fa8438eddfba7b9ebe2ddfef09aa1f62133e3ad9c5bc60a5",
+  "prior_results_sha256": "9b6ecd678ed99f7a97f8287cbece2e29c3965cfb6635337d0dc673e3857b78c4",
+  "recovery_results_sha256": "1f50460073e85f23c660f24157c808be6341c0bb82072a75d8ca8ce2a93a55ec",
+  "complete_pairs": 12,
+  "comparison": [
+    {
+      "case_id": "review-ec20117491502820",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-201d371b1160838f",
+      "reference": "FAIL",
+      "judge": "FAIL",
+      "same": true
+    },
+    {
+      "case_id": "review-19988a00ef040b43",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-8a0f33aa1247b0b8",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "reference": "INCOMPLETE",
+      "judge": "INCOMPLETE",
+      "same": true
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "reference": "INCOMPLETE",
+      "judge": "INCOMPLETE",
+      "same": true
+    },
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "reference": "FAIL",
+      "judge": "FAIL",
+      "same": true
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "reference": "INCOMPLETE",
+      "judge": "INCOMPLETE",
+      "same": true
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-eae3e39d4eebdc00",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-44158a7fd630cae5",
+      "reference": "PASS",
+      "judge": "PASS",
+      "same": true
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "reference": "FAIL",
+      "judge": "FAIL",
+      "same": true
+    }
+  ],
+  "matched_exposed_references": 12,
+  "attempts": 26,
+  "effective_valid_decisions": 24,
+  "charged_wall_seconds": 567,
+  "tool_calls": 0,
+  "failed_attempt_records_preserved": true,
+  "quality_qualified": false,
+  "natural20_judged": false
+}

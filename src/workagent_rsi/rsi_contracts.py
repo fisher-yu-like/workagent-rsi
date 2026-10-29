@@ -5,6 +5,7 @@ from pathlib import PurePosixPath
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+from .run_contracts import FailureOrigin
 
 
 Component = Literal["prompt", "tool_policy", "context", "office_script", "verifier_rule", "candidate_test"]
@@ -42,8 +43,31 @@ class CandidatePatch(StrictModel):
     diagnosis_refs: list[str] = Field(min_length=1)
     atomic_edits: list[AtomicEdit] = Field(min_length=1)
     new_tests: list[str] = Field(default_factory=list)
-    edit_budget: int = Field(ge=1)
+    edit_budget: int = Field(ge=1, strict=True)
     created_at: datetime
+
+
+class CandidateNormalizationRecord(StrictModel):
+    schema_version: Literal['candidate-normalization-v1'] = 'candidate-normalization-v1'
+    status: Literal['accepted', 'rejected']
+    context_hash: str
+    raw_sha256: str | None = None
+    response_bytes_sha256: str | None = None
+    raw_hash_kind: Literal['canonical_json', 'raw_bytes'] = 'canonical_json'
+    normalized_sha256: str | None = None
+    envelope: str | None = None
+    mappings: list[dict[str, str]] = Field(default_factory=list)
+    metadata_provenance: dict[str, str] = Field(default_factory=dict)
+    error: str | None = None
+
+
+class DiagnosisEvidence(StrictModel):
+    ref: str
+    kind: Literal['script','stderr','input_manifest','file_events']
+    quote: str
+    source_sha256: str = Field(pattern=r'^[0-9a-f]{64}$')
+    line_start: int | None = Field(default=None, ge=1)
+    line_end: int | None = Field(default=None, ge=1)
 
 
 class FailureDiagnosis(StrictModel):
@@ -54,6 +78,11 @@ class FailureDiagnosis(StrictModel):
     causal_hypothesis: str = Field(min_length=1)
     recommended_component: Component
     confidence: float = Field(ge=0.0, le=1.0)
+    confidence_basis: str = 'uncalibrated_legacy_rule_strength'
+    recommended_action: str | None = None
+    falsification_check: str | None = None
+    evidence_details: list[DiagnosisEvidence] = Field(default_factory=list)
+    feedback_visibility: Literal['develop','evaluation_only'] = 'develop'
 
 
 class VerificationReport(StrictModel):
@@ -65,6 +94,28 @@ class VerificationReport(StrictModel):
     test_results: dict[str, Any] = Field(default_factory=dict)
     artifact_results: dict[str, Any] = Field(default_factory=dict)
     evidence_refs: list[str] = Field(min_length=1)
+    schema_status: Literal['passed', 'failed', 'not_run'] = 'not_run'
+    safety_status: Literal['passed', 'failed', 'not_run'] = 'not_run'
+    behavior_status: Literal['passed', 'failed', 'not_run', 'unavailable', 'error'] = 'not_run'
+    compile_status: Literal['passed', 'failed', 'not_run', 'not_applicable'] = 'not_run'
+    quality_verified: bool = False
+    behavior_required: bool = False
+
+
+class BehaviorProbeResult(StrictModel):
+    model_config = ConfigDict(extra='forbid', strict=True)
+    status: Literal['passed', 'failed', 'not_run', 'unavailable', 'error']
+    evidence_kind: Literal['unverified', 'unit_fixture', 'isolated_run'] = 'unverified'
+    backend: Literal['docker', 'apptainer-ssh'] | None = None
+    taskset_hash: str | None = Field(default=None, pattern=r'^[0-9a-f]{64}$')
+    parent_package_hash: str | None = Field(default=None, pattern=r'^[0-9a-f]{64}$')
+    candidate_package_hash: str | None = Field(default=None, pattern=r'^[0-9a-f]{64}$')
+    isolation_verified: bool = False
+    independent_tasks_verified: bool = False
+    cleanup_confirmed: bool = False
+    protected_regressions: int = Field(default=0, ge=0)
+    failed_checks: list[str] = Field(default_factory=list)
+    evidence_refs: list[str] = Field(default_factory=list)
 
 
 class SkillVersion(StrictModel):
@@ -105,6 +156,8 @@ class EvaluationContract(StrictModel):
     assessment_mode: Literal["legacy", "artifact-v1"] = "legacy"
     assessment_identity: str | None = None
     acceptance_hashes: dict[str, str] = Field(default_factory=dict)
+    comparison_policy: dict[str, Any] | None = None
+    task_families: dict[str, str] = Field(default_factory=dict)
 
 
 class ProviderRecord(StrictModel):
@@ -118,6 +171,7 @@ class ProviderRecord(StrictModel):
     ended_at: datetime
     exit_code: int | None = None
     status: Literal["completed", "failed", "unavailable", "timeout"]
+    failure_origin: FailureOrigin | None = None
     output_ref: str | None = None
     error: str | None = None
 

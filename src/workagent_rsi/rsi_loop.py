@@ -74,6 +74,11 @@ class RSILoop:
         root = Path(resume_root if resume_root is not None else run_root)
         checkpoint_path = root / "checkpoint.json"
         identity = self._identity(contract, tasks_by_split, model_identity)
+        policy_identity = verification_policy.model_dump(mode='json')
+        for key in ['allowed_targets', 'protected_paths']:
+            policy_identity[key] = sorted(policy_identity[key])
+        identity['verification_policy_hash'] = canonical_json_hash(policy_identity)
+        identity['verification_identity'] = self.verifier.identity_config()
         resumed = resume_root is not None
         rounds_data: list[dict] = []
         attempts: dict[str, int] = {}
@@ -116,6 +121,7 @@ class RSILoop:
             round_root = root / f"round-{round_number:02d}" if attempt == 1 else root / f"round-{round_number:02d}-retry-{attempt:02d}"
             started = time.perf_counter()
             inherited_refs = self._inherited_evidence(rounds_data)
+            public_history = self._public_feedback_history(root, rounds_data)
             round_source = self._materialize_source_snapshot(skill_id, root, round_number, attempt)
             try:
                 round_result = self.run_round(
@@ -128,6 +134,7 @@ class RSILoop:
                     edit_budget=budgets[round_index],
                     round_index=round_number,
                     inherited_evidence_refs=inherited_refs,
+                    public_feedback_history=public_history,
                 )
             except Exception as exc:
                 checkpoint = {
@@ -144,6 +151,9 @@ class RSILoop:
                 self._write_checkpoint(checkpoint_path, checkpoint)
                 return {**self._summary(identity, rounds_data, root, status="failed"), "resumed": resumed, "failure": str(exc)}
             round_result["costs"] = measure_round_cost(round_root, started)
+            feedback_file = round_root / 'develop_feedback.json'
+            if feedback_file.is_file():
+                round_result['develop_feedback_hash'] = canonical_json_hash(json.loads(feedback_file.read_text(encoding='utf-8')))
             round_result["edit_budget"] = budgets[round_index]
             round_result["actual_edit_count"] = int(round_result.get("actual_edit_count", 0))
             round_result["round_root"] = str(round_root.resolve())
@@ -196,11 +206,14 @@ class RSILoop:
         edit_budget: int = 1,
         round_index: int = 1,
         inherited_evidence_refs: Sequence[str] | None = None,
+        public_feedback_history=None,
     ) -> dict:
         root = Path(run_root)
         root.mkdir(parents=True, exist_ok=True)
         champion = self.registry.champion(skill_id)
         champion_package = self.registry.package(champion)
+        if canonical_json_hash(champion_package) != champion.content_hash:
+            raise ValueError('registry champion package hash mismatch')
         champion_config = self.skill_model.model_validate(champion_package)
         rollback_point = {
             "skill_id": skill_id,
@@ -208,14 +221,19 @@ class RSILoop:
             "content_hash": champion.content_hash,
             "evidence_refs": list(champion.evidence_refs),
         }
-        baseline = self._evaluate_all(tasks_by_split, champion_config, contract, root / "baseline")
+        baseline = self._evaluate_all(tasks_by_split, champion_config, contract,
+            root / ('feedback-baseline' if contract.comparison_policy else 'baseline'))
         artifact_mode = contract.assessment_mode == "artifact-v1"
+        from .assessment_contracts import RSIFeedback
+        from .rsi_feedback import feedback_with_requirements
+        if any(task.hidden_test for task in tasks_by_split.get('develop', [])):
+            raise ValueError('hidden tasks cannot be used as develop feedback')
         feedback = None
         if artifact_mode:
             from .rsi_feedback import build_feedback
             if any(task.hidden_test for task in tasks_by_split.get("develop", [])):
                 raise ValueError("hidden tasks cannot be used as develop feedback")
-            if not baseline or any(not report.get("assessment_complete") for report in baseline.values()):
+            if not baseline or any(not report.get('task_outcomes_complete',report.get("assessment_complete")) for report in baseline.values()):
                 result = {"status": "unavailable", "reason": "required artifact assessment incomplete", "round_index": round_index,
                     "champion_before": champion.model_dump(mode="json"), "champion_after": champion.model_dump(mode="json"),
                     "baseline": baseline, "candidate_reports": {}, "actual_edit_count": 0, "rollback_point": rollback_point}
@@ -233,12 +251,22 @@ class RSILoop:
             }
             for row in public_rows
         ]
-        diagnoses = [] if artifact_mode else FailureDiagnoser().diagnose(diagnosis_input)
+        if artifact_mode:
+            from .rsi_feedback import candidate_diagnoses
+            diagnoses=candidate_diagnoses([d for row in feedback.tasks for d in row.get('diagnoses',[])])
+        else:
+            diagnoses=FailureDiagnoser().diagnose(diagnosis_input)
+        if feedback is None:
+            feedback = RSIFeedback(tasks=[{'task_id': row['task_id'],
+                'acceptance_status': 'PASS' if row.get('passed') else 'FAIL',
+                'quality_score': row.get('score'), 'errors': row.get('critical_failures', [])}
+                for row in public_rows])
+        feedback = feedback_with_requirements(feedback, tasks_by_split.get('develop', []))
+        (root / 'develop_feedback.json').write_text(feedback.model_dump_json(indent=2), encoding='utf-8')
         context_files = {
             "diagnoses.json": json.dumps([item.model_dump(mode="json") for item in diagnoses], indent=2, sort_keys=True),
-            "inherited_evidence.json": json.dumps(list(inherited_evidence_refs or []), indent=2),
         }
-        if feedback is not None:
+        if artifact_mode:
             context_files = {"artifact_feedback.json": feedback.model_dump_json(indent=2)}
         workspace = root / "candidate_workspace"
         self.workspace_builder.export(
@@ -247,14 +275,20 @@ class RSILoop:
             allowed_files=["skill.json"],
             context_files=context_files,
         )
-        generate = self.provider.generate_with_feedback if artifact_mode else self.provider.generate
-        candidate, provider_record = generate(
-            workspace,
-            feedback if artifact_mode else diagnoses,
-            champion.version,
-            edit_budget,
-            root / "provider_records",
-        )
+        from .candidate_context import build_candidate_context, persist_candidate_context
+        from .candidate_provider import candidate_context_prompt
+        context = build_candidate_context(workspace, champion.version, edit_budget,
+            feedback=feedback, diagnoses=diagnoses, expected_champion_hash=champion.content_hash,
+            public_feedback_history=public_feedback_history or [],
+            max_context_bytes=getattr(self.provider, 'max_context_bytes', 131072))
+        persist_candidate_context(context, root/'provider_records', candidate_context_prompt(context))
+        if hasattr(self.provider, 'generate_with_context'):
+            candidate, provider_record = self.provider.generate_with_context(context, workspace, root/'provider_records')
+        else:
+            # Existing authored/offline providers retain their narrow adapter.
+            generate = self.provider.generate_with_feedback if artifact_mode else self.provider.generate
+            candidate, provider_record = generate(workspace, context.develop_feedback if artifact_mode else diagnoses,
+                                                  champion.version, edit_budget, root/'provider_records')
         if candidate is None:
             result = {
                 "status": provider_record.status,
@@ -272,7 +306,8 @@ class RSILoop:
             return result
 
         patch_hash = canonical_json_hash([edit.model_dump(mode="json") for edit in candidate.atomic_edits])
-        if self.registry.has_negative_evidence(skill_id=skill_id, candidate_id=candidate.candidate_id, patch_hash=patch_hash):
+        if self.registry.has_negative_evidence(skill_id=skill_id, patch_hash=patch_hash,
+                parent_hash=champion.content_hash, cohort_hash=contract.dataset_hash):
             result = {
                 "status": "completed",
                 "round_index": round_index,
@@ -294,50 +329,33 @@ class RSILoop:
             self._write_round_summary(root, result)
             return result
 
-        verification = self.verifier.verify(candidate, workspace, verification_policy)
-        if artifact_mode and verification.passed:
-            # Artifact feedback may improve a WorkAgent instruction or the legacy
-            # pilot's execution knobs, but it cannot alter evaluator code.
-            violations = []
-            if candidate.parent_version != champion.version or len(candidate.atomic_edits) > edit_budget:
-                violations.append("artifact candidate parent or edit budget mismatch")
-            if self.skill_model is PilotSkillConfig:
-                editable_fields = {"sales_rows", "sales_chart", "sales_number_format"}
-            else:
-                editable_fields = set(self.skill_model.model_fields) - {"version"}
-            for edit in candidate.atomic_edits:
-                patch = json.loads(edit.patch)
-                if edit.target_path != "skill.json" or len(patch) != 1 or not set(patch).issubset(editable_fields):
-                    violations.append("artifact candidate must change one allowlisted skill field per edit")
-            try:
-                proposed = dict(champion_package)
-                for edit in candidate.atomic_edits:
-                    proposed.update(json.loads(edit.patch))
-                self.skill_model.model_validate_json(json.dumps(proposed), strict=True)
-            except ValueError as exc:
-                violations.append(str(exc))
-            verification = verification.model_copy(update={
-                "passed": not violations,
-                "critical_violations": [*verification.critical_violations, *violations],
-                "executed_checks": [*verification.executed_checks, "artifact_execution_config"],
-            })
-            verification = verification.model_copy(update={"evidence_refs": [canonical_json_hash(verification.model_dump(mode="json", exclude={"evidence_refs"}))]})
+        version = self.registry.next_version(skill_id, champion.version)
+        verification = self.verifier.verify(candidate, workspace, verification_policy,
+            skill_model=self.skill_model, parent_package=champion_package,
+            parent_version=champion.version, edit_budget=edit_budget, candidate_version=version)
+        candidate_package = dict(champion_package)
+        if 'version' in candidate_package:
+            candidate_package['version'] = version
         if verification.passed:
-            candidate_package = dict(champion_package)
             for edit in candidate.atomic_edits:
                 candidate_package.update(json.loads(edit.patch))
             candidate_config = self.skill_model.model_validate(candidate_package)
-            candidate_reports = self._evaluate_all(tasks_by_split, candidate_config, contract, root / "candidate")
+            if contract.comparison_policy:
+                from .repeated_evaluation import evaluate_paired
+                baseline, candidate_reports, statistical = evaluate_paired(self.evaluator, tasks_by_split,
+                    champion_config, candidate_config, contract, root)
+            else:
+                candidate_reports = self._evaluate_all(tasks_by_split, candidate_config, contract, root / "candidate")
         else:
-            candidate_package = dict(champion_package)
             candidate_reports = {}
         if artifact_mode:
             from .rsi_feedback import comparison_metrics
             metrics = comparison_metrics(baseline, candidate_reports, root, contract)
         else:
             metrics = self._metrics(baseline, candidate_reports, verification.passed)
+        if contract.comparison_policy:
+            metrics['statistical_comparison'] = statistical if verification.passed else {'eligible':False}
         decision = self.promotion.decide(candidate.candidate_id, verification, metrics, contract)
-        version = self.registry.next_version(skill_id, champion.version)
         record = self.registry.register(
             skill_id=skill_id,
             version=version,
@@ -357,6 +375,8 @@ class RSILoop:
                 patch_hash=patch_hash,
                 reason=decision.decision,
                 evidence_refs=decision.evidence_refs,
+                parent_hash=champion.content_hash,
+                cohort_hash=contract.dataset_hash,
             )
             negative_evidence = {
                 "evidence_id": negative_id,
@@ -410,6 +430,8 @@ class RSILoop:
                 root / split,
                 reveal_per_task=split != "hidden",
             )
+            if reports[split].get('task_outcomes_complete') is False:
+                break
         return reports
 
     @staticmethod
@@ -456,9 +478,14 @@ class RSILoop:
             "provider_identity": {
                 "class": f"{self.provider.__class__.__module__}.{self.provider.__class__.__qualname__}",
                 "version": str(getattr(self.provider, "provider_version", "unknown")),
+                "config_hash": canonical_json_hash({name: getattr(self.provider, name) for name in (
+                    'model', 'api_base_url', 'api_key_env', 'timeout_seconds', 'max_retries',
+                    'retry_delay_seconds', 'executable', 'max_context_bytes') if hasattr(self.provider, name)
+                    and isinstance(getattr(self.provider, name), (str, int, float, bool, list, dict, type(None)))}),
             },
             "skill_model": f"{self.skill_model.__module__}.{self.skill_model.__qualname__}",
             "model_identity": model_identity or getattr(self.provider, "model_identity", None),
+            "context_max_bytes": getattr(self.provider, 'max_context_bytes', 131072),
             "code_hash": canonical_json_hash(
                 {
                     name: sha256_file(Path(__file__).with_name(name))
@@ -466,7 +493,17 @@ class RSILoop:
                         "rsi_loop.py",
                         "rsi_feedback.py",
                         "candidate_provider.py",
+                        "candidate_context.py",
+                        "candidate_normalization.py",
+                        "verifier.py",
+                        "leakage.py",
+                        "behavior_probe.py",
+                        "rsi_contracts.py",
                         "workagent_experiment.py",
+                        "registry.py",
+                        "statistical_promotion.py",
+                        "repeated_evaluation.py",
+                        "run_budget.py",
                     )
                 }
             ),
@@ -474,7 +511,9 @@ class RSILoop:
         if contract.assessment_mode == "artifact-v1":
             from .artifact_assessment import SharedAssessment, spec_from_task
             identity["assessment_identity"] = (self.evaluator.assessment or SharedAssessment()).identity()
-            identity["acceptance_hashes"] = {task.task_id: spec_from_task(task).fingerprint() for tasks in tasks_by_split.values() for task in tasks}
+            profile=getattr(self.evaluator,'assessment_profile',None)
+            identity['assessment_profile']=profile or 'default'
+            identity["acceptance_hashes"] = {task.task_id: spec_from_task(task,assessment_profile=profile).fingerprint() for tasks in tasks_by_split.values() for task in tasks}
             identity["feedback_mode"] = self.feedback_mode
             if identity["assessment_identity"] != contract.assessment_identity or identity["acceptance_hashes"] != contract.acceptance_hashes:
                 raise ValueError("artifact assessment or input identity changed")
@@ -505,7 +544,7 @@ class RSILoop:
 
     @staticmethod
     def _validate_checkpoint(checkpoint: dict, identity: dict) -> None:
-        for key in ("contract_hash", "dataset_hash", "evaluator_hash", "provider_identity", "skill_model", "model_identity", "code_hash"):
+        for key in ("contract_hash", "dataset_hash", "evaluator_hash", "provider_identity", "skill_model", "model_identity", "context_max_bytes", "verification_policy_hash", "verification_identity", "code_hash"):
             if checkpoint.get(key) != identity.get(key):
                 raise ValueError(f"{key} identity does not match checkpoint")
         if checkpoint.get("split_hashes") != identity.get("split_hashes"):
@@ -520,6 +559,22 @@ class RSILoop:
         temporary = path.with_suffix(".json.tmp")
         temporary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         temporary.replace(path)
+
+    @staticmethod
+    def _public_feedback_history(root, rounds_data):
+        from .assessment_contracts import RSIFeedback
+        from .view_safety import ordinary_file
+        history = []
+        for round_result in rounds_data:
+            directory = Path(round_result['round_root']).absolute()
+            if not directory.is_relative_to(Path(root).absolute()):
+                raise ValueError('public feedback history must remain inside this run')
+            path = ordinary_file(directory/'develop_feedback.json')
+            value = json.loads(path.read_text(encoding='utf-8'))
+            if canonical_json_hash(value) != round_result.get('develop_feedback_hash'):
+                raise ValueError('public develop feedback history hash mismatch')
+            history.append(RSIFeedback.model_validate(value))
+        return history
 
     @staticmethod
     def _inherited_evidence(rounds_data: list[dict]) -> list[str]:

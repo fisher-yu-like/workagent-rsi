@@ -1,0 +1,69 @@
+{
+  "scope": "Nonblind human adjudication versus original authored standard reference; no model accuracy claim.",
+  "rows": [
+    {
+      "case_id": "review-070bf88a4446ba8f",
+      "original_label": "PASS",
+      "adjudicated_label": "FAIL",
+      "standard_reference": "FAIL",
+      "different_from_controlled_reference": false,
+      "reviewer_reasons": [
+        "上次看错了，这个总数是不对的"
+      ]
+    },
+    {
+      "case_id": "review-ccfa7110e2ffbd7e",
+      "original_label": "PASS",
+      "adjudicated_label": "FAIL",
+      "standard_reference": "FAIL",
+      "different_from_controlled_reference": false,
+      "reviewer_reasons": [
+        "上次看错了，这个总数是错误的"
+      ]
+    },
+    {
+      "case_id": "review-0db11ab1e4e3d5e1",
+      "original_label": "FAIL",
+      "adjudicated_label": "INCOMPLETE",
+      "standard_reference": "PASS",
+      "different_from_controlled_reference": true,
+      "reviewer_reasons": [
+        "我觉得原任务的最后一点的意思是，total 要在 summary 之后，要是放在整体的表格之后也是可以的"
+      ]
+    },
+    {
+      "case_id": "review-6cda065fb91529a5",
+      "original_label": "PASS",
+      "adjudicated_label": "FAIL",
+      "standard_reference": "INCOMPLETE",
+      "different_from_controlled_reference": true,
+      "reviewer_reasons": [
+        "原任务中说明了要 mark the important result，但是最终的成品中没有显示"
+      ]
+    },
+    {
+      "case_id": "review-3dfbb6e577ab463f",
+      "original_label": "PASS",
+      "adjudicated_label": "INCOMPLETE",
+      "standard_reference": "INCOMPLETE",
+      "different_from_controlled_reference": false,
+      "reviewer_reasons": [
+        "没有标出原任务中说明的重要的部分"
+      ]
+    },
+    {
+      "case_id": "review-01c7eae4091c4f6e",
+      "original_label": "PASS",
+      "adjudicated_label": "INCOMPLETE",
+      "standard_reference": "INCOMPLETE",
+      "different_from_controlled_reference": false,
+      "reviewer_reasons": [
+        "没有标注重要部分"
+      ]
+    }
+  ],
+  "labels_overridden": false,
+  "new_independent_blind_labels": 0,
+  "quality_qualified": false,
+  "different_from_controlled_reference": 2
+}
