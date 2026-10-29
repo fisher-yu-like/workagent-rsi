@@ -16,6 +16,7 @@ from workagent_rsi.registry import SkillRegistry
 from workagent_rsi.rsi_contracts import EvaluationContract, ProviderRecord
 from workagent_rsi.rsi_loop import RSILoop
 from workagent_rsi.verifier import CandidateVerifier, VerificationPolicy
+from model_fixture import MarkerFixtureAssessment
 
 
 def _task() -> TaskSpec:
@@ -63,13 +64,15 @@ def _loop(tmp_path: Path, provider=None) -> RSILoop:
     )
     source = tmp_path / "source"
     source.mkdir()
-    (source / "skill.json").write_text(json.dumps({"marker_source": "task_id"}), encoding="utf-8")
+    (source / "skill.json").write_text(
+        json.dumps({"marker_source": "task_id"}), encoding="utf-8"
+    )
     return RSILoop(
         registry=registry,
         workspace_builder=CandidateWorkspaceBuilder(),
         provider=provider or DeterministicCandidateProvider(),
         verifier=CandidateVerifier(),
-        evaluator=FrozenEvaluator("e" * 64),
+        evaluator=FrozenEvaluator("e" * 64, assessment=MarkerFixtureAssessment()),
         promotion=PromotionController(),
     )
 
@@ -237,4 +240,3 @@ def test_resume_retries_only_incomplete_round_and_uses_latest_champion(tmp_path:
     assert provider.skill_markers == ["task_id", "required_text", "required_text"]
     assert resumed["rounds"][0] == first_round
     assert resumed["rounds"][1]["champion_before"]["version"] == "0.2.0"
-

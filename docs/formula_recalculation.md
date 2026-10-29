@@ -1,5 +1,7 @@
 # Formula evidence and isolated recalculation
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](operations/llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 `excel.formula_exact` compares exact formula text. The old `excel.formula` name
 retains exact behavior unless its frozen options explicitly select equivalent.
 `excel.formula_present` checks expression versus literal only. `excel.cached_value`

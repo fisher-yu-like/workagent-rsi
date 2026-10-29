@@ -6,7 +6,9 @@ The project keeps the full research machinery behind a small vocabulary: `Run` e
 
 ## Start here
 
-- [当前评估与 RSI 执行说明、待验收项和恢复命令](docs/operations/evaluation-rsi-v2.md)（2026-10-26；人工审阅与研究资格尚未完成）
+- [当前 LLM 任务评估协议](docs/operations/llm-task-review.md)（2026-10-29）
+- [本次改造与验证记录](docs/operations/llm-task-review-migration-20261029.md)
+- [历史评估与 RSI 执行记录](docs/operations/evaluation-rsi-v2.md)
 
 - [Chinese project overview](docs/project_overview_zh.md)
 - [Literature review](docs/literature_review.md)
@@ -35,7 +37,7 @@ src/workagent_rsi/             Harness, closed-loop RSI and Office evaluation pa
 
 ## Run locally
 
-`Harness.run(task)` remains the normal entry point. Office tasks default to the WorkAgent provider and the shared `ArtifactEvaluator`/`ArtifactVerifier` chain; non-Office smoke tasks keep the basic evaluator. See [`src/workagent_rsi/README.md`](src/workagent_rsi/README.md) for acceptance specs, model review configuration, and the report files written for each run.
+`Harness.run(task)` remains the normal entry point. Office tasks default to the WorkAgent execution provider. Artifact evaluation uses one task-level LLM review through `SharedAssessment`, with report adapters `ArtifactEvaluator` and `ArtifactVerifier`. See [`src/workagent_rsi/README.md`](src/workagent_rsi/README.md) for original-task input, model review configuration, and the report files written for each run.
 
 ```powershell
 py -3.12 -m pip install -e .
@@ -44,58 +46,24 @@ py -3.12 -m workagent_rsi.cli examples/smoke_task.yaml
 py -3.12 project_artifacts/phase3_experiments/scripts/run_b0_office_qualification.py
 ```
 
-## Current gate
+## Current evaluation protocol
 
-The active local directory is `D:/ws/Projects/WorkAgent-RSI` on the existing
-`feat/evaluation-rsi-hardening` branch. See the
-[task ledger](project_artifacts/formal_study/hardening_task_ledger.json),
-[test/evidence commands](tests/README.md), and
-[T04 runtime operations](deploy/agent-runtime/README.md), and
-[T05 controlled Office rendering](deploy/office-worker/README.md).
-T00-T03 are delivered, including the default-off live-call approval contract.
-T04 adds fail-closed native execution, a default Docker backend and an explicit
-Apptainer SSH alternative. Qualification status and current tests are recorded in
-`project_artifacts/formal_study/hardening_t04_execution_boundary.json`.
-T05 adds allowlisted execution/candidate views, source-link checks and verified
-copies rendered inside an explicit LibreOffice/Poppler Apptainer worker. Real
-XLSX/DOCX/PPTX rendering and owned process cleanup passed; dedicated Microsoft
-Office COM remains unavailable. The latest full suite has 620 passed,
-one expected-open R10 failure and no errors/skips. T20 has 114 focused passes;
-the real-probe visual scope repair has 84. Evidence is indexed by
-`project_artifacts/formal_study/hardening_task_ledger.json`.
-T06 now supplies verified champion and controlled develop history to both candidate
-providers; T07 validates complete responses and records every normalization
-mapping and transport-owned identity. See [candidate contracts](docs/candidate_generation.md). T08 actual isolated Office behavior and RSI rejection passed on authored fixed tasks;
-T09 now groups comparable results, validates evidence/retries and formal claim
-boundaries, and writes separate paired reference runs. See [result cohorts](docs/result_cohorts.md).
-T10 adds [reviewed task requirement coverage](docs/requirement_admission.md);
-T11 adds [registered check preflight](docs/check_registry.md); T12 adds
-[scoped Office content checks](docs/scoped_content_checks.md). Legacy v1 scores
-remain declared-check compatibility, with no reviewed task score. T17 now
-unifies normal task entrypoints and requires explicit legacy selection for historical checks.
-T14 adds [authorized edit preservation](docs/edit_preservation.md).
-T13 adds [formula/recalculation evidence](docs/formula_recalculation.md), and
-T15 adds [visibility risks and page coverage](docs/visibility_checks.md). Their
-local work is complete. T13 passed14 actual isolated LibreOffice runs. T15 real
-rendering, individual controls and corrected long-deck batch scope passed the
-separately approved three-request real recheck. R01-R09
-and R11/R12 pass, including conservative gap/review outcomes for R03-R05; R10
-remains open. T16 local [judge evidence management](docs/judge_evidence_scope.md),
-T17 [public score semantics](docs/score_semantics_v2.md) and T18
-[actionable issue evidence](docs/issue_evidence_quality.md) are delivered.
-T16 actual CLI source/injection/cache/independent and joint-image controls passed;
-The batch-scope recheck passed with all17 pages cited. Direct API /responses and
-accuracy calibration remain unqualified. T19 [trace diagnosis](docs/trace_diagnosis.md)
-and T20 [execution failure feedback](docs/execution_failure_feedback.md) are
-complete locally: code failures reach candidate context, unobserved quality
-stays null and task denominators remain frozen. T21 onward and G1 remain pending. Historical T01 red
-observations are retained; their repair status must be read from the latest
-ledger rather than the original red baseline. The historical gate summary follows.
+On 2026-10-29 the user changed the evaluation direction: the LLM judges task
+reasonableness, artifact completion, quality and defects from the original task
+and supplied evidence. Code reads files, renders pages, executes calculations,
+calls the model and records results. Task-specific acceptance rules, registered
+checks and weighted rescoring have been removed from the active path.
 
-Phase 1 and Phase 2 are accepted. Phase 3 data quality, local Office qualification, candidate generation, and the historical E01-E12 pilot are complete. The historical pilot is mechanism-validation evidence over a project-generated fixture, not an external WorkAgent result or main-study conclusion.
+The artifact repair loop and the skill improvement loop use the same assessment
+protocol. Skill edit boundaries, execution isolation, budgets, paired comparison,
+versioning and rollback remain enforced. With no configured judge, quality stays
+unknown and the assessment is incomplete. Real model calls require an approved
+configuration and budget.
 
-The guarded formal entry point is
-`project_artifacts/phase3_experiments/scripts/run_formal.py`. Use `--mode pilot` for
-the local fixture; `--mode formal` stays closed until source-specific license,
-checksum, provenance and quality checks are recorded.
-# workagent-rsi
+See the [current protocol](docs/operations/llm-task-review.md),
+[migration report](docs/operations/llm-task-review-migration-20261029.md), and
+[task ledger](project_artifacts/formal_study/hardening_task_ledger.json).
+Old experiments retain their original evaluator identity. Their scores do not
+qualify the new protocol; live model accuracy and new research comparisons
+remain unverified. The historical 140 uncovered code-rule units are no longer
+an implementation backlog.

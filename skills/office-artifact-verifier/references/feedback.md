@@ -1,7 +1,7 @@
-# Evidence to improvement
+# Model review to improvement
 
-Each issue identifies a requirement, file location, actual and expected values, evidence references, severity, artifact repair hint, optional execution-skill improvement hint and recheck IDs. An observation is a fact; a causal hypothesis is explicitly uncertain.
+Pass through model-authored issue descriptions,locations,evidence and repair suggestions. Keep artifact defects,missing observations and task ambiguity distinct. Do not manufacture numeric expected answers or causal hypotheses.
 
-Avoid duplicate deductions: several consequences of one formula error can share one scoring requirement. Preserve locations when grouping issues across develop tasks. Keep unknown checker outcomes separate from confirmed defects. If a task passes critical requirements but lacks a requested chart or formatting quality, its non-critical issues still help improve the execution skill.
+Only authorized develop feedback may guide skill changes. Hidden task details and reference answers stay outside candidate workspaces. A task can receive model quality feedback even when it passes;the model owns that judgement.
 
-For spreadsheets, distinguish formula text, cache and recalculated results. For documents, use paragraph/heading/table locations. For presentations, use slide/object locations. Images must retain their source mapping. Cross-file agreement does not establish correctness without independently fixed expectations.
+The inner loop changes the current artifact while its skill remains frozen. The outer loop changes the skill and compares new task executions. Code controls budget,permissions,statistical comparison and rollback;it does not replace the model with fixed business rules.

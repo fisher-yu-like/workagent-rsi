@@ -1,5 +1,7 @@
 # 评估与 RSI 的执行和交接
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 Current update (2026-10-28): see [remaining work](remaining-work-20261028.md). The approved recovery is complete:26 attempts,24 valid decisions,12 full case pairs;567charged seconds/0tools. Natural20 requirements-based follow-up and judging remain pending;both standard interpretations have been clarified. Earlier run descriptions below are historical snapshots.
 
 本文对应 2026-10-26 的本地工程交付。原始计划是 `docs/superpowers/plans/2026-10-16-evaluation-rsi-hardening.md`，共 T00 至 T35。实际状态以 `project_artifacts/formal_study/hardening_task_ledger.json` 和对应证据为准。

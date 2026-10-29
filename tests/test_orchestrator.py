@@ -5,6 +5,8 @@ from workagent_rsi.evaluator import BasicEvaluator
 from workagent_rsi.executor import MockWorkAgentAdapter
 from workagent_rsi.orchestrator import Orchestrator
 from workagent_rsi.storage import ArtifactStore, TraceStore
+from workagent_rsi.artifact_assessment import SharedAssessment
+from test_llm_task_review import Provider
 
 
 def make_orchestrator(tmp_path: Path) -> Orchestrator:
@@ -12,7 +14,7 @@ def make_orchestrator(tmp_path: Path) -> Orchestrator:
         artifact_store=ArtifactStore(tmp_path / "artifacts"),
         trace_store=TraceStore(tmp_path / "trace.db"),
         adapter=MockWorkAgentAdapter(),
-        evaluator=BasicEvaluator(),
+        evaluator=BasicEvaluator(assessment=SharedAssessment(provider=Provider())),
     )
 
 

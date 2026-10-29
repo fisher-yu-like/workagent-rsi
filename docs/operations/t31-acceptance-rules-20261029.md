@@ -1,5 +1,7 @@
 # T31 验收规则进展（2026-10-29）
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 当前自动评估阶段已结束：20 例的 92 个通道均有有效结果，累计 111 次请求、6256 秒。汇总为 18 个 FAIL、2 个 INCOMPLETE，含义限于已声明的检查范围，不能据此报告人工准确率或官方 benchmark 分数。
 
 T31 的 72 个任务已生成新的验收计划，保留原有全部 405 条原文单元和输入哈希。**规则尚未全部补齐，T31 也未完成正式验收。**未覆盖项从 262 条降到 140 条，所有计划仍为 `SPEC_INCOMPLETE`，没有生成独立审阅签名。

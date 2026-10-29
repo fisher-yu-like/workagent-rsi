@@ -1,5 +1,7 @@
 # Authorized edit preservation
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](operations/llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 `PreservationSpec` freezes the source SHA-256, explicit allowed operations,
 preserved structural scopes and the versioned `office-structure-v1` policy.
 Permissions are `replace`, `add` or `remove` on explicit path prefixes; wildcard

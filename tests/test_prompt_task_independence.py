@@ -1,4 +1,5 @@
 """T23 production prompts use current requests, never pilot answer templates."""
+
 import inspect
 
 import pytest
@@ -32,10 +33,22 @@ def test_authorized_new_slide_is_not_forbidden_in_edit():
 
 
 def test_explicit_mode_can_create_from_inputs_and_is_bound_to_task_context():
-    assert 'execution_mode' in TaskSpec.model_fields, 'T23 explicit execution mode is absent'
-    from workagent_rsi.requirement_coverage import task_context
-    task=TaskSpec(task_id='misleading-edit',domain='excel',instruction='Create a new analysis from the source.',input_files=('a.xlsx',),execution_mode='create')
-    assert _task_mode(task)=='create' and task_context(task)['execution_mode']=='create'
+    assert "execution_mode" in TaskSpec.model_fields, (
+        "T23 explicit execution mode is absent"
+    )
+    from workagent_rsi.task_review import task_context
+
+    task = TaskSpec(
+        task_id="misleading-edit",
+        domain="excel",
+        instruction="Create a new analysis from the source.",
+        input_files=("a.xlsx",),
+        execution_mode="create",
+    )
+    assert (
+        _task_mode(task) == "create"
+        and task_context(task)["execution_mode"] == "create"
+    )
 
 
 def test_prompt_substitution_does_not_reinterpret_user_braces():

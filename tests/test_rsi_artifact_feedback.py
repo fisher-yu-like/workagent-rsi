@@ -18,7 +18,67 @@ from workagent_rsi.rsi_feedback import build_feedback
 from workagent_rsi.rsi_loop import RSILoop
 from workagent_rsi.skill_runtime import PilotSkillConfig
 from workagent_rsi.verifier import CandidateVerifier, VerificationPolicy
-from test_artifact_assessment_excel import sales_task
+from sales_fixture import sales_task
+from test_llm_task_review import Provider, judgement
+
+
+class SalesFixtureAssessment(SharedAssessment):
+    """Scripted model double for the existing toy RSI control-flow fixture."""
+
+    def __init__(self, unknown=False):
+        super().__init__(provider=Provider())
+        self.unknown = unknown
+
+    def inspect(self, spec, artifacts):
+        if self.unknown:
+            return self.unavailable(spec, "Scripted unavailable model evidence")
+        if artifacts:
+            from openpyxl import load_workbook
+
+            book = load_workbook(next(iter(artifacts.values())))
+            source = json.loads(Path(next(iter(spec.input_hashes))).read_text())
+            totals = {}
+            for row in source:
+                totals[row["region"]] = totals.get(row["region"], 0) + row["amount"]
+            actual = {
+                book["Summary"].cell(i, 1).value: book["Summary"].cell(i, 2).value
+                for i in range(2, book["Summary"].max_row + 1)
+            }
+            chart = bool(book["Summary"]._charts)
+            formatted = book["Summary"]["B2"].number_format == "#,##0.00"
+            flags = {
+                "source_records": all(actual.get(k) == v for k, v in totals.items()),
+                "chart": chart,
+                "format.total": formatted,
+            }
+            book.close()
+            issues = [
+                {
+                    "issue_id": key,
+                    "description": "Scripted model observation at Summary.",
+                    "location": {
+                        "artifact": "output",
+                        "sheet": "Summary",
+                        "cell": "B2",
+                    },
+                    "kind": "artifact_defect",
+                    "severity": "major" if key == "source_records" else "minor",
+                    "repair_suggestion": "Apply the original request to the complete supplied data.",
+                    "evidence_refs": ["output"],
+                }
+                for key, ok in flags.items()
+                if not ok
+            ]
+            score = round(
+                (0.8 if flags["source_records"] else 0.3)
+                + 0.1 * chart
+                + 0.1 * formatted,
+                2,
+            )
+            self.provider.decision = judgement(
+                "PASS" if flags["source_records"] else "FAIL", score, issues
+            )
+        return super().inspect(spec, artifacts)
 
 
 def portable_verification(command, cwd, timeout):
@@ -31,31 +91,91 @@ def portable_verification(command, cwd, timeout):
 def setup_loop(root, *, provider=None, config=None, mode="structured", unknown=False):
     tasks = {
         "develop": [sales_task(root / "input", "dev")],
-        "regression": [sales_task(root / "input", "reg", [{"region": "North", "amount": 7}, {"region": "South", "amount": 9}])],
-        "hidden": [sales_task(root / "input", "secret", [{"region": "PRIVATE_REGION", "amount": 1234}, {"region": "PRIVATE_REGION", "amount": 4321}], hidden=True)],
+        "regression": [
+            sales_task(
+                root / "input",
+                "reg",
+                [{"region": "North", "amount": 7}, {"region": "South", "amount": 9}],
+            )
+        ],
+        "hidden": [
+            sales_task(
+                root / "input",
+                "secret",
+                [
+                    {"region": "PRIVATE_REGION", "amount": 1234},
+                    {"region": "PRIVATE_REGION", "amount": 4321},
+                ],
+                hidden=True,
+            )
+        ],
     }
-    if unknown:
-        from workagent_rsi.assessment_contracts import Requirement, Location
-        task = tasks["develop"][0]
-        spec = spec_from_task(task,assessment_profile="legacy").model_dump()
-        spec["requirements"].append(Requirement(requirement_id="visual", description="legibility", check="visual", location=Location(artifact="output"), dimension="presentation", evidence_source="real render").model_dump())
-        tasks["develop"] = [task.model_copy(update={"expected_constraints": {"acceptance_spec": spec}})]
-    hashes = {s: canonical_json_hash([t.model_dump(mode="json") for t in rows]) for s, rows in tasks.items()}
-    identity = SharedAssessment().identity()
-    contract = EvaluationContract(contract_id="artifact-v1-test", dataset_hash=canonical_json_hash(hashes), split_hashes=hashes,
-        evaluator_hash=identity, assessment_mode="artifact-v1", assessment_identity=identity,
-        acceptance_hashes={t.task_id: spec_from_task(t,assessment_profile="legacy").fingerprint() for rows in tasks.values() for t in rows},
-        provider_policy="offline-bounded", seeds=[1], repeats=2, timeout_seconds=60,
-        thresholds={"quality_gain": .01, "success_tolerance": 0, "protected_quality_tolerance": 0, "max_evaluation_seconds": 60}, git_commit="test")
+    hashes = {
+        s: canonical_json_hash([t.model_dump(mode="json") for t in rows])
+        for s, rows in tasks.items()
+    }
+    assessment = SalesFixtureAssessment(unknown)
+    identity = assessment.identity()
+    contract = EvaluationContract(
+        contract_id="artifact-v1-test",
+        dataset_hash=canonical_json_hash(hashes),
+        split_hashes=hashes,
+        evaluator_hash=identity,
+        assessment_mode="artifact-v1",
+        assessment_identity=identity,
+        acceptance_hashes={
+            t.task_id: spec_from_task(t, assessment_profile="legacy").fingerprint()
+            for rows in tasks.values()
+            for t in rows
+        },
+        provider_policy="offline-bounded",
+        seeds=[1],
+        repeats=2,
+        timeout_seconds=60,
+        thresholds={
+            "quality_gain": 0.01,
+            "success_tolerance": 0,
+            "protected_quality_tolerance": 0,
+            "max_evaluation_seconds": 60,
+        },
+        git_commit="test",
+    )
     registry = SkillRegistry(root / "registry")
-    package = config or {"sales_rows": "omit_last", "sales_chart": False, "sales_number_format": False}
-    registry.register(skill_id="office.sales", version="0.1.0", package=package, manifest={"domain": "excel"}, status="champion", evidence_refs=["a" * 64], parent_version=None, candidate_id=None)
+    package = config or {
+        "sales_rows": "omit_last",
+        "sales_chart": False,
+        "sales_number_format": False,
+    }
+    registry.register(
+        skill_id="office.sales",
+        version="0.1.0",
+        package=package,
+        manifest={"domain": "excel"},
+        status="champion",
+        evidence_refs=["a" * 64],
+        parent_version=None,
+        candidate_id=None,
+    )
     source = root / "source"
     source.mkdir()
     (source / "skill.json").write_text(json.dumps(package), encoding="utf-8")
-    loop = RSILoop(registry=registry, workspace_builder=CandidateWorkspaceBuilder(), provider=provider or ArtifactFeedbackProvider(),
-        verifier=CandidateVerifier(runner=portable_verification), evaluator=FrozenEvaluator(identity,assessment_profile="legacy"), promotion=PromotionController(), feedback_mode=mode)
-    arguments = dict(skill_id="office.sales", tasks_by_split=tasks, contract=contract, source_root=source, run_root=root / "run", verification_policy=VerificationPolicy(allowed_targets={"skill.json"}))
+    loop = RSILoop(
+        registry=registry,
+        workspace_builder=CandidateWorkspaceBuilder(),
+        provider=provider or ArtifactFeedbackProvider(),
+        verifier=CandidateVerifier(runner=portable_verification),
+        evaluator=FrozenEvaluator(identity, assessment=assessment),
+        promotion=PromotionController(),
+        feedback_mode=mode,
+    )
+    arguments = dict(
+        skill_id="office.sales",
+        tasks_by_split=tasks,
+        contract=contract,
+        source_root=source,
+        run_root=root / "run",
+        verification_policy=VerificationPolicy(allowed_targets={"skill.json"}),
+    )
     return loop, arguments
 
 

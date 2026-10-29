@@ -1,5 +1,5 @@
-# Document and presentation assessment
+# Document and presentation observations
 
-Text presence proves declared content coverage only. Report DOCX paragraph/heading/table coordinates and PPTX slide/object identifiers. Structure, factual values and references use task-supplied expectations; unimplemented semantic judgments remain unavailable.
+Supply Word body,table,header,footer,footnote,comment and revision observations where available. Supply PowerPoint text,native object metadata and actual rendered pages with authorized reference images.
 
-Geometric overlap alone cannot prove occlusion: backgrounds and contained text commonly overlap. Visual requirements require real renderings. Cross-file facts need expected values and explicit source locations, not agreement between two potentially wrong outputs.
+The model judges editing intent,content preservation,layout and editability from this evidence. Geometry or object counts are observations,not a sufficient task acceptance rule. Record unavailable observations so the model can state what remains unknown.

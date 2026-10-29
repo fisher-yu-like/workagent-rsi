@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 
 from .assessment_contracts import Location
-from .check_registry import validate_location
+from .location_syntax import validate_location
 
 
 class AmbiguousScope(ValueError):

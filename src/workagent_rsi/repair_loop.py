@@ -149,8 +149,7 @@ class RepairLoop:
         task_hash=canonical_json_hash(frozen_task)
         deadline=self.started+self.policy.total_deadline_seconds
         visibility=FeedbackVisibilityPolicy().permits(self.split_name,task.hidden_test)
-        from .artifact_assessment import spec_from_task
-        declared=set(spec_from_task(task).artifacts)
+        declared={ref.get('name') or 'output' for ref in initial_execution.get('artifacts',[])} or {'output'}
         allowed=set(self.policy.allowed_artifacts) or declared
         if not allowed<=declared:
             raise ValueError('allowed_artifacts must name declared task artifacts')

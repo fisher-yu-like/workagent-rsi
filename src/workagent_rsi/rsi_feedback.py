@@ -117,17 +117,14 @@ def build_feedback(develop, *, mode="structured",execution_failures=None) -> RSI
 
 def feedback_with_requirements(feedback, develop_tasks):
     """Attach logical task/requirement references, never input or report paths."""
-    from .artifact_assessment import spec_from_task
     public_tasks = {task.task_id: task for task in develop_tasks if not task.hidden_test}
     rows = []
     for row in candidate_feedback(feedback).tasks:
         if row['task_id'] not in public_tasks:
             continue
         task = public_tasks[row['task_id']]
-        spec = spec_from_task(task)
-        refs = [{'requirement_id': req.requirement_id, 'description': req.description,
-                 'source_ref': f'task:{task.task_id}/requirement:{req.requirement_id}'}
-                for req in spec.requirements if req.feedback_visibility == 'develop']
+        refs = [{'requirement_id':'original-task','description':task.instruction,
+                 'source_ref':f'task:{task.task_id}'}]
         rows.append({**row, 'requirement_refs': refs,
                      'trace_summary': {'acceptance_status': row.get('acceptance_status'),
                                        'visible_issue_count': len(row.get('issues', row.get('errors', [])))}})
@@ -202,7 +199,9 @@ def comparison_metrics(baseline, candidate, root, contract):
             previous = old_rows[row["task_id"]]
             before = {c["requirement_id"]: c["status"] for c in (previous.get('score_report') or {}).get('criterion_results',[])}
             after = {c["requirement_id"]: c["status"] for c in (row.get('score_report') or {}).get('criterion_results',[])}
-            metrics["critical_regressions"] += sum(before.get(r) == "PASS" and after.get(r) != "PASS" for r in row["critical_requirements"])
+            metrics["critical_regressions"] += (int(previous.get('passed') is True and row.get('passed') is not True)
+                if (row.get('score_report') or {}).get('score_semantics')=='llm-task-review-v1' else
+                sum(before.get(r) == "PASS" and after.get(r) != "PASS" for r in row["critical_requirements"]))
             if not (row.get('assessment_complete') and previous.get('assessment_complete')):continue
             a = {i["issue_id"] for i in (previous.get('issue_report') or {}).get('issues',[]) if i["kind"] == "artifact_defect"}
             b = {i["issue_id"] for i in (row.get('issue_report') or {}).get('issues',[]) if i["kind"] == "artifact_defect"}

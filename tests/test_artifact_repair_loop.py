@@ -1,4 +1,5 @@
 """T21 qualification uses authored executors and real openpyxl files, no model."""
+
 import inspect
 import json
 from io import BytesIO
@@ -7,7 +8,11 @@ from pathlib import Path
 import pytest
 from openpyxl import Workbook, load_workbook
 
-from test_assessment_entrypoint_parity import authored_spec, reviewed_task
+from test_assessment_entrypoint_parity import (
+    authored_spec,
+    reviewed_task,
+    FixtureAssessment,
+)
 from workagent_rsi.harness import Harness
 from workagent_rsi.workagent_provider import WorkAgentConfig
 
@@ -41,7 +46,12 @@ def executor(monkeypatch, tmp_path, values):
 
 
 def harness(tmp_path):
-    return Harness(tmp_path/'results', workagent_config=WorkAgentConfig(verify_com=False), agent_instructions='Frozen skill')
+    return Harness(
+        tmp_path / "results",
+        workagent_config=WorkAgentConfig(verify_com=False),
+        agent_instructions="Frozen skill",
+        assessment=FixtureAssessment(),
+    )
 
 
 def test_wrong_artifact_gets_one_repair_and_fresh_full_assessment(tmp_path, monkeypatch):
@@ -76,19 +86,41 @@ def test_code_failure_can_enter_repair_without_fake_quality(tmp_path, monkeypatc
 
 def test_new_regression_is_detected_by_all_requirements(tmp_path, monkeypatch):
     from workagent_rsi.assessment_contracts import Requirement, Location
+
     spec = authored_spec()
-    spec = spec.model_copy(update={'requirements': [*spec.requirements,
-        Requirement(requirement_id='keep', description='Keep B1 unchanged', check='excel.cell',
-                    location=Location(artifact='output', sheet='Sheet', cell='B1'), expected='original',
-                    critical=True, dimension='content', evidence_source='independent authored oracle')]})
-    calls = executor(monkeypatch, tmp_path, [(7,'original'), (42,'destroyed')])
-    result = harness(tmp_path).run(reviewed_task(spec), repair_policy=policy(max_repairs=1))
-    assert len(calls) == 2 and result['state'] == 'FAILED'
-    last = result['repair_loop']['attempts'][-1]
-    first_score = json.loads(Path(result['repair_loop']['attempts'][0]['evaluation']['report_paths']['score']).read_text())
-    assert {c['requirement_id']: c['status'] for c in first_score['criterion_results']} == {'answer':'FAIL','keep':'PASS'}
-    score = json.loads(Path(last['evaluation']['report_paths']['score']).read_text())
-    assert {c['requirement_id']: c['status'] for c in score['criterion_results']} == {'answer':'PASS', 'keep':'FAIL'}
+    spec = spec.model_copy(
+        update={
+            "requirements": [
+                *spec.requirements,
+                Requirement(
+                    requirement_id="keep",
+                    description="Keep B1 unchanged",
+                    check="excel.cell",
+                    location=Location(artifact="output", sheet="Sheet", cell="B1"),
+                    expected="original",
+                    critical=True,
+                    dimension="content",
+                    evidence_source="independent authored oracle",
+                ),
+            ]
+        }
+    )
+    calls = executor(monkeypatch, tmp_path, [(7, "original"), (42, "destroyed")])
+    result = harness(tmp_path).run(
+        reviewed_task(spec), repair_policy=policy(max_repairs=1)
+    )
+    assert len(calls) == 2 and result["state"] == "FAILED"
+    last = result["repair_loop"]["attempts"][-1]
+    first_score = json.loads(
+        Path(
+            result["repair_loop"]["attempts"][0]["evaluation"]["report_paths"]["score"]
+        ).read_text()
+    )
+    assert first_score["task_acceptance"] == "FAIL"
+    score = json.loads(Path(last["evaluation"]["report_paths"]["score"]).read_text())
+    assert score["task_acceptance"] == "FAIL"
+    issues = json.loads(Path(last["evaluation"]["report_paths"]["issues"]).read_text())
+    assert issues["issues"][0]["requirement_id"] == "keep"
 
 
 def test_environment_failure_is_not_repaired(tmp_path, monkeypatch):

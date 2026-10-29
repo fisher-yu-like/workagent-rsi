@@ -1,5 +1,7 @@
 # Task requirement admission (T10)
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](operations/llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 Check completion and task requirement coverage are separate facts. A readable
 Office file, or a perfect score on the supplied checks, does not establish that
 all user obligations were tested. No artifact is read to construct the inventory.

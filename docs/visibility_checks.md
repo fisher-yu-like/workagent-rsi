@@ -1,5 +1,7 @@
 # Slide visibility and page coverage (T15)
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](operations/llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 `inspect_visibility(deck, slide_index)` reports object IDs, slide-space geometry,
 certainty and the reason for review. Group offsets and scales are transformed
 before bounds checks. A required text occurrence outside the canvas cannot

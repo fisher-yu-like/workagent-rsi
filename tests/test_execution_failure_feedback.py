@@ -1,4 +1,5 @@
 """T20 fixed denominators and learning signals; no real model/server calls."""
+
 from datetime import datetime,timezone
 import hashlib
 import json
@@ -7,7 +8,13 @@ import traceback
 
 import pytest
 
-from test_assessment_entrypoint_parity import authored_spec,reviewed_task,book,ref
+from test_assessment_entrypoint_parity import (
+    authored_spec,
+    reviewed_task,
+    book,
+    ref,
+    FixtureAssessment,
+)
 from workagent_rsi.artifact_assessment import spec_from_task
 from workagent_rsi.harness_artifact_evaluator import HarnessArtifactEvaluator
 from workagent_rsi.hashing import canonical_json_hash
@@ -17,17 +24,36 @@ from workagent_rsi.workagent_evaluator import WorkAgentFrozenEvaluator
 from workagent_rsi.workagent_provider import WorkAgentConfig,WorkAgentSkill
 
 
-def setup(tmp_path,names=('easy','hard')):
-    tasks=[reviewed_task(authored_spec().model_copy(update={'task_id':name})) for name in names]
-    cfg=WorkAgentConfig(verify_com=False)
-    evaluator=WorkAgentFrozenEvaluator(workagent_config=cfg,input_base=tmp_path,assessment_output_root=tmp_path/'judge')
-    split_hash=canonical_json_hash([t.model_dump(mode='json') for t in tasks])
-    contract=EvaluationContract(contract_id='authored-failure-feedback',dataset_hash=split_hash,split_hashes={'develop':split_hash},
-        evaluator_hash=evaluator.evaluator_hash,assessment_mode='artifact-v1',assessment_identity=evaluator.assessment_identity,
-        acceptance_hashes={t.task_id:spec_from_task(t).fingerprint() for t in tasks},
-        provider_policy='workagent-config:'+canonical_json_hash(cfg.model_dump(mode='json')),
-        seeds=[1],repeats=1,timeout_seconds=10,thresholds={},git_commit='authored-unit-fixture')
-    return tasks,evaluator,contract
+def setup(tmp_path, names=("easy", "hard")):
+    tasks = [
+        reviewed_task(authored_spec().model_copy(update={"task_id": name}))
+        for name in names
+    ]
+    cfg = WorkAgentConfig(verify_com=False)
+    evaluator = WorkAgentFrozenEvaluator(
+        workagent_config=cfg,
+        input_base=tmp_path,
+        assessment_output_root=tmp_path / "judge",
+        assessment=FixtureAssessment(),
+    )
+    split_hash = canonical_json_hash([t.model_dump(mode="json") for t in tasks])
+    contract = EvaluationContract(
+        contract_id="authored-failure-feedback",
+        dataset_hash=split_hash,
+        split_hashes={"develop": split_hash},
+        evaluator_hash=evaluator.evaluator_hash,
+        assessment_mode="artifact-v1",
+        assessment_identity=evaluator.assessment_identity,
+        acceptance_hashes={t.task_id: spec_from_task(t).fingerprint() for t in tasks},
+        provider_policy="workagent-config:"
+        + canonical_json_hash(cfg.model_dump(mode="json")),
+        seeds=[1],
+        repeats=1,
+        timeout_seconds=10,
+        thresholds={},
+        git_commit="authored-unit-fixture",
+    )
+    return tasks, evaluator, contract
 
 
 def install_runs(monkeypatch,scenarios,calls):
@@ -90,28 +116,42 @@ def test_infrastructure_or_unknown_failure_stops_without_zero_quality(tmp_path,m
     assert not report.get('execution_failures')
 
 
-def test_failed_hard_task_stays_in_denominator_and_has_no_visual_zero(tmp_path,monkeypatch):
-    tasks,evaluator,contract=setup(tmp_path);calls=[]
-    install_runs(monkeypatch,{'easy':'pass','hard':'agent_execution'},calls)
-    report=evaluate(evaluator,tasks,contract,tmp_path/'split')
-    assert report.get('task_denominator')==2 and report.get('task_success_rate')==.5
-    assert report.get('execution_success_rate')==.5 and report.get('quality_denominator')==1
-    assert report['quality_score'] is None
-    assert report['dimension_scores']['content'] is None
-    assert report['evaluation_seconds']==pytest.approx(sum(r['wall_time_seconds'] for r in report['rows']))
-    row=next(r for r in report['rows'] if r['task_id']=='hard')
-    assert row['quality_score'] is None and row['score_report'] is None
-    assert row['telemetry']=={} and row['task_success'] is False
-    (tmp_path/'split-report.json').write_text(json.dumps(report,indent=2))
+def test_failed_hard_task_stays_in_denominator_and_has_no_visual_zero(
+    tmp_path, monkeypatch
+):
+    tasks, evaluator, contract = setup(tmp_path)
+    calls = []
+    install_runs(monkeypatch, {"easy": "pass", "hard": "agent_execution"}, calls)
+    report = evaluate(evaluator, tasks, contract, tmp_path / "split")
+    assert (
+        report.get("task_denominator") == 2 and report.get("task_success_rate") == 0.5
+    )
+    assert (
+        report.get("execution_success_rate") == 0.5
+        and report.get("quality_denominator") == 1
+    )
+    assert report["quality_score"] is None
+    assert report["dimension_scores"] == {}
+    assert report["evaluation_seconds"] == pytest.approx(
+        sum(r["wall_time_seconds"] for r in report["rows"])
+    )
+    row = next(r for r in report["rows"] if r["task_id"] == "hard")
+    assert row["quality_score"] is None and row["score_report"] is None
+    assert row["telemetry"] == {} and row["task_success"] is False
+    (tmp_path / "split-report.json").write_text(json.dumps(report, indent=2))
 
 
-def test_artifact_failure_is_distinct_from_execution_failure(tmp_path,monkeypatch):
-    tasks,evaluator,contract=setup(tmp_path,('easy',));calls=[]
-    install_runs(monkeypatch,{'easy':'artifact_fail'},calls)
-    report=evaluate(evaluator,tasks,contract,tmp_path/'split')
-    assert report.get('execution_success_rate')==1 and report.get('task_success_rate')==0
-    assert report['quality_score']==0 and report['assessment_complete'] is True
-    assert not report.get('execution_failures')
+def test_artifact_failure_is_distinct_from_execution_failure(tmp_path, monkeypatch):
+    tasks, evaluator, contract = setup(tmp_path, ("easy",))
+    calls = []
+    install_runs(monkeypatch, {"easy": "artifact_fail"}, calls)
+    report = evaluate(evaluator, tasks, contract, tmp_path / "split")
+    assert (
+        report.get("execution_success_rate") == 1
+        and report.get("task_success_rate") == 0
+    )
+    assert report["quality_score"] == 0.2 and report["assessment_complete"] is True
+    assert not report.get("execution_failures")
 
 
 def test_candidate_cannot_gain_quality_by_dropping_a_hard_task(tmp_path,monkeypatch):

@@ -11,6 +11,7 @@ from workagent_rsi.registry import RollbackManager, SkillRegistry
 from workagent_rsi.rsi_contracts import EvaluationContract
 from workagent_rsi.rsi_loop import RSILoop
 from workagent_rsi.verifier import CandidateVerifier, VerificationPolicy
+from model_fixture import MarkerFixtureAssessment
 
 
 def test_fake_provider_closed_loop_promotes_and_rolls_back(tmp_path: Path):
@@ -30,7 +31,13 @@ def test_fake_provider_closed_loop_promotes_and_rolls_back(tmp_path: Path):
         seeds=[1],
         repeats=1,
         timeout_seconds=60,
-        thresholds={"develop_gain": 0.1, "regression_tolerance": 1.0, "hidden_degradation": 1.0, "ood_degradation": 1.0, "max_cost_delta": 1.0},
+        thresholds={
+            "develop_gain": 0.1,
+            "regression_tolerance": 1.0,
+            "hidden_degradation": 1.0,
+            "ood_degradation": 1.0,
+            "max_cost_delta": 1.0,
+        },
         git_commit="deadbeef",
     )
     registry = SkillRegistry(tmp_path / "registry")
@@ -46,13 +53,15 @@ def test_fake_provider_closed_loop_promotes_and_rolls_back(tmp_path: Path):
     )
     source = tmp_path / "source"
     source.mkdir()
-    (source / "skill.json").write_text(json.dumps({"marker_source": "task_id"}), encoding="utf-8")
+    (source / "skill.json").write_text(
+        json.dumps({"marker_source": "task_id"}), encoding="utf-8"
+    )
     loop = RSILoop(
         registry=registry,
         workspace_builder=CandidateWorkspaceBuilder(),
         provider=DeterministicCandidateProvider(),
         verifier=CandidateVerifier(),
-        evaluator=FrozenEvaluator("e" * 64),
+        evaluator=FrozenEvaluator("e" * 64, assessment=MarkerFixtureAssessment()),
         promotion=PromotionController(),
     )
     result = loop.run_round(

@@ -1,4 +1,5 @@
 """T22 offline budget/visibility controls, including mocked transport boundaries."""
+
 import inspect
 import json
 from pathlib import Path
@@ -146,17 +147,37 @@ def test_deadline_denies_reservation_without_sleep():
     assert b.snapshot()['used']['model']==0
 
 
-def test_review_retries_share_execution_budget_and_count_only_started_calls(tmp_path, monkeypatch):
-    from test_model_judgement import config, api_transport, spec, artifact
-    from workagent_rsi.model_judgement import configured_assessment
-    monkeypatch.setenv('OPENAI_API_KEY','authored-offline-only')
-    calls=[]; cfg=config().model_copy(update={'retries':3})
-    assessment=configured_assessment(cfg,tmp_path/'judge',transport=api_transport(calls,invalid=True))
-    b=budget(max_model_calls=1)
-    with b.activate(tmp_path/'budget.json'):
-        report=assessment.inspect(spec(),{'out':artifact(tmp_path,'word')})
-    assert len(calls)==1 and b.snapshot()['used']['model']==1
-    assert report.telemetry['semantic'][0]['model_calls']==1
+def test_review_retries_share_execution_budget_and_count_only_started_calls(
+    tmp_path, monkeypatch
+):
+    from workagent_rsi.model_judgement import configured_assessment, ModelReviewConfig
+    from workagent_rsi.artifact_assessment import spec_from_task
+    from workagent_rsi.contracts import TaskSpec
+    from test_llm_task_review import workbook
+
+    monkeypatch.setenv("OPENAI_API_KEY", "authored-offline-only")
+    calls = []
+
+    def broken_transport(*args):
+        calls.append(args)
+        return {"status": "completed", "output": []}
+
+    cfg = ModelReviewConfig(
+        provider="api", model="unit-model", retries=2, visual_enabled=False
+    )
+    assessment = configured_assessment(
+        cfg, tmp_path / "judge", transport=broken_transport
+    )
+    task = TaskSpec(
+        task_id="budget", domain="excel", instruction="Review the workbook."
+    )
+    b = budget(max_model_calls=1)
+    with b.activate(tmp_path / "budget.json"):
+        report = assessment.inspect(
+            spec_from_task(task), {"output": workbook(tmp_path)}
+        )
+    assert len(calls) == 1 and b.snapshot()["used"]["model"] == 1
+    assert report.telemetry["model_calls"] == 1 and report.judgement is None
 
 
 def test_disallowed_artifact_change_rejects_otherwise_passing_repair(tmp_path,monkeypatch):

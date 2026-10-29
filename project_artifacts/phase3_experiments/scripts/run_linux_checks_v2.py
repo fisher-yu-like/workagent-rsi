@@ -18,7 +18,7 @@ from workagent_rsi.hashing import sha256_file
 SELECTION=[f'tests/test_{name}.py' for name in (
     'contracts','run_contracts','rsi_contracts','artifact_assessment_contracts','registry','promotion',
     'statistical_promotion','repeated_evaluation','memory_v2','human_label_provenance','review_audit',
-    'requirement_coverage','check_registry','formula_semantics','family_split_isolation',
+    'llm_task_review','task_review_evidence','family_split_isolation',
     'experiment_budget_fairness','external_protocol_v2','release_claims')]
 
 BOOTSTRAP=r'''

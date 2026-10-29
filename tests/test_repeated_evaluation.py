@@ -51,25 +51,39 @@ def setup_contract():
     return batches,contract
 
 
-def test_interleaving_keeps_every_repeat_and_never_grants_research(tmp_path):
-    batches,contract=setup_contract();executor=RecordedExecutor()
-    old,new,result=evaluate_paired(executor,batches,'old','new',contract,tmp_path)
-    assert [executor.calls[i][0] for i in range(0,24,4)]==['old','new','new','old','old','new']
-    assert all(call[2]==1 for call in executor.calls)
-    assert result['eligible'] and result['research_qualified'] is False
-    assert new['develop']['repeated_observation_count']==9
-    assert new['develop']['quality_score']==pytest.approx(.7)
-    assert result['execution_seed']=='not_supported'
-    assert new['develop']['judge_variance'] is None
+def test_interleaving_keeps_every_repeat_and_never_grants_research(tmp_path_factory):
+    tmp_path = tmp_path_factory.mktemp("paired")
+    batches, contract = setup_contract()
+    executor = RecordedExecutor()
+    old, new, result = evaluate_paired(
+        executor, batches, "old", "new", contract, tmp_path
+    )
+    assert [executor.calls[i][0] for i in range(0, 24, 4)] == [
+        "old",
+        "new",
+        "new",
+        "old",
+        "old",
+        "new",
+    ]
+    assert all(call[2] == 1 for call in executor.calls)
+    assert result["eligible"] and result["research_qualified"] is False
+    assert new["develop"]["repeated_observation_count"] == 9
+    assert new["develop"]["quality_score"] == pytest.approx(0.7)
+    assert result["execution_seed"] == "not_supported"
+    assert new["develop"]["judge_variance"] is None
     with pytest.raises(FileExistsError):
-        evaluate_paired(executor,batches,'old','new',contract,tmp_path)
+        evaluate_paired(executor, batches, "old", "new", contract, tmp_path)
 
 
-def test_cached_judgement_cannot_enable_promotion(tmp_path):
-    batches,contract=setup_contract()
-    _,_,report=evaluate_paired(RecordedExecutor(cached=True),batches,'old','new',contract,tmp_path)
-    assert not report['eligible']
-    assert 'unqualified_quality_evidence' in report['splits']['develop']['blockers']
+def test_cached_judgement_cannot_enable_promotion(tmp_path_factory):
+    tmp_path = tmp_path_factory.mktemp("cache")
+    batches, contract = setup_contract()
+    _, _, report = evaluate_paired(
+        RecordedExecutor(cached=True), batches, "old", "new", contract, tmp_path
+    )
+    assert not report["eligible"]
+    assert "unqualified_quality_evidence" in report["splits"]["develop"]["blockers"]
 
 
 def test_success_metric_counts_artifact_failures_too():

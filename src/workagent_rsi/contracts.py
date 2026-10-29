@@ -58,6 +58,7 @@ class ArtifactRef(BaseModel):
     media_type: str
     size_bytes: int
     name: str | None = None
+    file_name: str | None = None
 
 
 class ToolCall(BaseModel):
@@ -81,14 +82,14 @@ class EvaluationReport(BaseModel):
     channel_status: dict[str, str] = Field(default_factory=dict)
     assessment_identity: str | None = None
     report_paths: dict[str, str] = Field(default_factory=dict)
-    score_semantics: Literal['legacy','task-v2','smoke'] = 'legacy'
-    task_acceptance: Literal['PASS','FAIL','INCOMPLETE','NOT_ASSESSED'] | None = None
+    score_semantics: Literal['legacy','task-v2','llm-task-review-v1','smoke'] = 'legacy'
+    task_acceptance: Literal['PASS','PARTIAL','FAIL','NEEDS_REVIEW','INCOMPLETE','NOT_ASSESSED'] | None = None
     quality_score: float | None = Field(default=None,ge=0,le=1)
     assessment_outcome: AssessmentOutcome | None = None
 
     @model_validator(mode='after')
     def versioned_task_semantics(self):
-        if self.score_semantics=='task-v2':
+        if self.score_semantics in {'task-v2','llm-task-review-v1'}:
             outcome=self.assessment_outcome
             if outcome is None or self.task_acceptance!=outcome.task_acceptance:
                 raise ValueError('versioned evaluation requires the same explicit task outcome')

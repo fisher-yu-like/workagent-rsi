@@ -41,7 +41,8 @@ def _observation(row, task, repeat, contract):
             pass
     telemetry = [item for channel in ('semantic', 'visual')
                  for item in row.get('telemetry', {}).get(channel, [])]
-    independent = all(item.get('model_calls', 0) > 0 for item in telemetry)
+    meta=row.get('telemetry',{})
+    independent = meta['model_calls']>0 if 'model_calls' in meta else all(item.get('model_calls', 0) > 0 for item in telemetry)
     identity = canonical_json_hash({'directory': str(directory.resolve()), 'scripts': evidence,
                                     'log': sha256_file(log) if log.is_file() else None})
     return RepeatedObservation(task_id=task.task_id,

@@ -1,5 +1,7 @@
 # Evidence scope and independent reviews (T16)
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](operations/llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 Semantic review partitions supported extracted evidence within the fixed
 character, item and partition limits. Each partition preserves evidence IDs and
 locations. Evidence outside the requested location is listed as excluded; an

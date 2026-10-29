@@ -201,5 +201,27 @@
       "test_node": "tests/test_review_regressions.py::test_exact_formula_control_rejects_a_different_expression",
       "purpose": "Exact formula requirements legitimately reject a different expression."
     }
-  ]
+  ],
+  "retired_rule_tests": {
+    "R02": {
+      "reason": "Coded acceptance protocol retired;replacement model transport/loop tests do not establish real judge accuracy.",
+      "llm_accuracy_qualified": false
+    },
+    "R03": {
+      "reason": "Coded acceptance protocol retired;replacement model transport/loop tests do not establish real judge accuracy.",
+      "llm_accuracy_qualified": false
+    },
+    "R04": {
+      "reason": "Coded acceptance protocol retired;replacement model transport/loop tests do not establish real judge accuracy.",
+      "llm_accuracy_qualified": false
+    },
+    "R05": {
+      "reason": "Coded acceptance protocol retired;replacement model transport/loop tests do not establish real judge accuracy.",
+      "llm_accuracy_qualified": false
+    },
+    "R10": {
+      "reason": "Coded acceptance protocol retired;replacement model transport/loop tests do not establish real judge accuracy.",
+      "llm_accuracy_qualified": false
+    }
+  }
 }

@@ -130,22 +130,8 @@ class WorkAgentFrozenEvaluator:
                 if not repeated[-1]['task_outcome_complete']:
                     break
 
-            model_requirements = {
-                requirement.requirement_id
-                for requirement in specs[task.task_id].requirements
-                if requirement.check in {"semantic", "visual"}
-            }
-            model_used = any(
-                row["telemetry"].get(channel)
-                for row in repeated
-                for channel in ("visual", "semantic")
-            )
-            independent = not model_used or all(
-                item.get("model_calls", 0) > 0
-                for row in repeated
-                for channel in ("visual", "semantic")
-                for item in row["telemetry"].get(channel, [])
-            )
+            model_requirements = set()
+            independent = all(row['telemetry'].get('model_calls',0)>0 for row in repeated if row['assessment_complete'])
             agreement = len(repeated) >= 2 and independent and all(
                 self._signature(row, model_requirements) == self._signature(repeated[0], model_requirements)
                 for row in repeated[1:]
@@ -295,10 +281,6 @@ class WorkAgentFrozenEvaluator:
             value = float(score_100)
             if math.isfinite(value) and 0 <= value <= 100:
                 score = value / 100
-        check_statuses = [
-            item.get("status")
-            for item in (score_report or {}).get("criterion_results", [])
-        ]
         com_reopen = result.get("com_reopen")
         com_required = (
             self.workagent_config.verify_com
@@ -316,12 +298,7 @@ class WorkAgentFrozenEvaluator:
             result.get("state") in {"SUCCEEDED", "FAILED"}
             and reports_share_snapshot
             and score is not None
-            and (score_report or {}).get("acceptance_status") in {"PASS", "FAIL"}
-            and bool(check_statuses)
-            and all(
-                status in {"PASS", "PARTIAL", "FAIL", "NOT_APPLICABLE"}
-                for status in check_statuses
-            )
+            and (score_report or {}).get("acceptance_status") in {"PASS", "PARTIAL", "FAIL"}
             and com_check_complete
         )
         compatibility_score = evaluation.get("score")
@@ -360,11 +337,7 @@ class WorkAgentFrozenEvaluator:
             "com_reopen": com_reopen,
             "score_report": score_report,
             "issue_report": issue_report,
-            "critical_requirements": [
-                requirement.requirement_id
-                for requirement in spec.requirements
-                if requirement.critical and requirement.applicable
-            ],
+            "critical_requirements": [],
             "critical_failures": evaluation.get("critical_failures", []),
             "failure": result.get("failure"),
             "evidence_path": str((attempt_root / "assessment").resolve()),
@@ -451,6 +424,7 @@ class WorkAgentFrozenEvaluator:
             'failure_origin':(row.get('execution_outcome') or {}).get('failure_origin'),
             "score": row.get("score"),
             "passed": row.get("passed"),
+            "task_acceptance":row.get('task_acceptance'),
             "checks": [
                 (
                     check.get("requirement_id"),

@@ -67,10 +67,10 @@ def validate_release(manifest: Path) -> dict:
 
 def replay_assessment_bundle(manifest, *, spec_label='spec', artifact_labels=None, input_labels=None, assessment=None):
     from .artifact_assessment import SharedAssessment
-    from .assessment_contracts import AcceptanceSpec
+    from .task_review import TaskReviewSpec
     files=verify_evidence_bundle(Path(manifest))
     metadata=json.loads(Path(manifest).read_text(encoding='utf-8'))
-    spec=AcceptanceSpec.model_validate_json(files[spec_label].read_text(encoding='utf-8'))
+    spec=TaskReviewSpec.model_validate_json(files[spec_label].read_text(encoding='utf-8'))
     original_spec_hash=spec.fingerprint()
     rebindings={}
     if spec.input_hashes:
@@ -84,8 +84,9 @@ def replay_assessment_bundle(manifest, *, spec_label='spec', artifact_labels=Non
         # Only locations change. Each replacement retains the exact frozen hash;
         # report both spec hashes and the relocation map rather than claiming
         # path-sensitive spec identity is unchanged.
-        spec=AcceptanceSpec.model_validate({**spec.model_dump(mode='json'),
-            'input_hashes':{rebindings[p]:digest for p,digest in spec.input_hashes.items()}})
+        spec=TaskReviewSpec.model_validate({**spec.model_dump(mode='json'),
+            'input_hashes':{rebindings[p]:digest for p,digest in spec.input_hashes.items()},
+            'task_context':{**spec.task_context,'input_files':[rebindings[p] for p in spec.task_context['input_files']]}})
     inspector=assessment or SharedAssessment()
     paths={name:files[label] for name,label in (artifact_labels or {'output':'artifact'}).items()}
     result=inspector.inspect(spec,paths)

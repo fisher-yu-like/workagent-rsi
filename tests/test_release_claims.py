@@ -4,7 +4,6 @@ import shutil
 from openpyxl import Workbook
 
 from workagent_rsi.artifact_assessment import SharedAssessment
-from workagent_rsi.assessment_contracts import AcceptanceSpec, Requirement, Location
 from workagent_rsi.evidence_bundle import write_evidence_bundle
 from workagent_rsi.hashing import sha256_file
 from workagent_rsi.release_validation import validate_release, replay_assessment_bundle, ENGINEERING_CHECKS
@@ -31,23 +30,46 @@ def test_missing_human_or_external_evidence_never_becomes_research_pass(tmp_path
 
 
 def test_moved_bundle_runs_new_assessment_and_preserves_identity(tmp_path):
-    book=Workbook();book.active['A1']='READY';artifact=tmp_path/'answer.xlsx';book.save(artifact)
-    source=tmp_path/'input.txt';source.write_text('frozen task input',encoding='utf-8')
-    spec=AcceptanceSpec(task_id='replay',version='1',artifacts={'output':'excel'},
-        requirements=[Requirement(requirement_id='value',description='A1 is READY',check='excel.cell',
-            location=Location(artifact='output',sheet='Sheet',cell='A1'),expected='READY',critical=True,
-            dimension='correctness',evidence_source='frozen task')],dimension_weights={'correctness':1},
-            input_hashes={str(source):sha256_file(source)})
-    spec_path=tmp_path/'spec.json';spec_path.write_text(spec.model_dump_json(),encoding='utf-8')
-    record=dict(run_id='replay',git_commit='fixture',command=['offline'],exit_code=0,
-        started_at='2026-10-26T00:00:00+00:00',ended_at='2026-10-26T00:00:01+00:00',
-        identities={'assessment':SharedAssessment().identity()},files={'spec':spec_path,'artifact.xlsx':artifact,'input':source})
-    manifest=write_evidence_bundle(tmp_path/'original',record)
-    shutil.move(str(manifest.parent),tmp_path/'moved')
-    artifact.unlink();spec_path.unlink();source.unlink()
-    report=replay_assessment_bundle(tmp_path/'moved'/'manifest.json',
-        artifact_labels={'output':'artifact.xlsx'},input_labels={str(source):'input'})
-    assert report['fresh_assessment'] and report['identity_preserved']
-    assert report['old_score_reused'] is False
-    assert report['assessment']['checks'][0]['status']=='PASS'
-    assert report['original_spec_hash']!=report['spec_hash']
+    book = Workbook()
+    book.active["A1"] = "READY"
+    artifact = tmp_path / "answer.xlsx"
+    book.save(artifact)
+    source = tmp_path / "input.txt"
+    source.write_text("frozen task input", encoding="utf-8")
+    from workagent_rsi.artifact_assessment import spec_from_task
+    from workagent_rsi.contracts import TaskSpec
+
+    spec = spec_from_task(
+        TaskSpec(
+            task_id="replay",
+            domain="excel",
+            instruction="Review A1.",
+            input_files=[str(source)],
+        )
+    )
+    spec_path = tmp_path / "spec.json"
+    spec_path.write_text(spec.model_dump_json(), encoding="utf-8")
+    record = dict(
+        run_id="replay",
+        git_commit="fixture",
+        command=["offline"],
+        exit_code=0,
+        started_at="2026-10-26T00:00:00+00:00",
+        ended_at="2026-10-26T00:00:01+00:00",
+        identities={"assessment": SharedAssessment().identity()},
+        files={"spec": spec_path, "artifact.xlsx": artifact, "input": source},
+    )
+    manifest = write_evidence_bundle(tmp_path / "original", record)
+    shutil.move(str(manifest.parent), tmp_path / "moved")
+    artifact.unlink()
+    spec_path.unlink()
+    source.unlink()
+    report = replay_assessment_bundle(
+        tmp_path / "moved" / "manifest.json",
+        artifact_labels={"output": "artifact.xlsx"},
+        input_labels={str(source): "input"},
+    )
+    assert report["fresh_assessment"] and report["identity_preserved"]
+    assert report["old_score_reused"] is False
+    assert report["assessment"]["judgement"] is None
+    assert report["original_spec_hash"] != report["spec_hash"]

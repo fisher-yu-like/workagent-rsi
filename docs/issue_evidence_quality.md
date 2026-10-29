@@ -1,5 +1,7 @@
 # Actionable issue evidence (T18)
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](operations/llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 The verifier reads the existing Assessment snapshot. It does not reopen or edit
 artifacts and does not call a model. Each new issue preserves the independently
 declared expected value, actual observation, requested and observed locations,

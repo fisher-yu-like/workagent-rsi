@@ -245,12 +245,12 @@ class Coverage(AssessmentModel):
 
 
 class ScoreReport(AssessmentModel):
-    score_semantics: Literal['declared-check-v1','task-assessment-v2'] = 'declared-check-v1'
+    score_semantics: Literal['declared-check-v1','task-assessment-v2','llm-task-review-v1'] = 'declared-check-v1'
     task_id: str
     spec_hash: str
     evaluator_identity: str
     artifact_hashes: dict[str, str | None]
-    acceptance_status: Literal["PASS", "FAIL", "INCOMPLETE"]
+    acceptance_status: Literal["PASS", "PARTIAL", "FAIL", "NEEDS_REVIEW", "INCOMPLETE"]
     total_score: float | None = Field(default=None, ge=0, le=100)
     dimension_scores: dict[str, float | None]
     coverage: Coverage
@@ -260,7 +260,7 @@ class ScoreReport(AssessmentModel):
     spec_admission: SpecAdmissionReport | None = None
     requirement_coverage: RequirementCoverage | None = None
     task_score: float | None = Field(default=None, ge=0, le=100)
-    task_acceptance: Literal['PASS', 'FAIL', 'INCOMPLETE', 'NOT_ASSESSED'] = 'NOT_ASSESSED'
+    task_acceptance: Literal['PASS', 'PARTIAL', 'FAIL', 'NEEDS_REVIEW', 'INCOMPLETE', 'NOT_ASSESSED'] = 'NOT_ASSESSED'
     check_score: float | None = Field(default=None, ge=0, le=100)
     quality_score: float | None = Field(default=None, ge=0, le=100)
 

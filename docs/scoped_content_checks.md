@@ -1,5 +1,7 @@
 # Scoped Office content checks (T12)
 
+> Historical protocol snapshot. On 2026-10-29 the user replaced coded task acceptance with [task-level LLM review](operations/llm-task-review.md). Rule coverage, rule-authoring commands and per-criterion scoring below are historical records, not current run instructions. Native reading, rendering, transport and experiment controls remain where applicable.
+
 `resolve_text_scope(obj, location, options)` returns text plus actual structured
 locations. It never searches outside the requested scope to rescue a failed
 match. With no location selector, text.contains retains whole-file search.

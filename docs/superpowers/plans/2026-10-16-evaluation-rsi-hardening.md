@@ -1,5 +1,7 @@
 # WorkAgent-RSI：评估、验证、动态执行与抗过拟合 Codex 实施计划
 
+> 2026-10-29 用户方向变更：任务合理性、产物完成度、分数和缺陷由 LLM 判断。T10–T17 中将任务编译成代码检查、按固定权重判分和强制规格覆盖率准入的要求已被替代，不再继续补齐 140 条代码验收项。代码保留通用读取、渲染、重算、模型调用、证据和预算管理；两个 loop 继续使用统一的产物评估，外循环按实际任务结果比较 skill。旧章节与记录仅解释历史实现。当前接口和迁移范围见 [LLM 任务评估协议](../../operations/llm-task-review.md)。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking. 用户将在自己的本地 Codex 中执行；默认串行，不自行启用子代理。
 
 **Goal:** 让系统能可靠识别 Office 任务缺陷、利用证据修复当前任务，并以隔离、可复现、抗过拟合的实验验证跨任务技能改进。

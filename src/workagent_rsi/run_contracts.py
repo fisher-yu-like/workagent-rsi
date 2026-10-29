@@ -143,7 +143,7 @@ class AssessmentOutcome(RunContract):
     score: float | None = Field(default=None, ge=0, le=1)
     coverage: AssessmentCoverage = Field(default_factory=AssessmentCoverage)
     report_refs: list[str] = Field(default_factory=list)
-    task_acceptance: Literal['PASS','FAIL','INCOMPLETE','NOT_ASSESSED'] | None = None
+    task_acceptance: Literal['PASS','PARTIAL','FAIL','NEEDS_REVIEW','INCOMPLETE','NOT_ASSESSED'] | None = None
     quality_score: float | None = Field(default=None, ge=0, le=1)
     spec_admission: SpecAdmissionReport | None = None
     task_requirement_coverage: RequirementCoverage | None = None

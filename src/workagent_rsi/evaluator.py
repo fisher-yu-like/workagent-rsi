@@ -1,121 +1,32 @@
-from __future__ import annotations
+"""Public evaluation delegates to the task-level LLM judge."""
 
-import hashlib
 from pathlib import Path
-import shutil
-import tempfile
-from typing import Sequence
-
-from .contracts import ArtifactRef, EvaluationReport, TaskSpec
-from .office_checks import MEDIA_TYPES, inspect_office_file
-
-
-class BasicEvaluator:
-    """Initial deterministic evaluator; Office-specific evaluators are Phase 1B follow-ups."""
-
-    def evaluate(self, task: TaskSpec, artifacts: Sequence[ArtifactRef], trace_id: str) -> EvaluationReport:
-        failures: list[str] = []
-        evidence: list[str] = []
-        if not artifacts:
-            failures.append("no artifacts produced")
-        content = b"".join(Path(ref.path).read_bytes() for ref in artifacts)
-        required = task.expected_constraints.get("required_text")
-        if required is not None and str(required).encode("utf-8") not in content:
-            failures.append(f"required text missing: {required}")
-        for ref in artifacts:
-            evidence.append(f"artifact:{ref.artifact_id}")
-        passed = not failures
-        return EvaluationReport(
-            passed=passed,
-            score=1.0 if passed else 0.0,
-            critical_failures=failures,
-            dimensions={"structural_correctness": 1.0 if passed else 0.0},
-            evidence=evidence + [f"trace:{trace_id}"],
-        )
+from .artifact_assessment import assessment_identity
+from .office_checks import MEDIA_TYPES
 
 
 class OfficeArtifactEvaluator:
-    """Versioned public Office chain with an explicit historical legacy mode."""
-
-    VERSION = "office-evaluator-v2"
+    VERSION = "llm-task-review-v1"
     MEDIA_TYPES = MEDIA_TYPES
 
     def __init__(self, *, assessment_profile=None, report_root=None, assessment=None):
-        self.assessment_profile=assessment_profile
-        self.report_root=Path(report_root) if report_root is not None else None
-        self.assessment=assessment
+        self.report_root = Path(
+            report_root or "project_artifacts/results/office-review"
+        )
+        self.assessment = assessment
 
     @classmethod
-    def evaluator_hash(cls) -> str:
-        """Hash the evaluator source files used for a report identity."""
+    def evaluator_hash(cls):
+        return assessment_identity()
 
-        digest = hashlib.sha256()
-        for name in ("evaluator.py", "office_checks.py", "render_checks.py"):
-            source = Path(__file__).with_name(name)
-            digest.update(name.encode("utf-8"))
-            digest.update(source.read_bytes())
-        return digest.hexdigest()
+    def evaluate(self, task, artifacts, trace_id):
+        from uuid import uuid4
+        from .harness_artifact_evaluator import HarnessArtifactEvaluator
 
-    def evaluate(self, task: TaskSpec, artifacts: Sequence[ArtifactRef], trace_id: str) -> EvaluationReport:
-        if self.assessment_profile != 'legacy':
-            from uuid import uuid4
-            from .harness_artifact_evaluator import HarnessArtifactEvaluator
-            root=(self.report_root or Path.cwd()/'project_artifacts/results/office-check')/uuid4().hex
-            return HarnessArtifactEvaluator(root,assessment=self.assessment,
-                assessment_profile=self.assessment_profile).evaluate(task,artifacts,trace_id)
-        return self._evaluate_legacy(task,artifacts,trace_id)
+        return HarnessArtifactEvaluator(
+            self.report_root / uuid4().hex, assessment=self.assessment
+        ).evaluate(task, artifacts, trace_id)
 
-    def _evaluate_legacy(self, task, artifacts, trace_id):
-        failures: list[str] = []
-        warnings: list[str] = []
-        evidence: list[str] = []
-        channel_status: dict[str, str] = {}
-        dimension_values: dict[str, list[float]] = {}
-        expected_media_type = self.MEDIA_TYPES.get(task.domain.lower())
-        if not artifacts:
-            failures.append("no artifacts produced")
-        for ref in artifacts:
-            path = Path(ref.path)
-            evidence.append(f"artifact:{ref.artifact_id}")
-            if expected_media_type is None or not ref.media_type.startswith(expected_media_type):
-                failures.append(f"unexpected format for {task.domain}: {ref.media_type}")
-                continue
-            if not path.exists():
-                failures.append(f"artifact path does not exist: {path}")
-                continue
-            # The store hash is retained as provenance.  Older callers may
-            # construct test refs with a placeholder hash, so a mismatch is a
-            # warning while the freshly computed file hash remains evidence.
-            actual_hash = hashlib.sha256(path.read_bytes()).hexdigest()
-            evidence.append(f"artifact_sha256:{actual_hash}")
-            if ref.sha256 and ref.sha256 != actual_hash:
-                warnings.append(f"artifact hash differs from supplied reference: {ref.artifact_id}")
-            suffix = {"excel": ".xlsx", "word": ".docx", "powerpoint": ".pptx"}[task.domain.lower()]
-            with tempfile.TemporaryDirectory(prefix="workagent-office-eval-") as temp_dir:
-                reopen_path = Path(temp_dir) / f"artifact{suffix}"
-                shutil.copyfile(path, reopen_path)
-                report = inspect_office_file(reopen_path, task)
-            failures.extend(report.failures)
-            warnings.extend(report.warnings)
-            evidence.extend(report.evidence)
-            channel_status.update(report.channel_status)
-            for name, value in report.dimensions.items():
-                dimension_values.setdefault(name, []).append(float(value))
-            evidence.append(f"office_check_status:{report.status}")
 
-        dimensions = {name: min(values) for name, values in dimension_values.items()}
-        if not artifacts:
-            dimensions.setdefault("format_validity", 0.0)
-            dimensions.setdefault("marker_correctness", 0.0)
-        evidence.extend([f"trace:{trace_id}", f"evaluator_version:{self.VERSION}", f"evaluator_hash:{self.evaluator_hash()}"])
-        passed = not failures
-        return EvaluationReport(
-            passed=passed,
-            score=1.0 if passed else 0.0,
-            task_acceptance='NOT_ASSESSED',score_semantics='legacy',
-            critical_failures=failures,
-            warnings=warnings,
-            dimensions=dimensions,
-            evidence=evidence,
-            channel_status=channel_status,
-        )
+class BasicEvaluator(OfficeArtifactEvaluator):
+    """Compatibility name;there is no keyword-based acceptance fallback."""

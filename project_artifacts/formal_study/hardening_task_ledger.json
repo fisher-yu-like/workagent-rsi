@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-29T02:45:29.968028+00:00",
+  "updated_at": "2026-10-29T10:35:19.480246+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -311,11 +311,14 @@
       "task_id": "T31",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T31-prepared/20261026",
-      "note": "Source-bound native Word and reference-image checks added. Focused core,authoring,visual and final style regressions passed;overlapping test counts are not added. All72 plans remain unreviewed;140mandatory source units lack complete registered coverage. Real three-domain repair,independent admission,qualified runtime and new experiment budget remain required.",
+      "note": "Task acceptance now uses the original task and task-level LLM review. Coded rule authoring and mandatory rule-inventory admission are retired by user direction; the 140 uncovered units are historical. Both loops are connected and verified offline. Live qualification of the new judge protocol and actual three-domain repair remain unrun and require a separately approved configuration and budget.",
       "local_engineering_complete": true,
-      "latest_offline_preparation": "project_artifacts\\formal_study\\hardening_t31_acceptance_rules_20261029.json",
-      "spec_preparation_status": "72source_bound_rule_plans_405source_units_140uncovered;66native_Word_rules;24PPT_reference_bindings;90Excel_label_bindings;all_SPEC_INCOMPLETE",
-      "spec_preparation_report": "project_artifacts\\formal_study\\acceptance_rules\\20261029\\report.json"
+      "historical_coded_rule_preparation": {
+        "spec_preparation_status": "72source_bound_rule_plans_405source_units_140uncovered;66native_Word_rules;24PPT_reference_bindings;90Excel_label_bindings;all_SPEC_INCOMPLETE",
+        "spec_preparation_report": "project_artifacts\\formal_study\\acceptance_rules\\20261029\\report.json",
+        "latest_offline_preparation": "project_artifacts\\formal_study\\hardening_t31_acceptance_rules_20261029.json"
+      },
+      "active_protocol_report": "docs/operations/llm-task-review-migration-20261029.md"
     },
     {
       "task_id": "T32",
@@ -508,16 +511,18 @@
     "T34_linux_completion": "commit containing current delivery; tested source hashes in full run.json"
   },
   "full_validation": {
-    "passed": 773,
+    "passed": 562,
     "failed": 0,
     "error": 0,
     "skipped": 0,
     "exit_code": 0,
-    "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
+    "evidence": "project_artifacts/formal_study/llm_task_review_migration_20261029.json",
+    "protocol": "llm-task-review-v1",
+    "scope": "offline; no live model or server jobs"
   },
   "bundle": "project_artifacts/results/hardening-v2/T28-delivery/20261025T023608991237Z/bundle/manifest.json",
   "next_recommended_tasks": [
-    "Complete T31 acceptance specs/native checks before real repair or promotion experiments.",
+    "Qualify task-level LLM review on a small fixed three-domain set, then run actual artifact repair with the same frozen model protocol; approve new live budget first.",
     "Complete T26 qualified variants,untouched final cohort and independent evaluator principal.",
     "Qualify hard-token-metered backend and native Office parity;any new live experiment requires its own budget."
   ],
@@ -572,12 +577,14 @@
     }
   },
   "latest_full_validation": {
-    "passed": 773,
+    "passed": 562,
     "failed": 0,
     "error": 0,
     "skipped": 0,
     "exit_code": 0,
-    "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
+    "evidence": "project_artifacts/formal_study/llm_task_review_migration_20261029.json",
+    "protocol": "llm-task-review-v1",
+    "scope": "offline; no live model or server jobs"
   },
   "expected_open": [],
   "historical_full_validation_indexes": [
@@ -633,7 +640,25 @@
       "skipped": 0,
       "exit_code": 0,
       "evidence": "project_artifacts/results/hardening-v2/T25-T26-final-full/20261025T015339198696Z"
+    },
+    {
+      "passed": 773,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "exit_code": 0,
+      "evidence": "project_artifacts/results/hardening-v2/T28-T34-release/20261026T113921863242Z"
     }
   ],
-  "historical_contract_example_bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json"
+  "historical_contract_example_bundle": "project_artifacts/results/hardening-v2/T03/20261021T080824087553Z/contracts/bundle-example/manifest.json",
+  "active_evaluation_protocol": {
+    "version": "llm-task-review-v1",
+    "changed_by": "user direction on 2026-10-29",
+    "report": "docs/operations/llm-task-review-migration-20261029.md",
+    "coded_rule_backlog_active": false,
+    "live_model_qualification": "not_run",
+    "historical_results_reinterpreted": false,
+    "offline_validation": "project_artifacts/formal_study/llm_task_review_migration_20261029.json"
+  },
+  "review_case_status_protocol": "Historical coded-rule protocol; active regression coverage is in the current manifest and LLM migration receipt."
 }

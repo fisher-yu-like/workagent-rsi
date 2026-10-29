@@ -1,5 +1,23 @@
 # Tests
 
+## Current LLM review checks (2026-10-29)
+
+Use `tests/test_llm_task_review.py` and `tests/test_task_review_evidence.py` for
+task-level model decisions, API/CLI transport, reading and evidence integrity.
+Run the full suite for changes to both loops, candidate boundaries or reports.
+Model stubs are control-flow tests, not model accuracy calibration. The migration
+and retired rule tests are documented in
+[the migration report](../docs/operations/llm-task-review-migration-20261029.md).
+
+```powershell
+.venv/Scripts/python.exe -m pytest -q tests/test_llm_task_review.py tests/test_task_review_evidence.py
+.venv/Scripts/python.exe -m pytest -q
+```
+
+The sections below record previous phases. Commands naming retired code-rule
+tests are historical and cannot be used with the new protocol. These tests were
+removed with the corresponding graders; no skip or xfail hides an active test.
+
 ## Focused checks for current work
 
 For T27/T28 metrics, actual human-submission provenance and the existing

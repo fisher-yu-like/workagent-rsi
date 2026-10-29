@@ -1,6 +1,6 @@
 # WorkAgent-RSI 代码包
 
-当前执行、恢复、重复比较和资格边界见[运行与交接说明](../../docs/operations/evaluation-rsi-v2.md)。截至 2026-10-26，T28 人工校准和真实四组研究验收仍待完成；随项目提供的 T31/T32 配置默认关闭真实调用。
+当前评估协议见 [LLM 任务评估说明](../../docs/operations/llm-task-review.md)。旧实验的恢复记录见[历史交接说明](../../docs/operations/evaluation-rsi-v2.md)；真实模型调用默认关闭。
 
 日常代码只需要理解两个入口：
 
@@ -31,11 +31,9 @@ result = Harness().run(task)
 
 ## WorkAgent 与 Office 评估
 
-普通入口仍然是 `Harness.run(task)`。Office 任务默认使用 WorkAgent 生成文件；非 Office smoke 任务继续使用轻量 evaluator。可通过 `execution_provider` 显式选择 `workagent`、`local_office`、`com` 或 `libreoffice`。
-
-Office 成品共用远端 `SharedAssessment`，随后由 `ArtifactEvaluator` 评分、`ArtifactVerifier` 定位问题。结果目录中的 `assessment/` 保存 `assessment.json`、`score.json`、`issues.json` 和可读的 `report.md`；`result.json` 的 evaluation 字段包含身份和报告路径。兼容分数 `evaluation.score` 为 0–1，原始总分保存在 `score.json` 的 0–100 `total_score` 中。未完成的必需检查会得到 `score: null` 和 `UNAVAILABLE` 状态。
-
-默认验收规格由 `expected_constraints` 转换，只检查其中声明的确定性要求。需要语义或视觉检查时，将完整 `acceptance_spec` 放在 `expected_constraints.acceptance_spec`，为每个评分维度声明权重和明确标准，并通过模型配置启用相应通道：
+普通入口仍是 `Harness.run(task)`。Office 任务默认由 WorkAgent 生成文件，
+也可按现有执行配置选择其他执行器。所有产物评估都经过 `SharedAssessment`：
+原任务、原始输入、成品文本与结构观测，以及可用的实际渲染页发给同一个 LLM。
 
 ```python
 from workagent_rsi import Harness
@@ -43,32 +41,31 @@ from workagent_rsi import Harness
 task = {
     "task_id": "quarterly-summary",
     "domain": "excel",
-    "instruction": "Create the requested quarterly summary workbook.",
-    "expected_constraints": {
-        "acceptance_spec": {
-            "task_id": "quarterly-summary",
-            "version": "v1",
-            "artifacts": {"output": "excel"},
-            "requirements": [
-                {
-                    "requirement_id": "formula-total",
-                    "description": "The total cell uses the required formula.",
-                    "check": "excel.formula",
-                    "location": {"artifact": "output", "sheet": "Summary", "cell": "B4"},
-                    "expected": "=SUM(B2:B3)",
-                    "critical": True,
-                    "dimension": "correctness",
-                    "evidence_source": "task specification",
-                }
-            ],
-            "dimension_weights": {"correctness": 1.0},
-        }
-    },
+    "instruction": "Summarize the quarterly sales from the supplied workbook.",
+    "input_files": ["source.xlsx"],
 }
-
-result = Harness().run(task)
+harness = Harness(model_review_config={
+    "provider": "api",
+    "model": "<approved-model-name>",
+    "retries": 0,
+})
+# Run only after the actual execution/model configuration and budget are approved.
+result = harness.run(task)
 ```
 
-Semantic and visual requirements use `check: "semantic"` or `check: "visual"` and must state the criterion in the requirement. Enable the matching channel with a `ModelReviewConfig`, for example `Harness(model_review_config={"provider": "api", "model": "<model-name>", "semantic_enabled": True, "visual_enabled": True})`; the API key is read from the configured environment variable and is not written to run records. The CLI accepts the same JSON through `--model-review-config`. If a required model or render channel is unavailable, assessment remains incomplete.
+模型返回任务是否明确可行、PASS/PARTIAL/FAIL/NEEDS_REVIEW、完成度、理由和问题。
+代码保留这些判断，只为兼容报告把 0–1 分数换算为 0–100；不会按权重、关键项
+阈值或隐藏答案重新判分。`expected_constraints` 可保留在历史任务中，但不再
+编译成验收规则，也不会当作隐藏答案传给 judge。旧 `AcceptanceSpec` 输入不用于新评估。
 
-For one output, the sole `AcceptanceSpec.artifacts` key maps to that output. For multiple outputs, each key must exactly equal one WorkAgent deliverable path such as `outputs/summary.xlsx`; every generated output must be declared. Missing, duplicate, or extra mappings produce an incomplete assessment rather than an arbitrary file choice.
+默认 `provider` 为 `disabled`；没有 judge 或调用失败时，评估不完整、质量分为 null。
+API 凭据从配置指定的环境变量读取。实际视觉判断还需要独立配置的 Office worker；
+缺少渲染、上下文超限或图片超限必须留下限制记录，不能静默截断或用规则替代。
+
+每次运行的 `assessment/` 目录保存 `assessment.json`、`score.json`、`issues.json`
+和 `report.md`。报告以 `llm-task-review-v1` 标识新语义。原始模型回复、调用用量、
+来源哈希和错误记录由模型传输层保存。归档产物引用保留原文件名。
+
+内循环使用模型问题修复产物，保持 skill 冻结；外循环修改 skill 后重新执行任务，
+比较同一模型协议给出的结果。模型提示、配置和评估器身份在比较期间保持冻结。
+详见[协议与限制](../../docs/operations/llm-task-review.md)。
