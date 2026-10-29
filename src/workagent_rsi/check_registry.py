@@ -39,6 +39,7 @@ _definitions = [
     ('word.references',['word'],[],'texts',[]),
     ('word.paragraph',['word'],['paragraph'],'text',[]),
     ('word.table_cell',['word'],['table','row','column'],'text',[]),
+    ('word.package',['word'],[],'word_rules',[]),
     ('powerpoint.object_text',['powerpoint'],['slide','object_id'],'text',[]),
     ('powerpoint.slide_count',['powerpoint'],[],'count',[]),
     ('powerpoint.native_objects',['powerpoint'],[],'native_policy',[]),
@@ -106,10 +107,12 @@ def validate_location(location, domain, *, fact=False):
 
 
 def _expected(value, schema):
+    from .word_package_checks import validate_word_rules
     json.dumps(value, allow_nan=False)
     text = lambda v:isinstance(v,str) and bool(v.strip())
     valid = {
         'any':lambda:True, 'boolean':lambda:type(value) is bool,
+        'word_rules':lambda:bool(validate_word_rules(value)),
         'domain':lambda:value in ALL if isinstance(value,str) else False,
         'text':lambda:text(value), 'formula':lambda:text(value) and value.startswith('='),
         'filename':lambda:text(value) and value not in {'.','..'} and not any(c in value for c in '/\\:*?"<>|') and value==value.strip() and not value.endswith('.'),
@@ -160,6 +163,13 @@ def validate_acceptance_spec(spec, capabilities) -> SpecAdmissionReport:
             _expected(r.expected,definition.expected_schema)
             if r.check=='file.name' and any(v is not None for k,v in r.location.model_dump().items() if k!='artifact'):
                 raise ValueError('filename check requires artifact scope')
+            if r.check=='word.package':
+                if any(v is not None for k,v in r.location.model_dump().items() if k!='artifact'):
+                    raise ValueError('Word package rules use their own explicit scopes')
+                source=r.options.get('source_path')
+                needs_source=any(rule['kind'] in {'replace','blank_paragraphs','footnote_suffix','comments_preserved'} for rule in r.expected)
+                if (needs_source or source is not None) and (not isinstance(source,str) or source not in spec.input_hashes):
+                    raise ValueError('Word package source must be bound in frozen input_hashes')
             if r.check=='powerpoint.native_objects' and any(v is not None for k,v in r.location.model_dump().items() if k not in {'artifact','slide'}):
                 raise ValueError('native object check supports whole deck or slide scope')
             if r.check in {'excel.formula','excel.formula_exact','excel.formula_present','excel.recalculated_value'}:
@@ -183,6 +193,13 @@ def validate_acceptance_spec(spec, capabilities) -> SpecAdmissionReport:
                 pages=r.options['pages']
                 if not isinstance(pages,list) or not pages or any(type(p) is not int or p<1 for p in pages) or len(set(pages))!=len(pages):
                     raise ValueError('visual pages must be unique positive integer page numbers')
+            if r.check=='visual' and 'reference_images' in r.options:
+                refs=r.options['reference_images']
+                if not isinstance(refs,list) or not 1<=len(refs)<=8:raise ValueError('reference images require 1 to 8 frozen inputs')
+                if len({ref.get('path') for ref in refs if isinstance(ref,dict)})!=len(refs):raise ValueError('duplicate reference image')
+                for ref in refs:
+                    if not isinstance(ref,dict) or set(ref)!={'path','sha256'} or not isinstance(ref['path'],str) or not isinstance(ref['sha256'],str) or not re.fullmatch('[0-9a-f]{64}',ref['sha256']) or spec.input_hashes.get(ref['path'])!=ref['sha256']:
+                        raise ValueError('reference image must be bound in frozen input_hashes')
             if r.check=='preservation':
                 from .preservation_checks import PreservationSpec
                 policy=PreservationSpec.model_validate(r.options.get('preservation_spec'))

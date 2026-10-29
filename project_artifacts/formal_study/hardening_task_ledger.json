@@ -1,6 +1,6 @@
 {
   "schema_version": "hardening-task-ledger-v1",
-  "updated_at": "2026-10-29T02:16:58.592657+00:00",
+  "updated_at": "2026-10-29T02:45:29.968028+00:00",
   "working_tree": "D:/ws/Projects/WorkAgent-RSI",
   "branch": "feat/evaluation-rsi-hardening",
   "baseline_commit": "5c727a318527b8f39bbfbd9b5668026c81d3526e",
@@ -311,11 +311,11 @@
       "task_id": "T31",
       "status": "blocked",
       "evidence": "project_artifacts/results/hardening-v2/T31-prepared/20261026",
-      "note": "Default-off CLI, frozen preflight/config/input identities, real metered API runner path, explicit resume and natural repair evidence reporting implemented.72 existing input tasks prepared with family/hash bindings, but all72 whole-task acceptance specs are SPEC_INCOMPLETE. New approved budget, qualified API/sandbox, admitted specs and real three-domain repair execution remain blocked.",
+      "note": "Source-bound native Word and reference-image checks added. Focused core,authoring,visual and final style regressions passed;overlapping test counts are not added. All72 plans remain unreviewed;140mandatory source units lack complete registered coverage. Real three-domain repair,independent admission,qualified runtime and new experiment budget remain required.",
       "local_engineering_complete": true,
-      "latest_offline_preparation": "project_artifacts/formal_study/hardening_remaining_20261028.json",
-      "spec_preparation_status": "72unreviewed_drafts_405source_units_262uncovered_24deterministic_filename_units;all_SPEC_INCOMPLETE",
-      "spec_preparation_report": "project_artifacts/results/hardening-v2/T31-spec-preparation/20261028/drafts-v2/preparation-report.json"
+      "latest_offline_preparation": "project_artifacts\\formal_study\\hardening_t31_acceptance_rules_20261029.json",
+      "spec_preparation_status": "72source_bound_rule_plans_405source_units_140uncovered;66native_Word_rules;24PPT_reference_bindings;90Excel_label_bindings;all_SPEC_INCOMPLETE",
+      "spec_preparation_report": "project_artifacts\\formal_study\\acceptance_rules\\20261029\\report.json"
     },
     {
       "task_id": "T32",

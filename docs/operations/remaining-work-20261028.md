@@ -1,5 +1,7 @@
 # Remaining work on 2026-10-28
 
+Latest update (2026-10-29):natural20 automatic diagnostics are complete at92/92 valid channels,111 cumulative attempts and6256 charged seconds. T31 source-bound acceptance rules were extended;see [the latest rule report](t31-acceptance-rules-20261029.md). The original405 source units remain;140 are still uncovered,down from262. All72 inventories remain unreviewed and SPEC_INCOMPLETE. Earlier preparation counts below are historical snapshots.
+
 The user waived the natural20 manual follow-up. No further manual submission is requested. Preserve the original provisional labels and do not claim accuracy against reliable human ground truth. The latest automatic diagnostic status and case findings are in [natural20 results](natural20-automatic-results-20261028.md).
 
 The task ledger still has six unfinished tasks: T26, T28, T29, T31, T32 and T33.

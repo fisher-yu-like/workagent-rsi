@@ -33,6 +33,7 @@ Preflight runs before artifact parsing. Unknown checks, invalid types/locations 
 | visual | excel, word, powerpoint | optional scope | any | renderer, visual_judge |
 | word.heading_style | word | heading | text | parser |
 | word.headings | word | optional scope | texts | parser |
+| word.package | word | optional scope | word_rules | parser |
 | word.paragraph | word | paragraph | text | parser |
 | word.references | word | optional scope | texts | parser |
 | word.table_cell | word | table, row, column | text | parser |
